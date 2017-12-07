@@ -1,0 +1,13 @@
+{% set language, value = h.dge_dataset_field_value(pkg.description) %}
+{% if value %}
+<section class="description">
+  <h2 class="section-title">{{ _('Description') }}</h2>
+  <div class="notes embedded-content">
+    {% if (language and value) %}
+      <div lang='{{language}}' xml:lang='{{language}}'>{{ h.render_markdown(value) }}</div>
+    {% elif value %}
+      {{ h.render_markdown(value) }}
+    {% endif %}
+  </div>
+</section>
+{% endif %}

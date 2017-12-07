@@ -1,0 +1,16 @@
+{% set current_url = h.full_current_url() %}
+{% block social %}
+  <section class="social">
+    {% block social_title %}
+      <h2 class="section-title"><a href="#nav-simple">{{ _('Share') }}</a></h2>
+    {% endblock %}
+    {% block social_nav %}
+      <ul class="nav nav-simple">
+        <li class="nav-item"><a href="https://twitter.com/share?url={{ current_url }}" target="_blank"><i class="icon-twitter-sign"></i> {{ _('Twitter') }}</a></li>
+        <li class="nav-item"><a href="https://www.facebook.com/sharer.php?u={{ current_url }}" target="_blank"><i class="icon-facebook-sign"></i> {{ _('Facebook') }}</a></li>
+        <li class="nav-item"><a href="https://plus.google.com/share?url={{ current_url }}" target="_blank"><i class="icon-google-plus-sign"></i> {{ _('Google+') }}</a></li>
+        <li class="nav-item"><a href="http://www.linkedin.com/shareArticle?mini=true&url={{ current_url }}" target="_blank"><i class="icon-linkedin-sign"></i> {{ _('Linkendin') }}</a></li>
+      </ul>
+    {% endblock %}
+  </section>
+{% endblock %}

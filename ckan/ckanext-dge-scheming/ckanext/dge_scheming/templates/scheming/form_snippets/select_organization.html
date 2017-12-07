@@ -1,0 +1,37 @@
+{% import 'macros/form.html' as form %}
+
+{% macro dge_organization_option_tag(organization, selected_org) %}
+  {% block organization_option scoped %}
+    <option value="{{ organization.id }}"{%
+      if selected_org %} selected="selected"{% endif
+      %}>{{ organization.display_name }}</option>
+  {% endblock %}
+{% endmacro %}
+
+{# set organizations_available = h.organizations_available('create_dataset') #}
+{% set organizations_available = h.dge_dataset_form_organization_list() %}
+{% set organizations_create = h.organizations_available('create_dataset') %}
+{% set existing_org = data[field.field_name] or data.group_id %}
+
+{% call form.input_block('field-organizations',
+    label=h.scheming_language_text(field.label),
+    error=errors[field.field_name],
+    is_required=h.scheming_field_required(field),
+    extra_html=caller() if caller,
+    ) %}
+    <div {{
+      form.attributes(field.form_attrs) if 'form_attrs' in field else '' }}>
+    <select id="'field-{{field.field_name}}" name="{{field.field_name}}" {{ form.attributes(
+        field.get('form_select_attrs', {'data-module':'autocomplete'})) }}>
+      {% if not h.scheming_field_required(field) %}
+        <option value="">{% if not org_required
+          %}{{ _('No organization') }}{% endif %}</option>
+      {% endif %}
+      {% for organization in organizations_available %}
+        {% set selected_org = (existing_org and existing_org == organization.id) or (not existing_org and not data.id and organization.id == organizations_create[0].id) %}
+        {{ dge_organization_option_tag(organization, selected_org) }}
+      {% endfor %}
+    </select>
+    </div>
+    {%- snippet 'scheming/form_snippets/help_text.html', field=field %}
+{% endcall %}

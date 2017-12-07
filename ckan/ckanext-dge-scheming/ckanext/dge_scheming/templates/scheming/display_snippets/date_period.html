@@ -1,0 +1,26 @@
+{%- set values = data[field.field_name] -%}
+{% if values %}
+   <ul>
+   {%- for element in values | sort -%}
+     {% set dates = values.get(element) %}
+     <li>
+        {% if dates.from %}
+           {% trans date=h.render_datetime(dates.from, date_format='%Y-%m-%d %H:%M') %}
+             From {{ date }}
+           {% endtrans %}
+           {% if dates.to %}
+           {% trans date=h.render_datetime(dates.to, date_format='%Y-%m-%d %H:%M') %}
+             to {{ date }}
+           {% endtrans %}
+           {% endif %}
+        {% else %}
+           {% if dates.to %}
+              {% trans date=h.render_datetime(dates.to, date_format='%Y-%m-%d %H:%M') %}
+                To {{ date }}
+              {% endtrans %}
+           {% endif %}
+        {% endif %}
+     </li>
+   {%- endfor -%}
+   </ul>
+{% endif %}

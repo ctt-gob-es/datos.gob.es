@@ -1,0 +1,13 @@
+{%- set multiple_errors = [] -%}
+{%- for key, errors in unprocessed.items() -%}
+  {%- if key.startswith(field.field_name + '-') -%}
+    {%- do multiple_errors.append(key) -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- for key in multiple_errors | sort -%}
+  {%- set errors = unprocessed.pop(key) -%}
+  <li data-field-label="{{ key }}">{{
+         h.scheming_language_text(field.label) }} {{ loop.index}}:
+         {{ errors[0] }}</li>
+{%- endfor -%}

@@ -1,0 +1,367 @@
+<?php
+
+/**
+ * Copyright (C) 2017 Entidad Pública Empresarial Red.es
+ * 
+ * This file is part of "dge_widget (datos.gob.es)".
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+function dge_widget_block_info() {
+  $blocks = array();
+
+  $blocks['dataset_widget'] = array(
+    'info' => t('DGE Generate RSS Widget'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
+  return $blocks;
+}
+
+/**
+* Implements hook_init().
+*/
+function dge_widget_init() {
+
+   //Solo se habilita CORS en las paginas del widget
+   if (is_dge_widget_page()) {
+      drupal_add_http_header('Access-Control-Allow-Origin', '*', TRUE);
+      drupal_add_http_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS', TRUE);
+      drupal_add_http_header('Access-Control-Allow-Credentials', 'true', TRUE);
+      drupal_add_http_header('Access-Control-Allow-Headers', 'Authorization, Origin, Content-Type, X-CSRF-Token', TRUE);
+
+      // Access-Control headers are received during OPTIONS requests
+      if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+         exit(0);
+      }
+   }
+}
+
+/** Check is the requested page is a dge_widget_page */
+function is_dge_widget_page() {
+
+   $path = current_path();
+   $is_dge_widget_page = drupal_match_path($path, 'widget-rss-alpha/*') || drupal_match_path($path, 'widget-rss-fecha/*');
+   
+   return $is_dge_widget_page;   
+   
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function dge_widget_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'list':
+      if (user_access('access content')) {
+         $block['subject'] = t('Datos.gob.es en su web');
+         $form = drupal_get_form('formulario_generador_form');
+      	$block['content']  = drupal_render($form);
+      }
+      break;
+  }
+
+  return $block;
+}
+
+function dge_widget_block($op='dataset_widget', $delta=0, $edit=array())
+{
+  switch ($op) {
+    case 'dataset_widget':
+	   $blocks[0]['info'] = t('dge_widget');
+    return $blocks;
+    case 'view':
+      $blocks['subject'] = t('dge_widget');
+      $blocks['content'] = dge_widget_block_content();
+    return $blocks;
+	}
+}
+
+/**
+* Your module should generate it's content here. This will be displayed within your module
+*/
+function dge_widget_block_content()
+{
+	$content.=drupal_get_form('formulario_generador_form');
+
+	return $content;
+}
+
+/**
+* This will allow you to restrict certain actions of the module to certain roles
+*/
+function dge_widget_permission()
+{
+  return array(
+    'access dge_widget' => array(
+      'title' => t('Access dge_widget'),
+      'description' => t('Access dge_widget.')
+    ),
+    'access generate dge_widget' => array(
+      'title' => t('Generate Widget'),
+      'description' => t('Allow users to create a dataset widget.')
+    ),
+  );
+}
+
+/**
+* Implements hook_menu().
+*/
+function dge_widget_menu()
+{
+	$items = array ();
+  $items['widget-rss-fecha/%'] = array (
+    'title' => t('widget-rss-fecha'),
+    'description' => t('widget-rss-fecha'),
+    'page callback' => 'dge_widget_fecha_callback',
+    'page arguments' => array(1),
+    'access arguments' => array('access dge_widget'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['widget-rss-alpha/%'] = array (
+    'title' => t('widget-rss-alpha'),
+    'description' => t('widget-rss-alpha'),
+    'page callback' => 'dge_widget_alpha_callback',
+    'page arguments' => array(1),
+    'access arguments' => array('access dge_widget'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['datos/widget-rss/%'] = array (
+    'title' => t('widget-rss'),
+    'description' => t('widget-rss'),
+    'page callback' => 'dge_widget_callback',
+    'page arguments' => array(2),
+    'access arguments' => array('access dge_widget'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['widget-rss/%'] = array (
+    'title' => t('widget-rss'),
+    'description' => t('widget-rss'),
+    'page callback' => 'dge_widget_callback',
+    'page arguments' => array(1),
+    'access arguments' => array('access dge_widget'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['admin/dashboard/widget'] = array(
+    'title' => t('Generate widget'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('formulario_generador_form'),
+    'access callback' => 'user_access',
+    'access arguments' => array('access generate dge_widget'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+function dge_widget_fecha_callback($parameter)
+{
+  $ckan_orgainzation_id = convert_id_to_ckan($parameter);
+  $response = dge_widget_ckan_request($organization=$ckan_orgainzation_id,$sort='metadata_modified desc',$start=0,$rows=10000);
+
+  $variables = array(
+    'response' => $response,
+    'title' => 'widget-rss-fecha',
+  );
+
+  print  theme('widget-rss-fecha', $variables);
+  return;
+}
+
+function dge_widget_alpha_callback($parameter)
+{
+  $ckan_orgainzation_id = convert_id_to_ckan($parameter);
+  $response = dge_widget_ckan_request($organization=$ckan_orgainzation_id,$sort='title_string asc',$start=0,$rows=10000);
+
+  $variables = array(
+    'response' => $response,
+    'title' => 'widget-rss-alpha',
+  );
+
+  print  theme('widget-rss-alpha', $variables);
+  return;
+}
+
+function dge_widget_callback($parameter)
+{
+  $ckan_orgainzation_id = convert_id_to_ckan($parameter);
+  $response = dge_widget_ckan_request($organization=$ckan_orgainzation_id,$sort='title_string asc',$start=0,$rows=10000);
+
+  $variables = array(
+    'response' => $response,
+    'title' => 'widget-rss',
+  );
+  print  theme('widget-rss', $variables);
+  return;
+}
+
+function dge_widget_ckan_request($organization,$sort,$start,$rows){
+
+  $ckan = dge_ckan_init_class();
+
+  $organization_dictionary = $ckan->request(
+    'organization_show',
+    $organization, // id
+    false, // include_datasets
+    '', // include_extras
+    '', // include_users
+    '', // include_groups
+    '', // include_tags
+    '' // include_followers
+  );
+
+  if($organization_dictionary['success']) {
+    $organization_name = $organization_dictionary['result']['name'];
+  }
+
+  $response = $ckan->request(
+    'package_search',
+    '', // $q
+    "organization:" . $organization_name, // $fq
+    $rows,
+    $start,
+    $sort
+  );
+
+  return $response;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function dge_widget_theme() {
+    $path = drupal_get_path('module', 'dge_widget') . '/theme';
+    return array(
+        'widget-rss-fecha' => array(
+            'path' => $path,
+            'template' => 'dge_widget_rss',
+            'variables' => array(
+                'description' => NULL,
+            ),
+        ),
+        'widget-rss-alpha' => array(
+            'path' => $path,
+            'template' => 'dge_widget_rss',
+            'variables' => array(
+                'description' => NULL,
+            ),
+        ),
+        'widget-rss' => array(
+            'path' => $path,
+            'template' => 'dge_widget_rss_simple',
+            'variables' => array(
+                'description' => NULL,
+            ),
+        ),
+    );
+}
+
+function formulario_generador_form($form, &$form_state){
+  global $user;
+  drupal_add_js(drupal_get_path('module', 'dge_widget') .'/js/dge_widget.js', 'file');
+
+  $vid = taxonomy_vocabulary_machine_name_load('agencies')->vid;
+  $terms = taxonomy_get_tree($vid);
+
+  $array_organismos=array();
+
+  for($i=0; $i<count($terms);$i++)
+  {
+    $term_array = json_decode(json_encode(taxonomy_term_load($terms[$i]->tid)), true);
+    if (isset($term_array['field_reference_id']['und'])) {
+      $field_reference_id = $term_array['field_reference_id']['und'][0]['value'];
+      $array_organismos[$field_reference_id]=$terms[$i]->name;
+    }
+  }
+
+  $form['description'] = array(
+     '#markup' => t('For generating your widget, select an organization, the desired widget dimensions and push the Send button')
+  );
+
+  $form['organismo'] = array(
+    '#type' => 'select',
+    '#title' => t('Seleccione organismo:'),
+    '#options' => $array_organismos,
+  );
+
+  //set default organization
+  $profile = profile2_load_by_user($user, PROFILE_ORGANIZATION_SHORT);
+  if(!empty($profile) && isset($profile->{PROFILE_ORGANIZATION_FIELD}[LANGUAGE_NONE][0]['tid'])) {
+    $term = taxonomy_term_load($profile->{PROFILE_ORGANIZATION_FIELD}[LANGUAGE_NONE][0]['tid']);
+    if (! empty($term->{CKAN_ORGANIZATION_OLD_ID}[LANGUAGE_NONE][0]['value'])){
+      $form['organismo']['#default_value'] = $term->{CKAN_ORGANIZATION_OLD_ID}[LANGUAGE_NONE][0]['value'];
+    }
+  }
+
+  $form['ancho'] = array(
+    '#type' => 'textfield',
+    '#size' =>12,
+    '#title' =>t('Introduzca ancho:')
+  );
+
+  $form['alto'] = array(
+    '#type' => 'textfield',
+    '#size' =>12,
+    '#title' =>t('Introduzca alto:')
+  );
+
+  $form['ordenacion'] = array(
+    '#type' => 'select',
+    '#title' => t('Seleccione el orden:'),
+    '#options' => array('Fecha (descendente)', 'Título (ascendente)'),
+  );
+
+  $form['sede'] = array(
+    '#type' => 'select',
+    '#title' => t('Es sede electrónica:'),
+    '#options' => array('Sí', 'No'),
+  );
+
+  $form['boton'] = array(
+    '#type' => 'button',
+    '#value' => t('Generar'),
+    '#attributes' => array('onclick' => 'return (false);'),
+  );
+
+  $form['codigo'] = array(
+    '#title' => t('Código HTML del widget generado'),
+    '#type' => 'textarea',
+    '#cols' => 25,
+    '#rows' => 5,
+    '#required' => FALSE,
+    '#attributes' => array('readonly' => 'readonly'),
+  );
+
+  return $form;
+}
+
+function convert_id_to_ckan($id)
+{
+  $vid = taxonomy_vocabulary_machine_name_load('agencies')->vid;
+  $terms = taxonomy_get_tree($vid);
+
+  foreach ($terms as $term) {
+    $term_array = json_decode(json_encode(taxonomy_term_load($term->tid)), true);
+    $field_reference_id = $term_array['field_reference_id']['und'][0]['value'];
+
+    if($field_reference_id == $id){
+        $field_ckan_organization_id = $term_array['field_ckan_organization_id']['und'][0]['value'];
+    }
+  }
+
+  return $field_ckan_organization_id;
+}

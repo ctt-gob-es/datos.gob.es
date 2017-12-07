@@ -1,0 +1,1368 @@
+# Copyright (C) 2017 Entidad Pública Empresarial Red.es
+# 
+# This file is part of "ckanext-dge (datos.gob.es)".
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+# 
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+msgid ""
+msgstr ""
+"Project-Id-Version: ckanext-dge 1.0.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2016-12-02 09:43+0100\n"
+"PO-Revision-Date: 2016-10-16 06:26+0200\n"
+"Last-Translator: \n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: ckanext/dge/templates/footer.html:105
+msgid "<p>Email subscription to the latest news.</p>"
+msgstr "<p>Email subscription to the latest news.</p>"
+
+#: ckanext/dge/templates/footer.html:45 ckanext/dge/templates/header.html:148
+#: ckanext/dge/templates/header.html:150
+#: ckanext/dge/templates/apidata/apidata.html:37
+#: ckanext/dge/templates/apidata/apidata.html:44
+#: ckanext/dge/templates/apidata/apidata.html:47
+#: ckanext/dge/templates/apidata/apidata.html:49
+msgid "API Data"
+msgstr "Api"
+
+#: ckanext/dge/templates/apidata/apidata.html:55
+#, python-format
+msgid "API_introduction %(page)s %(doc)s"
+msgstr ""
+"<p>The API is a mechanism which allows queries in the datos.gob.es "
+"semantic database. Currently it provides access to the <a "
+"href=\"https://datos.gob.es/catalogo\">Data catalogue</a> and the URIs "
+"corresponding to the <strong>primary sector taxonomy</strong> and the "
+"<strong>identification of geographical coverage</strong> defined in "
+"Annexes IV and V of the <a "
+"href=\"https://www.boe.es/diario_boe/txt.php?id=BOE-A-2013-2380\">Technical"
+" Interoperability Regulations on the Re-use of Information Resources</a> "
+"<strong>(NTI)</strong>.</p><p>The API queries use uniform resource "
+"identifiers (URI) and they’re put together based on a series of criteria "
+"selected by the user.</p><p>On this page, you’ll find documents available"
+" relating to the API methods, parameters and model, and test searches can"
+" be conducted. You’ll find information about the API available and "
+"examples of searches on the following <a href='%(page)s'>page</a>.</p>"
+
+#: ckanext/dge/templates/snippets/dge_catalog_downloads.html:10
+msgid "ATOM Data Catalog"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:34 ckanext/dge/templates/header.html:132
+msgid "About Aporta initiative"
+msgstr "About the Aporta initiative"
+
+#: ckanext/dge/templates/footer.html:126
+msgid "Accept"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:166
+msgid "Accesibility"
+msgstr ""
+
+#: ckanext/dge/templates/package/snippets/dge_resource_item.html:70
+msgid "Access"
+msgstr ""
+
+#: ckanext/dge/templates/apidata/apidata.html:56
+#: ckanext/dge/templates/yasgui/sparql.html:49
+msgid "Accessible version"
+msgstr ""
+
+#: ckanext/dge/templates/package/resources.html:6
+#: ckanext/dge/templates/package/snippets/dge_resources.html:6
+msgid "Add new resource"
+msgstr "Add new distribution"
+
+#: ckanext/dge/plugin.py:201 ckanext/dge/plugin.py:222
+#: ckanext/dge/templates/package/snippets/dge_owner.html:19
+msgid "Administration level"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:69 ckanext/dge/templates/header.html:183
+msgid "Advise and support"
+msgstr ""
+
+#: ckanext/dge/helpers.py:420
+msgid "Annual"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:31 ckanext/dge/templates/header.html:100
+#: ckanext/dge/templates/header.html:129
+msgid "Aporta awards"
+msgstr "Aporta Awards"
+
+#: ckanext/dge/templates/footer.html:31 ckanext/dge/templates/header.html:100
+#: ckanext/dge/templates/header.html:129
+msgid "Aporta challenge"
+msgstr "Aporta Challenge"
+
+#: ckanext/dge/templates/footer.html:31 ckanext/dge/templates/header.html:100
+#: ckanext/dge/templates/header.html:129
+msgid "Aporta initiative"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:37 ckanext/dge/templates/header.html:135
+msgid "Aporta meetings"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:56 ckanext/dge/templates/header.html:170
+#: ckanext/dge/templates/header.html:232
+msgid "Applications"
+msgstr ""
+
+#: ckanext/dge/helpers.py:420
+msgid "Biennial"
+msgstr ""
+
+#: ckanext/dge/helpers.py:421
+msgid "Bimonthly"
+msgstr ""
+
+#: ckanext/dge/helpers.py:422
+msgid "Biweekly"
+msgstr ""
+
+#: ckanext/dge/templates/package/snippets/dge_resource_item.html:57
+#: ckanext/dge/templates/scheming/package/resource_read.html:97
+msgid "Bytes"
+msgstr ""
+
+#: ckanext/dge/templates/snippets/dge_catalog_downloads.html:7
+msgid "CSV Data Catalog"
+msgstr ""
+
+#: ckanext/dge/templates/source/job/read.html:24
+#: ckanext/dge/templates/source/job/read.html:38
+msgid "Catalog Errors/Warnings"
+msgstr ""
+
+#: ckanext/dge/plugin.py:153 ckanext/dge/plugin.py:175
+msgid "Category"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:241
+msgid "Comments"
+msgstr "Comments"
+
+#: ckanext/dge/templates/footer.html:154
+msgid "Contact"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:150
+msgid "Contact and more information"
+msgstr ""
+
+#: ckanext/dge/helpers.py:425
+msgid "Continuous"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:169
+msgid "Cookies policiy"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:276
+msgid "Create a new user account"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:276
+msgid "Create new account"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:79 ckanext/dge/templates/header.html:104
+#: ckanext/dge/templates/header.html:193
+msgid "Current News"
+msgstr ""
+
+#: ckanext/dge/helpers.py:423
+msgid "Daily"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:41 ckanext/dge/templates/header.html:101
+#: ckanext/dge/templates/header.html:140 ckanext/dge/templates/header.html:300
+#: ckanext/dge/templates/apidata/apidata.html:28
+#: ckanext/dge/templates/apidata/apidata.html:46
+#: ckanext/dge/templates/package/read_base.html:25
+#: ckanext/dge/templates/package/resource_read.html:26
+#: ckanext/dge/templates/package/search.html:24
+#: ckanext/dge/templates/package/search.html:41
+#: ckanext/dge/templates/package/search.html:44
+#: ckanext/dge/templates/package/snippets/dge_package_breadcrumb_content.html:1
+#: ckanext/dge/templates/yasgui/sparql.html:24
+#: ckanext/dge/templates/yasgui/sparql.html:42
+msgid "Data Catalog"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:72 ckanext/dge/templates/header.html:186
+#: ckanext/dge/templates/header.html:229
+msgid "Data requests"
+msgstr "Data availability"
+
+#: ckanext/dge/templates/source/job/read.html:28
+#: ckanext/dge/templates/source/job/read.html:55
+msgid "Datasets Errors/Warnings"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:40
+msgid "Datos.gob.es. Reuse the public information . Go home"
+msgstr ""
+
+#: ckanext/dge/templates/base.html:6
+msgid "Datos.gob.es. Reuses the public data"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:66 ckanext/dge/templates/header.html:180
+msgid "Documentation"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:117
+msgid "E-mail"
+msgstr ""
+
+#: ckanext/dge/templates/package/resource_edit_base.html:8
+msgid "Edit resource"
+msgstr "Edit distribution"
+
+#: ckanext/dge/templates/header.html:310
+msgid "Enter the terms you wish to search for."
+msgstr ""
+
+#: ckanext/dge/templates/source/job/read.html:16
+#: ckanext/dge/templates/source/job/read.html:20
+msgid "Error/Warning Summary"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:88 ckanext/dge/templates/header.html:202
+msgid "Events"
+msgstr ""
+
+#: ckanext/dge/helpers.py:430
+msgid "Every"
+msgstr ""
+
+#: ckanext/dge/helpers.py:440
+msgid "Every {time_value} days"
+msgstr ""
+
+#: ckanext/dge/helpers.py:432
+msgid "Every {time_value} months"
+msgstr ""
+
+#: ckanext/dge/helpers.py:436
+msgid "Every {time_value} weeks"
+msgstr ""
+
+#: ckanext/dge/helpers.py:428
+msgid "Every {time_value} years"
+msgstr ""
+
+#: ckanext/dge/templates/apidata/apidata.html:66
+msgid "Explore"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:157
+msgid "FAQ"
+msgstr ""
+
+#: ckanext/dge/templates/package/snippets/dge_social.html:10
+msgid "Facebook"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:13
+msgid "Follow Us"
+msgstr ""
+
+#: ckanext/dge/templates/snippets/dge_social_list_footer.html:5
+#: ckanext/dge/templates/snippets/dge_social_list_header.html:5
+msgid "Follow us on Flikr"
+msgstr ""
+
+#: ckanext/dge/templates/snippets/dge_social_list_footer.html:3
+#: ckanext/dge/templates/snippets/dge_social_list_header.html:3
+msgid "Follow us on LinkedIn"
+msgstr ""
+
+#: ckanext/dge/templates/snippets/dge_social_list_footer.html:4
+#: ckanext/dge/templates/snippets/dge_social_list_header.html:4
+msgid "Follow us on Slideshare"
+msgstr ""
+
+#: ckanext/dge/templates/snippets/dge_social_list_footer.html:2
+#: ckanext/dge/templates/snippets/dge_social_list_header.html:2
+msgid "Follow us on Twitter"
+msgstr ""
+
+#: ckanext/dge/templates/snippets/dge_social_list_footer.html:6
+#: ckanext/dge/templates/snippets/dge_social_list_header.html:6
+msgid "Follow us on Youtube"
+msgstr ""
+
+#: ckanext/dge/templates/scheming/display_snippets/dge_date_period.html:8
+msgid "From"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:142
+msgid "Go to Ministry of Industry, Energy. Government of Spain"
+msgstr ""
+"Government of Spain. Ministry of Finance and Public Administration. "
+"Ministry of Industry and Energy."
+
+#: ckanext/dge/templates/footer.html:143
+msgid "Go to Red point es"
+msgstr "Red point es."
+
+#: ckanext/dge/templates/scheming/package/resource_read.html:60
+msgid "Go to resource"
+msgstr "Go to distribution"
+
+#: ckanext/dge/templates/package/snippets/dge_social.html:11
+msgid "Google+"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:224 ckanext/dge/templates/header.html:226
+msgid "Harvest"
+msgstr ""
+
+#: ckanext/dge/templates/source/base.html:7
+#: ckanext/dge/templates/source/new.html:7
+#: ckanext/dge/templates/source/search.html:5
+#: ckanext/dge/templates/source/search.html:7
+msgid "Harvester"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:39 ckanext/dge/templates/header.html:99
+#: ckanext/dge/templates/header.html:128
+#: ckanext/dge/templates/apidata/apidata.html:19
+#: ckanext/dge/templates/package/read_base.html:16
+#: ckanext/dge/templates/package/resource_read.html:17
+#: ckanext/dge/templates/package/search.html:15
+#: ckanext/dge/templates/snippets/dge_home_breadcrumb_item.html:2
+#: ckanext/dge/templates/yasgui/sparql.html:15
+msgid "Home"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:124
+#, fuzzy, python-format
+msgid "I accept to the <a href=\"%(url)s\">terms of use</a>"
+msgstr "I accept to the terms of use"
+
+#: ckanext/dge/templates/footer.html:49 ckanext/dge/templates/header.html:102
+#: ckanext/dge/templates/header.html:159
+msgid "Impact"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:27
+msgid "Index of contents"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:75 ckanext/dge/templates/header.html:189
+msgid "Informing about"
+msgstr "Report on"
+
+#: ckanext/dge/templates/header.html:253
+msgid "Initiatives"
+msgstr "Initiatives"
+
+#: ckanext/dge/templates/footer.html:52 ckanext/dge/templates/header.html:162
+msgid "Initiatives map"
+msgstr "Initiative map"
+
+#: ckanext/dge/templates/footer.html:63 ckanext/dge/templates/header.html:103
+#: ckanext/dge/templates/header.html:177
+msgid "Interact"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:54
+msgid "Languages"
+msgstr ""
+
+#: ckanext/dge/helpers.py:708
+msgid "Legal Administration"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:163
+msgid "Legal notice"
+msgstr "Legal Notice"
+
+#: ckanext/dge/templates/package/snippets/dge_social.html:12
+msgid "Linkendin"
+msgstr ""
+
+#: ckanext/dge/helpers.py:682
+msgid "Local Administration"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:282
+msgid "Log in"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:247
+msgid "Log out"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:47
+msgid "Menu"
+msgstr ""
+
+#: ckanext/dge/templates/package/search.html:58
+msgid "Modified Ascending"
+msgstr ""
+
+#: ckanext/dge/templates/package/search.html:57
+msgid "Modified Descending"
+msgstr ""
+
+#: ckanext/dge/helpers.py:421
+msgid "Monthly"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:106 ckanext/dge/templates/header.html:210
+#: ckanext/dge/templates/organization/index.html:4
+#: ckanext/dge/templates/organization/read_base.html:5
+#: ckanext/dge/templates/organization/read_base.html:8
+#: ckanext/dge/templates/source/base.html:6
+#: ckanext/dge/templates/source/new.html:6
+#: ckanext/dge/templates/source/search.html:4
+msgid "My Account"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:217 ckanext/dge/templates/header.html:219
+msgid "My Datasets"
+msgstr "Datasets"
+
+#: ckanext/dge/templates/header.html:213
+msgid "My Profile"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:95
+msgid "Navigation"
+msgstr ""
+
+#: ckanext/dge/templates/package/new_resource_not_draft.html:7
+#: ckanext/dge/templates/package/resource_edit_base.html:10
+msgid "New resource"
+msgstr "New distribution"
+
+#: ckanext/dge/templates/footer.html:82 ckanext/dge/templates/header.html:196
+msgid "News"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:101
+msgid "Newsletter"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:85 ckanext/dge/templates/header.html:199
+msgid "Newsletters"
+msgstr ""
+
+#: ckanext/dge/templates/source/job/read.html:21
+msgid "Only the 20 most frequent errors/warnings are shown"
+msgstr ""
+
+#: ckanext/dge/templates/snippets/dge_catalog_downloads.html:4
+#: ckanext/dge/templates/snippets/dge_catalog_downloads.html:7
+#: ckanext/dge/templates/snippets/dge_catalog_downloads.html:10
+#: ckanext/dge/templates/snippets/dge_social_list_footer.html:2
+#: ckanext/dge/templates/snippets/dge_social_list_footer.html:3
+#: ckanext/dge/templates/snippets/dge_social_list_footer.html:4
+#: ckanext/dge/templates/snippets/dge_social_list_footer.html:5
+#: ckanext/dge/templates/snippets/dge_social_list_footer.html:6
+#: ckanext/dge/templates/snippets/dge_social_list_header.html:2
+#: ckanext/dge/templates/snippets/dge_social_list_header.html:3
+#: ckanext/dge/templates/snippets/dge_social_list_header.html:4
+#: ckanext/dge/templates/snippets/dge_social_list_header.html:5
+#: ckanext/dge/templates/snippets/dge_social_list_header.html:6
+msgid "Opens a new window"
+msgstr ""
+
+#: ckanext/dge/helpers.py:603 ckanext/dge/helpers.py:686
+msgid "Other"
+msgstr ""
+
+#: ckanext/dge/helpers.py:684
+msgid "Other Institutions"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:271
+msgid "Password"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:304
+msgid "Portal content"
+msgstr ""
+
+#: ckanext/dge/templates/package/search.html:60
+msgid "Published Ascending"
+msgstr ""
+
+#: ckanext/dge/templates/package/search.html:59
+msgid "Published Descending"
+msgstr ""
+
+#: ckanext/dge/plugin.py:156 ckanext/dge/plugin.py:177
+#: ckanext/dge/templates/package/snippets/dge_owner.html:9
+#: ckanext/dge/templates/snippets/dge_package_item.html:78
+msgid "Publisher"
+msgstr ""
+
+#: ckanext/dge/helpers.py:421
+msgid "Quarterly"
+msgstr ""
+
+#: ckanext/dge/templates/snippets/dge_catalog_downloads.html:4
+msgid "RDF Data Catalog"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:91 ckanext/dge/templates/header.html:205
+msgid "RISP community"
+msgstr "PSI Community"
+
+#: ckanext/dge/helpers.py:681
+msgid "Regional Administration"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:277
+msgid "Request new password"
+msgstr "Have you forgotten your password?"
+
+#: ckanext/dge/templates/header.html:277
+msgid "Request new password via e-mail"
+msgstr ""
+
+#: ckanext/dge/templates/package/resources.html:3
+#: ckanext/dge/templates/package/snippets/dge_resources.html:3
+#: ckanext/dge/templates/package/snippets/dge_resources_list.html:17
+msgid "Resources"
+msgstr "Distributions"
+
+#: ckanext/dge/templates/header.html:46 ckanext/dge/templates/header.html:108
+#: ckanext/dge/templates/header.html:252 ckanext/dge/templates/header.html:309
+#: ckanext/dge/templates/header.html:310 ckanext/dge/templates/header.html:313
+#: ckanext/dge/templates/snippets/dge_search_form.html:5
+msgid "Search"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:295
+msgid "Search form"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:144
+msgid "See Aporta Project"
+msgstr "Aporta Project."
+
+#: ckanext/dge/helpers.py:421
+msgid "Semiannual"
+msgstr ""
+
+#: ckanext/dge/helpers.py:423
+msgid "Semimonthly"
+msgstr ""
+
+#: ckanext/dge/helpers.py:423
+msgid "Semiweekly"
+msgstr ""
+
+#: ckanext/dge/templates/package/snippets/dge_social.html:5
+msgid "Share"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:160
+msgid "Sitemap"
+msgstr "Website map"
+
+#: ckanext/dge/templates/source/new_source_form.html:27
+#: ckanext/dge/templates/source/search.html:58
+msgid "Source type"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:46 ckanext/dge/templates/header.html:153
+#: ckanext/dge/templates/header.html:155
+#: ckanext/dge/templates/yasgui/sparql.html:33
+#: ckanext/dge/templates/yasgui/sparql.html:40
+#: ckanext/dge/templates/yasgui/sparql.html:43
+#: ckanext/dge/templates/yasgui/sparql.html:45
+msgid "Sparql Point"
+msgstr "Sparql Endpoint"
+
+#: ckanext/dge/templates/yasgui/sparql.html:10
+#, python-format
+msgid "Sparql_Point_introduction %(page)s %(doc)s"
+msgstr ""
+"<p>Using this form, you can configure your own queries in the <a "
+"href=\"https://www.w3.org/TR/rdf-sparql-query/\">SPARQL language</a> "
+"about the datos.gob.es RDF graphs. This is the most flexible and powerful"
+" option for querying the data catalogue.</p><p>The datos.gob.es semantic "
+"database has two "
+"graphs:</p><ul><li><strong>http://datos.gob.es/catalogo:</strong> this "
+"graph contains the entire <a "
+"href=\"https://datos.gob.es/es/catalogo\">Data Catalogue</a> for "
+"datos.gob.es</li><li><strong>http://datos.gob.es/nti:</strong> has the  "
+"URIs corresponding to the <strong>primary sector taxonomy</strong> and "
+"the  <strong>identification of geographical coverage</strong> defined in "
+"Annexes IV and V of the <a "
+"href=\"https://www.boe.es/diario_boe/txt.php?id=BOE-A-2013-2380\">Technical"
+" Interoperability Regulations on the Re-use of Information Resources</a> "
+"<strong>(NTI)</strong></li></ul><p>The query results are obtained in "
+"different formats that can be processed automatically (csv, xml, rdf, "
+"json…) and re-used directly.</p><p>You’ll find more information available"
+" and examples of searches on the following <a "
+"href='%(page)s'>page</a>.</p>"
+
+#: ckanext/dge/helpers.py:680
+msgid "State Administration"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:109
+msgid "Subscribe"
+msgstr ""
+
+#: ckanext/dge/templates/footer.html:59 ckanext/dge/templates/header.html:173
+#: ckanext/dge/templates/header.html:235
+msgid "Success cases"
+msgstr "Cases of reuse"
+
+#: ckanext/dge/plugin.py:157 ckanext/dge/plugin.py:178
+msgid "Tag"
+msgstr ""
+
+#: ckanext/dge/templates/source/admin_base.html:6
+msgid "There already is an unrun job for this source"
+msgstr ""
+
+#: ckanext/dge/helpers.py:423
+msgid "Three times a month"
+msgstr ""
+
+#: ckanext/dge/helpers.py:423
+msgid "Three times a week"
+msgstr ""
+
+#: ckanext/dge/helpers.py:421
+msgid "Three times a year"
+msgstr ""
+
+#: ckanext/dge/templates/scheming/display_snippets/dge_date_period.html:14
+msgid "To"
+msgstr ""
+
+#: ckanext/dge/helpers.py:420
+msgid "Triennial"
+msgstr ""
+
+#: ckanext/dge/helpers.py:424
+msgid "Twice a day"
+msgstr ""
+
+#: ckanext/dge/templates/package/snippets/dge_social.html:9
+msgid "Twitter"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:238
+msgid "Unassigned data requests"
+msgstr "Unallocated data"
+
+#: ckanext/dge/helpers.py:683
+msgid "Universities"
+msgstr ""
+
+#: ckanext/dge/helpers.py:220 ckanext/dge/helpers.py:487
+#: ckanext/dge/helpers.py:859
+#: ckanext/dge/templates/package/snippets/dge_resource_item.html:9
+msgid "Unnamed resource"
+msgstr "Unnamed distribution"
+
+#: ckanext/dge/templates/footer.html:113
+msgid "Unsubscribe"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:45 ckanext/dge/templates/header.html:110
+#: ckanext/dge/templates/header.html:253
+msgid "User"
+msgstr ""
+
+#: ckanext/dge/plugin.py:84
+#, python-format
+msgid "User %s not authorized to show harvest source %s"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:267
+msgid "Username"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:244
+msgid "Users Management"
+msgstr "User Management"
+
+#: ckanext/dge/helpers.py:439 ckanext/dge/helpers.py:423
+msgid "Weekly"
+msgstr ""
+
+#: ckanext/dge/templates/header.html:241
+msgid "Widget"
+msgstr ""
+
+#: ckanext/dge/templates/apidata/accessible-apidata.html:3
+msgid "accessible_apidata_content"
+msgstr ""
+"<div class=\"swagger-intro\"><p>The API is a mechanism which allows "
+"queries in the datos.gob.es semantic database. It provides access to "
+"information from the data catalogue and URIs defined in Annexes IV and V "
+"of the Technical Interoperability Regulations on the Re-Use of "
+"Information Resources.</p><p>These queries can be carried out based on a "
+"series of criteria selected by the user and using uniform resource "
+"identifiers (URI).</p><h2>Response formats</h2><p>The information "
+"available via the API can be obtained in different formats. The formats "
+"available are: json, xml, rdf, ttl y csv.</p><p>JSON is the default "
+"response format; for example: if the following API resource is accessed "
+"via the browser <small class=\"text-"
+"error\"><code>http://datos.gob.es/apidata/catalog/dataset</code></small>,"
+" the result will be shown in  JSON format.</p><p>There are two options to"
+" indicate the response format you want:</p><div class=\"alert alert-"
+"info\">  <ol> <li>Using the <small class=\"text-"
+"error\"><code><strong>'Accept'</strong></code></small> parameter on the "
+"request headers. For example: <small class=\"text-"
+"error\"><code>Accept:application/rdf+xml</code></small></li> "
+"<li>Indicating the format extension in the request. For example: <small "
+"class=\"text-"
+"error\"><code>http://datos.gob.es/apidata/catalog/dataset.xml</code></small></li>"
+"  </ol></div><div class=\"table-responsive\">  <table class=\"table "
+"table-condensed table-bordered\"> <thead><tr>  <th>Format</th>  <th>1. "
+"'Accept' Header</th>  <th>2. Format extension</th></tr> </thead> "
+"<tbody><tr>  <td>JSON</td>  <td>application/json</td>  "
+"<td>.json</td></tr><tr>  <td>XML</td>  <td>application/xml</td>  "
+"<td>.xml</td></tr><tr>  <td>RDF</td>  <td>application/rdf+xml</td>  "
+"<td>.rdf</td></tr><tr>  <td>Turtle</td>  <td>application/x-turtle</td>  "
+"<td>.turtle</td></tr><tr>  <td>CSV</td>  <td>text/csv</td>  "
+"<td>.csv</td></tr> </tbody>  </table></div><h2>API Parameters</h2><p>The "
+"API offers a series of parameters to customise the responses:</p><div "
+"class=\"table-responsive\">  <table class=\"table table-condensed table-"
+"bordered\"> <thead><tr>  <th>Parameter</th>  <th>Description</th>  "
+"<th>Example</th></tr> </thead> <tbody><tr>  <td><small class=\"text-"
+"error\"><code><strong>_sort</strong></code></small></td>  <td>With this "
+"parameter, results can ordered according to one or more response "
+"fields.<br><br>The field name should be entered according to the desired "
+"order of the results.<br><br>To invert the order, add the minus symbol "
+"'-'' in front of the field name.<br><br>Various fields can be combined "
+"using a comma ',' to separate them.</td>  <td>For example, if you want to"
+" order all data sets by descending date and title:<br><br><small class"
+"=\"text-"
+"error\"><code>http://datos.gob.es/apidata/catalog/dataset.json?_sort=-issued,title</code></small></td></tr><tr>"
+"  <td><small class=\"text-"
+"error\"><code><strong>_pageSize</strong></code></small></td>  <td>Use "
+"this parameter to set the number of results per page.<br><br>The maximum "
+"value is 50.</td>  <td>For example, to get the results one by "
+"one:<br><br><small class=\"text-"
+"error\"><code>http://datos.gob.es/apidata/catalog/dataset.xml?_pageSize=1</code></small></td></tr><tr>"
+"  <td><small class=\"text-"
+"error\"><code><strong>_page</strong></code></small></td>  <td>This "
+"parameter indicates the number of the current page.<br><br>The first page"
+" is 0.</td>  <td>For example, to go to the third page of the "
+"results:<br><br><small class=\"text-error "
+"\"><code>http://datos.gob.es/apidata/catalog/dataset.xml?_pageSize=1&_page=2</code></small></td></tr>"
+" </tbody>  </table></div><h2>Available References</h2><h3>Data "
+"catalogue</h3><p>Set of calls which allow data.gob.es catalogue "
+"queries.</p><div class=\"table-responsive\">  <table class=\"table table-"
+"condensed table-bordered\"> <caption><strong>Data sets</strong></caption>"
+" <thead><tr>  "
+"<th>Operation</th><th>Description</th><th>Examples</th></tr> </thead> "
+"<tbody><tr>  <td><strong>To obtain all of the data sets</strong></td>  "
+"<td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/catalog/dataset</strong></code></small></td>"
+"  <td></td></tr><tr>  <td><strong>To obtain a data set identified by the "
+"URI indicator</strong></td>  <td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/catalog/dataset/{id}</strong></code></small><br><br>You"
+" must specify the <small class=\"text-"
+"error\"><code><strong>{id}</strong></code></small> value.</td>  <td>For "
+"example, if the value of the <small><code>{id}</code></small> is: "
+"<small><code>'a16003011-empresas-y-personas-empleadas-en-la-c-a-de-"
+"euskadi-supervivientes-en-2015-altas-en-los-cinco-anos-anteriores-por-"
+"territorio-y-comarca-de-sede-social'</code></small>, the reference will "
+"be:<br><br><small class=\"text-"
+"error\"><code>http://datos.gob.es/apidata/catalog/dataset/a16003011-empresas-y"
+"-personas-empleadas-en-la-c-a-de-euskadi-supervivientes-en-2015-altas-en-"
+"los-cinco-anos-anteriores-por-territorio-y-comarca-de-sede-"
+"social</code></small></td></tr><tr>  <td><strong>To obtain data sets with"
+" a specific title</strong></td>  <td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/catalog/dataset/title/{title}</strong></code></small><br><br>You"
+" must specify the <small class=\"text-"
+"error\"><code><strong>{title}</strong></code></small> value. It can be "
+"part of the title.</td>  <td>For example, if the value of the "
+"<small><code>{title}</code></small> is: "
+"<small><code>'employment'</code></small>, the reference will "
+"be:<br><br><small class=\"text-"
+"error\"><code>http://datos.gob.es/apidata/catalog/dataset/title/employment</code></small></td></tr><tr>"
+"  <td><strong>To obtain a data set with a specific publisher using their "
+"identifier</strong></td>  <td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/catalog/dataset/publisher/{id}</strong></code></small><br><br>You"
+" must specify the <small class=\"text-"
+"error\"><code><strong>{id}</strong></code></small> value.</td>  <td>For "
+"example, if the value of the <small><code>{id}</code></small> is: "
+"<small><code>'A16003011'</code></small>, the reference will be: "
+"<br><br><small class=\"text-"
+"error\"><code>http://datos.gob.es/apidata/catalog/dataset/publisher/A16003011</code></small></td></tr><tr>"
+"  <td><strong>To obtain a data set with a specific category or topic "
+"using their identifier</strong></td>  <td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/catalog/dataset/theme/{id}</strong></code></small><br><br>You"
+" must specify the <small class=\"text-"
+"error\"><code><strong>{id}</strong></code></small> value.</td>  <td>For "
+"example, if the value of the <small><code>{id}</code></small> is: "
+"<small><code>'hacienda'</code></small>, the reference will be: "
+"<br><br><small class=\"text-"
+"error\"><code>http://datos.gob.es/apidata/catalog/dataset/theme/hacienda</code></small></td></tr><tr>"
+"  <td><strong>To obtain a data set with distributions in a specific "
+"format</strong></td>  <td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/catalog/dataset/format/{format}</strong></code></small></td>"
+"  <td>For example, if the value of the "
+"<small><code>{format}</code></small> is: "
+"<small><code>'csv'</code></small>, the reference will be: <br><br><small "
+"class=\"text-"
+"error\"><code>http://datos.gob.es/apidata/catalog/dataset/format/csv</code></small></td></tr><tr>"
+"  <td><strong>To obtain a data set containing a specific "
+"tag</strong></td>  <td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/catalog/dataset/keyword/{keyword}</strong></code></small></td>"
+"  <td>If the value of the <small><code>{keyword}</code></small> is: "
+"<small><code>'costs'</code></small>, the reference will be:<br><br><small"
+" class=\"text-"
+"error\"><code>http://datos.gob.es/apidata/catalog/dataset/keyword/costs</code></small></td></tr><tr>"
+"  <td><strong>To obtain a data set from a specific geographic "
+"scope</strong></td>  <td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/catalog/dataset/spatial/{spatialWord1}/{spatialWord2}</strong></code></small><br><br>This"
+" reference uses two parameters: <small class=\"text-"
+"error\"><code><strong>{spatialWord1}</strong></code></small> and <small "
+"class=\"text-"
+"error\"><code><strong>{spatialWord2}</strong></code></small>.</td>  "
+"<td>If the value of the <small><code>{spatialWord1}</code></small> is: "
+"<small><code>'Autonomia'</code></small> and "
+"<small><code>{spatialWord2}</code></small> is: <small><code>'Pais-"
+"Vasco'</code></small> the reference will be: <br><br><small class=\"text-"
+"error\"><code>http://datos.gob.es/apidata/catalog/dataset/spatial/Autonomia"
+"/Pais-Vasco</code></small></td></tr><tr>  <td><strong>Obtener los "
+"conjuntos de datos que han sido actualizados entre dos "
+"fechas</strong></td>  <td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/catalog/dataset/modified/begin/{beginDate}/end/{endDate}</strong></code></small><br><br>This"
+" reference uses two parameters: <small class=\"text-"
+"error\"><code><strong>{beginDate}</strong></code></small> and <small "
+"class=\"text-error\"><code><strong>{endDate}</strong></code></small>, "
+"whose format must be <small class=\"text-error\"><code><strong>AAAA-MM-"
+"DDTHH:mmZ</strong></code></small>.</td>  <td>If the value of the "
+"<small><code>{beginDate}</code></small> is: "
+"<small><code>2016-04-18T00:00Z</code></small> and "
+"<small><code>{endDate}</code></small> is: "
+"<small><code>2016-06-30T00:00Z</code></small> the reference will be: "
+"<br><br><small class=\"text-"
+"error\"><code>http://datos.gob.es/apidata/catalog/dataset/modified/begin/2016-04-18T00:00Z/end/2016-06-30T00:00Z?_sort=title&_pageSize=10&_page=0</code></small></td></tr>"
+" </tbody>  </table></div><br><div class=\"table-responsive\">  <table "
+"class=\"table table-condensed table-bordered\"> "
+"<caption><strong>Distributions</strong></caption> <thead><tr>  "
+"<th>Operation</th><th>Description</th><th>Examples</th></tr> </thead> "
+"<tbody><tr>  <td><strong>To obtain all distributions</strong></td>  "
+"<td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/catalog/distribution</strong></code></small></td>"
+"  <td></td></tr><tr>  <td><strong>To obtain the distributions of a data "
+"set identified by the URI indicator</strong></td>  <td><small class"
+"=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/catalog/distribution/dataset/{id}</strong></code></small><br><br>You"
+" must specify the <small class=\"text-"
+"error\"><code><strong>{id}</strong></code></small> value.</td>  <td>If "
+"the value of the <small><code>{id}</code></small> is: "
+"<small><code>'a16003011-empresas-y-personas-empleadas-en-la-c-a-de-"
+"euskadi-supervivientes-en-2015-altas-en-los-cinco-anos-anteriores-por-"
+"territorio-y-comarca-de-sede-social'</code></small>, the reference will "
+"be:<br><br><small class=\"text-"
+"error\"><code>http://datos.gob.es/apidata/catalog/distribution/dataset/a16003011-empresas-y"
+"-personas-empleadas-en-la-c-a-de-euskadi-supervivientes-en-2015-altas-en-"
+"los-cinco-anos-anteriores-por-territorio-y-comarca-de-sede-"
+"social</code></small></td></tr><tr>  <td><strong>Obtener las "
+"distribuciones que están en un determinado formato</strong></td>  "
+"<td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/catalog/distribution/format/{format}</strong></code></small></td>"
+"  <td>If the value of the <small><code>{format}</code></small> is: "
+"<small><code>'csv'</code></small>, the reference will be:<br><br><small "
+"class=\"text-"
+"error\"><code>http://datos.gob.es/apidata/catalog/distribution/format/csv</code></small></td></tr>"
+" </tbody>  </table></div><br><div class=\"table-responsive\">  <table "
+"class=\"table table-condensed table-bordered\"> "
+"<caption><strong>Publishers</strong></caption> <thead><tr>  "
+"<th>Operation</th><th>Description</th><th>Examples</th></tr> </thead> "
+"<tbody><tr>  <td><strong>To obtain all publishers</strong></td>  "
+"<td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/catalog/publisher</strong></code></small></td>"
+"  <td></td></tr> </tbody>  </table></div><br><div class=\"table-"
+"responsive\">  <table class=\"table table-condensed table-bordered\"> "
+"<caption><strong>Geographical scopes</strong></caption> <thead><tr>  "
+"<th>Operation</th><th>Description</th><th>Examples</th></tr> </thead> "
+"<tbody><tr>  <td><strong>To obtain all geographical coverage options with"
+" data sets in the catalogue</strong></td>  <td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/catalog/spatial</strong></code></small></td>"
+"  <td></td></tr> </tbody>  </table></div><br><div class=\"table-"
+"responsive\">  <table class=\"table table-condensed table-bordered\"> "
+"<caption><strong>Categories / Topics</strong></caption> <thead><tr>  "
+"<th>Operation</th><th>Description</th><th>Examples</th></tr> </thead> "
+"<tbody><tr>  <td><strong>To obtain all categories or topics with data "
+"sets in the catalogue</strong></td>  <td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/catalog/theme</strong></code></small></td>"
+"  <td></td></tr> </tbody>  </table></div><br><h3>Technical "
+"Interoperability Regulations</h3><p>Set of references which allow "
+"<strong>primary sector taxonomy</strong> queries and the "
+"<strong>identification of geographical coverage</strong> defined in "
+"Annexes IV and V of the <a "
+"href=\"https://www.boe.es/diario_boe/txt.php?id=BOE-A-2013-2380\">Technical"
+" Interoperability Regulations on the Re-use of Information Resources</a> "
+"<strong>(NTI)</strong>.</p><div class=\"table-responsive\">  <table "
+"class=\"table table-condensed table-bordered\"> <caption><strong>Primary "
+"sectortaxonomy</strong></caption> <thead><tr>  "
+"<th>Operation</th><th>Description</th><th>Examples</th></tr> </thead> "
+"<tbody><tr>  <td><strong>To obtain all  primary sectors</strong></td>  "
+"<td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/nti/public-"
+"sector</strong></code></small></td>  <td></td></tr><tr>  <td><strong>To "
+"obtain a specific sector identified by the URI indicator</strong></td>  "
+"<td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/nti/public-"
+"sector/{id}</strong></code></small><br><br>You must specify the <small "
+"class=\"text-error\"><code><strong>{id}</strong></code></small> "
+"value.</td>  <td>For example, if the value of the "
+"<small><code>{id}</code></small> is: "
+"<small><code>'comercio'</code></small>, the reference will "
+"be:<br><br><small class=\"text-"
+"error\"><code>http://datos.gob.es/apidata/nti/public-"
+"sector/comercio</code></small></td></tr> </tbody>  </table></div><br><div"
+" class=\"table-responsive\">  <table class=\"table table-condensed table-"
+"bordered\"> <caption><strong>Identificación de cobertura "
+"geográfica</strong></caption> <thead><tr>  "
+"<th>Operation</th><th>Description</th><th>Examples</th></tr> </thead> "
+"<tbody><tr>  <td><strong>To obtain all provinces</strong></td>  "
+"<td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/nti/territory/Province</strong></code></small></td>"
+"  <td></td></tr><tr>  <td><strong>To obtain a specific province "
+"identified by the URI indicator</strong></td>  <td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/nti/territory/Province/{id}</strong></code></small><br><br>You"
+" must specify the <small class=\"text-"
+"error\"><code><strong>{id}</strong></code></small> value.</td>  <td>For "
+"example, if the value of the <small><code>{id}</code></small> is: "
+"<small><code>'Madrid'</code></small>, the reference will be: "
+"<br><br><small class=\"text-"
+"error\"><code>http://datos.gob.es/apidata/nti/territory/Province/Madrid</code></small>.</td></tr><tr>"
+"  <td><strong>To obtain all the Autonomous Regions</strong></td>  "
+"<td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/nti/territory"
+"/Autonomous-region</strong></code></small></td>  <td></td></tr><tr>  "
+"<td><strong>To obtain a specific Autonomous Region  identified by the URI"
+" indicator</strong></td>  <td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/nti/territory"
+"/Autonomous-region/{id}</strong></code></small><br><br>You must specify "
+"the <small class=\"text-"
+"error\"><code><strong>{id}</strong></code></small> value.</td>  <td>For "
+"example, if the value of the <small><code>{id}</code></small> is "
+"<small><code>'Comunidad-Madrid'</code></small>, the reference will be: "
+"<br><br><small class=\"text-"
+"error\"><code>http://datos.gob.es/apidata/nti/territory/Autonomous-region"
+"/Comunidad-Madrid</code></small></td></tr><tr>  <td><strong>To obtain the"
+" country</strong></td>  <td><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/apidata/nti/territory/Country/España</strong></code></small></td>"
+"  <td></td></tr> </tbody>  </table></div>"
+
+#: ckanext/dge/templates/yasgui/accessible-sparql.html:4
+msgid "accessible_sparql_content"
+msgstr ""
+"<p>The SPARQL interface is a service which allows queries in data stored "
+"in RDF in the <a href=\"https://www.w3.org/TR/rdf-sparql-query/\">SPARQL "
+"language</a>. It offers developers/professionals great power and "
+"flexibility when creating applications and performing "
+"searches.</p><h2>Stored Information</h2><p>All of the information that "
+"can be searched can be found uploaded to a semantic database. In this "
+"type of database the information is stored in graphs.</p><p>The "
+"datos.gob.es semantic database has two "
+"graphs:</p><ul><li><strong>http://datos.gob.es/catalogo:</strong> this "
+"graph contains the entire <strong><a "
+"href=\"http://datos.gob.es/es/catalogo\">Data Catalogue</a></strong> for "
+"datos.gob.es</li><li><strong>http://datos.gob.es/nti:</strong> has "
+"theURIs corresponding to the <strong>primary sector taxonomy</strong> and"
+" the <strong>identification of geographical coverage</strong> defined in "
+"Annexes IV and V of the <a "
+"href=\"https://www.boe.es/diario_boe/txt.php?id=BOE-A-2013-2380\">Technical"
+" Interoperability Regulations on the Re-use of Information Resources</a> "
+"<strong>(NTI)</strong></li></ul><h2>How to use it</h2><p>All queries are "
+"sent using GET requests, which return data according to the parameters "
+"specified in the reference.</p><p>The base address of our SPARQL point is"
+" the following:</p><p class=\"alert alert-info\"><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/virtuoso/sparql</strong></code></small></p><p>To"
+" this address, the parameter \"query\" must be added, followed by the "
+"query you wish to make.</p><p>For example, if you want to conduct the "
+"following search, <code>select distinct ?type where {?x a ?type} LIMIT "
+"100</code>, which returns the different types uploaded in our SPARQL "
+"point:</p><ol><li>It should be coded substituting the spaces for “+”, in "
+"the following way: "
+"<code>select+distinct+?type+where+{?x+a+?type}+LIMIT+100</code></li><li>Once"
+" coded, and if you know the address of our SPARQL point, it is run as "
+"follows:<br /><br /><span class=\"alert alert-info\"><small class=\"text-"
+"error\"><code><strong>http://datos.gob.es/virtuoso/sparql?query=select+distinct+?type+where+{?x+a+?type}+LIMIT+100</strong></code></small></span></li></ol><p>If"
+" you don’t add the parameter “query” to theSPARQL point base address in "
+"the search you’re conducting, it will give you a 'page not found' "
+"error.</p><p>By default, the response format is HTML, but another can be "
+"specified via the parameter “format”. This parameter may have the "
+"following values:</p><div class=\"table-responsive\"><table class=\"table"
+" table-condensed table-"
+"bordered\"><thead><tr><th>Value</th><th>Format</th></tr></thead><tbody><tr><td>text/html</td><td>HTML</td></tr><tr><td>application/vnd"
+".ms-excel</td><td>Spreadsheet</td></tr><tr><td>text/tab-separated-"
+"values</td><td>TSV</td></tr><tr><td>application/sparql-"
+"results+xml</td><td>XML</td></tr><tr><td>application/sparql-"
+"results+json</td><td>JSON</td></tr><tr><td>application/javascript</td><td>Javascript</td></tr><tr><td>text/turtle</td><td>Turtle</td></tr><tr><td>application/rdf+xml</td><td>RDF/XML</td></tr><tr><td>text/plain</td><td>N-Triples</td></tr><tr><td>text/csv</td><td>CSV</td></tr></tbody></table></div><p>If"
+" no graph is specified while performing a search, information on all "
+"available graphs will be returned.</p><p>You can look up all the "
+"available graphs using:</p><p class=\"alert alert-info\"><small class"
+"=\"text-error\"><code><strong>select distinct ?uri where { graph ?uri { "
+"?s a ?t } }</strong></code></small></p><p>If you want to look up which "
+"graph the information belongs to, you can specify with the variable ?gto "
+"find in which graph each?x can be found:</p><p class=\"alert alert-"
+"info\"><small class=\"text-error\"><code><strong>select distinct ?g ?type"
+" where { graph ?g { ?x a ?type. } } limit "
+"100</strong></code></small></p><p>You can get the results for only one "
+"using:</p><p class=\"alert alert-info\"><small class=\"text-"
+"error\"><code><strong>select distinct ?type where { graph "
+"&lthttp://datos.gob.es/catalogo&gt { ?x a ?type. } } limit "
+"100</strong></code></small></p><p>Now, you only see the ?x that you’ll "
+"find in the specified graph</p><p>To send these requests you can also use"
+" a <a href=\"http://datos.gob.es/en/sparql\">form</a>. These types of "
+"forms offers help to the developer by providing a text area that uses "
+"colours to highlight the syntax, identify syntax errors, it has an auto-"
+"complete function and it allows the option of conducting searches, among "
+"other things.</p><h2>Examples</h2><h3>To obtain all the classes in the "
+"SPARQl point</h3><p>This query is very useful, because you can see all "
+"the types of information that’s stored.</p><p>In addition, to block "
+"information that’s not useful, you can specify your graphs.</p><p>First, "
+"specify the graph from the Catalogue:</p><p class=\"alert alert-"
+"info\"><small class=\"text-error\"><code><strong>select distinct ?tipo "
+"where <br/>{ <br/>graph &lt;http://datos.gob.es/catalogo&gt; {<br/> ?x a "
+"?tipo.<br/>} <br/>}</strong></code></small></p><p>Now use both graphs at "
+"the same time thanks to the <strong>VALUES</strong></p><p class=\"alert "
+"alert-info\"><small class=\"text-error\"><code><strong>select distinct "
+"?tipo where <br/>{ <br/>graph ?grafo { <br/>?x a ?tipo.<br/>}<br/> values"
+" ?grafo { &lt;http://datos.gob.es/catalogo&gt; "
+"&lt;http://datos.gob.es/nti&gt; } "
+"<br/>}</strong></code></small></p><p>The final result is:</p><div class"
+"=\"table-responsive\"><table class=\"table table-condensed table-"
+"bordered\"><thead><tr><th>type</th></tr></thead><tbody><tr><td>http://www.w3.org/ns/dcat#Dataset</td></tr><tr><td>http://www.w3.org/2004/02/skos/core#Concept</td></tr><tr><td>http://www.w3.org/ns/dcat#Catalog</td></tr><tr><td>http://www.w3.org/2006/time#DurationDescription</td></tr><tr><td>http://purl.org/dc/terms/Frequency</td></tr><tr><td>http://purl.org/dc/terms/IMT</td></tr><tr><td>http://purl.org/dc/terms/PeriodOfTime</td></tr><tr><td>http://www.w3.org/ns/dcat#Distribution</td></tr><tr><td>http://vocab.linkeddata.es/datosabiertos/def"
+"/sector-"
+"publico/territorio#ComunidadAutonoma</td></tr><tr><td>http://vocab.linkeddata.es/datosabiertos/def"
+"/sector-"
+"publico/territorio#CiudadAutonoma</td></tr><tr><td>http://vocab.linkeddata.es/datosabiertos/def"
+"/sector-"
+"publico/territorio#Pais</td></tr><tr><td>http://vocab.linkeddata.es/datosabiertos/def"
+"/sector-"
+"publico/territorio#Provincia</td></tr></tbody></table></div><h3>To obtain"
+" all of the Catalogue data sets</h3><p>Now that you know the types, "
+"you're going to ask for all data sets, which correspond to this: "
+"http://www.w3.org/ns/dcat#Dataset</p><p class=\"alert alert-info\"><small"
+" class=\"text-error\"><code><strong>select distinct ?dataset where<br/> "
+"{<br/> ?dataset a &lt;http://www.w3.org/ns/dcat#Dataset&gt; "
+"<br/>}</strong></code></small></p><p>The result is a list of URLs from "
+"all of the data sets.</p><h3>To obtain all the properties the data sets "
+"have</h3><p>If you want to get more information from the data sets, but "
+"you only know their URIs, ask for all of their properties:</p><p "
+"class=\"alert alert-info\"><small class=\"text-"
+"error\"><code><strong>select distinct ?propiedad where<br/> {<br/> "
+"?dataset a &lt;http://www.w3.org/ns/dcat#Dataset&gt; . ?dataset "
+"?propiedad ?valor . <br/>}</strong></code></small></p><p>These are all "
+"the properties they have:</p><div class=\"table-responsive\"><table "
+"class=\"table table-condensed table-"
+"bordered\"><thead><tr><th>property</th></tr></thead><tbody><tr><td>http://www.w3.org/1999/02/22"
+"-rdf-syntax-"
+"ns#type</td></tr><tr><td>http://purl.org/dc/terms/modified</td></tr><tr><td>http://www.w3.org/ns/dcat#distribution</td></tr><tr><td>http://www.w3.org/ns/dcat#keyword</td></tr><tr><td>http://www.w3.org/ns/dcat#theme</td></tr><tr><td>http://purl.org/dc/terms/accrualPeriodicity</td></tr><tr><td>http://purl.org/dc/terms/description</td></tr><tr><td>http://purl.org/dc/terms/identifier</td></tr><tr><td>http://purl.org/dc/terms/issued</td></tr><tr><td>http://purl.org/dc/terms/language</td></tr><tr><td>http://purl.org/dc/terms/publisher</td></tr><tr><td>http://purl.org/dc/terms/spatial</td></tr><tr><td>http://purl.org/dc/terms/title</td></tr><tr><td>http://purl.org/dc/terms/references</td></tr><tr><td>http://purl.org/dc/terms/temporal</td></tr><tr><td>http://purl.org/dc/terms/conformsTo</td></tr><tr><td>http://purl.org/dc/terms/valid</td></tr></tbody></table></div><h3>To"
+" obtain all entities that publish data</h3><p>Use the property <a "
+"href=\"https://datos.gob.es.evo/http://purl.org/dc/terms/publisher\">http://purl.org/dc/terms/publisher</a>"
+" to get all the entities that publish data.</p><p class=\"alert alert-"
+"info\"><small class=\"text-error\"><code><strong>select distinct "
+"?publicador where<br/> {<br/> ?x a "
+"&lt;http://www.w3.org/ns/dcat#Dataset&gt; .<br/> ?x "
+"&lt;http://purl.org/dc/terms/publisher&gt; ?publicador. "
+"<br/>}</strong></code></small></p><p>The result is a set of URLs of all "
+"publishers.</p><div class=\"table-responsive\"><table class=\"table "
+"table-condensed table-"
+"bordered\"><thead><tr><th>publisher</th></tr></thead><tbody><tr><td>http://datos.gob.es/recurso"
+"/sector-"
+"publico/org/Organismo/A02002834</td></tr><tr><td>http://datos.gob.es/recurso"
+"/sector-"
+"publico/org/Organismo/A04003003</td></tr><tr><td>http://datos.gob.es/recurso"
+"/sector-"
+"publico/org/Organismo/A05003638</td></tr><tr><td>…</td></tr></tbody></table></div><h3>To"
+" obtain the properties of the entities that publish data</h3><p>With the "
+"URIs you don't know the names of the entities, so you're going to ask for"
+" the properties of these URIs </p><p class=\"alert alert-info\"><small "
+"class=\"text-error\"><code><strong>select distinct ?propiedad where<br/> "
+"{<br/> ?x a &lt;http://www.w3.org/ns/dcat#Dataset&gt; . <br/>?x "
+"&lt;http://purl.org/dc/terms/publisher&gt; ?publicador. <br/>?publicador "
+"?propiedad ?valor. <br/>} </strong></code></small></p><p>These are all of"
+" the publisher properties:</p><div class=\"table-responsive\"><table "
+"class=\"table table-condensed table-"
+"bordered\"><thead><tr><th>property</th></tr></thead><tbody><tr><td>http://www.w3.org/1999/02/22"
+"-rdf-syntax-"
+"ns#type</td></tr><tr><td>http://www.w3.org/2004/02/skos/core#prefLabel</td></tr><tr><td>http://www.w3.org/2004/02/skos/core#notation</td></tr></tbody></table></div><h3>To"
+" obtain the names of the entities that publish data</h3><p>Ask for the "
+"URI and the property http://www.w3.org/2004/02/skos/core#prefLabel</p><p "
+"class=\"alert alert-info\"><small class=\"text-"
+"error\"><code><strong>select distinct ?publicador ?label where<br/> { "
+"<br/>?x a &lt;http://www.w3.org/ns/dcat#Dataset&gt; . <br/>?x "
+"&lt;http://purl.org/dc/terms/publisher&gt; <br/>?publicador. ?publicador "
+"&lt;http://www.w3.org/2004/02/skos/core#prefLabel&gt; ?label. "
+"<br/>}</strong></code></small></p><p>The result is a very long "
+"list:</p><div class=\"table-responsive\"><table class=\"table table-"
+"condensed table-"
+"bordered\"><thead><tr><th>publisher</th><th>label</th></tr></thead><tbody><tr><td>http://datos.gob.es/recurso"
+"/sector-publico/org/Organismo/A02002834</td><td>\"Gobierno de "
+"Aragón\"</td></tr><tr></tr><tr><td>http://datos.gob.es/recurso/sector-"
+"publico/org/Organismo/A04003003</td><td>\"Gobierno de las Islas "
+"Baleares\"</td></tr><tr></tr><tr><td>http://datos.gob.es/recurso/sector-"
+"publico/org/Organismo/A05003638</td><td>\"Comunidad Autónoma de "
+"Canarias\"</td></tr><tr></tr><tr><td>http://datos.gob.es/recurso/sector-"
+"publico/org/Organismo/A07002862</td><td>\"Junta de Castilla y "
+"León\"</td></tr><tr></tr><tr><td>…</td><td>…</td></tr><tr></tr></tbody></table></div><h3>To"
+" obtain the names of the ten entities that have the most published data "
+"sets and view how many there are</h3><p>To conduct this search, you have "
+"to group the results, put them in order and limit the total to 10.</p><p "
+"class=\"alert alert-info\"><small class=\"text-"
+"error\"><code><strong>select distinct ?label count(?x) as ?num { <br/>?x "
+"a &lt;http://www.w3.org/ns/dcat#Dataset&gt; . <br/>?x "
+"&lt;http://purl.org/dc/terms/publisher&gt; ?publicador. <br/>?publicador "
+"&lt;http://www.w3.org/2004/02/skos/core#prefLabel&gt; ?label. <br/>} "
+"<br/>group by (?label) <br/>order by desc(?num) <br/>limit "
+"10</strong></code></small></p><p>The result is:</p><div class=\"table-"
+"responsive\"><table class=\"table table-condensed table-"
+"bordered\"><thead><tr><th>label</th><th>num</th></tr></thead><tbody><tr><td>\"Gobierno"
+" de Aragón\"</td><td>2659</td></tr><tr><td>\"Comunidad Autónoma de País "
+"Vasco\"</td><td>2208</td></tr><tr><td>\"Centro de Investigaciones "
+"Sociológicas\"</td><td>2107</td></tr><tr><td>\"Ayuntamiento de "
+"Málaga\"</td><td>651</td></tr><tr><td>\"Ayuntamiento de "
+"Gijón\"</td><td>627</td></tr><tr><td>\"Xunta de "
+"Galicia\"</td><td>315</td></tr><tr><td>\"Generalitat "
+"Valenciana\"</td><td>313</td></tr><tr><td>\"Ayuntamiento de "
+"Madrid\"</td><td>231</td></tr><tr><td>\"Instituto Nacional de "
+"Estadística\"</td><td>205</td></tr><tr><td>\"Junta de Castilla y "
+"León\"</td><td>196</td></tr></tbody></table></div>"
+
+#: ckanext/dge/templates/header.html:263
+#: ckanext/dge/templates/organization/read.html:49
+#: ckanext/dge/templates/source/search.html:63
+msgid "close"
+msgstr ""
+
+#: ckanext/dge/templates/source/job/read.html:56
+msgid "datasets with errors/warnings"
+msgstr ""
+
+#: ckanext/dge/templates/snippets/dge_harvest_job_details.html:26
+#: ckanext/dge/templates/source/job/list.html:40
+msgid "errors/warnings"
+msgstr ""
+
+#: ckanext/dge/templates/apidata/apidata.html:62
+msgid "swagger"
+msgstr ""
+
+#: ckanext/dge/templates/scheming/display_snippets/dge_date_period.html:10
+msgid "to"
+msgstr ""
+
+# ########################
+# Literal added manually #
+msgid "seconds"
+msgstr ""
+
+msgid "minutes"
+msgstr ""
+
+msgid "hours"
+msgstr ""
+
+msgid "days"
+msgstr ""
+
+msgid "weeks"
+msgstr ""
+
+msgid "months"
+msgstr ""
+
+msgid "years"
+msgstr ""
+
+msgid "Seconds"
+msgstr ""
+
+msgid "Minutes"
+msgstr ""
+
+msgid "Hours"
+msgstr ""
+
+msgid "Days"
+msgstr ""
+
+msgid "Weeks"
+msgstr ""
+
+msgid "Months"
+msgstr ""
+
+msgid "Years"
+msgstr ""
+
+msgid "Add data"
+msgstr "Add distributions"
+
+msgid "Show More {facet_type}"
+msgstr "Show More"
+
+msgid "Show Only Popular {facet_type}"
+msgstr "Show Only Popular"
+
+msgid "Unauthorized to edit this resource"
+msgstr "Unauthorized to edit this distribution"
+
+msgid "Resource not found"
+msgstr "Distribution not found"
+
+msgid "You must add at least one data resource"
+msgstr "You must add at least one data distribution"
+
+msgid "Unauthorized to create a resource"
+msgstr "Unauthorized to create a distribution"
+
+msgid "Unauthorized to create a resource for this package"
+msgstr "Unauthorized to create a resource for this dataset"
+
+msgid "Resource has been deleted."
+msgstr "Distribution has been deleted."
+
+#, python-format
+msgid "Unauthorized to delete resource %s"
+msgstr "Unauthorized to delete distribution %s"
+
+#, python-format
+msgid "Unauthorized to read resource %s"
+msgstr "Unauthorized to read distribution %s"
+
+msgid "Resource data not found"
+msgstr "Distribution data not found"
+
+#, fuzzy
+msgid "Unauthorized to edit resource"
+msgstr "Unauthorized to edit distribution"
+
+msgid "{actor} updated the resource {resource} in the dataset {dataset}"
+msgstr "{actor} updated the distribution {resource} in the dataset {dataset}"
+
+msgid "{actor} deleted the resource {resource} from the dataset {dataset}"
+msgstr "{actor} deleted the distribution {resource} from the dataset {dataset}"
+
+msgid "{actor} added the resource {resource} to the dataset {dataset}"
+msgstr "{actor} added the distribution {resource} to the dataset {dataset}"
+
+#, fuzzy
+msgid "Edited resources."
+msgstr "Edited distributions."
+
+#, fuzzy
+msgid "Resource"
+msgstr "Distribution"
+
+#, python-format
+msgid "User %s not authorized to create resources on dataset %s"
+msgstr "User %s not authorized to create distributions on dataset %s"
+
+#, python-format
+msgid "User %s not authorized to delete resource %s"
+msgstr "User %s not authorized to delete distribution %s"
+
+#, python-format
+msgid "User %s not authorized to read resource %s"
+msgstr "User %s not authorized to read distribution %s"
+
+#, python-format
+msgid "User %s not authorized to edit resource %s"
+msgstr "User %s not authorized to edit distribution %s"
+
+msgid "Are you sure you want to delete resource - {name}?"
+msgstr "Are you sure you want to delete distribution - {name}?"
+
+#, fuzzy
+msgid "Add New Resource"
+msgstr "Add new Distribution"
+
+#, fuzzy
+msgid "Add resource"
+msgstr "Add distribution"
+
+#, fuzzy
+msgid "All resources"
+msgstr "All distributions"
+
+#, fuzzy
+msgid "View resource"
+msgstr "View distribution"
+
+#, fuzzy
+msgid "Update Resource"
+msgstr "Update distribution"
+
+msgid "Are you sure you want to delete this resource?"
+msgstr "Are you sure you want to delete this distribution?"
+
+msgid "Resource \"{0}\" was not found."
+msgstr "Distribution \"{0}\" was not found."
+
+msgid "User {0} not authorized to update resource {1}"
+msgstr "User {0} not authorized to update distribution {1}"
+
+msgid "Generic DGE RDF Harvester"
+msgstr ""
+
+msgid "Harvester for DGE datasets from an RDF graph"
+msgstr ""
+
+msgid "Add new"
+msgstr "Add"
+
+msgid "Next: Add Data"
+msgstr "Siguiente: Agregar Distributions"
+
+msgid "Base url"
+msgstr "Base url"
+
+msgid "Api key"
+msgstr "Api key"
+
+msgid "sector"
+msgstr "Sector"
+
+msgid "Provincia"
+msgstr "Province"
+
+msgid "Autonomia"
+msgstr "Autonomous region"
+
+msgid "Pais"
+msgstr "Country"
+
+msgid "Used prefixes"
+msgstr "Used prefixes"
+
+#~ msgid "Always"
+#~ msgstr ""

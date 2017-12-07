@@ -1,0 +1,9 @@
+{% ckan_extends %}
+
+{% block page_title_content %}{{ c.harvest_source.title }}{% endblock %}
+
+{% block breadcrumb_content %}
+    <li>{{ h.nav_link(_('My Account'), named_route='{0}_search'.format(c.dataset_type)) }}</li>
+    <li>{{ h.nav_link(_('Harvester'), named_route='{0}_search'.format(c.dataset_type)) }}</li>
+    <li{{ self.breadcrumb_content_root_selected() }}>{{ h.nav_link(c.harvest_source.title|truncate(30), named_route='{0}_read'.format(c.dataset_type), id=c.harvest_source.name) }}</li>
+{% endblock %}

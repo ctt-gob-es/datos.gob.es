@@ -1,0 +1,770 @@
+# Copyright (C) 2017 Entidad Pública Empresarial Red.es
+# 
+# This file is part of "ckanext-dge-dashboard (datos.gob.es)".
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+# 
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+msgid ""
+msgstr ""
+"Project-Id-Version: ckanext-dge-dashboard 1.0.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2017-05-05 09:05+0200\n"
+"PO-Revision-Date: 2017-03-19 07:00+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: eu <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:304
+msgid "Active user accounts by administration level"
+msgstr "Erabiltzaile kontu aktiboak administratzaile mailaren arabera"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:306
+msgid "Active user accounts by administration level description"
+msgstr ""
+"Administratzaile mailaren arabera aktiboak dauden erabiltzaile kontuen "
+"portzentajea."
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:274
+msgid "Active user accounts by organization"
+msgstr "Erabiltzailearen kontu aktiboak organismoaren arabera"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:276
+msgid "Active user accounts by organization description"
+msgstr "Organismoen eta hauek duten erabiltzaile kopuruen taula."
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:33
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:41
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:46
+msgid "Administrator Dashboard"
+msgstr "Administratzailearen aginte-koadroa"
+
+#: ckanext/dge_dashboard/helpers.py:218
+msgid "All months"
+msgstr "Metatutakoa guztira"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:329
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:187
+msgid "Communication channels with users"
+msgstr "Erabiltzaileekin komunikatzeko kanalak"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:159
+msgid "Compare to"
+msgstr "Honekin alderatu"
+
+#: ckanext/dge_dashboard/controllers.py:173
+#: ckanext/dge_dashboard/helpers.py:1275 ckanext/dge_dashboard/helpers.py:1296
+msgid "Content number"
+msgstr "Eduki kopurua"
+
+#: ckanext/dge_dashboard/controllers.py:173
+#: ckanext/dge_dashboard/helpers.py:1275 ckanext/dge_dashboard/helpers.py:1296
+msgid "Content type"
+msgstr "Eduki mota"
+
+#: ckanext/dge_dashboard/templates/footer.html:5
+#: ckanext/dge_dashboard/templates/header.html:27
+#: ckanext/dge_dashboard/templates/header.html:29
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:33
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:41
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:44
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:46
+msgid "Dashboard"
+msgstr "Aginte-koadroa"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:51
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:51
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:51
+msgid "Dashboard_introduction"
+msgstr ""
+"<p>Aginte-koadro honek, datos.gob.es atariaren jardueraren ikuspegi "
+"orokorra eskaintzeko helburua du. Grafikoak interaktiboak dira: bistaratu"
+" nahi duzun ardatzaren atala hautetsiz zooma aldatzea ahalbidetzen dute, "
+"zatiak hautatu daitezke, edota oharrak zuzenean grafikoaren gainean "
+"idatzi. Ondoren, gehitutako oharrekin betera deskarga daitezke honako "
+"formatu hauetan: PNG, JPG, SVG edo PDF, bestela, hauek osatzen dituzten "
+"datuak formatu hauetan gorde daitezke: CSV, XLSX eta JSON.</p>"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:126
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:111
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:53
+msgid "Data Catalog"
+msgstr "Datuen katalogoa"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:334
+msgid "Data availability requests by state"
+msgstr "Datuen erabilgarritasun kontsultak egoeraren arabera"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:336
+msgid "Data availability requests by state description"
+msgstr "Egoeraren arabera datuen erabilgarritasun kontsulten portzentajea."
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:350
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:208
+msgid "Data requests"
+msgstr "Datuen erabilgarritasuna"
+
+#: ckanext/dge_dashboard/controllers.py:112
+#: ckanext/dge_dashboard/controllers.py:256
+#: ckanext/dge_dashboard/helpers.py:585 ckanext/dge_dashboard/helpers.py:861
+msgid "Dataset"
+msgstr "Datu-multzoa"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:171
+msgid "Datasets"
+msgstr "Datu-multzoak"
+
+#: ckanext/dge_dashboard/controllers.py:229
+#: ckanext/dge_dashboard/helpers.py:1015
+msgid "Datasets Number"
+msgstr "Datu-multzoen kopurua guztira"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:262
+msgid "Distributions format"
+msgstr "Banaketen portzentajea formatuaren arabera"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:272
+msgid "Distributions format by administration level"
+msgstr ""
+"Formatuaren araberako banaketen portzentajea administratzaile mailaren arabera"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:274
+msgid "Distributions format by administration level description"
+msgstr ""
+"Datu-multzoen banaketen portzentajea formatuaren arabera administrazio maila "
+"zehatz batentzat."
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:264
+msgid "Distributions format description"
+msgstr ""
+"Datu-multzoen banaketen portzentajea formatuaren arabera "
+"(datu-multzoek banaketa ezberdinak dituzte)."
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:241
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:105
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:208
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:295
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:117
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:181
+msgid "Download as CSV"
+msgstr "CSV formatuan deskargatu"
+
+#: ckanext/dge_dashboard/controllers.py:111
+#: ckanext/dge_dashboard/helpers.py:861
+msgid "Downloads"
+msgstr "Deskargak"
+
+#: ckanext/dge_dashboard/controllers.py:41
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:63
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:90
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:122
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:150
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:180
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:223
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:251
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:280
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:310
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:340
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:371
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:64
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:91
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:134
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:166
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:198
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:229
+msgid "Error loading data"
+msgstr "Errorea gertatu da datuak kargatzean"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:73
+msgid "Evolution of datos.gob.es visits by month"
+msgstr "datos.gob.es atariak jasotako bisitak"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:74
+msgid "Evolution of datos.gob.es visits by month description"
+msgstr ""
+"datos.gob.es atariak jasotako bisita orokorren datuen denbora-bilakaera "
+"hilabeteen arabera."
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:58
+msgid "Evolution of datos.gob.es visits by section"
+msgstr "datos.gob.es atariak jasotako bisitak atalen arabera"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:59
+msgid "Evolution of datos.gob.es visits by section description"
+msgstr ""
+"msgstr datos.gob.es atariak jasotako bisita orokorren denbora-bilakaera "
+"hilabeteen arabera honako atalentzat: katalogoa, ekimenak, dokumentazioa, "
+"aplikazioak, berrerabilpen kasuak, datuen erabilgarritasuna eta aginte-koadroa."
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:58
+msgid "Evolution of my published datasets"
+msgstr "Nire datu-multzoak"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:60
+msgid "Evolution of my published datasets description"
+msgstr ""
+"Denbora-bilakaera katalogoan hilabete bukaeran argitaratutako datu-multzoen "
+"datuekin (metatuta) nire erabiltzearen organismoarentzat."
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:223
+msgid "Evolution of my received comments"
+msgstr "Jasotako iruzkinen bilakaera"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:225
+msgid "Evolution of my received comments description"
+msgstr ""
+"Hilabete bukaeran jasotako iruzkinen denbora-bilakaera, katalogoaren "
+"datu-multzoei buruzkoak eta atariko beste ataletan (hala nola, aplikazioak, "
+"datuen erabilgarritasuna, etab.) jasotakoak bereiztuz."
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:133
+msgid "Evolution of published datasets"
+msgstr "Argitaratutako datu-multzoak"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:117
+msgid "Evolution of published datasets by administration level"
+msgstr "Datu-multzoen bilakaera administrazio mailaren arabera"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:118
+msgid "Evolution of published datasets by administration level description"
+msgstr ""
+"Denbora-bilakaera hilabete bukaeran argitaratutako datu-multzoen datuekin "
+"(metatuta) argitaratzen dituen administrazio mailaren portzentajeen arabera "
+"banatuak."
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:144
+msgid "Evolution of published datasets by organization"
+msgstr "Datu-multzoen bilakaera organismoaren arabera"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:146
+msgid "Evolution of published datasets by organization description"
+msgstr ""
+"Denbora-bilakaera hilabete bukaeran (metatuta) dauden datu-multzoen datuekin "
+"organismo kontu zehatz batentzat. Bigarren organismo batekin alderatzea "
+"ahalbidetzen du."
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:134
+msgid "Evolution of published datasets description"
+msgstr ""
+"Denbora-bilakaera katalogoan hilabete bukaeran argitaratutako datu-multzoen "
+"datuekin (metatuta)."
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:97
+msgid ""
+"Evolution of published initiatives, applications, cases of reuse and "
+"availability of data requests"
+msgstr "Argitaratutako ekimenak, aplikazioak eta berrerabilpen kasuak"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:99
+msgid ""
+"Evolution of published initiatives, applications, cases of reuse and "
+"availability of data requests description"
+msgstr ""
+"Hilabete bukaeran (metatuta) hurrengo ataletan argitaratutako edukien "
+"kopuruaren denbora-bilakaera: Ekimenen mapa, Aplikazioak eta Berrerabilpen "
+"kasuak."
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:218
+msgid "Evolution of publisher organizations"
+msgstr "Organismo argitaratzaileen bilakaera"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:219
+msgid "Evolution of publisher organizations description"
+msgstr ""
+"datos.gob.es.-en argitaratzen duten organismoen denbora-bilakaera federazio "
+"edo esku-karga portzentajeen arabera banatuak."
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:365
+msgid "Evolution of received comments"
+msgstr "Jasotako iruzkinen bilakaera"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:367
+msgid "Evolution of received comments description"
+msgstr ""
+"Hilabete bukaeran jasotako iruzkinen denbora-bilakaera, katalogoaren "
+"datu-multzoei buruzkoak eta atariko beste ataletan jasotakoak bereiztuz."
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:66
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:53
+msgid "General statistics"
+msgstr "Estatistika orokorrak"
+
+#: ckanext/dge_dashboard/controllers.py:112
+#: ckanext/dge_dashboard/controllers.py:229
+#: ckanext/dge_dashboard/controllers.py:256
+#: ckanext/dge_dashboard/helpers.py:585 ckanext/dge_dashboard/helpers.py:861
+#: ckanext/dge_dashboard/helpers.py:1015
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:221
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:187
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:98
+msgid "Month"
+msgstr "Hilabetea"
+
+#: ckanext/dge_dashboard/templates/header.html:35
+#: ckanext/dge_dashboard/templates/header.html:37
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:44
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:44
+msgid "My Dashboard"
+msgstr "Nire aginte-koadroa"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:160
+msgid "My active user accounts"
+msgstr "Erabiltzaile-kontu aktiboak"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:162
+msgid "My active user accounts description"
+msgstr "Nire organismoko plataformaren erabiltzaileen guztizko kopurua eta izena."
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:192
+msgid "My data availability requests by state"
+msgstr "Datuen erabilgarritasun kontsultak egoeraren arabera"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:194
+msgid "My data availability requests by state description"
+msgstr ""
+"Dauden egoeraren arabera organismoari esleitutako datuen erabilgarritasun "
+"kontsulten portzentajea."
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:128
+msgid "My distributions format"
+msgstr "Banaketen formatua"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:130
+msgid "My distributions format description"
+msgstr "Nire datu-multzoen banaketen portzentajea formatuaren arabera."
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:85
+msgid "My most visited datasets"
+msgstr "Bisita gehien jaso dituzten nire datu-multzoak"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:87
+msgid "My most visited datasets description"
+msgstr ""
+"2016/12/1etik aurrera bisita gehien jaso dituzten nire 10 datu-multzoen taula "
+"(metatutakoa guztira) eta hilabeteen arabera iragazteko aukerarekin hilabete "
+"zehatz batean bisita gehien jaso dituzten 10 multzoak lortzeko. Datu-multzoak "
+"jasotako bisita kopuruen datuak eskaintzen ditu (\"Bisitak\" zutabea) eta "
+"datu-multzoaren banaketek osotara izandako sarrerak (\"Deskargak\" zutabea). "
+"Datu-multzoen guztizkoa CSV formatuan deskargatu daiteke jasotako bisita eta "
+"banaketek izandako sarrera bananduekin."
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:200
+msgid "No assigned requests"
+msgstr "Ez duzu datuen erabilgarritasunari buruzko kontsultarik esleiturik."
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:65
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:92
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:124
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:152
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:182
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:225
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:253
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:282
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:312
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:342
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:373
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:66
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:93
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:136
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:168
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:231
+msgid "No data"
+msgstr "Ez dago daturik"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:84
+msgid "Number of content published by section"
+msgstr "Argitaratutako edukien kopurua"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:86
+msgid "Number of content published by section description"
+msgstr "Eduki mota bakoitzaren argitaratutako edukien kopurua."
+
+#: ckanext/dge_dashboard/logic/auth/get.py:13
+#: ckanext/dge_dashboard/logic/auth/get.py:68
+msgid "Only sysadmins can get dge_dashboard table data"
+msgstr ""
+"Sistemaren administratzaileek soilik eskura ditzakete dge_dashboard taulako "
+"datuak."
+
+#: ckanext/dge_dashboard/logic/auth/get.py:90
+msgid "Only sysadmins can get dge_dashboard_drupal_contents table data"
+msgstr ""
+"Sistemaren administratzaileek soilik eskura ditzakete "
+"dge_dashboard_drupal_contents taulako datuak."
+
+#: ckanext/dge_dashboard/logic/auth/get.py:112
+msgid "Only sysadmins can get drupal active users"
+msgstr ""
+"Sistemaren administratzaileek soilik eskura ditzakete erabiltzaile aktiboak."
+
+#: ckanext/dge_dashboard/logic/auth/get.py:123
+msgid "Only sysadmins can get drupal assigned requests"
+msgstr ""
+"Sistemaren administratzaileek soilik eskura ditzakete esleitutako datuen "
+"erabilgarritasun kontsultak."
+
+#: ckanext/dge_dashboard/logic/auth/get.py:101
+msgid "Only sysadmins can get drupal published data"
+msgstr ""
+"Sistemaren administratzaileek soilik eskura ditzakete drupal-en argitaratutako "
+"datuak."
+
+#: ckanext/dge_dashboard/logic/auth/get.py:79
+msgid "Only sysadmins can get number of current publisher by administration level"
+msgstr ""
+"Sistemaren administratzaileek soilik eskura ditzakete uneko argitaratzaileak "
+"administrazio mailaren arabera."
+
+#: ckanext/dge_dashboard/logic/auth/get.py:35
+msgid "Only sysadmins can get number of distribution by format"
+msgstr ""
+"Sistemaren administratzaileek soilik eskura ditzakete banaketak formatuaren "
+"arabera."
+
+#: ckanext/dge_dashboard/logic/auth/get.py:46
+msgid ""
+"Only sysadmins can get number of distribution by format and "
+"administration level"
+msgstr ""
+"Sistemaren administratzaileek soilik eskura dezakete banaketa kopurua formatua "
+"eta administrazio mailaren arabera."
+
+#: ckanext/dge_dashboard/logic/auth/get.py:24
+msgid ""
+"Only sysadmins can get number of published datasets by administration "
+"level"
+msgstr ""
+"Sistemaren administratzaileek soilik eskura dezakete argitaratutako "
+"datu-multzoen kopurua administrazio mailaren arabera."
+
+#: ckanext/dge_dashboard/logic/auth/get.py:57
+msgid "Only sysadmins can get number of published datasets by category"
+msgstr ""
+"Sistemaren administratzaileek soilik eskura dezakete argitaratutako "
+"datu-multzoen kopurua kategoriaren arabera."
+
+#: ckanext/dge_dashboard/logic/auth/get.py:156
+msgid "Only sysadmins can get the datasets by root organization"
+msgstr ""
+"Sistemaren administratzaileek soilik eskura ditzakete erroko erakundeak."
+
+#: ckanext/dge_dashboard/logic/auth/get.py:145
+msgid "Only sysadmins can get the most visited datasets"
+msgstr ""
+"Sistemaren administratzaileek soilik eskura ditzakete bisita gehien jaso "
+"dituzten datu-multzoak."
+
+#: ckanext/dge_dashboard/logic/auth/get.py:134
+msgid "Only sysadmins can get visits to datos.gob.es"
+msgstr ""
+"Sistemaren administratzaileek soilik eskura ditzakete datos.gob.es "
+"atariak jasotako bisitak."
+
+#: ckanext/dge_dashboard/logic/auth/update.py:13
+#: ckanext/dge_dashboard/logic/auth/update.py:25
+#: ckanext/dge_dashboard/logic/auth/update.py:36
+#: ckanext/dge_dashboard/logic/auth/update.py:48
+msgid "Only sysadmins can update dge_dashboard tables"
+msgstr ""
+"Sistemaren administratzaileek soilik eguneratu ditzakete dge_dashboard taulak."
+
+#: ckanext/dge_dashboard/helpers.py:585
+msgid "Order"
+msgstr "Ordena"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:33
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:41
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:46
+msgid "Organization Dashboard"
+msgstr "Organismoaren aginte-koadroa"
+
+#: ckanext/dge_dashboard/controllers.py:201
+#: ckanext/dge_dashboard/helpers.py:1202 ckanext/dge_dashboard/helpers.py:1223
+msgid "Organization name"
+msgstr "Organismoa"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:302
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:317
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:351
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:145
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:209
+msgid "Others"
+msgstr "Bestelakoak"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:159
+msgid "Published datasets by administrator level"
+msgstr "Datu-multzoak administrazio mailaren arabera"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:161
+msgid "Published datasets by administrator level description"
+msgstr "Argitaratutako datu-multzoen portzentajea administrazio mailaren arabera."
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:186
+msgid "Published datasets by category"
+msgstr "Datu-multzoak kategoriaren arabera"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:188
+msgid "Published datasets by category description"
+msgstr ""
+"Argitaratutako datu-multzoen kopurua kategoriaren arabera. Multzo-talde bera "
+"kategoria ezberdinetan egon daiteke."
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:245
+msgid "Publisher organizations by administration level"
+msgstr "Organismo argitaratzaileak administrazio mailaren arabera"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:247
+msgid "Publisher organizations by administration level description"
+msgstr ""
+"Federador (federatuak) erabiltzen duten edo erabiltzen ez duten (eskuzkoak) "
+"organismo argitaratzaileen kopurua administrazio maila bakoitzaren arabera."
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:269
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:155
+msgid "Registered users"
+msgstr "Erregistratutako erabiltzaileak"
+
+#: ckanext/dge_dashboard/controllers.py:229
+#: ckanext/dge_dashboard/helpers.py:1015
+msgid "Resources Number"
+msgstr "Banaketa kopurua datu-multzoen arabera"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:280
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:158
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:160
+msgid "Select"
+msgstr "Hautatu"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:83
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:110
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:145
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:172
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:197
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:305
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:322
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:74
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:133
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:163
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:234
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:262
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:322
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:354
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:382
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:74
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:148
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:212
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:240
+msgid "The chart contains no data"
+msgstr "Grafikoak ez du daturik"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:211
+msgid "The most visited datasets"
+msgstr "Bisita gehien jaso dituzten datu-multzoak"
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:213
+msgid "The most visited datasets description"
+msgstr ""
+"2016/12/1etik aurrera bisita gehien jaso dituzten 10 multzoen taula "
+"(metatutakoa guztira) eta hilabeteen arabera iragazteko aukerarekin hilabete "
+"zehatz batean bisita gehien jaso dituzten 10 multzoak lortzeko. Taula honen "
+"edukia CSV formatuan deskarga daiteke."
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:238
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:243
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:101
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:204
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:291
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:114
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:177
+msgid "The table contains no data"
+msgstr "Taulak ez du daturik"
+
+#: ckanext/dge_dashboard/helpers.py:1223 ckanext/dge_dashboard/helpers.py:1296
+msgid "Total"
+msgstr "Guztira"
+
+#: ckanext/dge_dashboard/controllers.py:146
+#: ckanext/dge_dashboard/controllers.py:173
+#: ckanext/dge_dashboard/controllers.py:201
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:98
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:160
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:187
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:211
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:212
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:263
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:273
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:85
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:145
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:175
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:246
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:275
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:305
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:335
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:366
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:59
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:86
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:129
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:161
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:193
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:224
+msgid "Updated date"
+msgstr "Datuen eguneratze-data"
+
+#: ckanext/dge_dashboard/controllers.py:112
+#: ckanext/dge_dashboard/controllers.py:256
+msgid "Url"
+msgstr "Url"
+
+#: ckanext/dge_dashboard/controllers.py:146
+msgid "Username"
+msgstr "Erabiltzaile-izena"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:321
+msgid "Users"
+msgstr "Erabiltzaileak"
+
+#: ckanext/dge_dashboard/controllers.py:201
+#: ckanext/dge_dashboard/helpers.py:748 ckanext/dge_dashboard/helpers.py:777
+#: ckanext/dge_dashboard/helpers.py:1202 ckanext/dge_dashboard/helpers.py:1223
+msgid "Users number"
+msgstr "Erabiltzaile kopurua guztira"
+
+#: ckanext/dge_dashboard/controllers.py:112
+#: ckanext/dge_dashboard/controllers.py:258
+#: ckanext/dge_dashboard/helpers.py:585 ckanext/dge_dashboard/helpers.py:861
+msgid "Visits"
+msgstr "Bisitak"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:174
+msgid "Volume of datasets according to number of distributions"
+msgstr "Datu-multzoen bolumena banaketen arabera"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:176
+msgid "Volume of datasets according to number of distributions description"
+msgstr ""
+"Hauta daitekeen hilabete batean banaketa kopuru zehatz bat duen katalogoko "
+"datu-multzoen kopurua erakusten duen taula."
+
+#: ckanext/dge_dashboard/helpers.py:306
+msgid "content_comments"
+msgstr "Iruzkinak edukietan"
+
+#: ckanext/dge_dashboard/helpers.py:290
+msgid "dataset_comments"
+msgstr "Iruzkinak datu-multzoetan"
+
+#: ckanext/dge_dashboard/helpers.py:224
+msgid "up to"
+msgstr "data hau arte"
+
+msgid "Asignado"
+msgstr "Esleitua"
+
+msgid "En Estudio"
+msgstr "Ikerketan"
+
+msgid "No Viable"
+msgstr "Ez bideragarria"
+
+msgid "Programado"
+msgstr "Programatua"
+
+msgid "Publicado"
+msgstr "Argitaratua"
+
+msgid "Recibido"
+msgstr "Jasota"
+
+msgid "aplicaciones"
+msgstr "Aplikazioak"
+
+msgid "casos-exito"
+msgstr "Berrerabilpen kasuak"
+
+msgid "catalogo"
+msgstr "Datu-multzoak"
+
+msgid "dashboard"
+msgstr "Aginte-koadroa"
+
+msgid "documentacion"
+msgstr "Dokumentazioa"
+
+msgid "iniciativas"
+msgstr "Ekimenen mapa"
+
+msgid "peticiones-datos"
+msgstr "Datuen erabilgarritasuna"
+
+msgid "aporta"
+msgstr "Aporta bilera"
+
+msgid "app"
+msgstr "Aplikazioa"
+
+msgid "blog"
+msgstr "Berria"
+
+msgid "bulletin"
+msgstr "Buletina"
+
+msgid "doc"
+msgstr "Dokumentazioa"
+
+msgid "event"
+msgstr "Gertaera"
+
+msgid "faq"
+msgstr "FAQ"
+
+msgid "initiative"
+msgstr "Ekimena"
+
+msgid "page"
+msgstr "Orria"
+
+msgid "request"
+msgstr "Datuen erabilgarritasun kontsulta"
+
+msgid "success"
+msgstr "Berrerabilpen kasua"
+
+msgid "talk"
+msgstr "Elkarrizketa"
+
+msgid "webform"
+msgstr "Webform"
+
+# Publishers types (Administrator dashboard)
+msgid "harvester_publishers"
+msgstr "Federatzen duten argitaratzaileak"
+
+msgid "manual_loading_publishers"
+msgstr "Esku-kargako argitaratzaileak"
+
+# Drupal content types (Public dashboard)
+msgid "apps"
+msgstr "Aplikazioak"
+
+msgid "initiatives"
+msgstr "Ekimenak"
+
+msgid "requests"
+msgstr "Datuen erabilgarritasun kontsultak"
+
+msgid "successes"
+msgstr "Berrerabilpen kasuak"

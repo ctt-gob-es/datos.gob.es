@@ -1,0 +1,389 @@
+{% extends "page.html" %}
+{% block seo %}
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement":
+    [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item":
+          {
+            "@id": "{{ g.site_url }}",
+            "name": "{{ _('Home') }}"
+          }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item":
+          {
+            "@id": "{{ g.site_url }}{{ h.url_for(controller='ckanext.dge_dashboard.controllers:DGEDashboardController', action='dashboard') }}",
+            "name": "{{ _('Impact') }}"
+          }
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item":
+          {
+            "@id": "{{ g.site_url }}{{ h.url_for(controller='ckanext.dge_dashboard.controllers:DGEDashboardController', action='dashboard') }}",
+            "name": "{{ _('Dashboard') }}"
+          }
+      }
+    ]
+  }
+  </script>
+{% endblock %}
+
+{% block subtitle %}{{ _('Dashboard') }}{% endblock %}
+{% block breadcrumb_content %}
+  <li>{{ h.nav_link(_('Impact'), controller='ckanext.dge_dashboard.controllers:DGEDashboardController', action='dashboard') }}</li>
+  <li class="active">{{ h.nav_link(_('Dashboard'), controller='ckanext.dge_dashboard.controllers:DGEDashboardController', action='dashboard') }}</li>
+{% endblock %}
+{% block page_title_content %}{{ _('Dashboard') }}{% endblock %}
+{% block catalog_downloads %}{% endblock %}
+{% block page_header %}{% endblock %}
+{% block primary_content_inner %}
+{% set current_lang = request.environ.CKAN_LANG %}
+<div class="dge-dashboard-intro">{% trans %}Dashboard_introduction{% endtrans %}</div>
+<div class="dge-dashboard">
+  {% set public_graphs = ['chartVisitsDatosGobEsByMonth', 
+                          'chartNumDrupalContentsByMonthYear', 
+                          'chartNumDatasetsByMonthYear',
+                          'chartNumDatasetsByAdministrationLevel',
+                          'chartNumDatasetsByCategory',
+                          'chartMostVisitedDatasets',
+                          'chartDistributionFormat',
+                          'chartDistributionFormatByAdministrationLevel',
+                          'chartNumPublishersByAdministrationLevel'] %}
+  {% set visibility_of_public_graphs = h.dge_get_visibility_of_public_graphs(public_graphs) %}
+  
+  {% if visibility_of_public_graphs['chartVisitsDatosGobEsByMonth'] or 
+        visibility_of_public_graphs['chartNumDrupalContentsByMonthYear'] %}
+  <h2>{{ _('General statistics') }}</h2>
+  
+  {% if visibility_of_public_graphs['chartVisitsDatosGobEsByMonth'] %}
+  {% set visits_data = h.dge_dashboard_data_num_visits() %}
+  {% if visits_data|length > 2 %}
+  <div>
+    <p>
+     <strong>{{ _('Evolution of datos.gob.es visits by month') }}</strong>
+      {% set description = _('Evolution of datos.gob.es visits by month description') %} 
+      {% if description %}<br/> {{ description }}{% endif %}
+    </p>
+    <div id="chartNumVisitsDatosGobEsByMonth" class="chartdiv" 
+         data-module="dge_dashboard_numVisitsDatosGobEsByMonth"
+         data-module-data_provider="{{ visits_data }}"
+         data-module-language="{{ current_lang }}"
+         data-module-title=" "
+         data-module-divid = "chartNumVisitsDatosGobEsByMonth"
+         data-module-no_data = "{{ _('The chart contains no data') }}">
+    </div>
+  </div>
+
+<p><br/><br/><br/></p>
+  {% endif %}
+  {% endif %}
+
+  {% if visibility_of_public_graphs['chartNumDrupalContentsByMonthYear'] %}
+  {% set data_date = None %}
+  {% set drupal_data, drupal_axes, drupal_graphs, initial_zoom = h.dge_dashboard_data_num_drupal_contents() %}
+  {% if drupal_data|length > 2 %}
+  <div>
+    <p>
+     <strong>{{ _('Evolution of published initiatives, applications, cases of reuse and availability of data requests') }}</strong>
+      {% if (data_date) %}<br/>{{ _('Updated date') }}: {{ data_date }}{% endif %}
+      {% set description = _('Evolution of published initiatives, applications, cases of reuse and availability of data requests description') %} 
+      {% if description %}<br/> {{ description }}{% endif %}
+    </p>
+    <div id="chartNumDrupalContentsByMonthYear" class="chartdiv" 
+         data-module="dge_dashboard_numDrupalContentsByMonthYear"
+         data-module-data_provider="{{ drupal_data }}"
+         data-module-value_axes="{{ drupal_axes }}"
+         data-module-graphs="{{ drupal_graphs }}"
+         data-module-language="{{ current_lang }}"
+         data-module-initial_zoom="{{ initial_zoom }}"
+         data-module-title=" "
+         data-module-divid = "chartNumDrupalContentsByMonthYear"
+         data-module-no_data = "{{ _('The chart contains no data') }}">
+    </div>
+  </div>
+
+<p><br/><br/><br/></p>
+  {% endif %}
+  {% endif %}
+  {% endif %}
+
+  {% if visibility_of_public_graphs['chartNumDatasetsByMonthYear'] or 
+        visibility_of_public_graphs['chartNumDatasetsByAdministrationLevel'] or 
+        visibility_of_public_graphs['chartNumDatasetsByCategory'] or 
+        visibility_of_public_graphs['chartMostVisitedDatasets'] or 
+        visibility_of_public_graphs['chartDistributionFormat'] or
+        visibility_of_public_graphs['chartDistributionFormatByAdministrationLevel'] or
+        visibility_of_public_graphs['chartNumPublishersByAdministrationLevel'] %}
+  <h2>{{ _('Data Catalog') }}</h2>
+  {% if visibility_of_public_graphs['chartNumDatasetsByMonthYear']%}
+  {% set data_date = None %}
+  {% set datasetsByMonth_data = h.dge_dashboard_data_num_datasets_by_month_year() %}
+  {% if datasetsByMonth_data|length > 2 %}
+  <div>
+    <p>
+      <strong>{{ _('Evolution of published datasets') }}</strong>
+      {% set description = _('Evolution of published datasets description') %} 
+      {% if description %}<br/> {{ description }}{% endif %}
+    </p>
+    <div id="chartNumDatasetsByMonthYear" class="chartdiv" 
+         data-module="dge_dashboard_numDatasetsByMonthYear"
+         data-module-data_provider="{{ datasetsByMonth_data }}"
+         data-module-language="{{ current_lang }}"
+         data-module-title=" "
+         data-module-subtitle=" "
+         data-module-updated_date=" "
+         data-module-divid = "chartNumDatasetsByMonthYear"
+         data-module-no_data = "{{ _('The chart contains no data') }}">
+    </div>
+  </div>
+  
+<p><br/><br/><br/></p>
+  {% endif %}
+  {% endif %}
+
+  {% if visibility_of_public_graphs['chartNumDatasetsByAdministrationLevel'] %}
+  {% set data_date = None %}
+  {% set datasets_data, total, data_date = h.dge_dashboard_data_num_datasets_by_administration_level() %}
+  {% if datasets_data|length > 2 %}
+  <div>
+    <p>
+      <strong>{{ _('Published datasets by administrator level') }}</strong>
+      {% if (data_date) %}<br/>{{ _('Updated date') }}: {{ data_date }}{% endif %}
+      {% set description = _('Published datasets by administrator level description') %} 
+      {% if description %}<br/> {{ description }}{% endif %}
+   </p>
+    <div id="chartNumDatasetsByAdministrationLevel" class="smallchartdiv" 
+         data-module="dge_dashboard_numDatasetsByAdministrationLevel"
+         data-module-data_provider="{{ datasets_data }}"
+         data-module-language="{{ current_lang }}"
+         data-module-title=" "
+         data-module-divid = "chartNumDatasetsByAdministrationLevel"
+         data-module-data_text_1 = "{{ total }}"
+         data-module-data_text_2 = {% if datasets_data %} "{{ _('Datasets') }}" {% else %} " " {% endif%}
+         data-module-no_data = "{{ _('The chart contains no data') }}">
+    </div>
+  </div>
+
+<p><br/><br/><br/></p>
+  {% endif %}
+  {% endif %}
+
+  {% if visibility_of_public_graphs['chartNumDatasetsByCategory'] %}
+  {% set data_date = None %}
+  {% set datasets_category, data_date = h.dge_dashboard_data_num_datasets_by_category() %}
+  {% if datasets_category|length > 2 %}
+  <div>
+    <p>
+     <strong>{{ _('Published datasets by category') }}</strong>
+      {% if (data_date) %}<br/>{{ _('Updated date') }}: {{ data_date }}{% endif %}
+      {% set description = _('Published datasets by category description') %} 
+      {% if description %}<br/> {{ description }}{% endif %}
+    </p>
+     <div id="chartNumDatasetsByCategory" class="chartdiv"
+         data-module="dge_dashboard_numDatasetsByCategory"
+         data-module-data_provider="{{ datasets_category }}"
+         data-module-language="{{ current_lang }}"
+         data-module-title=" "
+         data-module-divid = "chartNumDatasetsByCategory"
+         data-module-no_data = "{{ _('The chart contains no data') }}">
+    </div>
+  </div>
+
+<p><br/><br/><br/></p>  
+  {% endif %}
+  {% endif %}
+
+  {% if visibility_of_public_graphs['chartMostVisitedDatasets'] %}
+  {% set data_date = None %}
+  {% set visted_datasets_data, filter, filter2, column_titles, visible_col_visits = h.dge_dashboard_data_most_visited_datasets() %}
+  {% if visted_datasets_data|length > 2 %}
+  <div>
+    <p>
+      <strong>{{ _('The most visited datasets') }}</strong>{% if (data_date) %}<br/>{{ _('Updated date') }}: {{ data_date }}{% endif %}
+      {% if (data_date) %}<br/>{{ _('Updated date') }}: {{ data_date }}{% endif %}
+      {% set description = _('The most visited datasets description') %} 
+      {% if description %}<br/> {{ description }}{% endif %}
+    </p>
+    {% if visted_datasets_data %}
+    <div style="text-align:center">
+      <div class="form-select control-group">
+        {#<label for="field-order-by">{{ _('Month') }}</label>#}
+        <div class="dge-field-order-by">
+          <select id="filterMostVisitedDatasets" title="{{ _('Month') }}">
+            {% for t in filter2:%}
+            <option value="{{ t['id'] }}">{{ t['name'] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+    <div id="tableMostVisitedDatasets" 
+           data-module="dge_dashboard_mostVisitedDatasets"
+           data-module-data_provider="{{ visted_datasets_data }}"
+           data-module-language="{{ current_lang }}"
+           data-module-filter_values="{{ filter }}"
+           data-module-filter_divid="filterMostVisitedDatasets"
+           data-module-column_titles ="{{ column_titles }}"
+           data-module-visible_col_visits ="{% if visible_col_visits %} true {% else %} false {% endif %}"
+           data-module-divid = "tableMostVisitedDatasets"
+           data-module-no_data = "{{ _('The table contains no data') }}">
+    </div>
+    {% set download_link=h.url_for(controller='ckanext.dge_dashboard.controllers:DGEDashboardController',action='most_visited_datasets_csv')%}
+    <p><br/><a class="btn button btn-primary btn-sm pull-right" href="{{download_link}}"><i class="icon-download"></i>{{ _('Download as CSV') }}</a></p>
+    {% else %}
+      <p>{{ _('The table contains no data') }}</p>
+    {% endif %}
+  </div>
+
+<p><br/><br/><br/></p>
+  {% endif %}
+  {% endif %}
+
+  {% if visibility_of_public_graphs['chartDistributionFormat'] or
+        visibility_of_public_graphs['chartDistributionFormatByAdministrationLevel']%}
+  {% set data_date = None %} 
+  
+  {% set formats_data, total, data_date = h.dge_dashboard_data_distribution_format() %}
+  {% set formats_al_data, data_date_al = h.dge_dashboard_data_distribution_format_by_administration_level() %}
+  {% if formats_data|length > 2 or formats_al_data|length > 2 %}
+  <div>
+    {% if visibility_of_public_graphs['chartDistributionFormat'] and formats_data %}
+    <div class="halfwidth">
+      <p>
+        <strong>{{ _('Distributions format') }}</strong>
+        {% if (data_date) %}<br/>{{ _('Updated date') }}: {{ data_date}}{% endif %}
+        {% set description = _('Distributions format description') %} 
+        {% if description %}<br/> {{ description }}{% endif %}
+      </p>
+    </div>
+    {% endif %}
+    {% if visibility_of_public_graphs['chartDistributionFormatByAdministrationLevel'] and formats_al_data %}
+    <div class="halfwidth">
+      <p>
+        <strong>{{ _('Distributions format by administration level') }}</strong>
+        {% if (data_date_al) %}<br/>{{ _('Updated date') }}: {{ data_date_al}}{% endif %}
+        {% set description = _('Distributions format by administration level description') %} 
+        {% if description %}<br/> {{ description }}{% endif %}
+      </p>
+      {% if formats_al_data|length > 2 and data_date_al|length > 2 %}
+      <div style="text-align:right">
+        <div class="form-select control-group">
+          <label for="field-order-by">{{ _('Select') }}</label>
+          <div class="dge-field-order-by">
+            <select id="mysel" onchange="setDataSet(JSON.parse(this.options[this.selectedIndex].value), this.options[this.selectedIndex].id)">
+              {% for t in formats_al_data:%}
+              <option id="{{ t[3] }}" value="{{ t[1] }}">{{t[2]}} ({{ t[3] }})</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+    {% if visibility_of_public_graphs['chartDistributionFormat'] and formats_data %}
+      <div class="chartdiv2">
+      <div id="chartDistributionFormat" class="chartdiv" 
+           data-module="dge_dashboard_distributionFormat"
+           data-module-data_provider={% if formats_data %} "{{ formats_data }}" {% else %} "{{ [] }}" {% endif%}
+           data-module-language="{{ current_lang }}"
+           data-module-title=" "
+           data-module-data_text_1 ={% if formats_data %} "{{ total }}" {% else %} " " {% endif%}
+           data-module-data_text_2 ={% if formats_data %} "{{ _('Resources') }}" {% else %} " " {% endif%}
+           data-module-grouped_title = "{{ _('Others') }}"
+           data-module-group_percent = 1.5
+           data-module-divid = "chartDistributionFormat"
+         data-module-no_data = "{{ _('The chart contains no data') }}">
+      </div>
+    </div>
+    {% endif %}
+
+    {% if visibility_of_public_graphs['chartDistributionFormatByAdministrationLevel'] and formats_al_data %}
+    <div class="chartdiv2">
+      <div id="chartDistributionFormatByAdministrationLevel" class="chartdiv" 
+           data-module="dge_dashboard_distributionFormatByAdministrationLevel"
+           data-module-data_provider = {% if formats_al_data %} "{{ formats_al_data[0][1] }}" {% else %} "{{ [] }} " {% endif%}
+           data-module-language="{{ current_lang }}"
+           data-module-title=" "
+           data-module-grouped_title = "{{ _('Others') }}"
+           data-module-group_percent = 1.5
+           data-module-data_text_1 ={% if formats_al_data %} "{{ formats_al_data[0][3] }}" {% else %} " " {% endif%}
+           data-module-data_text_2 ={% if formats_al_data %} "{{ _('Resources') }}" {% else %} " " {% endif%}
+           data-module-divid = "chartDistributionFormatByAdministrationLevel"
+         data-module-no_data = "{{ _('The chart contains no data') }}">
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+<p><br/><br/><br/></p>
+  {% endif %}
+  {% endif %}
+  {% endif %}
+
+
+</div>
+
+{% endblock %}
+{% block secondary %}
+{# Supress left column #}
+{% endblock %}
+{%- block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{% url_for_static "amcharts/plugins/export/export.css" %}" type="text/css" media="all" />
+  {% resource 'dge_dashboard/jsgrid/dge-jsgrid.css' %}
+  {% resource 'dge_dashboard/jsgrid/dge-jsgrid-theme.css' %}
+  {% resource 'dge_dashboard/dge-dashboard.css' %}
+{% endblock -%}
+
+
+{%- block scripts %}
+   {{ super() }}
+   <!-- amCharts javascript sources -->
+    <script type="text/javascript" src="{% url_for_static "amcharts/amcharts.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "amcharts/pie.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "amcharts/serial.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/animate/animate.min.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/export.min.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/dataloader/dataloader.min.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "amcharts/themes/light.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/responsive/responsive.min.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/lang/en.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "amcharts/lang/ca.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/lang/ca.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "amcharts/lang/gl.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/lang/gl.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "amcharts/lang/eu.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/lang/eu.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "amcharts/lang/es.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/lang/es.js" %}"></script>
+
+    <script type="text/javascript" src="{% url_for_static "jsgrid/jquery-1.8.3.min.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "jsgrid/jsgrid.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "jsgrid/i18n/jsgrid-es.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "jsgrid/i18n/jsgrid-en.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "jsgrid/i18n/jsgrid-ca.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "jsgrid/i18n/jsgrid-gl.js" %}"></script>
+    <script type="text/javascript" src="{% url_for_static "jsgrid/i18n/jsgrid-eu.js" %}"></script>
+
+    {% resource "dge_dashboard/amcharts/public/dge_dashboard_numDatasetsByMonthYear.js" %}
+    {% resource "dge_dashboard/amcharts/public/dge_dashboard_numDatasetsByAdministrationLevel.js" %}
+    {% resource "dge_dashboard/amcharts/public/dge_dashboard_distributionFormat.js" %}
+    {% resource "dge_dashboard/amcharts/public/dge_dashboard_distributionFormatByAdministrationLevel.js" %}
+    {% resource "dge_dashboard/amcharts/public/dge_dashboard_numDatasetsByCategory.js" %}
+    {% resource "dge_dashboard/amcharts/public/dge_dashboard_numDrupalContentsByMonthYear.js" %}
+    {% resource "dge_dashboard/amcharts/public/dge_dashboard_numVisitsDatosGobEsByMonth.js" %}
+    {% resource "dge_dashboard/jsgrid/public/dge_dashboard_mostVisitedDatasets.js" %}
+
+{% endblock -%}
+

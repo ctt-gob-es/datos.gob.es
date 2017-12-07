@@ -1,0 +1,6 @@
+{% ckan_extends %}
+
+
+{% block dashboard %}
+  <li class="leaf"><a href="{{ h.url_for(controller='ckanext.dge_dashboard.controllers:DGEDashboardController', action='dashboard') }}">{{ _('Dashboard') }}</a></li>
+{% endblock %}

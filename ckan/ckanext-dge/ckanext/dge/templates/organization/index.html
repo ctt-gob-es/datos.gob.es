@@ -1,0 +1,24 @@
+{% ckan_extends %}
+
+{% block breadcrumb_content %}
+  <li>{% link_for _('My Account'), controller='organization', action='index' %}</li>
+  <li class="active">{% link_for _('Organizations'), controller='organization', action='index' %}</li>
+{% endblock %}
+{% block page_primary_action %}{% endblock %}
+{% block page_title_content %}{{ _('Organizations') }}{% endblock %}
+{% block catalog_downloads %}{% endblock %}
+{% block organizations_search_form %}
+    {% snippet 'snippets/dge_search_form.html', form_id='organization-search-form', type='organization', query=c.q, sorting_selected=c.sort_by_selected, count=c.page.item_count, placeholder=_('Search organizations...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
+  {% endblock %}
+  {% block organizations_list %}
+    {% if c.page.items or request.params %}
+      {% if c.page.items %}
+        {% snippet "organization/snippets/dge_organization_list.html", organizations=c.page.items %}
+      {% endif %}
+    {% else %}
+      <p class="empty">
+        {{ _('There are currently no organizations for this site') }}.
+      </p>
+    {% endif %}
+  {% endblock %}
+{% block secondary %}{% endblock %}

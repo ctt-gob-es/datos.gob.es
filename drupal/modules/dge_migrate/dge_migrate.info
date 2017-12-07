@@ -1,0 +1,15 @@
+name = DGE Migrate
+description = Migrate utilities
+core = 7.x
+version = 7.x-1.0
+package = DGE
+
+dependencies[] = migrate
+dependencies[] = migrate_d2d
+dependencies[] = migrate_extras
+
+files[] = dge_migrate.migrate.inc
+files[] = user.inc
+files[] = profile2.inc
+files[] = taxonomy.inc
+files[] = node.inc

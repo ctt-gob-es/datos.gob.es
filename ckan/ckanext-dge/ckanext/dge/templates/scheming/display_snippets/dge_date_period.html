@@ -1,0 +1,20 @@
+{%- set values = data[field.field_name] -%}
+{% if values %}
+   <ul>
+   {%- for element in values | sort -%}
+     {% set dates = values.get(element) %}
+     <li>
+        {% if dates.from %}
+           {{ _('From') }} {% snippet 'package/snippets/dge_local_friendly_datetime.html', datetime_obj=dates.from %}
+           {% if dates.to %}
+            {{ _('to') }} {% snippet 'package/snippets/dge_local_friendly_datetime.html', datetime_obj=dates.to %}
+           {% endif %}
+        {% else %}
+           {% if dates.to %}
+              {{ _('To') }} {% snippet 'package/snippets/dge_local_friendly_datetime.html', datetime_obj=dates.to %}
+           {% endif %}
+        {% endif %}
+     </li>
+   {%- endfor -%}
+   </ul>
+{% endif %}

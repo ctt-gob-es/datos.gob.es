@@ -1,0 +1,8 @@
+name = DGE Data Request
+description = Data Request Management
+core = 7.x
+version = 7.x-1.0
+package = DGE
+
+dependencies[] = dgef_request
+configure = admin/config/dge/request

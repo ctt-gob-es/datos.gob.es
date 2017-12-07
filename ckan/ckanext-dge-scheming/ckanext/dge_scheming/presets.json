@@ -1,0 +1,52 @@
+{
+  "scheming_presets_version": 1,
+  "about": "NTI dataset schema - scheming presets",
+  "about_url": "http://datos.gob.es",
+  "presets": [
+    {
+      "preset_name": "uri_text",
+      "values": {
+        "form_snippet": "uri_text.html",
+        "display_snippet": "uri_text.html",
+        "validators": "uri_text",
+        "output_validators": "uri_text_output"
+      }
+    },
+    {
+      "preset_name": "select_organization",
+      "values": {
+        "validators": "select_organization unicode",
+        "form_snippet": "select_organization.html",
+        "display_snippet": "select_organization.html"
+      }
+    },
+    {
+      "preset_name": "multiple_uri_text",
+      "values": {
+        "form_snippet": "multiple_uri_text.html",
+        "display_snippet": "multiple_uri_text.html",
+        "error_snippet": "multiple_uri_text.html",
+        "validators": "multiple_uri_text",
+        "output_validators": "multiple_uri_text_output"
+      }
+    },
+    {
+      "preset_name": "date_frequency",
+      "values": {
+        "form_snippet": "date_frequency.html",
+        "display_snippet": "date_frequency.html",
+        "validators": "date_frequency",
+        "output_validators": "date_frequency_output"
+      }
+    },
+    {
+      "preset_name": "date_period",
+      "values": {
+        "form_snippet": "date_period.html",
+        "display_snippet": "date_period.html",
+        "validators": "date_period",
+        "output_validators": "date_period_output"
+      }
+    }
+  ]
+}

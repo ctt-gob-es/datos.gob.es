@@ -1,0 +1,123 @@
+{% ckan_extends %}
+
+{% set res = c.resource %}
+{% set pkg_value = h.dge_dataset_display_name(c.package) %}
+{% set res_value = h.dge_resource_display_name(res) %}
+
+
+{% set url  = 'url' %}
+{% set name_translated  = 'name_translated' %}
+{% set resource_identifier  = 'resource_identifier' %}
+{% set resource_relation  = 'resource_relation' %}
+{% set format  = 'format' %}
+{% set byte_size  = 'byte_size' %}
+
+{% set include_fields = [
+    url,
+    name_translated,
+    resource_identifier,
+    resource_relation,
+    format,
+    byte_size
+    ] %}
+    
+{%- set schema = h.scheming_get_dataset_schema(dataset_type) -%}
+{%- set dict_fields = h.dge_dataset_display_fields(include_fields, schema.resource_fields) -%}
+{%- set format_label = h.scheming_choices_label(dict_fields['format'].choices, res[dict_fields['format'].field_name]) -%}
+{% block head_extras -%}
+  {{ super() }}
+  {%- set description = h.markdown_extract(res.description, extract_length=200) if res.description else h.markdown_extract(c.package.notes, extract_length=200) -%}
+  <meta property="og:title" content="{{ pkg_value }} - {{ res_value }} - {{ g.site_title }}">
+  <meta property="og:description" content="{{ description|forceescape }}">
+{% endblock -%}
+
+{% block subtitle %}{{ pkg_value }} - {{ res_value }}{% endblock %}
+
+{% block breadcrumb_content_selected %}{% endblock %}
+
+{% block breadcrumb_content %}
+ {% snippet 'package/snippets/dge_package_breadcrumb_content.html', pkg=pkg, res=res %}
+{% endblock %}
+{% block page_title %}{% endblock %}
+{% block catalog_downloads %}{% endblock %}
+{% block pre_primary %}
+  {% block resource %}
+     <section class="module module-resource">
+      {% block resource_inner %}
+      <div class="module-content">
+        <div class="actions">
+          {% block resource_actions %}
+          <ul>
+            {% block resource_actions_inner %}
+            {% if h.check_access('package_update', {'id':pkg.id }) %}
+              <li>{% link_for _('Manage'), controller='package', action='resource_edit', id=pkg.name, resource_id=res.id, class_='btn', icon='wrench' %}</li>
+            {% endif %}
+            {% if res.url and h.is_url(res.url) %}
+              <li>
+                <a class="btn btn-primary resource-url-analytics resource-type-{{ res.resource_type }}" href="{{ res.url }}">
+                  
+                  {% if not h.dge_is_downloadable_resource(res.url, format_label) %}
+                    <i class="icon-external-link"></i> {{ _('Go to resource') }}
+                  {% else %}
+                    <i class="icon-download"></i> {{ _('Download') }}
+                  {% endif %}
+                </a>
+              </li>
+            {% endif %}
+            {% endblock %}
+          </ul>
+          {% endblock %}
+        </div>
+        {% block resource_content %}
+          {% block resource_read_title %}<h1 class="page-heading">{{ res_value | truncate(50) }}</h1>{% endblock %}
+          {% block resource_read_url %}{% endblock %}
+          {% if res %}
+      <section class="module">
+        <div class="module-content">
+          <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
+            <tbody>
+              <tr>
+                <th scope="row">{{ h.scheming_language_text(dict_fields[url].label) }}</th>
+                <td><a href="{{ res.url }}" title="{{ res.url }}">{{ res.url }}</a></td>
+              </tr>
+              {% if res.resource_identifier %}
+              <tr>
+                <th scope="row">{{ h.scheming_language_text(dict_fields[resource_identifier].label) }}</th>
+                <td>
+                <a href="{{ res.resource_identifier }}" title="{{ res.resource_identifier }}">{{ res.resource_identifier }}</a></td>
+              </tr>
+              {% endif %}
+              <tr>
+                <th scope="row">{{ h.scheming_language_text(dict_fields[format].label) }}</th>
+                <td>{{ format_label or res.format or _('unknown') }}</td>
+              </tr>
+               {% if res.byte_size %}
+              <tr>
+                <th scope="row">{{ h.scheming_language_text(dict_fields[byte_size].label) }}</th>
+                <td>{{ res.byte_size }} {{ _('Bytes') }}</td>
+              </tr>
+               {% endif %}
+               {% if res.resource_relation %}
+              <tr>
+                <th scope="row">{{ h.scheming_language_text(dict_fields[resource_relation].label) }}</th>
+                <td>{% snippet 'scheming/display_snippets/multiple_uri_text.html', data=res, field=dict_fields[resource_relation] %}</td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+        
+      </section>
+    {% endif %}
+        {% endblock %}
+      </div>
+      {% block data_preview %}{% endblock %}
+      {% endblock %}
+    </section>
+  {% endblock %}
+{% endblock %}
+
+{% block primary_content %}{% endblock %}
+
+{% block secondary_content %}{% endblock %}
+

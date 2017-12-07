@@ -1,0 +1,52 @@
+{% ckan_extends %}
+
+    {%- block meta -%}
+      {{ super() }}
+      {% block meta_generator %}{% endblock%}
+      <meta name="description" value="{{ _('Datos.gob.es. Reuses the public data') }}" />
+    {%- endblock -%}
+
+    {% block links -%}
+      {{ super() }}
+      {% block seo_links %}
+        {% set default_lang = h.dge_default_locale() %}
+        {% set scheme = request.environ.REQUEST_SCHEME %}
+        {% set canonical_href = scheme + "://" + request.environ.HTTP_HOST + "/" + default_lang + request.environ.PATH_INFO %}
+        <link rel="canonical" href="{{ canonical_href }}" />
+        {% for locale in h.get_available_locales() %}
+          {% if default_lang == locale %}
+        <link href="{{ canonical_href }}" rel="alternate" hreflang="x-default" />
+          {% else %}
+        <link href="{{ scheme }}://{{ request.environ.HTTP_HOST }}{% url_for request.environ.PATH_INFO, locale=locale %}" rel="alternate" hreflang="{{ locale }}" />
+          {% endif %} 
+        {% endfor %}
+      {% endblock%}
+    {% endblock -%}
+
+    {%- block styles %}
+      {% resource 'dge/dge-base-normalize.css' %}
+      {% resource 'dge/dge-base-fonts-ckan.css' %}
+      {% resource 'dge/dge-base-ckan.css' %}
+      {% resource 'dge/dge-base.css' %}
+      {% resource 'dge/dge-base-ie.css' %}
+      {% resource 'dge/dge-layout.css' %}
+      {% resource 'dge/dge-modules.css' %}
+      {% resource 'dge/dge-modules-ckan.css' %}
+      {% resource 'dge/dge-status.css' %}
+      {% resource 'dge/dge-modules-sidr.css' %}
+    {% endblock -%}
+    
+    {%- block scripts %}
+     {{ super() }}
+     {% resource 'dge/jquery.mobile.js' %}
+     {% resource 'dge/jquery.sidr.js' %}
+     {% resource 'dge/dge.js' %}
+     {% resource 'dge/dge-comments.js' %}
+    {% endblock -%}
+    
+    {% block bodytag %} 
+     {{ super() }}
+     {% if c.userobj %}
+     class = 'logged-in'
+     {% endif %}
+    {% endblock %}

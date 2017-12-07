@@ -1,0 +1,12 @@
+name = DGE Search
+description = Search, FacetAPI and Current Search Utilities
+core = 7.x
+version = 7.x-1.0
+package = DGE
+
+dependencies[] = facetapi
+dependencies[] = current_search
+dependencies[] = facetapi_bonus
+dependencies[] = dge_i18n
+
+files[] = plugins/current_search/dge_search_current_search_item_group.inc

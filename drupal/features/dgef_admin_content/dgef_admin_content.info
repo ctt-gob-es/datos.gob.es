@@ -1,0 +1,12 @@
+name = DGEF Admin content
+core = 7.x
+version = 7.x-1.0
+package = Features
+dependencies[] = views
+dependencies[] = views_bulk_operations
+dependencies[] = views_ui
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[views_view][] = admin_content
+features_exclude[dependencies][ctools] = ctools
+project path = sites/all/modules/features

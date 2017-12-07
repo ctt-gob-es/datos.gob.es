@@ -1,0 +1,334 @@
+<?php
+
+/**
+ * Copyright (C) 2017 Entidad Pública Empresarial Red.es
+ * 
+ * This file is part of "dge_send_content (datos.gob.es)".
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+const ADD_CONTENT_TYPES = array('app', 'initiative', 'request', 'success');
+
+define('DGE_SEND_CONTENT_MAX_LENGTH_TITLE',60);
+
+
+/**
+ * @param $items
+ *
+ * Without this function, you suffer pain
+ */
+function dge_send_content_menu_alter(&$items) {
+  $items['file/ajax']['file path'] = drupal_get_path('module', 'node');
+  $items['file/ajax']['file'] = 'node.pages.inc';
+  $items['system/ajax']['file path'] = drupal_get_path('module', 'node');
+  $items['system/ajax']['file'] = 'node.pages.inc';
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function dge_send_content_block_info() {
+  $blocks = array();
+
+  foreach(variable_get('dge_send_content_types', ADD_CONTENT_TYPES) as $type) {
+    $blocks['dge_send_content_'.$type] = array(
+      'info' => t('DGE Send content !type',array('!type' => $type)),
+      'cache' => DRUPAL_NO_CACHE,
+    );
+  }
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function dge_send_content_block_view($delta = '') {
+  $block = array();
+  if(strstr($delta,'dge_send_content_')!==false){
+    $type = str_replace('dge_send_content_','',$delta);
+    $form = dge_send_content_get_node_form($type);
+    $block['content'] = !is_null($form) ? drupal_render($form) : '';
+    $block['subject'] = t('Create content @type', array('@type' => ucfirst($type)));
+  }
+  return $block;
+}
+
+function dge_send_content_get_node_form($type) {
+  global $user;
+  if (node_access('create', $type) && in_array($type,variable_get('dge_send_content_types', ADD_CONTENT_TYPES))){
+    module_load_include('inc', 'node', 'node.pages');
+    $form = node_add($type);
+
+    // Disable fields for anonymous users
+    if (isset($form['#node']) && isset($form['field_sender_terms_of_use']) && !$user->uid) {
+      // Get visibility  configuration
+      $fields_data = dge_send_content_sender_data_fields();
+      $fields_data = array_merge($fields_data,
+                                 dge_send_content_specific_data_fields($type));
+      foreach($fields_data as $field_name => $field_options) {
+        if(isset($form[$field_name]) && isset($field_options['anonymous visible'])) {
+          $form[$field_name]['#access'] = $field_options['anonymous visible'];
+        }
+      }
+    }
+    return $form;
+  }
+  return null;
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function dge_send_content_form_node_form_alter(&$form, $form_state, $form_id) {
+  global $user;
+
+  if (isset($form['#node'])) {
+    $type = $form['#node']->type;
+    // Without this line, you suffer pain
+    form_load_include($form_state, 'inc', 'node', 'node.pages');
+    if(isset($form['field_sender_terms_of_use'])) {
+      if($user->uid) {
+        // Avoid show terms of use if the user is not anonymous
+        $form['field_sender_terms_of_use']['#access'] = false;
+
+        $def_lang = 'und';
+        if (isset($form['field_sender_terms_of_use']['#language'])) {
+          $def_lang = $form['field_sender_terms_of_use']['#language'];
+        }
+        $form['field_sender_terms_of_use'] = array();
+        $form['field_sender_terms_of_use']['#type'] = 'hidden';
+        $form['field_sender_terms_of_use']['#value'] = 1;
+        $form['field_sender_terms_of_use']['#language'] = $def_lang;
+      }
+      // Anonymous user
+      else {
+        form_load_include($form_state, 'inc', 'node', 'node.pages');
+
+        //Remove warnings
+        drupal_get_messages('warning');
+
+        //Limit request title
+        if ($form_id == 'request_node_form') {
+           $form['title']['#maxlength'] = DGE_SEND_CONTENT_MAX_LENGTH_TITLE;
+           $form['title']['#attributes'] = array(
+                'maxlength' => DGE_SEND_CONTENT_MAX_LENGTH_TITLE,
+                'size' => DGE_SEND_CONTENT_MAX_LENGTH_TITLE);
+        }
+
+        // Change text of terms of use field
+        $terms_anchor = variable_get('dge_send_content_terms_of_use_anchor',t('terms of use'));
+        $terms_link = _dge_basic_get_terms_of_use(False);
+        $terms_anchor_link = l($terms_anchor, $terms_link, array('attributes' => array('class' => 'terms-of-use')));
+        $terms_label = variable_get('dge_send_content_terms_of_use_text', t('I read and accept !terms_anchor_link', array('!terms_anchor_link' => $terms_anchor_link)));
+        $form['field_sender_terms_of_use'][LANGUAGE_NONE]['#title'] = $terms_label;
+
+        // Make required sender data
+        $fields_data = dge_send_content_sender_data_fields();
+        $fields_data = array_merge($fields_data,
+                                 dge_send_content_specific_data_fields($type));
+        foreach($fields_data as $field_name => $field_options) {
+          if(isset($form[$field_name]) && isset($field_options['anonymous required'])) {
+            if(isset($form[$field_name][LANGUAGE_NONE][0])) {
+              $value_name = $form[$field_name][LANGUAGE_NONE][0]['#columns'][0]; // $value_name can be 'value' or 'email'
+              $form[$field_name][LANGUAGE_NONE][0][$value_name]['#required'] = $field_options['anonymous required'];
+            } elseif (array_key_exists('#required', $form[$field_name][LANGUAGE_NONE])) {
+              $form[$field_name][LANGUAGE_NONE]['#required'] = $field_options['anonymous required'];
+            }
+          }
+          if(isset($form[$field_name]) && isset($field_options['anonymous visible'])) {
+            $form[$field_name]['#access'] = $field_options['anonymous visible'];
+          }
+        }
+        // Remove additional settings
+        unset($form['additional_settings']);
+        unset($form['actions']['preview']);
+        //Change Button Save text
+        $form['actions']['submit']['#value'] = t('Send');
+
+        // Content revision form
+        $form['revision_information']['#access'] = false;
+      }
+
+      //move description of images to upload description
+      foreach (dge_send_content_image_fields() as $field) {
+        if (isset($form[$field])) {
+          if (!empty($form[$field]['und']['#description'])) {
+            $form[$field]['und']['#file_upload_description'] = $form[$field]['und']['#description'] .
+                  '<br />' . $form[$field]['und']['#file_upload_description'];
+            unset($form[$field]['und']['#description']);
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Sender fields definitions
+ */
+function dge_send_content_sender_data_fields() {
+  return array(
+    'field_sender_terms_of_use' => array(
+      'anonymous required'  => true,
+      'view visible'        => false,
+    ),
+    'field_sender_name'     => array(
+      'anonymous required'  => true,
+      'view visible'        => true,
+    ),
+    'field_sender_surname'  => array(
+      'anonymous required'  => true,
+      'view visible'        => true,
+    ),
+    'field_sender_email'    => array(
+      'anonymous required'  => true,
+      'view visible'        => false,
+    ),
+    'field_sender_phone'    => array(
+      'anonymous required'  => false,
+      'view visible'        => false,
+    ),
+    'field_sender_company'  => array(
+      'anonymous required'  => false,
+      'view visible'        => true,
+    ),
+    'language'              => array(
+      'anonymous required'  => false,
+      'view visible'        => false,
+      'anonymous visible'   => false,
+    ),
+  );
+}
+
+/**
+ * Specific fields modifications
+ */
+function dge_send_content_specific_data_fields($type) {
+  $fields = array();
+  if ($type == 'request') {
+    $fields = array(
+      'field_request_answer'      => array(
+        'anonymous required'  => false,
+        'view visible'        => false,
+        'anonymous visible'   => false,
+      ),
+      'field_request_publisher'   => array(
+        'anonymous required'  => false,
+        'view visible'        => false,
+        'anonymous visible'   => false,
+      ),
+      'field_request_dataset_url' => array(
+         'anonymous required'  => false,
+         'view visible'        => false,
+         'anonymous visible'   => false,
+      ),
+      'field_request_tx_status'   => array(
+        'anonymous required'  => false,
+        'view visible'        => false,
+        'anonymous visible'   => false,
+      ),
+    );
+  } elseif ($type == 'app') {
+    $fields = array(
+      'field_app_developer'   => array(
+        'anonymous required'  => true,
+        'view visible'        => true,
+      ),
+      'field_app_dataset_url' => array(
+        'anonymous required'  => true,
+        'view visible'        => true,
+      ),
+      'field_app_platform'    => array(
+        'anonymous required'  => true,
+        'view visible'        => true,
+      ),
+      'field_app_license'     => array(
+        'anonymous required'  => true,
+        'view visible'        => true,
+      ),
+      'field_app_update_date' => array(
+        'anonymous required'  => false,
+        'view visible'        => false,
+        'anonymous visible'   => false,
+      ),
+      'field_app_tags'        => array(
+        'anonymous required'  => false,
+        'view visible'        => false,
+        'anonymous visible'   => false,
+      ),
+    );
+  } elseif ($type == 'success') {
+    $fields = array(
+      'field_success_tags'    => array(
+        'anonymous required'  => true,
+        'view visible'        => true,
+      ),
+      'field_success_company' => array(
+        'anonymous required'  => true,
+        'view visible'        => true,
+      ),
+      'field_success_url'     => array(
+        'anonymous required'  => true,
+        'view visible'        => true,
+      ),
+      'field_success_app'     => array(
+        'anonymous required'  => false,
+        'view visible'        => false,
+        'anonymous visible'   => false,
+      ),
+    );
+  } elseif ($type == 'initiative') {
+    $fields = array(
+      'field_initiative_admin_level' => array(
+        'anonymous required'  => true,
+        'view visible'        => true,
+      ),
+      'field_geoposition'            => array(
+        'anonymous required'  => true,
+        'view visible'        => true,
+      ),
+      'field_initiative_old_id'      => array(
+        'anonymous required'  => false,
+        'view visible'        => false,
+        'anonymous visible'   => false,
+      ),
+      'field_sender_name'     => array(
+        'anonymous required'  => true,
+        'view visible'        => false,
+      ),
+      'field_sender_surname'  => array(
+        'anonymous required'  => true,
+        'view visible'        => false,
+      ),
+      'field_sender_company'  => array(
+        'anonymous required'  => false,
+        'view visible'        => false,
+      ),
+    );
+  }
+  return $fields;
+}
+
+/**
+ * Sender fields definitions
+ */
+function dge_send_content_image_fields() {
+  return array(
+    'field_app_image',
+    'field_app_images',
+    'field_success_image',
+  );
+}

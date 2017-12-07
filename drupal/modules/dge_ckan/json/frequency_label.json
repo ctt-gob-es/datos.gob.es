@@ -1,0 +1,46 @@
+{
+  "__comment": "Datos de frecuencias obtenidas de frequencies-skos.rdf",
+  "frequency_fields": [
+    {
+      "years": {
+        "1":"Anual",
+        "2":"Bienal",
+        "3":"Trienal"
+      },
+      "months": {
+        "1":"Mensual",
+        "2":"Bimestral",
+        "3":"Trimestral",
+        "4":"Cuatrimestral",
+        "6":"Semestral"
+      },
+      "weeks": {
+        "1":"Semanal",
+        "2":"Quincenal"
+      },
+      "days": {
+        "1":"Diario",
+        "2":"Tres veces por semana",
+        "3":"Bisemanal",
+        "7":"Semanal",
+        "10":"Tres veces por mes",
+        "15":"Quincenal"
+      },
+      "hours": {
+        "12":"Dos veces al d\u00EDa"
+      },
+      "seconds": {
+        "1":"Continuo"      
+      },            
+      "types": {
+        "seconds":"Segundos",
+        "minutes":"Minutos",
+        "hours":"Horas",
+        "days":"D\u00EDas",
+        "weeks":"Semanas",
+        "months":"Meses",
+        "years":"Años"
+      }
+    }
+  ]
+}

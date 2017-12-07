@@ -1,0 +1,124 @@
+<?php
+
+/**
+ * Copyright (C) 2017 Entidad Pública Empresarial Red.es
+ * 
+ * This file is part of "dge_user (datos.gob.es)".
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+define('PROFILE_ORGANIZATION','profile_agency_data');
+define('PROFILE_ORGANIZATION_SHORT',str_replace('profile_','',PROFILE_ORGANIZATION));
+define('PROFILE_ORGANIZATION_FIELD','field_root_agency');
+define('PROFILE_OTHER_ORGANIZATION_FIELD','field_other_agency');
+define('PROFILE_OTHER_ORGANIZATION_NAME_FIELD','field_other_agency_name');
+define('ROLE_NAME_ORGANIZATION','organization');
+define('ROLE_NAME_EDITOR','editor');
+define('ROLE_NAME_SITE_MANAGER','site manager');
+
+/**
+ * Alter profile2 forms.
+ *
+ * @param $form
+ *   Nested array of form elements that comprise the form.
+ * @param $form_state
+ *   A keyed array containing the current state of the form.
+ *
+ * @see profile2_attach_form()
+ */
+function dge_user_form_profile2_form_alter(&$form, &$form_state) {
+
+  // User can select other organization if yours does not exist
+  if(isset($form[PROFILE_ORGANIZATION][PROFILE_OTHER_ORGANIZATION_FIELD])){
+    $other_organization_field = PROFILE_ORGANIZATION."[".PROFILE_OTHER_ORGANIZATION_FIELD."][".LANGUAGE_NONE."]";
+    // Only show this field when the 'field_other_agency' checkbox is enabled.
+    // If it shows, then is required
+    $form[PROFILE_ORGANIZATION][PROFILE_OTHER_ORGANIZATION_NAME_FIELD]['#states'] = array(
+      'visible' => array(
+        ":input[name='".$other_organization_field."']" => array('checked' => TRUE),
+      ),
+      'required' => array(
+        ":input[name='".$other_organization_field."']" => array('checked' => TRUE),
+      ),
+    );
+    // Agency category is not required if user checks 'field_other_agency'
+    $form[PROFILE_ORGANIZATION][PROFILE_ORGANIZATION_FIELD]['#states'] = array(
+      'required' => array(
+        ":input[name='".$other_organization_field."']" => array('checked' => FALSE),
+      ),
+    );
+    $form['#validate'][] = 'dge_user_organization_form_validate';
+  }
+  // Hide fields in register form
+  if($form['#id'] == 'user-register-form' && isset($form[PROFILE_ORGANIZATION]['field_ckan_user_id'])){
+    $form[PROFILE_ORGANIZATION]['field_ckan_user_id']['#access'] = FALSE;
+    $form[PROFILE_ORGANIZATION]['field_ckan_user_name']['#access'] = FALSE;
+  }
+
+}
+
+/**
+ * Validate organization field
+ *
+ * @param $form
+ *   Nested array of form elements that comprise the form.
+ * @param $form_state
+ *   A keyed array containing the current state of the form.
+ */
+function dge_user_organization_form_validate(&$form, &$form_state) {
+  $organization_values = $form_state['values'][PROFILE_ORGANIZATION];
+  // Organization not filled adn Other agency not checked
+  if(is_null($organization_values[PROFILE_ORGANIZATION_FIELD][LANGUAGE_NONE][0]['tid']) && $organization_values[PROFILE_OTHER_ORGANIZATION_FIELD][LANGUAGE_NONE][0]['value'] != 1) {
+    form_set_error(PROFILE_ORGANIZATION_FIELD, t('!name field is required', array('!name' => t('Organization'))));
+  };
+  // Other organization checked and Other organization name not filled
+  if($organization_values[PROFILE_OTHER_ORGANIZATION_FIELD][LANGUAGE_NONE][0]['value'] == 1 && empty($organization_values[PROFILE_OTHER_ORGANIZATION_NAME_FIELD][LANGUAGE_NONE][0]['value'])) {
+    form_set_error(PROFILE_OTHER_ORGANIZATION_NAME_FIELD, t('!name field is required', array('!name' => t('Other organization name'))));
+  };
+  // Other organization checked and Organization name filled
+  if($organization_values[PROFILE_OTHER_ORGANIZATION_FIELD][LANGUAGE_NONE][0]['value'] == 1 && !empty($organization_values[PROFILE_ORGANIZATION_FIELD][LANGUAGE_NONE][0]['tid'])) {
+    form_set_error(PROFILE_ORGANIZATION_FIELD, t('!name field must be not checked', array('!name' => t('Other organization'))));
+  };
+}
+
+/**
+ * Return if user has role by role ID
+ */
+function dge_user_has_role($rid, $account = NULL) {
+  if (!$account) {
+    $account = $GLOBALS['user'];
+  }
+
+  return isset($account->roles[$rid]) && $account->roles[$rid];
+}
+
+/**
+ * Return if user has role by role name
+ */
+function dge_user_has_role_name($role_name, $account = NULL) {
+  if (!$account) {
+    $account = $GLOBALS['user'];
+  }
+  $rid = dge_basic_get_role_by_name($role_name);
+  return isset($account->roles[$rid]) && $account->roles[$rid];
+}
+
+/**
+ * Return RID for Role Name
+ */
+function dge_basic_get_role_by_name($name) {
+  $roles = user_roles();
+  return array_search($name, $roles);
+}

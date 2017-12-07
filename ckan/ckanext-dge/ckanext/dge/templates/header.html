@@ -1,0 +1,343 @@
+{% ckan_extends %}
+
+{% set visible_data_catalog = '' %}
+{% set active_data_catalog = '' %}
+{% set active_data_catalog_a = '' %}
+{% if ((c.controller == 'package' and not c.dataset_type == 'harvest') 
+       or (c.controller == 'ckanext.dge.controllers:DGEController' and (c.action == 'swagger' or c.action == 'yasgui' or c.action == 'accessible_swagger' or c.action == 'accessible_yasgui')))%}
+  {% set visible_data_catalog = ' is-visible' %}
+  {% set active_data_catalog = ' active' %}
+  {% set active_data_catalog_a = " class='active'" %}
+{% endif %}
+
+
+
+{% set visible_my_account = '' %}
+{% set active_my_account = '' %}
+{% set active_my_account_a = '' %}
+{% if (c.controller == 'ckanext.dge.controllers:DGEPackageController' 
+       or c.controller == 'organization' 
+       or c.controller == 'ckanext.dge.controllers:DGEOrganizationController'
+       or c.controller == 'ckanext.harvest.controllers.view:ViewController'
+       or (c.controller == 'package' and c.dataset_type == 'harvest'))%}
+  {% set visible_my_account = ' is-visible' %}
+  {% set active_my_account = ' active' %}
+  {% set active_my_account_a = " class='active'" %}
+{% endif %}
+
+
+{% set current_lang = request.environ.CKAN_LANG %}
+{% set user_logged = c.userobj %}
+{% set drupal_menu_endpoints = h.dge_get_endpoints_menu([], current_lang, True, False) %}
+{% block header_wrapper %}
+  {% block header_account %}
+    <div class="site-header">
+      <div class="site-wrapper">
+        <h1 role="banner" class="site-header__banner"> <!-- LOGO -->
+          <a href="/{{ current_lang }}" title="{{ _('Home') }}" rel="home" class="site-header__link">
+            <img src="{{ h.url_for_static('/images/test_site/logo.png') }}" alt="{{ _('Datos.gob.es. Reuse the public information . Go home') }}" class="site-header__logo" />
+          </a>
+        </h1>
+        {% block header_site_mobile_navigation %}
+        <nav class="dge-mobilenav">
+            <a href="#dge-user-menu--rwd" class="dge-mobileuser"><img src="{% url_for_static '/images/ico-menu-user-rwd.png' %}" alt=""><span class="element-invisible"> {{ _('User') }}</span></a>
+            <a href="#dge-search-menu--rwd" class="dge-mobilesearch"><img src="{% url_for_static '/images/ico-menu-search-rwd.png' %}" alt=""><span class="element-invisible"> {{ _('Search') }}</span></a>
+            <a href="#dge-main-menu--rwd" class="dge-mobilemenu"><img src="{% url_for_static '/images/ico-menu-rwd.png' %}" alt=""><span class="element-invisible"> {{ _('Menu') }}</span></a>
+        </nav>
+        {% endblock %}
+        <div class="site-header__options">
+          <div class="region region-header">
+            <!-- LANG MENU HEADER -->
+            <div id="block-lang-dropdown-language" class="block block-lang-dropdown dge-menu-lang">
+              <h2 class="block__title">{{ _('Languages') }}</h2>
+              <div class="block__content content">
+                {% snippet 'snippets/dge_language_selector_header.html' %}
+              </div>
+            </div> <!-- //LANG MENU HEADER -->
+            <!-- SOCIAL HEADER -->
+            <div id="block-block-2" class="block block-block dge-social-links">
+              <div class="block__content content">
+                <div id="boxes-box-dge_social_media_links" class="boxes-box">
+                  <div class="boxes-box-content">
+                    {% snippet 'snippets/dge_social_list_header.html' %}
+                  </div>
+                </div>
+              </div>
+            </div><!-- //SOCIAL HEADER -->
+            {% if user_logged %}
+            <div id="block-dge-basic-dge-basic-user-info-block" class="block block-dge-basic contextual-links-region">
+              <div class="block__content content">
+                <span class="user-name-info">{{ c.userobj.fullname or c.userobj.name }}</span>
+              </div>
+            </div> 
+            {% endif %}
+          </div>
+        </div>
+        {% block header_debug %}
+        {% if g.debug and not g.debug_supress_header %}
+          <div class="debug">Controller : {{ c.controller }}<br/>Action : {{ c.action }}<br/>Dataset_type : {{ c.dataset_type }}</div>
+        {% endif %}
+        {% endblock %}<!-- block header_account -->
+      </div>
+    </div><!-- block header_account -->
+  {% endblock %}
+  {% block header_logo %}{% endblock %}
+  <div class="site-navigation">
+    <div class="site-wrapper">
+      {% block header_site_navigation %}
+        <nav role="navigation" class="main-navigation">
+          <div class="region region-navigation">
+            <!-- #Block mainmenu -->
+            {% block mainmenu %}
+            <div class="block block-menu-block dge-main-menu">
+              <h2 class="block__title">{{ _('Navigation') }}</h2>
+              <div class="block__content content">
+                <div class="menu-block-wrapper menu-block-1 menu-name-main-menu parent-mlid-0 menu-level-1">
+                  <ul class="menu">
+                    <li class="first leaf"><a href="/{{ current_lang }}">{{ _('Home') }}</a></li>
+                    <li class="leaf has-children"><a href="#aporta">{{ _('Aporta initiative') }}</a></li>
+                    <li class="leaf has-children{{ active_data_catalog }}"><a href="#data"{{ active_data_catalog_a }}>{{ _('Data Catalog') }}</a></li>
+                    {% block impact_menu %}
+                    <li class="leaf has-children{{ active_impact }}"><a href="#impact"{{ active_impact }}>{{ _('Impact') }}</a></li>
+                    {% endblock %}
+                    <li class="leaf has-children"><a href="#interact">{{ _('Interact') }}</a></li>
+                    <li class="leaf has-children"><a href="#news">{{ _('Current News') }}</a></li>
+                    {% if user_logged %}
+                    {% block my_account_menu %}
+                    <li class="leaf has-children{{ active_my_account }}"><a href="#useroptions"{{ active_my_account_a }}>{{ _('My Account') }}</a></li>
+                     {% endblock %}
+                    {% endif %}
+                    <li class="leaf"><a href="#search">{{ _('Search') }}</a></li>
+                    {% if not user_logged %}
+                    <li class="last leaf"><a href="#login">{{ _('User') }}</a></li>
+                    {% endif %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+            {% endblock %}<!-- //menu -->
+          </div>
+        </nav>
+        <div class="sub-navigation">
+          <div class="region region-sub-navigation">
+            {% block submenu %}
+            {% set active_li = ' active-trail active is-visible' %}
+            {% set active_a = 'active-trail active' %}
+            <div class="block block-menu-block dge-submenu is-visible">
+              <div class="block__content content">
+                <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                  <ul class="menu">
+                    <li class="first leaf"><a href="/{{ current_lang }}">{{ _('Home') }}</a></li>
+                    <li class="expanded"><a href="#aporta">{{ _('Aporta initiative') }}</a>
+                      <ul class="menu">
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.about'] %}
+                        <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.about'] }}">{{ _('About Aporta initiative') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.meetings'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.meetings'] }}">{{ _('Aporta meetings') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.challenge'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.challenge'] }}">{{ _('Aporta challenge') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.awards'] %}
+                        <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.awards'] }}">{{ _('Aporta awards') }}</a></li>
+                        {% endif %}
+                      </ul>
+                    </li>
+                    
+                    <li class="expanded{{visible_data_catalog}}"><a href="#data">{{ _('Data Catalog') }}</a>
+                      <ul class="menu">
+                        {% if ((c.controller == 'package' and not c.dataset_type == 'harvest') or 
+                               (c.controller == 'ckanext.dge.controllers:DGEController' and (c.action == 'theme' or c.action == 'organism' or c.action == 'spatial_coverage'))) %}
+                           <li class="first leaf{{ active_li }}"><a href="{{ h.url_for(controller='package', action='search') }}" class="{{ active_a }}">{{ _('Datasets') }}</a></li>
+                        {% else %}
+                            <li class="first leaf"><a href="{{ h.url_for(controller='package', action='search') }}">{{ _('Datasets') }}</a></li>
+                        {% endif %}
+                        {% if (c.controller == 'ckanext.dge.controllers:DGEController' and (c.action == 'swagger' or c.action == 'accessible_swagger')) %}
+                          <li class="leaf{{ active_li }}"><a href="{{ h.url_for(controller='ckanext.dge.controllers:DGEController', action='swagger') }}" class="{{ active_a }}">{{ _('API Data') }}</a></li>
+                        {% else %}
+                          <li class="leaf"><a href="{{ h.url_for(controller='ckanext.dge.controllers:DGEController', action='swagger') }}">{{ _('API Data') }}</a></li>
+                        {% endif %}
+                        {% if (c.controller == 'ckanext.dge.controllers:DGEController' and (c.action == 'yasgui' or c.action == 'accessible_yasgui')) %}
+                          <li class="last leaf{{ active_li }}"><a href="{{ h.url_for(controller='ckanext.dge.controllers:DGEController', action='yasgui') }}" class="{{ active_a }}">{{ _('Sparql Point') }}</a></li>
+                        {% else %}
+                          <li class="last leaf"><a href="{{ h.url_for(controller='ckanext.dge.controllers:DGEController', action='yasgui') }}">{{ _('Sparql Point') }}</a></li>
+                        {% endif %}
+                      </ul>
+                    </li>
+                    {% block impact %}
+                    <li class="expanded{{ visible_impact }}"><a href="#impact">{{ _('Impact') }}</a>
+                    {% endblock %}
+                      <ul class="menu">
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.initiatives'] %}
+                        <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.initiatives'] }}">{{ _('Initiatives map') }}</a></li>
+                        {% endif %}
+                        {% block dashboard %}{% endblock %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.applications'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.applications'] }}">{{ _('Applications') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.success_cases'] %}
+                        <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.success_cases'] }}">{{ _('Success cases') }}</a></li>
+                        {% endif %}
+                      </ul>
+                    </li>
+                    <li class="expanded"><a href="#interact">{{ _('Interact') }}</a>
+                      <ul class="menu">
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.documentation'] %}
+                        <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.documentation'] }}">{{ _('Documentation') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.advise_support'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.advise_support'] }}">{{ _('Advise and support') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.requests'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.requests'] }}">{{ _('Data requests') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.about'] %}
+                        <li class="last leaf has-children menu-mlid-792"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.about'] }}">{{ _('Informing about') }}</a></li>
+                        {% endif %}
+                      </ul>
+                    </li>
+                    <li class="expanded"><a href="#news">{{ _('Current News') }}</a>
+                      <ul class="menu">
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.news.news'] %}
+                        <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.news.news'] }}">{{ _('News') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.news.newsletters'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.news.newsletters'] }}">{{ _('Newsletters') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.news.events'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.news.events'] }}">{{ _('Events') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.news.risp'] %}
+                        <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.news.risp'] }}">{{ _('RISP community') }}</a></li>
+                        {% endif %}
+                      </ul>
+                    </li>
+                    {% if user_logged %}
+                    {% block my_account %}
+                    <li class="expanded menu-mlid-2 {{ visible_my_account }}"><a href="#useroptions">{{ _('My Account') }}</a>
+                    {% endblock %}
+                      <ul class="menu">
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.account.profile'] %}
+                        <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.account.profile'] }}">{{ _('My Profile') }}</a></li>
+                        {% endif %}
+                        {% if (c.controller == 'organization' 
+                               or c.controller == 'ckanext.dge.controllers:DGEOrganizationController')%}
+                          <li class="leaf{{ active_li }}"><a href="{{ h.dge_url_for_user_organization() }}" class="{{ active_a }}">{{ _('My Datasets') }}</a></li>
+                        {% else %}
+                         <li class="leaf"><a href="{{ h.dge_url_for_user_organization() }}">{{ _('My Datasets') }}</a></li>
+                        {% endif %}
+                        {% if (c.dataset_type == 'harvest'
+                               or c.controller == 'ckanext.dge.controllers:DGEPackageController' 
+                               or c.controller == 'ckanext.harvest.controllers.view:ViewController')%}
+                          <li class="leaf{{ active_li }}"><a href="{{ h.url_for(controller='ckanext.dge.controllers:DGEPackageController', action='search') }}" class="{{ active_a }}">{{ _('Harvest') }}</a></li>
+                        {% else %}
+                          <li class="leaf"><a href="{{ h.url_for(controller='ckanext.dge.controllers:DGEPackageController', action='search') }}">{{ _('Harvest') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.account.requests'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.account.requests'] }}/">{{ _('Data requests') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.account.applications'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.account.applications'] }}">{{ _('Applications') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.account.success_cases'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.account.success_cases'] }}">{{ _('Success cases') }}</a></li>
+                        {% endif %}
+                        {% if c.userobj.sysadmin and drupal_menu_endpoints['ckanext.dge.drupal_menu.account.unassigned_requests'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.account.unassigned_requests'] }}">{{ _('Unassigned data requests') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.account.comments'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.account.comments'] }}">{{ _('Comments') }}</a></li>
+                        {% endif %}
+                        {% if c.userobj.sysadmin and drupal_menu_endpoints['ckanext.dge.drupal_menu.account.initiatives'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.account.initiatives'] }}">{{ _('Initiatives') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.account.widget'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.account.widget'] }}">{{ _('Widget') }}</a></li>
+                        {% endif %}
+                        {% if c.userobj.sysadmin and drupal_menu_endpoints['ckanext.dge.drupal_menu.account.users'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.account.users'] }}">{{ _('Users Management') }}</a></li>
+                        {% endif %}
+                        {% block my_dashboard %}{% endblock %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.account.logout'] %}
+                        <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.account.logout'] }}">{{ _('Log out') }}</a></li>
+                        {% endif %}
+                      </ul>
+                    </li>
+                    {% endif %}
+                    <li class="leaf dge-menu-search"><a href="#search">{{ _('Search') }}</a></li>
+                    <li class="last dge-menu-login"><a href="#login">{{ _('User') }}</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            {% endblock %}<!-- //block submenu -->
+            {% block user_login %}
+            {% if not user_logged %}
+            <div id="block-dge-basic-dge-basic-user-login-block" class="block block-dge-basic block-user">
+              <div class="block__content content">
+                <a class="closeModalMD closeLogin no-text"><i class="icon-remove-sign"></i><span class="text">{{ _('close') }}</span></a>
+                <form accept-charset="UTF-8" id="user-login-form" method="post" action="{{ drupal_menu_endpoints['ckanext.dge.user_logged_page'] }}">
+                  <div>
+                    <div class="form-item form-type-textfield form-item-name">
+                      <label for="edit-name">{{ _('Username') }} <span class="form-required" title="{{ _('This field is required') }}.">*</span></label>
+                      <input type="text" id="edit-name" name="name" value="" size="15" maxlength="60" class="form-text required">
+                    </div>
+                    <div class="form-item form-type-password form-item-pass">
+                      <label for="edit-pass">{{ _('Password') }} <span class="form-required" title="{{ _('This field is required') }}.">*</span></label>
+                      <input type="password" id="edit-pass" name="pass" size="15" maxlength="128" class="form-text required">
+                    </div>
+                    <div class="item-list">
+                      <ul>
+                        <li class="first"><a href="/{{ current_lang }}/organismo/register" title="{{ _('Create a new user account') }}.">{{ _('Create new account') }}</a></li>
+                        <li class="last"><a href="/{{ current_lang }}/user/password" title="{{ _('Request new password via e-mail') }}.">{{ _('Request new password') }}</a></li>
+                      </ul>
+                    </div>
+                    <input type="hidden" name="form_id" value="user_login_block">
+                    <div class="form-actions form-wrapper" id="edit-actions">
+                      <input type="submit" id="edit-submit--2" name="op" value="{{ _('Log in') }}" class="form-submit">
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            {% endif %}
+            {% endblock %}<!-- //block user_login -->
+            {% block header_site_search %}
+            <div id="block-search-form" class="block block-search block-search contextual-links-region">
+              <div class="block__content content">
+                <form action="{% url_for controller='ckanext.dge.controllers:DGEUtilController', action='redirect_search' %}" method="post" id="search-block-form" accept-charset="UTF-8">
+                  <div class="container-inline">
+                    <h2 class="element-invisible">{{ _('Search form') }}</h2>
+                    <div class="form-item form-type-radios form-item-search-filter">
+                      <div id="edit-search-filter" class="form-radios">
+                        <div class="form-item form-type-radio form-item-search-filter">
+                          <input type="radio" id="edit-search-filter-ckan" name="search_filter" value="ckan" checked="checked" class="form-radio">  
+                          <label class="option" for="edit-search-filter-ckan">{{ _('Data Catalog') }}</label>
+                        </div>
+                        <div class="form-item form-type-radio form-item-search-filter">
+                          <input type="radio" id="edit-search-filter-drupal" name="search_filter" value="drupal" class="form-radio">  
+                          <label class="option" for="edit-search-filter-drupal">{{ _('Portal content') }}</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-item form-type-textfield form-item-search-block-form">
+                      <label class="element-invisible" for="edit-search-block-form--2">{{ _('Search') }} </label>
+                      <input title="{{ _('Enter the terms you wish to search for.') }}" placeholder="{{ _('Search') }}" type="text" id="edit-search-block-form--2" name="search_block_form" value="" size="15" maxlength="128" class="form-text">
+                    </div>
+                    <div class="form-actions form-wrapper" id="edit-actions">
+                      <input type="submit" id="edit-submit--2" name="op" value="{{ _('Search') }}" class="form-submit">
+                    </div>
+                    <input type="hidden" name="form_id" value="search_block_form">
+                    <input type="hidden" name="url" value={{ request.environ.CKAN_CURRENT_URL }}/>
+                  </div>
+                </form>
+              </div>
+            </div>
+            {% endblock %}<!-- //block header_site_search -->
+          </div>
+        </div>
+      {% endblock %}<!-- // block header_site_navigation -->
+    </div>
+  </div>
+{% endblock %} <!-- // block header_wrapper -->

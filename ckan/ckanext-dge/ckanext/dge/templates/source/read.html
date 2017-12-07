@@ -1,0 +1,8 @@
+{% ckan_extends %}
+
+{% block primary_content_inner %}
+  <section class="module-content">
+    <h2>{{ c.harvest_source.status.total_datasets }} {{ _('Datasets') }} </h2>
+    {{ h.dge_package_list_for_source(source.id) }} 
+  </section>
+{% endblock %}

@@ -1,0 +1,4 @@
+isodate==0.5.4
+iso8601==0.1.11
+losser==0.0.3
+httpretty

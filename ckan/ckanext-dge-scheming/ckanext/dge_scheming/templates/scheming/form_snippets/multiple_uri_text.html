@@ -1,0 +1,82 @@
+{% import 'macros/form.html' as form %}
+
+<div class="multi-new-value multi-new-value-{{field.field_name}}" id="multi-value-{{field.field_name}}">
+   {% set vars = {'stored': False, 'formulary': False, 'indice': 1} %}
+   {#
+     Se recorren los valores del formulario para ver si ya hay elementos
+   #}
+   {%- for valor in data | sort -%}
+        {% if valor.startswith( field.field_name + '-' ) and data.get(valor) %}
+           {{
+             form.input(
+                field.field_name + '-' ~ vars.indice,
+                id='field-' + field.field_name + '-' ~ vars.indice,
+                label=h.scheming_language_text(field.label) + ' ' ~ vars.indice,
+                placeholder=h.scheming_language_text(field.form_placeholder),
+                value=data.get(valor),
+                error=errors[valor],
+                classes=['control-medium', 'div-'+field.field_name],
+                attrs=field.form_attrs if 'form_attrs' in field else {},
+                is_required=h.scheming_field_required(field)
+             )
+           }}
+           {% if vars.update({'formulary': True}) %} {% endif %}
+           {% if vars.update({'indice': vars.indice + 1}) %} {% endif %}
+        {% endif %}
+   {%- endfor -%}
+   {#
+     Si no hay campos de formulario se comprueba si es una edicion
+   #}
+   {% if not vars.formulary %}
+      {%- set values = data.get(field.field_name, []) -%}
+
+      {%- for element in values -%}
+        {{ form.input(
+          field.field_name + '-' ~ vars.indice,
+          id='field-' + field.field_name + '-' ~ vars.indice,
+          label=h.scheming_language_text(field.label) + ' ' ~ vars.indice,
+          placeholder=h.scheming_language_text(field.form_placeholder),
+          value=element,
+          error=errors[field.field_name + '-' ~ vars.indice],
+          classes=['control-medium', 'div-'+field.field_name],
+          attrs=field.form_attrs if 'form_attrs' in field else {},
+          is_required=h.scheming_field_required(field)
+          ) }}
+        {% if vars.update({'indice': vars.indice + 1}) %} {% endif %}
+      {%- endfor -%}
+   {% endif %}
+   {#
+     Se aniade un ultimo input
+   #}
+   {{ form.input(
+          field.field_name + '-' ~ vars.indice,
+          id='field-' + field.field_name + '-' ~ vars.indice,
+          label=h.scheming_language_text(field.label) + ' ' ~ vars.indice,
+          placeholder=h.scheming_language_text(field.form_placeholder),
+          value='',
+          error='',
+          classes=['control-medium', 'div-'+field.field_name],
+          attrs=field.form_attrs if 'form_attrs' in field else {},
+          is_required=h.scheming_field_required(field)
+    ) }}
+   <div id="multi-value-{{field.field_name}}-link" class="multi-add-field control-group">
+      {%- snippet 'scheming/form_snippets/help_text.html', field=field %}
+      <div class="controls">
+         <button class="btn btn-mini btn-add-multiple-field" type="button" onclick="addNewField_{{field.field_name}}();">{% trans %}Add new{% endtrans %} {{h.scheming_language_text(field.label)}}</button>
+      </div>
+   </div>
+  
+   <script>
+       function addNewField_{{field.field_name}}(){
+          if(window.jQuery) {
+             var last_div = $("#multi-value-{{field.field_name}} .div-{{field.field_name}}").last();
+             var input = last_div.find("input").last();
+             var string_input = input.attr('name').substring(input.attr('name').lastIndexOf("-")+1);
+             var num_input = parseInt(string_input)+1;
+             var placeholder = (typeof input.attr('placeholder') != 'undefined')?input.attr('placeholder'):'';
+             $("#multi-value-{{field.field_name}}-link").before('<div class="control-group control-medium div-{{field.field_name}}"><label class="control-label" for="field-{{field.field_name}}-'+num_input+'">{{h.scheming_language_text(field.label)}} '+num_input+'</label><div class="controls "><input id="field-{{field.field_name}}-'+num_input+'" type="text" name="{{field.field_name}}-'+num_input+'" value="" placeholder="'+placeholder+'"></div></div>');
+          }
+       }
+  </script>
+</div>
+

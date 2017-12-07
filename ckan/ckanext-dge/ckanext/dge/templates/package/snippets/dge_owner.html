@@ -1,0 +1,25 @@
+{% if pkg_dict.publisher %}
+{% set publisher = h.dge_get_dataset_publisher(pkg_dict.publisher) %}
+{% if publisher %}
+{% set publisher_title = publisher.get('NAME') %}
+{% set publisher_principal_name = publisher.get('PPAL_NAME') %}
+{% set administration_level = publisher.get('AL') %}
+<section class="publisher">
+    <div class="dataset-metadata">
+          <strong>{{ _("Publisher") }}</strong>&nbsp;
+          <span>
+          {% link_for publisher_title|truncate(120), controller='package', action='search', publisher_display_name=publisher_title %}
+          {% if publisher_principal_name %}
+          ({{ publisher_principal_name }})
+          {% endif%}
+          </span>
+    </div>
+    {% if administration_level %}
+    <div class="dataset-metadata">
+          <strong>{{ _("Administration level") }}</strong>&nbsp;
+          <span>{{ administration_level }}</span>
+    </div> 
+    {% endif %}
+</section>
+{% endif %}
+{% endif %}

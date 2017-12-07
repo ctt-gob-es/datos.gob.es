@@ -1,0 +1,7 @@
+{%- set values = data[field.field_name] -%}
+{% if values.type and values.value %}
+<p>{% trans value=values.value, type=values.type %}
+      Every {{ value }} {{ type }}
+   {% endtrans %}
+</p>
+{% endif %}

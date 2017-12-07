@@ -1,0 +1,315 @@
+<?php
+
+/**
+ * Copyright (C) 2017 Entidad Pública Empresarial Red.es
+ * 
+ * This file is part of "dge_twitter (datos.gob.es)".
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * Implements hook_libraries_info().
+ *
+ * Basic twitter access libraries.
+ */
+function dge_twitter_libraries_info() {
+
+  $libraries['oauth'] = array(
+    'name' => 'OAuth',
+    'version' => '1.0',
+    'files' => array(
+      'php' => array('oauth.php'),
+    )
+  );
+
+  $libraries['twitteroauth'] = array(
+    'name' => 'twitteroauth',
+    'version' => '1.0',
+    'files' => array(
+      'php' => array('twitteroauth.php'),
+    )
+  );
+
+  return $libraries;
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function dge_twitter_menu() {
+  $items['admin/config/dge/twitter'] = array(
+    'title'             => 'Twitter config',
+    'page callback'     => 'drupal_get_form',
+    'page arguments'    => array('dge_twitter_admin_settings'),
+    'access arguments'  => array('administer site configuration'),
+    'type'              => MENU_NORMAL_ITEM,
+    'file'              => 'dge_twitter.admin.inc',
+  );
+  $items['twitter/tweets'] = array(
+    'page callback' => 'retrieve_last_tweets',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function dge_twitter_block_info() {
+  $blocks["dge_twitter_block"] = array(
+    'info' => t('DGE Twitter Block'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function dge_twitter_block_view($delta) {
+  if ($delta == 'dge_twitter_block') {
+    $settings = array(
+      'dge_twitter_block_screen_name' => variable_get('dge_twitter_block_screen_name'),
+      'dge_twitter_block_avatar' => variable_get('dge_twitter_block_avatar', 'none'),
+    );
+    //Load JS files
+    $content = '';
+    if (variable_get('dge_twitter_block_ajax', 0)) {
+      drupal_add_js(drupal_get_path('module', 'dge_twitter') .'/js/dge_twitter.js');
+      $content = '<div id="dgetweets" class="dgetweets"><p style="text-align:center">'.t('Loading latest tweets...').'</p></div>';
+    } else {
+      //Retrieve  tweets
+      $realtime_tweets = _dge_twitter_tweets();
+      $content = '<div id="dgetweets" class="dgetweets">'.theme('dge_twitter_block_content',
+          array(
+            'tweets' => $realtime_tweets,
+            'settings' => $settings
+         )).'</div>';
+    }
+    return array(
+      'subject' => t('Last tweets'),
+      'content' => $content,
+    );
+  }
+}
+
+/**
+ * Load oauth class.
+ */
+function dge_twitter_class_load(){
+  libraries_load('oauth');
+  if ($library = libraries_detect('oauth') && !empty($library['installed'])) {
+    drupal_set_message(t('oauth is not installed'),'error');
+  }
+  // oauth must be loaded before load twitteroauth
+  libraries_load('twitteroauth');
+  if ($library = libraries_detect('twitteroauth') && !empty($library['installed'])) {
+    drupal_set_message(t('twitteroauth is not installed'),'error');
+  }
+}
+
+/**
+ * Load tweets.
+ */
+function dge_twitter_block_content() {
+  global $conf;
+  dge_twitter_class_load();
+
+  $consumer_key       = variable_get('dge_twitter_block_consumer_key');
+  $consumer_secret    = variable_get('dge_twitter_block_consumer_secret');
+  $oauth_token        = variable_get('dge_twitter_block_access_token');
+  $oauth_token_secret = variable_get('dge_twitter_block_access_token_secret');
+  $screen_name 		 = variable_get('dge_twitter_block_screen_name');
+  $count 			    = variable_get('dge_twitter_block_count');
+  $base_url           = 'https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=';
+
+  $connection = new TwitterOAuth($consumer_key, $consumer_secret, $oauth_token , $oauth_token_secret);
+
+  // Proxy configurations
+  if(isset($conf['proxy_server'])) {
+    $proxy_conf = array();
+    $proxy_conf[CURLOPT_PROXY] = $conf['proxy_server'];
+
+    if(isset($conf['proxy_port']) && $conf['proxy_port'] != '')
+      $proxy_conf[CURLOPT_PROXYPORT] = $conf['proxy_port'];
+
+    if(isset($conf['proxy_type']) && $conf['proxy_type'] != '')
+      $proxy_conf[CURLOPT_PROXYTYPE] = $conf['proxy_type'];
+
+    if(isset($conf['proxy_username']) && $conf['proxy_username'] != '') {
+      $proxy_conf[CURLOPT_PROXYUSERPWD] = $conf['proxy_username'].':'.$conf['proxy_password'];
+      $proxy_conf[CURLOPT_PROXYAUTH] = CURLAUTH_NTLM;
+    }
+
+    if(isset($conf['proxy_user_agent']))
+      $proxy_conf[CURLOPT_USERAGENT] = $conf['proxy_user_agent'];
+
+    if(isset($conf['proxy_exceptions'])) {
+      if (is_string($conf['proxy_exceptions'])){
+        $proxy_conf[CURLOPT_NOPROXY] = $conf['proxy_exceptions'];
+      } elseif (is_array($conf['proxy_exceptions']) && !empty($conf['proxy_exceptions'])){
+        $proxy_conf[CURLOPT_NOPROXY] = implode(",", $conf['proxy_exceptions']);
+      }
+    }
+    $connection->setProxy($proxy_conf);
+  }
+
+  $results = $connection->get($base_url.$screen_name."&count=".$count."&exclude_replies=true");
+  $tweets = array();
+  if(is_array($results))
+    foreach($results as $t){
+
+      $tweet = new stdClass();
+      $tweet->name = $t->user->name;
+      $tweet->screen_name = $t->user->screen_name;
+      $tweet->text = _dge_twitter_parse_message($t);
+      $tweet->created = _dge_twitter_format_date($t->created_at);
+      $tweet->avatar = $t->user->profile_image_url;
+      $tweets[] = $tweet;
+    }
+  return $tweets;
+}
+
+function _dge_twitter_format_date($tweet_time){
+   $tweet_time = strtotime($tweet_time) ;
+   $current_time = time();
+   $display_time = $tweet_time;
+
+   $time_diff = abs($current_time - $tweet_time);
+   switch ($time_diff) {
+     case ($time_diff < 60):
+       $display_time = $time_diff . 's';
+       break;
+      case ($time_diff >= 60 && $time_diff < 3600):
+        $min = floor($time_diff/60);
+        $display_time = $min . 'm';
+        break;
+      case ($time_diff >= 3600 && $time_diff < 86400):
+         $hour = floor($time_diff/3600);
+         $display_time = $hour. 'h';
+         break;
+      case ($time_diff >= 86400 && $time_diff < 31557600):
+         $display_time = date('d M.', $tweet_time);
+         break;
+      default:
+         $display_time = date('d M. Y', $tweet_time);
+         break;
+   }
+   return $display_time;
+}
+
+function _dge_twitter_parse_message( $tweet ) {
+    $final_text = $tweet->text;
+    if ( !empty($tweet->entities) ) {
+        $replace_index = array();
+        foreach ($tweet->entities as $area => $items) {
+            $prefix = false;
+            $display = false;
+            switch ( $area ) {
+                case 'hashtags':
+                    $find   = 'text';
+                    $prefix = '#';
+                    $url    = 'https://twitter.com/search/?src=hash&q=%23';
+                    break;
+                case 'user_mentions':
+                    $find   = 'screen_name';
+                    $prefix = '@';
+                    $url    = 'https://twitter.com/';
+                    break;
+                case 'media':
+                    $href    = 'media_url_https';
+                    $display = 'display_url';
+                    break;
+                case 'urls':
+                    $find    = 'url';
+                    $display = 'display_url';
+                    $url     = "expanded_url";
+                    break;
+                default: break;
+            }
+            foreach ($items as $item) {
+               $msg     = $display ? $prefix.$item->$display : $prefix.$item->$find;
+               $replace = $prefix.$item->$find;
+               $href    = isset($item->$url) ? $item->$url : $url;
+               if (!(strpos($href, 'http') === 0)) $href = "http://".$href;
+               if ( $prefix ) $href .= $item->$find;
+               $with = "<a href=\"$href\">$msg</a>";
+               $replace_index[$replace] = $with;
+            }
+        }
+        foreach ($replace_index as $replace => $with) $final_text = str_replace($replace,$with,$final_text);
+    }
+    return $final_text;
+}
+
+function retrieve_last_tweets() {
+   $settings = array(
+     'dge_twitter_block_screen_name' => variable_get('dge_twitter_block_screen_name'),
+     'dge_twitter_block_avatar' => variable_get('dge_twitter_block_avatar', 'none'),
+   );
+
+   //Retrieve  tweets
+   $realtime_tweets = _dge_twitter_tweets();
+
+   $result = array(
+        'RESULT' => '0',
+        'DATA' => theme('dge_twitter_block_content',
+            array(
+              'tweets' => $realtime_tweets,
+              'settings' => $settings
+           )),
+   );
+
+   drupal_json_output($result);
+   drupal_exit();
+}
+
+function _dge_twitter_tweets(){
+   //Retrieve cached tweets
+   $cache_time = variable_get('dge_twitter_block_cache', 60);
+   if (!empty($cache_time) || $cache_time != '0') {
+      if ($cached = cache_get('dge_twitter', 'cache'))  {
+        if ($cached->expire > time()) {
+           $realtime_tweets = $cached->data;
+        }
+      }
+      if(empty($realtime_tweets)) {
+         //Call Twitter
+         $realtime_tweets = dge_twitter_block_content();
+         cache_set('dge_twitter', $realtime_tweets, 'cache', time() + intval($cache_time));
+      }
+   } else {
+      $realtime_tweets = dge_twitter_block_content();
+   }
+
+   return $realtime_tweets;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function dge_twitter_theme() {
+  $path = drupal_get_path('module', 'dge_twitter');
+  return array(
+    'dge_twitter_block_content' => array(
+      'template' => 'dge_twitter_block_content',
+      'path' => $path . '/theme',
+      'pattern' => 'twitter__',
+      'variables' => array(),
+    )
+  );
+}

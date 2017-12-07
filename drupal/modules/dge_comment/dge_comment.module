@@ -1,0 +1,739 @@
+<?php
+
+/**
+ * Copyright (C) 2017 Entidad Pública Empresarial Red.es
+ * 
+ * This file is part of "dge_comment (datos.gob.es)".
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+define('DGE_USERNAME_ADMIN_DEFAULT','datos.gob.es');
+
+/**
+ * Implements hook_permission().
+ */
+function dge_comment_permission() {
+  return array(
+    'access dataset comment' => array(
+      'title' => t('Access Dataset Comment'),
+      'description' => t('Allow users to comment on dataset'),
+    ),
+    'approve organization comment' => array(
+      'title' => t('Approve Organization Comment'),
+      'description' => t('Allow users to approve organization comment'),
+    ),
+    'edit organization comment' => array(
+      'title' => t('Edit Organization Comment'),
+      'description' => t('Allow users to edit organization comment'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function dge_comment_menu() {
+  $items['package/comment/view/%'] = array(
+    'title' => t('View comments'),
+    'page callback' => 'dge_comment_dataset_comment_view',
+    'page arguments' => array(3),
+    'access arguments' => array('access dataset comment'),
+    'file' => 'dge_comment.pages.inc',
+    'type' => MENU_CALLBACK
+  );
+  $items['content/comment/view/%node'] = array(
+    'title' => t('View comments'),
+    'page callback' => 'dge_comment_content_comment_view',
+    'page arguments' => array(3),
+    'access arguments' => array('access comments'),
+    'file' => 'dge_comment.pages.inc',
+    'type' => MENU_CALLBACK
+  );
+  $items['package/comment/add/%'] = array(
+    'title' => t('Add comment'),
+    'page callback' => 'dge_comment_dataset_comment_add',
+    'page arguments' => array(3),
+    'access arguments' => array('access dataset comment'),
+    'file' => 'dge_comment.pages.inc',
+    'type' => MENU_CALLBACK
+  );
+  $items['package/redirect/%/%'] = array(
+    'title' => t('Add comment'),
+    'page callback' => 'dge_comment_dataset_redirect',
+    'page arguments' => array(2,3),
+    'access arguments' => array('access content'),
+    'file' => 'dge_comment.pages.inc',
+    'type' => MENU_CALLBACK
+  );
+  $items['admin/dashboard/comment'] = array(
+    'title' => t('Comments'),
+    'page callback' => 'dge_comment_admin',
+    'access arguments' => array('approve organization comment'),
+    'type' => MENU_LOCAL_TASK | MENU_NORMAL_ITEM,
+     'file' => 'dge_comment.admin.inc',
+  );
+  $items['admin/dashboard/comment/new'] = array(
+    'title' => t('Published comments'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  $items['admin/dashboard/comment/approval'] = array(
+    'title' => t('Unapproved comments'),
+    'title callback' => 'dge_comment_count_unpublished',
+    'page arguments' => array('approval'),
+    'access arguments' => array('approve organization comment'),
+    'type' => MENU_LOCAL_TASK,
+  );
+  $items['admin/config/dge/comments'] = array(
+    'title' => t('Comments'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('dge_comment_admin_settings'),
+    'access arguments' => array('administer comments'),
+    'file' => 'dge_comment.admin.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_menu_alter().
+ *
+ * Alter comment_reply menu
+ */
+function dge_comment_menu_alter(&$items) {
+  if (isset($items['comment/reply/%node'])) {
+    $items['comment/reply/%node']['page callback'] = 'dge_comment_reply';
+    $items['comment/reply/%node']['file'] = 'dge_comment.pages.inc';
+    $items['comment/reply/%node']['module'] = 'dge_comment';
+  }
+  if (isset($items['comment/%comment/edit'])) {
+    $items['comment/%comment/edit']['access callback'] = 'dge_comment_access';
+  }
+  if (isset($items['comment/%/approve'])) {
+    $items['comment/%/approve']['access callback'] = 'dge_comment_access';
+    $items['comment/%/approve']['access arguments'] = array('approve', 1);
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function dge_comment_theme() {
+   return array(
+      'comment_messages' => array(
+         'variables' => array()
+      )
+   );
+}
+
+/**
+ * Override comment access
+ * @see comment_access
+ */
+function dge_comment_access($op, $comment) {
+  global $user;
+
+  if(!is_object($comment)) $comment = comment_load($comment);
+  $flag_organization_user = dge_comment_get_user_access($comment);
+
+  if ($op == 'edit') {
+    return ($user->uid && $user->uid == $comment->uid && user_access('edit own comments'))
+      || user_access('administer comments')
+      || $flag_organization_user && user_access('edit organization comment');
+  }
+
+  else if($op == 'approve') {
+    return user_access('administer comments')
+      || $flag_organization_user && (user_access('edit organization comment') || user_access('approve organization comment'));
+  }
+}
+
+/*
+ * Get user access by organization
+ */
+function dge_comment_get_user_access($comment) {
+  global $user;
+  $flag_organization_user = FALSE;
+  if(dge_user_has_role_name(ROLE_NAME_ORGANIZATION, $user)) {
+    $node = node_load($comment->nid);
+    $account = user_load($node->uid);
+    $account_organization_tid = dge_access_get_user_organization($account);
+    $user_organization_tid = dge_access_get_user_organization($user);
+    if($account_organization_tid && $account_organization_tid == $user_organization_tid)
+      $flag_organization_user = TRUE;
+  }
+  return $flag_organization_user;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function dge_comment_form_comment_form_alter(&$form, $form_state) {
+  $defaults = array('value' => '', 'format' => 'full_html');
+  $comment_description = variable_get('dge_comment_introducing_text', $defaults);
+  $comment_description = check_markup($comment_description['value'], $comment_description['format']);
+
+  if (!empty($comment_description)) {
+    $form['comment_info'] = array(
+      '#markup' => '<div class="comment-explanation">'.t($comment_description).'</div>',
+      '#weight' => -40,
+    );
+  }
+
+  if(isset($form['author']['homepage'])) {
+    $form['author']['homepage']['#access'] = FALSE;
+  }
+  if(isset($form['author']['name'])) {
+    $form['author']['name']['#required'] = FALSE;
+    $name_description = variable_get('dge_comment_anonymous_conditions', '');
+    if (!empty($name_description)) {
+      $form['author']['name']['#description'] = t($name_description);
+    }
+  }
+
+  $form['#submit'][] = 'dge_comment_form_comment_submit';
+}
+
+/**
+ * Redirect to CKAN dataset after reply comment
+ */
+function dge_comment_form_comment_submit($form, &$form_state) {
+  $msgs = drupal_get_messages('status', TRUE);
+
+  $searched_message = t('Your comment has been queued for review by site administrators and will be published after approval.');
+  $key = array_search($searched_message, $msgs['status']);
+  if (FALSE !== $key) {
+     unset($msgs['status'][$key]);
+     dge_comment_set_message(t(variable_get('dge_comment_anonymous_message', 'Thank you for posting a new comment on datos.gob.es portal. Your comment has been queued for review by site administrators and will be published after approval.')));
+  }
+
+  $searched_message = t('Your comment has been posted.');
+  $key = array_search($searched_message, $msgs['status']);
+  if (FALSE !== $key) {
+     unset($msgs['status'][$key]);
+     dge_comment_set_message(t(variable_get('dge_comment_approved_message', 'Thank you for posting a new comment on datos.gob.es portal. Your comment has been posted.')));
+  }
+  foreach ($msgs['status'] as $msgs) {
+     drupal_set_message($msgs, 'status');
+  }
+
+  $package_name = dge_comment_dataset_get_package_name($form['#node']);
+  if($package_name) {
+    $form_state['redirect'] = 'package/redirect/'.$package_name.'/comment';
+  }
+}
+
+/**
+ * Get CKAN Package ID
+ */
+function dge_comment_dataset_get_package_id($node) {
+  if(isset($node->{CKAN_PACKAGE_FIELD}[LANGUAGE_NONE][0]['value'])){
+    return $node->{CKAN_PACKAGE_FIELD}[LANGUAGE_NONE][0]['value'];
+  }
+  else {
+    return false;
+  }
+}
+
+/**
+ * Get CKAN Package Name
+ */
+function dge_comment_dataset_get_package_name($node) {
+  if(isset($node->{CKAN_PACKAGE_NAME_FIELD}[LANGUAGE_NONE][0]['value'])){
+    return $node->{CKAN_PACKAGE_NAME_FIELD}[LANGUAGE_NONE][0]['value'];
+  }
+  else {
+    return false;
+  }
+}
+
+/**
+ * Get CKAN Organization ID
+ */
+function dge_comment_dataset_get_organization_id($node) {
+  if(isset($node->{CKAN_ORGANIZATION_FIELD}[LANGUAGE_NONE][0]['value'])){
+    return $node->{CKAN_ORGANIZATION_FIELD}[LANGUAGE_NONE][0]['value'];
+  }
+  else {
+    return false;
+  }
+}
+
+/**
+ * Build CKAN dataset URL from package_name
+ */
+function dge_comment_build_package_url($package_name) {
+  global $language;
+
+  $path = variable_get('ckan_url', '');
+  if(valid_url($path, TRUE)) {
+    $path .= '/'.$language->language.'/'.variable_get('ckan_pagina_dataset', 'dataset').'/'.$package_name;
+  } else {
+    $path = url($path.'/'.variable_get('ckan_pagina_dataset', 'dataset').'/'.$package_name, array('absolute'=>TRUE));
+  }
+  return $path;
+}
+
+/**
+ * Load node package id
+ */
+function dge_comment_ckan_load_package($package_id) {
+  $ckan = dge_ckan_init_class();
+  $response = $ckan->request(
+    'package_show',
+    $package_id
+  );
+  if (isset($response['success']) && $response['success']) {
+    return $response['result'];
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Load node dataset by package id
+ */
+function dge_comment_dataset_load_by_package($package_id) {
+  $dataset = false;
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'dataset')
+    ->fieldCondition(CKAN_PACKAGE_FIELD, 'value', $package_id, '=')
+    ->range(0,1)
+    ->addMetaData('account', user_load(1));
+
+  $result = $query->execute();
+  if (isset($result['node'])) {
+    $dataset = current(entity_load('node', array_keys($result['node'])));
+  }
+  return $dataset;
+}
+
+/**
+ * Load node organization by package id
+ */
+function dge_comment_users_load_by_organization($organization_id) {
+  $users = array();
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'taxonomy_term')
+    ->propertyCondition('vid', ORGANIZATION_VOCABULARY)
+    ->fieldCondition(CKAN_ORGANIZATION_FIELD, 'value', $organization_id, '=');
+
+  $result = $query->execute();
+  if(isset($result['taxonomy_term'])) {
+    $term = current($result['taxonomy_term']);
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'profile2')
+      ->propertyCondition('type', PROFILE_ORGANIZATION_SHORT)
+      ->fieldCondition(PROFILE_ORGANIZATION_FIELD, 'tid', $term->tid, '=');
+    $result = $query->execute();
+    if(isset($result['profile2'])) {
+      $profiles = entity_load('profile2', array_keys($result['profile2']));
+      foreach($profiles as $profile) {
+        $users[] = $profile->uid;
+      }
+    }
+  }
+  return $users;
+}
+/**
+ * Return true if role of user is "internal".
+ */
+function dge_comment_is_internal_user($account) {
+  $roles = array(
+    'administrator',
+    'site manager',
+    'super editor'
+  );
+  foreach($roles as $role_name) {
+    if(dge_user_has_role_name($role_name, $account))
+      return true;
+  }
+  return false;
+}
+
+/**
+ * Implements hook_user_view().
+ */
+function dge_comment_user_view($account, $build_mode) {
+  global $user;
+  if ($user->uid == $account->uid) {
+    if (user_access('approve organization comment') || user_access('edit organization comment')) {
+      $account->content['dge_comment'] = array(
+        '#type' => 'user_profile_category',
+        '#title' => t('Administer comments'),
+      );
+      $account->content['dge_comment']['links'] = array(
+        '#type' => 'user_profile_item',
+        '#title' => '',
+        '#markup' => l('Administer','admin/dashboard/comment'),
+      );
+    }
+  }
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function dge_comment_node_view($node, $view_mode, $langcode) {
+  if ($node->type == 'dataset' && $view_mode == 'full' && arg(0) == 'node') {
+    $url = 'node/' . $node->nid;
+    if($node->type == 'dataset') {
+      $url = dge_comment_build_package_url(dge_comment_dataset_get_package_name($node));
+    }
+    drupal_goto($url);
+  }
+}
+/*
+ * Implements hook_comment_view_alter().
+ */
+function dge_comment_comment_view_alter(&$build) {
+  if ($build['#view_mode'] == 'full') {
+    $comment =$build['#comment'];
+    if(
+      user_access('administer comments')
+    || (dge_comment_get_user_access($comment)
+        && (user_access('approve organization comment') || user_access('edit organization comment'))
+      )
+    ) {
+      if($comment->status == COMMENT_NOT_PUBLISHED ) {
+        $build['links']['comment']['#links']['comment-approve'] = array(
+          'title' => t('approve'),
+          'href' => "comment/$comment->cid/approve",
+          'html' => TRUE,
+          'query' => array('token' => drupal_get_token("comment/$comment->cid/approve")),
+        );
+      }
+      if(user_access('edit organization comment') ) {
+        $build['links']['comment']['#links']['comment-edit'] = array(
+          'title' => t('edit'),
+          'href' => "comment/$comment->cid/edit",
+          'html' => TRUE,
+        );
+      }
+    }
+  }
+}
+
+/**
+ * Build the comment-related elements for node detail pages.
+ *
+ * @param $node
+ *  A node object.
+ */
+function dge_comment_node_page_additions($node) {
+  global $base_path;
+  $additions = array();
+
+  // Only attempt to render comments if the node has visible comments.
+  // Unpublished comments are not included in $node->comment_count, so show
+  // comments unconditionally if the user is an administrator.
+  if (user_access('access comments') || user_access('administer comments')) {
+    $mode = variable_get('comment_default_mode_' . $node->type, COMMENT_MODE_THREADED);
+    $comments_per_page = variable_get('comment_default_per_page_' . $node->type, 50);
+    if ($cids = dge_comment_get_thread($node, $mode, $comments_per_page)) {
+      $comments = comment_load_multiple($cids);
+      comment_prepare_thread($comments);
+      $build = comment_view_multiple($comments, $node);
+      $build['pager']['#theme'] = 'pager';
+      $additions['comments'] = $build;
+    } else {
+      if ($node->comment == COMMENT_NODE_OPEN) {
+         $empty_text = '<p class="empty-comments">'.t(variable_get('dge_comment_no_comments', 'No comments')).'</p>';
+         $additions['comments'] = array( '#type' => 'markup', '#markup' => $empty_text);
+      } else {
+         //If comments are closed and there is no comments then nothing is displayed
+         return array( '#type' => 'markup', '#markup' => '' );
+      }
+    }
+  } else {
+    return array( '#type' => 'markup', '#markup' => '' );
+  }
+
+  //Add specific comment messages
+  $additions['comment_messages'] = array('#theme' => 'comment_messages');
+
+  // Append comment form if needed.
+  if (user_access('post comments') && $node->comment == COMMENT_NODE_OPEN && (variable_get('comment_form_location_' . $node->type, COMMENT_FORM_BELOW) == COMMENT_FORM_BELOW)) {
+    $build = drupal_get_form("comment_node_{$node->type}_form", (object) array('nid' => $node->nid));
+    $additions['comment_form'] = $build;
+  }
+
+  if (user_access('post comments') && $node->comment == COMMENT_NODE_OPEN && (variable_get('comment_form_location_' . $node->type, COMMENT_FORM_BELOW) == COMMENT_FORM_SEPARATE_PAGE)) {
+    $additions['link_comment'] = array(
+      '#theme' => 'link',
+      '#text' => t(variable_get('dge_comment_new_comment', 'Add new comment')),
+      '#path' => $base_path . 'comment/reply/' . $node->nid,
+      '#options' => array(
+        'attributes' => array('title' => t(variable_get('dge_comment_new_comment', 'Add new comment')),
+                              'class' => array('comments-add-link')),
+        'html' => FALSE,
+      ),
+    );
+  }
+
+  $additions += array(
+      '#theme' => 'comment_wrapper__node_' . $node->type,
+      '#node' => $node,
+      'comments' => array(),
+      'comment_form' => array(),
+  );
+
+  return $additions;
+}
+
+/*
+ * Load comments from thread. Multilanguage support
+ */
+function dge_comment_get_thread($node, $mode, $comments_per_page) {
+  $query = db_select('comment', 'c')->extend('PagerDefault');
+  $query->addField('c', 'cid');
+  $query
+    //->addTag('node_access')
+    ->addTag('comment_filter')
+    ->addMetaData('node', $node)
+    ->limit($comments_per_page);
+  if($node->tnid)
+    $query->join('node', 'n', 'n.nid = c.nid AND n.tnid = :tnid', array(':tnid' => $node->tnid));
+  else
+    $query->condition('c.nid', $node->nid);
+
+  $count_query = db_select('comment', 'c');
+  $count_query->addExpression('COUNT(*)');
+  $count_query
+    //->addTag('node_access')
+    ->addTag('comment_filter')
+    ->addMetaData('node', $node);
+  if($node->tnid)
+    $count_query->join('node', 'n', 'n.nid = c.nid AND n.tnid = :tnid', array(':tnid' => $node->tnid));
+  else
+    $count_query->condition('c.nid', $node->nid);
+
+  if (!(user_access('administer comments') || user_access('edit organization comment') || user_access('approve organization comment') )) {
+    $query->condition('c.status', COMMENT_PUBLISHED);
+    $count_query->condition('c.status', COMMENT_PUBLISHED);
+  }
+  if ($mode === COMMENT_MODE_FLAT) {
+    $query->orderBy('c.cid', 'ASC');
+  }
+  else {
+    // See comment above. Analysis reveals that this doesn't cost too
+    // much. It scales much much better than having the whole comment
+    // structure.
+    $query->addExpression('SUBSTRING(c.thread, 1, (LENGTH(c.thread) - 1))', 'torder');
+    $query->orderBy('torder', 'ASC');
+  }
+
+  $query->setCountQuery($count_query);
+  $cids = $query->execute()->fetchCol();
+
+  return $cids;
+}
+
+/*
+ * Create dataset on response from CKAN
+ */
+function dge_comment_dataset_create($package) {
+  if(!isset($package['title']) || !isset($package['id']) || !isset($package['organization']['id']) ) {
+    dge_ckan_error_exit(
+      '<front>',
+      t('Package data incomplete'),
+      'dge_comment_create_dataset'
+    );
+  }
+  $node = new stdClass();
+  $node->type = 'dataset';
+  node_object_prepare($node);
+
+  $node->title    = $package['title'];
+  $node->language = LANGUAGE_NONE;
+  $users = dge_comment_users_load_by_organization($package['organization']['id']);
+  $node->uid = count($users) ? $users[0] : 1;
+  $node->status = 1;
+
+  $node->{CKAN_PACKAGE_FIELD}[LANGUAGE_NONE][0]['value'] = $package['id'];
+  $node->{CKAN_ORGANIZATION_FIELD}[LANGUAGE_NONE][0]['value'] = $package['organization']['id'];
+  $node->{CKAN_PACKAGE_NAME_FIELD}[LANGUAGE_NONE][0]['value'] = $package['name'];
+
+  $node = node_submit($node);
+  node_save($node);
+  return $node;
+
+}
+/*
+ * Update dataset on response from CKAN
+ */
+function dge_comment_dataset_update($dataset, $package) {
+  if(!isset($package['name']) ) {
+    dge_ckan_error_exit(
+      '<front>',
+      t('Package data incomplete'),
+      'dge_comment_create_dataset'
+    );
+  }
+  $dataset->{CKAN_PACKAGE_NAME_FIELD}[LANGUAGE_NONE][0]['value'] = $package['name'];
+  node_save($dataset);
+  return $dataset;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function dge_comment_block_info() {
+  $blocks["dge_comment_block"] = array(
+    'info' => t('DGE Comment Block')
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function dge_comment_block_view($delta) {
+  global $language;
+  if ($delta == 'dge_comment_block') {
+    //Load JS files
+    $content = '';
+    if ($node = menu_get_object()) {
+      // Get the nid
+      $nid = $node->nid;
+      //Get the comment page
+      $params = drupal_get_query_parameters();
+      $data_page = 0;
+      if (array_key_exists('page', $params) && is_numeric($params['page'])) {
+        $data_page = $params['page'];
+      }
+      $settings = array (
+        'comment_url' => url('content/comment/view/'.$nid, array('absolute' => TRUE)),
+        'current_url' => url('node/'.$nid, array('absolute' => TRUE)),
+        'data_page' => $data_page
+      );
+
+      drupal_add_js(array('dge_comment' => $settings), array('type' => 'setting'));
+      //Add JS
+      drupal_add_js(drupal_get_path('module', 'dge_comment') .'/js/dge_comment.js');
+      //Set content
+      $content = '<div id="dge-content-comment" class="dge-comment" data-page="'.$data_page.'"></div>';
+    }
+
+    return array(
+      'subject' => t('Comments'),
+      'content' => $content,
+    );
+  }
+}
+
+/*
+ * Implements hook_preprocess_page().
+ * Load theme suggestion for dataset comment view widget
+ */
+function dge_comment_preprocess_page(&$variables) {
+  $pathargs = explode('/',request_uri());
+  if (count($pathargs)>4 && $pathargs[2] == 'package' && $pathargs[4] == 'view') {
+    $variables['theme_hook_suggestion'] = 'page__package_comment_view';
+  }
+  if (count($pathargs)>4 && $pathargs[2] == 'content' && $pathargs[3] == 'comment' && $pathargs[4] == 'view') {
+    $variables['theme_hook_suggestion'] = 'page__content_comment_view';
+  }
+}
+
+/*
+ * Implements hook_preprocess_comment().
+ */
+function dge_comment_preprocess_comment(&$variables) {
+  $account = user_load($variables['comment']->uid);
+  $variables['uid'] = 0;
+  $organization_tid = dge_access_get_user_organization($account);
+  if($organization_tid) {
+    $organization = taxonomy_term_load($organization_tid);
+    if(isset($organization->name)) {
+      $variables['author'] = $organization->name;
+    }
+  }
+  else if(dge_comment_is_internal_user($account)) {
+    $variables['author'] = DGE_USERNAME_ADMIN_DEFAULT;
+  }
+  else {
+    // TODO not verified must be disallowed on theme settings
+    $variables['author'] = str_replace(' (' . t('not verified') . ')','',$variables['author']);
+  }
+
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function dge_comment_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools' && !empty($plugin)) {
+    return "plugins/$plugin";
+  }
+}
+
+
+/**
+ * Function theme_comment_messages(). Generate a div with comment messages.
+ *
+ * @return
+ *   The HTML sourcew with the list of comment messages
+ */
+function theme_comment_messages($variables) {
+   $comment_messages = '';
+   $msg_comments = dge_comment_get_message();
+   if (!empty($msg_comments)){
+     $comment_messages .= "<div class=\"messages dge-comments status\">\n";
+     if (is_array($msg_comments) && count($msg_comments)>1) {
+       $comment_messages .= " <ul>\n";
+       foreach ($msg_comments as $message) {
+          $comment_messages .= '  <li>' . $message . "</li>\n";
+       }
+       $comment_messages .= " </ul>\n";
+     } else {
+       if (is_array($msg_comments)){
+          $comment_messages .= reset($msg_comments);
+       } else {
+          $comment_messages .= $msg_comments;
+       }
+
+     }
+     $comment_messages .= "</div>\n";
+   }
+
+   return $comment_messages;
+}
+
+/* Messages for comments */
+function dge_comment_set_message($message = NULL) {
+  if ($message || $message === '0' || $message === 0) {
+    if (!isset($_SESSION['comment_messages'])) {
+      $_SESSION['comment_messages'] = array();
+    }
+    if (!in_array($message, $_SESSION['comment_messages'])) {
+      $_SESSION['comment_messages'][] = $message;
+    }
+
+    // Mark this page as being uncacheable.
+    drupal_page_is_cacheable(FALSE);
+  }
+
+  // Messages not set when DB connection fails.
+  return isset($_SESSION['comment_messages']) ? $_SESSION['comment_messages'] : NULL;
+}
+
+function dge_comment_get_message() {
+  if ($messages = dge_comment_set_message()) {
+    unset($_SESSION['comment_messages']);
+    return $messages;
+  }
+  return array();
+}

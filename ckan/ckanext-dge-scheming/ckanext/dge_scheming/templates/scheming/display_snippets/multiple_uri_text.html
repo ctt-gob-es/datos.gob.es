@@ -1,0 +1,6 @@
+{%- set values = data[field.field_name] -%}
+<ul>
+{%- for value in values -%}
+   <li><a href="{{ value }}">{{ value }}</a></li>
+{%- endfor -%}
+</ul>

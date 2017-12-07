@@ -1,0 +1,5 @@
+{% ckan_extends %}
+
+  {% block resources_module %}
+    {% snippet "package/snippets/dge_resources.html", pkg={}, action='new_resource' %}
+  {% endblock %}

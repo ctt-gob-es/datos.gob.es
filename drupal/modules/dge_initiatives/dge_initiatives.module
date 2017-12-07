@@ -1,0 +1,301 @@
+<?php
+
+/**
+ * Copyright (C) 2017 Entidad Pública Empresarial Red.es
+ * 
+ * This file is part of "dge_initiatives (datos.gob.es)".
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * CSV SEPARATOR
+ */
+define('DGE_CSV_SEPARATOR',';');
+
+/**
+ * Implements hook_permission().
+ */
+function dge_initiatives_permission() {
+  return array(
+    'admin csv initiatives' => array(
+      'title' => t('Administer CSV of initiatives'),
+      'description' => t('Allow users to config the CSV os initiatives'),
+    ),
+    'export initiatives csv' => array(
+      'title' => t('Export CSV of initiatives'),
+      'description' => t('Allow users to get all initiatives on a CSV file'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function dge_initiatives_menu() {
+  $items['admin/config/dge/csv-initiatives'] = array(
+    'title'             => 'CVS Inititatives',
+    'page callback'     => 'drupal_get_form',
+    'page arguments'    => array('dge_initiatives_admin_settings'),
+    'access arguments'  => array('admin csv initiatives'),
+    'type'              => MENU_NORMAL_ITEM,
+    'file'              => 'dge_initiatives.admin.inc',
+  );
+  $items['iniciativas/csv'] = array(
+    'title'             => 'Unassigned data requests',
+    'page callback'     => 'dge_initiatives_export_csv',
+    'access arguments'  => array('export initiatives csv'),
+    'type'              => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Unassigned data request list
+ */
+function dge_initiatives_export_csv() {
+  global $language;
+
+  $export_initiatives = array();
+  //Create CSV header with translated field labels
+  $csv_header = array();
+  $content_type = 'initiative';
+  //Get title field name
+  $type_def = node_type_load($content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_node_translate_type($type_def, 'title_label'));
+  //Get other field names
+  $instance = field_info_instance('node', 'field_initiative_link', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_initiative_organization', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_geoposition', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_initiative_admin_level', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_initiative_reuse_level', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_initiative_search_type', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_initiative_category', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_initiative_strategy', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_initiative_download', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_initiative_webservice', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_initiative_api_ckan', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_initiative_restful_api', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_initiative_sparql', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_initiative_license', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_initiative_channel', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_initiative_catalog', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_initiative_resources', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $instance = field_info_instance('node', 'field_initiative_collaborate', $content_type);
+  $csv_header[] = _dge_initiatives_add_as_text(i18n_field_translate_property($instance, 'label'));
+  $export_initiatives[] = $csv_header;
+
+  //Get all published initiatives
+  $initiatives = array();
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+        ->entityCondition('bundle', $content_type)
+        ->propertyCondition('status', 1);
+  
+  $result = $query->execute();
+  if ($result) {
+    $initiatives = entity_load('node', array_keys($result['node']));
+  }
+
+  foreach ($initiatives as $initiative) {
+    $csv_row = array();
+    //Add title
+    $csv_row[] = _dge_initiatives_add_as_text($initiative->title);
+
+    //Add other fields
+    $field_value = field_get_items('node', $initiative, 'field_initiative_link');
+    $csv_row[] = _dge_initiatives_add_as_text(_dge_initiatives_value_or_empty($field_value, 'url'));
+
+    $field_value = field_get_items('node', $initiative, 'field_initiative_organization');
+    $csv_row[] = _dge_initiatives_add_as_text(_dge_initiatives_value_or_empty($field_value, 'safe_value'));
+
+    //Geoposition is a complex value
+    $field_value = field_get_items('node', $initiative, 'field_geoposition');
+    $field_string = '';
+    if (!empty($field_value[0]['lat']) && !empty($field_value[0]['lon'])) {
+      $field_string = $field_value[0]['lat'].','.$field_value[0]['lon'];
+    }
+    $csv_row[] = _dge_initiatives_add_as_text($field_string);
+
+    $field_value = field_get_items('node', $initiative, 'field_initiative_admin_level');
+    $csv_row[] = _dge_initiatives_add_as_text(_dge_initiatives_term_values($field_value));
+    $field_value = field_get_items('node', $initiative, 'field_initiative_reuse_level');
+    $csv_row[] = _dge_initiatives_add_as_text(_dge_initiatives_term_values($field_value));
+    $field_value = field_get_items('node', $initiative, 'field_initiative_search_type');
+    $csv_row[] = _dge_initiatives_add_as_text(_dge_initiatives_term_values($field_value));
+    $field_value = field_get_items('node', $initiative, 'field_initiative_category');
+    $csv_row[] = _dge_initiatives_add_as_text(_dge_initiatives_term_values($field_value));
+    $field_value = field_get_items('node', $initiative, 'field_initiative_strategy');
+    $csv_row[] = _dge_initiatives_add_as_text(_dge_initiatives_value_or_empty($field_value, 'url'));
+    $field_value = field_get_items('node', $initiative, 'field_initiative_download');
+    $csv_row[] = _dge_initiatives_add_as_text(_dge_initiatives_value_or_empty($field_value, 'url'));
+    $field_value = field_get_items('node', $initiative, 'field_initiative_webservice');
+    $csv_row[] = _dge_initiatives_add_as_text(_dge_initiatives_value_or_empty($field_value, 'url'));
+    $field_value = field_get_items('node', $initiative, 'field_initiative_api_ckan');
+    $csv_row[] = _dge_initiatives_add_as_text(_dge_initiatives_value_or_empty($field_value, 'url'));
+    $field_value = field_get_items('node', $initiative, 'field_initiative_restful_api');
+    $csv_row[] = _dge_initiatives_add_as_text(_dge_initiatives_value_or_empty($field_value, 'url'));
+    $field_value = field_get_items('node', $initiative, 'field_initiative_sparql');
+    $csv_row[] = _dge_initiatives_add_as_text(_dge_initiatives_value_or_empty($field_value, 'url'));
+    $field_value = field_get_items('node', $initiative, 'field_initiative_license');
+    $csv_row[] = _dge_initiatives_add_as_text(_dge_initiatives_value_or_empty($field_value, 'safe_value'));
+    $field_value = field_get_items('node', $initiative, 'field_initiative_channel');
+    $csv_row[] = _dge_initiatives_add_as_text(_dge_initiatives_value_or_empty($field_value, 'url'));
+    $field_value = field_get_items('node', $initiative, 'field_initiative_catalog');
+    $csv_row[] = _dge_initiatives_add_as_text(_dge_initiatives_value_or_empty($field_value, 'url'));
+    $field_value = field_get_items('node', $initiative, 'field_initiative_resources');
+    $csv_row[] = _dge_initiatives_add_as_text(_dge_initiatives_value_or_empty($field_value, 'url'));
+
+    //Collaborate with datos.gob.es
+    $field_value = field_get_items('node', $initiative, 'field_initiative_collaborate');
+    $field_string = '';
+    if (!empty($field_value[0]['value'])){ 
+      $field_string = t('Yes');
+    } else {
+      $field_string = t('No');
+    }
+    $csv_row[] = _dge_initiatives_add_as_text($field_string);
+
+    $export_initiatives[] = $csv_row;
+  }
+
+  $export_content = '';
+  foreach ($export_initiatives as $export_line){
+    $export_content .= implode(DGE_CSV_SEPARATOR, $export_line)."\n";
+  }
+
+  drupal_add_http_header('Content-Encoding', 'UTF-8');
+  drupal_add_http_header('Content-Type', 'text/csv; charset=UTF-8');
+  drupal_add_http_header('Content-Disposition', 'attachment; filename=iniciativas_'.$language->language.'.csv;');
+  print "\xEF\xBB\xBF";
+
+  print $export_content;
+
+  drupal_exit();
+}
+
+function _dge_initiatives_add_as_text($value) {
+  return '"'.$value.'"';
+}
+
+function _dge_initiatives_value_or_empty($field, $name) {
+  $value = '';
+  if (!empty($field[0][$name])) {
+    $value = $field[0][$name];
+  } 
+  return $value;
+}
+
+function _dge_initiatives_term_values($field) {
+  $value = '';
+  if (!empty($field)) {
+    foreach($field as $i => $term) {
+      $term_data = taxonomy_term_load($term['tid']);
+      $value .= ($i>0)?', ':'';
+      $value .= i18n_taxonomy_term_name($term_data);
+    }
+  } 
+  return $value;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function dge_initiatives_block_info() {
+  $blocks = array();
+
+  $blocks['dge_initiative_csv_button'] = array(
+    'info' => t('DGE Initiative CSV button'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function dge_initiatives_block_view($delta = '') {
+  $block = array();
+  if($delta == 'dge_initiative_csv_button') {
+    $block['subject'] = '';
+    $block['content'] = dge_initiatives_button_block();
+  }
+  return $block;
+}
+
+/**
+ * Content of download CSV button block
+ */
+function dge_initiatives_button_block() {
+  $text_link = variable_get('dge_initiative_csv_button_title', '');
+
+  $url_link = 'iniciativas/csv';
+  $item = menu_get_item($url_link);
+
+  //Check if the user can access to the page
+  if ($item && $item['access']) {
+    if (! variable_get('dge_initiative_csv_button_hidden', false)) {
+      return theme('initiatives_csv_button', array( 'text_link' => $text_link, 'url_link' => $url_link, 'wrapper' => true ));
+    } else {
+      $button = theme('initiatives_csv_button', array( 'text_link' => $text_link, 'url_link' => $url_link ));
+      dge_basic_add_additional_button($button, -5);
+    }
+  }
+  //No access or hidden return nothing
+  return '';
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function dge_initiatives_theme() {
+  return array(
+    'initiatives_csv_button' => array(
+      'variables' => array('text_link' => NULL, 'url_link' => NULL, 'wrapper' => false),
+    ),
+  );
+}
+
+/**
+ * THEME theme_initiatives_csv_button.
+ */
+function theme_initiatives_csv_button($variables) {
+  $text = (!empty($variables['text_link']))?t($variables['text_link']):t('Download initiatives on CSV');
+  $image = theme('image', array('path' => drupal_get_path('module', 'dge_initiatives') .'/images/icon-csv.png', 'width' => 37, 'height' => 38, 'alt' => $text.'. '.t('Open a new window')));
+  $output = l($image, $variables['url_link'], array('html' => TRUE, 'attributes' => array('class' => array('csv-icon'), 'title' => $text.'. '.t('Open a new window'))));
+
+  if (!empty($variables['wrapper']))
+    $output = '<div class="dge-initiative-button">'.$output.'</div>';
+  
+  return $output;
+}

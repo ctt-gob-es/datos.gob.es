@@ -1,0 +1,660 @@
+# Copyright (C) 2017 Entidad Pública Empresarial Red.es
+# 
+# This file is part of "ckanext-dge-dashboard (datos.gob.es)".
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+# 
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+msgid ""
+msgstr ""
+"Project-Id-Version: ckanext-dge-dashboard 1.0.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2017-05-05 09:05+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:304
+msgid "Active user accounts by administration level"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:306
+msgid "Active user accounts by administration level description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:274
+msgid "Active user accounts by organization"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:276
+msgid "Active user accounts by organization description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:33
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:41
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:46
+msgid "Administrator Dashboard"
+msgstr ""
+
+#: ckanext/dge_dashboard/helpers.py:218
+msgid "All months"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:329
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:187
+msgid "Communication channels with users"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:159
+msgid "Compare to"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:173 ckanext/dge_dashboard/helpers.py:1275
+#: ckanext/dge_dashboard/helpers.py:1296
+msgid "Content number"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:173 ckanext/dge_dashboard/helpers.py:1275
+#: ckanext/dge_dashboard/helpers.py:1296
+msgid "Content type"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/footer.html:5
+#: ckanext/dge_dashboard/templates/header.html:27
+#: ckanext/dge_dashboard/templates/header.html:29
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:33
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:41
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:44
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:46
+msgid "Dashboard"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:51
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:51
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:51
+msgid "Dashboard_introduction"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:126
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:111
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:53
+msgid "Data Catalog"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:334
+msgid "Data availability requests by state"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:336
+msgid "Data availability requests by state description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:350
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:208
+msgid "Data requests"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:112
+#: ckanext/dge_dashboard/controllers.py:256 ckanext/dge_dashboard/helpers.py:585
+#: ckanext/dge_dashboard/helpers.py:861
+msgid "Dataset"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:171
+msgid "Datasets"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:229 ckanext/dge_dashboard/helpers.py:1015
+msgid "Datasets Number"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:262
+msgid "Distributions format"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:272
+msgid "Distributions format by administration level"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:274
+msgid "Distributions format by administration level description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:264
+msgid "Distributions format description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:241
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:105
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:208
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:295
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:117
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:181
+msgid "Download as CSV"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:111 ckanext/dge_dashboard/helpers.py:861
+msgid "Downloads"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:41
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:63
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:90
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:122
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:150
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:180
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:223
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:251
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:280
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:310
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:340
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:371
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:64
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:91
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:134
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:166
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:198
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:229
+msgid "Error loading data"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:73
+msgid "Evolution of datos.gob.es visits by month"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:74
+msgid "Evolution of datos.gob.es visits by month description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:58
+msgid "Evolution of datos.gob.es visits by section"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:59
+msgid "Evolution of datos.gob.es visits by section description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:58
+msgid "Evolution of my published datasets"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:60
+msgid "Evolution of my published datasets description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:223
+msgid "Evolution of my received comments"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:225
+msgid "Evolution of my received comments description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:133
+msgid "Evolution of published datasets"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:117
+msgid "Evolution of published datasets by administration level"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:118
+msgid "Evolution of published datasets by administration level description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:144
+msgid "Evolution of published datasets by organization"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:146
+msgid "Evolution of published datasets by organization description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:134
+msgid "Evolution of published datasets description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:97
+msgid ""
+"Evolution of published initiatives, applications, cases of reuse and "
+"availability of data requests"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:99
+msgid ""
+"Evolution of published initiatives, applications, cases of reuse and "
+"availability of data requests description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:218
+msgid "Evolution of publisher organizations"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:219
+msgid "Evolution of publisher organizations description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:365
+msgid "Evolution of received comments"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:367
+msgid "Evolution of received comments description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:66
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:53
+msgid "General statistics"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:15
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:15
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:15
+msgid "Home"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:24
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:43
+msgid "Impact"
+msgstr ""
+
+#: ckanext/dge_dashboard/helpers.py:180
+msgid "Legal Administration"
+msgstr ""
+
+#: ckanext/dge_dashboard/helpers.py:177
+msgid "Local Administration"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:112
+#: ckanext/dge_dashboard/controllers.py:229
+#: ckanext/dge_dashboard/controllers.py:256 ckanext/dge_dashboard/helpers.py:585
+#: ckanext/dge_dashboard/helpers.py:861 ckanext/dge_dashboard/helpers.py:1015
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:221
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:187
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:98
+msgid "Month"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:24
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:43
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:24
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:43
+msgid "My Account"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/header.html:35
+#: ckanext/dge_dashboard/templates/header.html:37
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:44
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:44
+msgid "My Dashboard"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:160
+msgid "My active user accounts"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:162
+msgid "My active user accounts description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:192
+msgid "My data availability requests by state"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:194
+msgid "My data availability requests by state description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:128
+msgid "My distributions format"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:130
+msgid "My distributions format description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:85
+msgid "My most visited datasets"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:87
+msgid "My most visited datasets description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:200
+msgid "No assigned requests"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:65
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:92
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:124
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:152
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:182
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:225
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:253
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:282
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:312
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:342
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:373
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:66
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:93
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:136
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:168
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:231
+msgid "No data"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:54 ckanext/dge_dashboard/controllers.py:130
+msgid "Not authorized to see this page"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:84
+msgid "Number of content published by section"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:86
+msgid "Number of content published by section description"
+msgstr ""
+
+#: ckanext/dge_dashboard/logic/auth/get.py:13
+#: ckanext/dge_dashboard/logic/auth/get.py:68
+msgid "Only sysadmins can get dge_dashboard table data"
+msgstr ""
+
+#: ckanext/dge_dashboard/logic/auth/get.py:90
+msgid "Only sysadmins can get dge_dashboard_drupal_contents table data"
+msgstr ""
+
+#: ckanext/dge_dashboard/logic/auth/get.py:112
+msgid "Only sysadmins can get drupal active users"
+msgstr ""
+
+#: ckanext/dge_dashboard/logic/auth/get.py:123
+msgid "Only sysadmins can get drupal assigned requests"
+msgstr ""
+
+#: ckanext/dge_dashboard/logic/auth/get.py:101
+msgid "Only sysadmins can get drupal published data"
+msgstr ""
+
+#: ckanext/dge_dashboard/logic/auth/get.py:79
+msgid "Only sysadmins can get number of current publisher by administration level"
+msgstr ""
+
+#: ckanext/dge_dashboard/logic/auth/get.py:35
+msgid "Only sysadmins can get number of distribution by format"
+msgstr ""
+
+#: ckanext/dge_dashboard/logic/auth/get.py:46
+msgid ""
+"Only sysadmins can get number of distribution by format and administration "
+"level"
+msgstr ""
+
+#: ckanext/dge_dashboard/logic/auth/get.py:24
+msgid "Only sysadmins can get number of published datasets by administration level"
+msgstr ""
+
+#: ckanext/dge_dashboard/logic/auth/get.py:57
+msgid "Only sysadmins can get number of published datasets by category"
+msgstr ""
+
+#: ckanext/dge_dashboard/logic/auth/get.py:156
+msgid "Only sysadmins can get the datasets by root organization"
+msgstr ""
+
+#: ckanext/dge_dashboard/logic/auth/get.py:145
+msgid "Only sysadmins can get the most visited datasets"
+msgstr ""
+
+#: ckanext/dge_dashboard/logic/auth/get.py:134
+msgid "Only sysadmins can get visits to datos.gob.es"
+msgstr ""
+
+#: ckanext/dge_dashboard/logic/auth/update.py:13
+#: ckanext/dge_dashboard/logic/auth/update.py:25
+#: ckanext/dge_dashboard/logic/auth/update.py:36
+#: ckanext/dge_dashboard/logic/auth/update.py:48
+msgid "Only sysadmins can update dge_dashboard tables"
+msgstr ""
+
+#: ckanext/dge_dashboard/helpers.py:585
+msgid "Order"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:33
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:41
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:46
+msgid "Organization Dashboard"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:201 ckanext/dge_dashboard/helpers.py:1202
+#: ckanext/dge_dashboard/helpers.py:1223
+msgid "Organization name"
+msgstr ""
+
+#: ckanext/dge_dashboard/helpers.py:181
+msgid "Other"
+msgstr ""
+
+#: ckanext/dge_dashboard/helpers.py:179
+msgid "Other Institutions"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:302
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:317
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:351
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:145
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:209
+msgid "Others"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:159
+msgid "Published datasets by administrator level"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:161
+msgid "Published datasets by administrator level description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:186
+msgid "Published datasets by category"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:188
+msgid "Published datasets by category description"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:112
+#: ckanext/dge_dashboard/controllers.py:256 ckanext/dge_dashboard/helpers.py:585
+#: ckanext/dge_dashboard/helpers.py:861
+msgid "Publisher"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:245
+msgid "Publisher organizations by administration level"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:247
+msgid "Publisher organizations by administration level description"
+msgstr ""
+
+#: ckanext/dge_dashboard/helpers.py:176
+msgid "Regional Administration"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:269
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:155
+msgid "Registered users"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:111
+msgid "Resource"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:301
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:320
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:144
+msgid "Resources"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:229 ckanext/dge_dashboard/helpers.py:1015
+msgid "Resources Number"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:280
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:158
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:160
+msgid "Select"
+msgstr ""
+
+#: ckanext/dge_dashboard/helpers.py:175
+msgid "State Administration"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:83
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:110
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:145
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:172
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:197
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:305
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:322
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:74
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:133
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:163
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:234
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:262
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:322
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:354
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:382
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:74
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:148
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:212
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:240
+msgid "The chart contains no data"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:211
+msgid "The most visited datasets"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:213
+msgid "The most visited datasets description"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:238
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:243
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:101
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:204
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:291
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:114
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:177
+msgid "The table contains no data"
+msgstr ""
+
+#: ckanext/dge_dashboard/helpers.py:1223 ckanext/dge_dashboard/helpers.py:1296
+msgid "Total"
+msgstr ""
+
+#: ckanext/dge_dashboard/helpers.py:178
+msgid "Universities"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:146
+#: ckanext/dge_dashboard/controllers.py:173
+#: ckanext/dge_dashboard/controllers.py:201
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:98
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:160
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:187
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:211
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:212
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:263
+#: ckanext/dge_dashboard/templates/dashboard/dashboard.html:273
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:85
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:145
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:175
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:246
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:275
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:305
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:335
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:366
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:59
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:86
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:129
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:161
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:193
+#: ckanext/dge_dashboard/templates/my_dashboard/organization_dashboard.html:224
+msgid "Update date"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:112
+#: ckanext/dge_dashboard/controllers.py:256
+msgid "Url"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:146
+msgid "Username"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:321
+msgid "Users"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:201 ckanext/dge_dashboard/helpers.py:748
+#: ckanext/dge_dashboard/helpers.py:777 ckanext/dge_dashboard/helpers.py:1202
+#: ckanext/dge_dashboard/helpers.py:1223
+msgid "Users number"
+msgstr ""
+
+#: ckanext/dge_dashboard/controllers.py:112
+#: ckanext/dge_dashboard/controllers.py:258 ckanext/dge_dashboard/helpers.py:585
+#: ckanext/dge_dashboard/helpers.py:861
+msgid "Visits"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:174
+msgid "Volume of datasets according to number of distributions"
+msgstr ""
+
+#: ckanext/dge_dashboard/templates/my_dashboard/administrator_dashboard.html:176
+msgid "Volume of datasets according to number of distributions description"
+msgstr ""
+
+#: ckanext/dge_dashboard/public/amcharts/plugins/export/libs/fabric.js/fabric.js:20459
+#: ckanext/dge_dashboard/public/amcharts/plugins/export/libs/fabric.js/fabric.min.js:6
+#: ckanext/dge_dashboard/public/amstockchart/plugins/export/libs/fabric.js/fabric.js:20459
+#: ckanext/dge_dashboard/public/amstockchart/plugins/export/libs/fabric.js/fabric.min.js:6
+msgid "center"
+msgstr ""
+
+#: ckanext/dge_dashboard/helpers.py:306
+msgid "content_comments"
+msgstr ""
+
+#: ckanext/dge_dashboard/helpers.py:290
+msgid "dataset_comments"
+msgstr ""
+
+#: ckanext/dge_dashboard/helpers.py:511
+msgid "title"
+msgstr ""
+
+#: ckanext/dge_dashboard/helpers.py:224
+msgid "up to"
+msgstr ""
+

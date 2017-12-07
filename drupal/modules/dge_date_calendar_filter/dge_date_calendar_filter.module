@@ -1,0 +1,180 @@
+<?php
+
+/**
+ * Copyright (C) 2017 Entidad Pública Empresarial Red.es
+ * 
+ * This file is part of "dge_date_calendar_filter (datos.gob.es)".
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+function dge_date_calendar_filter_search_api_query_alter(SearchApiQueryInterface $query) {
+
+  if ($query->getIndex()->name == 'event_index') {
+
+     //get url parameters
+     $parameters = drupal_get_query_parameters();
+     if (!empty($parameters['cal_start_date']) &&
+         !empty($parameters['cal_end_date'])) {
+         if (preg_match("/^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}$/", $parameters['cal_start_date'])
+             && preg_match("/^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}$/", $parameters['cal_end_date'])) {
+                $initdate = strtotime(str_replace('/', '-', $parameters['cal_start_date']));
+                $enddate = strtotime(str_replace('/', '-', $parameters['cal_end_date']).' +23 hours');
+                if ($initdate && $enddate) {
+                   // Start filter
+                   $left_filter = $query->createFilter('AND');
+                   $left_filter->condition('field_event_date', $initdate, '>=');
+
+                   // End filter
+                   $right_filter = $query->createFilter('AND');
+                   $right_filter->condition('field_event_date', $enddate, '<=');
+
+                   $main_filter = $query->createFilter('AND');
+                   $main_filter->filter($left_filter);
+                   $main_filter->filter($right_filter);
+
+                   $query->filter($main_filter);
+                } else {
+                   drupal_set_message(t('Start date or End date format is not correct (dd/mm/YYY)'), 'error');
+                }
+         } else {
+            drupal_set_message(t('Start date or End date format is not correct (dd/mm/YYY)'), 'error');
+         }
+     } elseif (!empty($parameters['cal_start_date']) || !empty($parameters['cal_end_date'])) {
+         drupal_set_message(t('Start date and End date values are mandatory'), 'error');
+     }
+
+  }
+
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function dge_date_calendar_filter_block_info() {
+  $blocks["dge_date_calendar_block_filter"] = array(
+    'info' => t('DGE Events filter'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function dge_date_calendar_filter_block_view($delta) {
+  if ($delta == 'dge_date_calendar_block_filter') {
+    //Load Drupal datepicker library
+    drupal_add_library('system', 'ui.datepicker');
+    $events = _dge_date_calendar_filter_dates_with_events();
+    //JS Parameters
+    $settings = array (
+         'dates' => $events,
+    );
+    drupal_add_js(array('dge_date_calendar_filter' => $settings), array('type' => 'setting'));
+    drupal_add_js(drupal_get_path('module', 'dge_date_calendar_filter') .'/js/dge_date_calendar_filter.js');
+    drupal_add_css(drupal_get_path('module', 'dge_date_calendar_filter') .'/css/dge_date_calendar_filter.css');
+    return array(
+      'subject' => t('FILTRO FECHAS'),
+      'content' => dge_date_calendar_block_filter_block(),
+    );
+  }
+}
+
+function _dge_date_calendar_filter_dates_with_events(){
+   global $language;
+
+   $index = search_api_index_load('event_index');
+   $query = $index->query();
+   $query->condition('language', $language->language, '=');
+   $results = $query->execute();
+   $dates = array('dates' => array());
+
+   // Taking advantage of the facet solr functionality for our purpose
+   if (isset($results['search_api_facets']['field_event_date'])){
+      foreach ($results['search_api_facets']['field_event_date'] as $event_date) {
+         $dates['dates'][] = format_date(str_replace('"','',$event_date['filter']), 'custom', 'Y_m_d');
+      }
+   }
+
+   return drupal_json_encode($dates);
+}
+
+/**
+ *
+ */
+function dge_date_calendar_block_filter_block(){
+   $form = drupal_get_form('dge_date_calendar_block_filter_form');
+   return '<div class="dge_calendar_filter_block"><div class="dge_calendar_filter_datepicker">'.
+            '<div id="datepicker"></div></div><div class="dge_calendar_filter_form">'.
+            drupal_render($form).'</div></div>';
+}
+
+/**
+ *
+ */
+function dge_date_calendar_block_filter_form($form, &$form_state){
+  //set form protocol
+  $form['#method'] = 'get';
+
+  //get url parameters
+  $parameters = drupal_get_query_parameters();
+  //if a text search exists, it's necessary maintain it
+  if (array_key_exists('search_api_views_fulltext', $parameters)) {
+     $form['search_api_views_fulltext'] = array(
+      '#type'  => 'hidden',
+      '#value' => $parameters['search_api_views_fulltext']
+    );
+  }
+  $form['cal_start_date'] = array(
+    '#type'  => 'textfield',
+    '#title' => t('Start date').':',
+    '#size'  => 15,
+    '#id'  => 'cal_start_date',
+    '#default_value' => (array_key_exists('cal_start_date', $parameters))?$parameters['cal_start_date']:'',
+    '#attributes' => array(
+      'class' => array('start-date-filter-field')
+     )
+  );
+  $form['cal_end_date'] = array(
+    '#type'  => 'textfield',
+    '#title' => t('End date').':',
+    '#size'  => 15,
+    '#id'  => 'cal_end_date',
+    '#default_value' => (array_key_exists('cal_end_date', $parameters))?$parameters['cal_end_date']:'',
+    '#attributes' => array(
+      'class' => array('end-date-filter-field')
+     )
+  );
+  $form['boton'] = array(
+    '#type'   => 'submit',
+    '#value'  => t('Apply'),
+    '#name'   => '',
+    '#prefix' => '<div class="range-form-filter-button">',
+    '#suffix' => '</div>'
+  );
+  $form['#after_build'][] = 'dge_date_calendar_form_modify';
+
+  return $form;
+}
+
+/**
+ *
+ */
+function dge_date_calendar_form_modify($form){
+  unset($form['form_token']);
+  unset($form['form_build_id']);
+  unset($form['form_id']);
+  return $form;
+}

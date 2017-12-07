@@ -1,0 +1,185 @@
+<?php
+
+/**
+ * Copyright (C) 2017 Entidad Pública Empresarial Red.es
+ * 
+ * This file is part of "dge_access (datos.gob.es)".
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+ 
+/**
+ * Access realm for organizations
+ */
+define('DGE_ORGANIZATION_REALM','dge_organization');
+/**
+ * Access realm for editors
+ */
+define('DGE_EDITOR_REALM','dge_editor');
+
+/**
+ * Implements hook_menu().
+ */
+function dge_access_menu() {
+  $items['admin/config/dge/access'] = array(
+    'title'             => 'Access config',
+    'page callback'     => 'drupal_get_form',
+    'page arguments'    => array('dge_access_admin_settings'),
+    'access arguments'  => array('administer site configuration'),
+    'type'              => MENU_NORMAL_ITEM,
+    'file'              => 'dge_access.admin.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function dge_access_menu_alter(&$items) {
+  if (isset($items['node/add'])) {
+    $items['node/add']['access callback'] = 'dge_access_node_add_access';
+  }
+  foreach (node_type_get_types() as $type) {
+    $type_url_str = str_replace('_', '-', $type->type);
+    if(variable_get('dge_access_node_add_redirect_'.$type_url_str,'') != '') {
+      $items['node/add/' . $type_url_str]['page callback'] = 'dge_access_node_add_content_type';
+    }
+  }
+}
+
+/**
+ * Avoid access to node/add.
+ */
+function dge_access_node_add_access() {
+  if(!user_is_logged_in())
+    return FALSE;
+  else
+    return TRUE;
+}
+/**
+ * Redirect anonymous to create page
+ */
+function dge_access_node_add_content_type($type) {
+  $type_url = variable_get('dge_access_node_add_redirect_'.$type,'');
+  if(!user_is_logged_in() && $type_url != '')
+    drupal_goto($type_url);
+  else
+    return node_add($type);
+}
+
+/**
+ * Implements hook_node_grants().
+ * User keys
+ */
+function dge_access_node_grants($account, $op) {
+  $grants = array();
+
+  $organization = dge_access_get_user_organization($account);
+
+  if ($organization && dge_user_has_role_name(ROLE_NAME_ORGANIZATION, $account)) {
+    $grants[DGE_ORGANIZATION_REALM][] = $organization;
+  }
+  elseif(dge_user_has_role_name(ROLE_NAME_EDITOR, $account)) {
+    $grants[DGE_EDITOR_REALM][] = 1;
+  }
+
+  return !empty($grants) ? $grants : array();
+}
+
+
+/**
+ * Implements hook_node_access_records().
+ * Node locks
+ */
+function dge_access_node_access_records($node) {
+  $sids = array(); $grants = array();
+
+  // TODO: Change for editable variable
+  if ( in_array($node->type,variable_get('dge_access_content_types',array('app')))) {
+    $organization = dge_access_get_node_user_organization($node);
+    if ($organization) {
+      $sids[] = array(DGE_ORGANIZATION_REALM => $organization);
+    }
+    // Anonymous content could be edited by editors
+    elseif($node->uid == 0){
+      $sids[] = array(DGE_EDITOR_REALM => 1);
+    }
+  }
+
+  if(!empty($sids)) {
+    foreach ($sids as $sdata) {
+      $grants[] = array (
+        'realm' => key($sdata),
+        'gid' => current($sdata),
+        'grant_view' => 1,
+        'grant_update' => 1,
+        'grant_delete' => 0,
+        'priority' => 0,
+      );
+    }
+    // Access view to all users if is published
+    if (!empty($node->status)) {
+      $grants[] = array('realm' => 'all', 'gid' => 0, 'grant_view' => 1, 'grant_update' => 0, 'grant_delete' => 0, 'priority' => 0);
+    }
+  }
+
+  return !empty($grants) ? $grants : array();
+}
+
+
+/**
+ * Get user organization
+ *
+ * @param $account
+ * @return bool
+ */
+function dge_access_get_user_organization($account) {
+  if(dge_user_has_role_name(ROLE_NAME_ORGANIZATION, $account)){
+    $profile = profile2_load_by_user($account, PROFILE_ORGANIZATION_SHORT);
+    if(!empty($profile) && isset($profile->{PROFILE_ORGANIZATION_FIELD}[LANGUAGE_NONE][0]['tid'])) {
+      return $profile->{PROFILE_ORGANIZATION_FIELD}[LANGUAGE_NONE][0]['tid'];
+    }
+  }
+  return false;
+}
+
+/**
+ * Get node organization by node
+ *
+ * @param $node
+ * @return bool
+ */
+function dge_access_get_node_user_organization($node) {
+  $account = user_load($node->uid);
+  return dge_access_get_user_organization($account);
+}
+
+
+/**
+ * Implements hook_views_api().
+ */
+function dge_access_views_api() {
+  return array(
+    'api' => 3,
+  );
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function dge_access_views_data_alter(&$data) {
+  $data['node_access']['dge_access_node_access']['title'] = 'DGE Access Node';
+  $data['node_access']['dge_access_node_access']['help'] = 'Node access control (view, edit, delete).';
+  $data['node_access']['dge_access_node_access']['filter']['handler'] = 'dge_access_handler_filter_node_access';
+}

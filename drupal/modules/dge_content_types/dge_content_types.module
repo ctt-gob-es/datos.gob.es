@@ -1,0 +1,101 @@
+<?php
+
+/**
+ * Copyright (C) 2017 Entidad Pública Empresarial Red.es
+ * 
+ * This file is part of "dge_content_types (datos.gob.es)".
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * Countries vocabulary
+ */
+define('DGE_COUNTRIES_TAXONOMY','countries');
+
+/**
+ * Implements hook_permission().
+ */
+function dge_content_types_permission() {
+  return array(
+    'access modify content types' => array(
+      'title' => t('Assign DGE Content Types Administration'),
+      'description' => t('Allow users to alter DGE content types'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function dge_content_types_menu() {
+  $items['admin/config/dge/success-content'] = array(
+       'title' => t('Configure Success Content Type'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('dge_content_types_success_content_form'),
+    'access arguments' => array('access modify content types'),
+    'type' => MENU_NORMAL_ITEM
+   );
+
+  return $items;
+}
+
+/**
+ * Assign data request form
+ */
+function dge_content_types_success_content_form($form, &$form_state, $nid = NULL) {
+
+   $countries = _dge_content_types_load_spanish_countries();
+
+   $form['node_title'] = array(
+        '#markup' => '<p>Se mostrará el campo CCAA cuando el valor del select '.
+         'correspondiente a <b>País</b> contenga el valor seleccionado aquí</p>'
+   );
+   $form['success_country_to_ccaa'] = array(
+          '#type' => 'select',
+          '#title' => t('Country with CCAA'),
+          "#empty_option"=>t('- Select country -'),
+          '#options' => $countries,
+          '#default_value' => variable_get('success_country_to_ccaa', ''),
+   );
+   return system_settings_form($form);
+}
+
+/**
+ * Get list of countries in spanish
+ *
+ * @return array
+ */
+function _dge_content_types_load_spanish_countries() {
+  $taxonomy = taxonomy_vocabulary_machine_name_load(DGE_COUNTRIES_TAXONOMY);
+  $countries = taxonomy_get_tree($taxonomy->vid);
+  $options = array();
+  foreach ($countries as $i=> $country) {
+     if ($country->language == 'es' || $country->language == 'und') {
+        $options[$country->tid] = $country->name;
+     }
+  }
+  return $options;
+}
+
+function dge_content_types_form_success_node_form_alter(&$form, &$form_state, $form_id) {
+  $ccaa_country = variable_get('success_country_to_ccaa', '');
+  if (!empty($ccaa_country)){
+     $form['field_success_ccaa']['#states'] = array(
+       'visible' => array(
+         ':input[name="field_success_country[und]"]' => array('value' => $ccaa_country),
+       ),
+     );
+  }
+}

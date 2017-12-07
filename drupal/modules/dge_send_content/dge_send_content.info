@@ -1,0 +1,8 @@
+name = DGE Send Content
+description = Send specific content from various forms
+core = 7.x
+version = 7.x-1.0
+package = DGE
+
+;dependencies[] = node
+dependencies[] = dge_basic

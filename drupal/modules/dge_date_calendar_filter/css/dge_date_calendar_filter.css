@@ -1,0 +1,87 @@
+/*
+ * Copyright (C) 2017 Entidad Pública Empresarial Red.es
+ * 
+ * This file is part of "dge_date_calendar_filter (datos.gob.es)".
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+.dge_calendar_filter_block .ui-state-highlight,
+.dge_calendar_filter_block .ui-widget-content .ui-state-highlight,
+.dge_calendar_filter_block .ui-widget-header .ui-state-highlight{color:#000;background-color:#D0D0D0;font-weight:500;}
+.dge_calendar_filter_block .ui-widget-content .dge-selected-range,
+.dge_calendar_filter_block .ui-widget-content .dge-selected-range .ui-state-default {background-color:#7A338B;color:#FFF;}
+.dge_calendar_filter_block .ui-widget-content .dge-selected-range .ui-state-highlight{background-color:#D6C2DB;color:#333;}
+.dge_calendar_filter_block .ui-widget-content .date-with-events,
+.dge_calendar_filter_block .ui-widget-content .date-with-events .ui-state-default {background-color:#E1D2E6;font-weight:bold;}
+.dge_calendar_filter_block .ui-widget-content .date-with-events .ui-state-highlight{background-color:#E1D2E6;font-weight:bold;}
+.dge_calendar_filter_block .ui-widget-content .date-with-events.dge-selected-range {background-color:#7f3278}
+.dge_calendar_filter_block .ui-widget-content .date-with-events.dge-selected-range a{background-color:#D6C2DB;color:#333;font-weight:bold;}
+.dge_calendar_filter_block {}
+.dge_calendar_filter_block .dge_calendar_filter_form,
+.dge_calendar_filter_block .dge_calendar_filter_datepicker{margin:0 auto;clear:both;}
+.dge_calendar_filter_block .dge_calendar_filter_datepicker .ui-datepicker-inline {display:table;margin: 0 auto;}
+.dge_calendar_filter_block .dge_calendar_filter_form .form-item{display:inline-block;margin:0 10px 0 0;}
+.dge_calendar_filter_block .dge_calendar_filter_form .range-form-filter-button {float:right;display:inline-block;margin:0 0 0 10px;}
+
+/*theme*/
+.pane-dge-date-calendar-filter .pane-title{position:absolute;top:-999em;left:-999em;display:block;clip:rect(1px,1px,1px,1px);visibility:hidden;}
+.dge_calendar_filter_block{margin:-25px -10px 25px;padding:16px 0 7px;background-color:#f7f7f7;}
+.dge_calendar_filter_block .ui-widget-content{margin:0;background-color:transparent;}
+
+.dge_calendar_filter_block .dge_calendar_filter_form{width:17em;margin-bottom:16px;margin-top:30px;}
+.dge_calendar_filter_block .dge_calendar_filter_form .form-item label{display:inline-block;width:4.75em;margin-right:10px;font-weight:bold;}
+.dge_calendar_filter_block .dge_calendar_filter_form .form-item .form-text{width:5.5em;margin:0 0 2px;padding:1px 3px;border:1px solid #85569C;}
+.dge_calendar_filter_block .dge_calendar_filter_form .range-form-filter-button .form-submit{margin:0;padding:7px 30px 6px 7px;color:#FFF;background:#C64A1A url(/sites/all/themes/dge_theme/images/ico-arrow-buttton.png) no-repeat 92% 50%;border:0 none;border-radius:18px;font-size:.778em;text-transform:lowercase;cursor:pointer;transition:.3s;}
+.dge_calendar_filter_block .dge_calendar_filter_form .range-form-filter-button .form-submit:hover,
+.dge_calendar_filter_block .dge_calendar_filter_form .range-form-filter-button .form-submit:focus{color:#FFF;background-color:#6E2585;transition:.3s;}
+
+.dge_calendar_filter_block .ui-widget-header .ui-icon{background-image:url(/sites/all/themes/dge_theme/images/controls.png);}
+.dge_calendar_filter_block .ui-datepicker .ui-datepicker-prev,
+.dge_calendar_filter_block .ui-datepicker .ui-datepicker-next{top:9px;width:32px;height:32px;background-color:transparent;cursor:pointer}
+.dge_calendar_filter_block .ui-datepicker .ui-datepicker-prev span,
+.dge_calendar_filter_block .ui-datepicker .ui-datepicker-next span{left:0;top:0;margin:0;width:32px;height:32px;background-color:transparent;}
+.dge_calendar_filter_block .ui-widget-header .ui-icon-circle-triangle-w{background-position:0 0;}
+.dge_calendar_filter_block .ui-widget-header .ui-icon-circle-triangle-e{background-position:-43px 0;}
+.dge_calendar_filter_block .ui-widget-header .ui-datepicker-prev:hover .ui-icon-circle-triangle-w,
+.dge_calendar_filter_block .ui-widget-header .ui-datepicker-prev:focus .ui-icon-circle-triangle-w{background-position:0 -33px;}
+.dge_calendar_filter_block .ui-widget-header .ui-datepicker-next:hover .ui-icon-circle-triangle-e,
+.dge_calendar_filter_block .ui-widget-header .ui-datepicker-next:focus .ui-icon-circle-triangle-e{background-position:-43px -33px;}
+.dge_calendar_filter_block .ui-datepicker{position:relative;width:18em;max-width:100%;padding:0;}
+.dge_calendar_filter_block .ui-datepicker table{width:100%;margin:0 auto;padding:0 16px 4px;font-size:1em;background-color:#FFF;border-bottom:4px solid #DF5105;}
+.dge_calendar_filter_block .ui-datepicker .ui-datepicker-group{width:32.3%;margin:0 .5% 4px;min-height:14em;background-color:#FFF;border-bottom:4px solid #DF5105;box-shadow:0 2px 5px rgba(0,0,0,.25);}
+.dge_calendar_filter_block .ui-datepicker-multi-2 .ui-datepicker-group{width:49%;margin:0 .5% 5px;}
+.dge_calendar_filter_block .ui-datepicker-multi-3 .ui-datepicker-group{width:32.3%;margin:0 .5% 5px;}
+.dge_calendar_filter_block .ui-datepicker-multi-4 .ui-datepicker-group{width:24%;margin:0 .5% 5px;}
+.dge_calendar_filter_block .ui-datepicker .ui-datepicker-group table{width:94%;margin:0 auto;border-bottom:0 none;}
+.dge_calendar_filter_block .ui-datepicker .ui-datepicker-header{position:static;padding:0;border-top:4px solid #DF5105;}
+
+.dge_calendar_filter_block .ui-datepicker .ui-datepicker-title{position:relative;padding:6px 0 3px;color:#6E2585;font-size:1.111em;font-weight:bold;text-transform:uppercase;}
+.dge_calendar_filter_block .ui-datepicker .ui-datepicker-title:before{content:"";position:absolute;display:block;z-index:10;top:-10px;left:50%;margin:0 0 0 -9px;width:9px;height:9px;background-color:#FFF;border:3px solid #DF5105;border-radius:50%;}
+.dge_calendar_filter_block .ui-datepicker th{padding:0;border:1px solid #DF5105;border-width:1px 0;font-size:.889em;font-weight:500;text-align:center;vertical-align:middle;}
+.dge_calendar_filter_block .ui-datepicker td{padding:2px;text-align:center;vertical-align:middle;}
+.dge_calendar_filter_block .ui-datepicker td span, .dge_calendar_filter_block .ui-datepicker td a{padding:0;text-align:center;vertical-align:middle;}
+.dge_calendar_filter_block .ui-datepicker td a:hover,
+.dge_calendar_filter_block .ui-datepicker td a:focus{color:#7A338B;background-color:#EBEBEB;}
+@media all and (min-width: 48em){ /* +768 */
+	.dge_calendar_filter_block{position:relative;margin:-45px 0 45px;padding:16px 0 7px;}
+	.dge_calendar_filter_block .ui-datepicker{position:relative;width:90% !important;max-width:100%;padding:0;}
+	.dge_calendar_filter_block .dge_calendar_filter_form{width:90%;}
+	.dge_calendar_filter_block .dge_calendar_filter_form .form-item label{display:inline;width:auto;}
+	.dge_calendar_filter_block .dge_calendar_filter_form .form-item .form-text{width:5.5em;margin:0;padding:4px 8px;}
+	.dge_calendar_filter_block .dge_calendar_filter_form .range-form-filter-button .form-submit{margin:0;padding:9px 36px 8px 15px;color:#FFF;background:#E05206 url(/sites/all/themes/dge_theme/images/ico-arrow-buttton.png) no-repeat 92% 50%;border:0 none;border-radius:18px;font-size:.833em;text-transform:lowercase;cursor:pointer;transition:.3s;}
+	.dge_calendar_filter_block .ui-datepicker .ui-datepicker-prev{top:6em;left:-32px;}
+	.dge_calendar_filter_block .ui-datepicker .ui-datepicker-next{top:6em;right:-32px;}
+
+}

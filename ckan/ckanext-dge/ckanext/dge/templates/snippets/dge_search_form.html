@@ -1,0 +1,32 @@
+{% extends 'snippets/search_form.html' %}
+  {% block search_input %}
+    <div class="search-input control-group {{ search_class }}">
+      <input type="text" class="search" name="q" value="{{ query }}" autocomplete="off" placeholder="{{ placeholder }}" title="{{ placeholder }}">
+      {% block search_input_button %}
+        <button type="submit" value="search">
+          <i class="icon-search"></i>
+          <span>{{ _('Search') }}</span>
+        </button>
+      {% endblock %}
+    </div>
+  {% endblock %}
+  {% block search_sortby %}
+    {% if sorting %}
+      <div class="form-select control-group control-order-by">
+        <label for="field-order-by">{{ _('Order by') }}</label>
+        <div class="dge-field-order-by">
+          <select id="field-order-by" name="sort">
+          {% for label, value in sorting %}
+            {% if label and value %}
+              <option value="{{ value }}"{% if sorting_selected == value %} selected="selected"{% endif %}>{{ label }}</option>
+            {% endif %}
+          {% endfor %}
+          </select>
+        </div>
+        {% block search_sortby_button %}
+        <button class="btn js-hide" type="submit">{{ _('Go') }}</button>
+        {% endblock %}
+      </div>
+    {% endif %}
+  {% endblock %}
+

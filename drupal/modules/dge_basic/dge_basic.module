@@ -1,0 +1,663 @@
+<?php
+
+/**
+ * Copyright (C) 2017 Entidad Pública Empresarial Red.es
+ * 
+ * This file is part of "dge_basic (datos.gob.es)".
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+ 
+define('DGE_BASIC_MAX_LENGTH_USERNAME',20);
+
+/**
+ * Implements hook_menu().
+ */
+function dge_basic_menu() {
+  $items = array();
+  $items['admin/config/dge'] = array(
+    'title' => t('DGE Config'),
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
+  $items['admin/config/dge/admin-login'] = array(
+    'title' => t('DGE Login'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('dge_basic_admin_login'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'dge_basic.admin.inc',
+  );
+  $items['admin/config/dge/terms-of-use'] = array(
+    'title' => t('Terms of use'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('dge_basic_term_of_use'),
+    'access arguments' => array('administer site configuration'),
+  );
+  $items['admin/config/dge/link-extra-domain'] = array(
+    'title' => t('DGE Link Extra Domains'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('dge_basic_link_extra_domains_config_form'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'dge_basic.admin.inc',
+  );
+  $items['user/organization-register'] = array(
+    'title' => t('Create new organization'),
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('organismo/register'),
+    'access callback' => 'user_register_access',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -10,
+  );
+  $items['error403'] = array(
+    'title'           => t('Access denied'),
+    'access callback' => TRUE,
+    'page callback'   => 'dge_basic_403',
+    'type'            => MENU_CALLBACK,
+  );
+  $items['error404'] = array(
+    'title'           => t('Page not found'),
+    'access callback' => TRUE,
+    'page callback'   => 'dge_basic_404',
+    'type'            => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ *
+ * Add view modes to the file entity type, appropriate for displaying node.
+ */
+function dge_basic_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes']['carousel_item'] = array('label' => t('Carousel item'), 'custom settings' => TRUE);
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function dge_basic_block_info() {
+  $blocks = array();
+  $blocks["dge-basic-user-info-block"] = array(
+      'info' => t('Current user name'),
+  );
+  $blocks["dge-basic-user-login-block"] = array(
+      'info' => t('DGE User Login'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function dge_basic_block_view($delta) {
+  if ($delta == 'dge-basic-user-info-block') {
+    $content = dge_basic_user_info_block_content();
+
+    return $block = array(
+      'subject' => t('User name'),
+      'content' => $content,
+    );
+  } elseif ($delta == 'dge-basic-user-login-block') {
+    $content = '';
+    if (user_is_anonymous()) {
+      $content = drupal_get_form('user_login_block');
+    }
+    return $block = array(
+      'subject' => t('User login'),
+      'content' => $content,
+    );
+  }
+}
+
+/*
+ * Content of the user info block
+ */
+function dge_basic_user_info_block_content() {
+   global $user;
+
+   $content = '';
+   if (user_is_logged_in()) {
+      $content = theme('dge_basic_user_info_block', array( 'user' => $user ));
+   }
+   return $content;
+}
+
+
+function dge_basic_term_of_use(){
+  $form = array();
+
+  $form['dge_basic_term_of_use_node_id'] = array(
+    '#type' => 'textfield',
+    '#title' => t("CKAN host"),
+    '#description' => t('Terms of use node ID'),
+    '#default_value' => variable_get('dge_basic_term_of_use_node_id', ''),
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_social_media_links_platform_info().
+ * Add flickr and slideshare support
+ */
+function dge_basic_social_media_links_platform_info() {
+  $platforms = array();
+
+  $platforms['flickr'] = array(
+    'title' => t('Flickr'),
+    'base url' => 'http://www.flickr.com/photos/',
+  );
+
+  $platforms['slideshare'] = array(
+    'title' => t('Slideshare'),
+    'base url' => 'http://www.slideshare.net/',
+  );
+
+  return $platforms;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function dge_basic_theme($existing, $type, $theme, $path) {
+  $path = drupal_get_path('module', 'dge_basic') . '/theme';
+  $file = 'theme/dge_basic.theme.inc';
+  return array(
+    'dge_basic_user_info_block' => array(
+      'path' => $path,
+      'template' => 'dge_basic_user_info_block',
+      'variables' => array(
+         'user' => NULL
+      ),
+    ),
+    'dge_basic_fields_created' => array(
+      'variables' => array('node' => NULL, 'view_mode' => NULL),
+      'file' => $file,
+    ),
+    'dge_basic_fields_title' => array(
+      'variables' => array('node' => NULL, 'view_mode' => NULL),
+      'file' => $file,
+    ),
+    'dge_basic_fields_author' => array(
+      'variables' => array('node' => NULL, 'view_mode' => NULL),
+      'file' => $file,
+    )
+  );
+}
+
+/**
+ * Implements hook_field_extra_fields().
+ * Basic auxiliary fields
+ */
+function dge_basic_field_extra_fields() {
+  $extra = array();
+  foreach (node_type_get_types() as $type) {
+    $extra['node'][$type->type] = array(
+      'display' => array(
+        'created' => array(
+          'label' => t('Custom Post Date'),
+          'weight' => -5,
+          'visible' => FALSE,
+        ),
+        'author' => array(
+          'label' => t('Custom Author'),
+          'weight' => -3,
+          'visible' => FALSE,
+        ),
+      ),
+    );
+    if ($type->has_title) {
+      $extra['node'][$type->type]['display']['title'] = array(
+        'label' => t('Custom title: !title', array('!title' => $type->title_label)),
+        'weight' => -4,
+        'visible' => FALSE,
+      );
+    }
+  }
+
+  return $extra;
+}
+
+/**
+ * Implements hook_node_view().
+ * Basic auxiliary fields
+ */
+function dge_basic_node_view($node, $view_mode, $langcode) {
+  $node->content['title'] = array(
+    '#theme' => 'dge_basic_fields_title',
+    '#node' => $node,
+    '#view_mode' => $view_mode,
+  );
+  $node->content['created'] = array(
+    '#theme' => 'dge_basic_fields_created',
+    '#node' => $node,
+    '#view_mode' => $view_mode
+  );
+  $node->content['author'] = array(
+    '#theme' => 'dge_basic_fields_author',
+    '#node' => $node,
+    '#view_mode' => $view_mode,
+  );
+}
+
+
+/**
+ * Implements hook_menu_alter().
+ * Update registration links
+ */
+function dge_basic_menu_local_tasks_alter(&$data, $router_item, $root_path){
+   if($router_item['tab_root_href'] == 'user') {
+      foreach ($data['tabs'][0]['output'] as $key => $tab) {
+         if ($tab['#link']['href'] == 'user/register') {
+            unset($data['tabs'][0]['output'][$key]);
+            break;
+         }
+      }
+   }
+}
+
+/**
+ * Implements hook_form_alter().
+ * Update simplenews block and user info
+ */
+function dge_basic_form_alter(&$form, &$form_state, $form_id) {
+   global $user;
+
+   //SIMPENEWS BLOCK: ADD NEW FIELDS
+   if (strpos($form_id, 'simplenews_block_form_') !== false) {
+      $terms_page = _dge_basic_get_terms_of_use();
+
+      $form['info_form'] = array(
+        '#markup' => t('<p>Email subscription to the latest news.</p>'),
+        '#weight' => -40,
+      );
+      if (empty($user->uid)) {
+        unset($form['#build_id'], $form['form_build_id']);
+        $form['action2'] = array(
+          '#type' => 'radios',
+          '#default_value' => 'subscribe',
+          '#options' => array('subscribe' => t('Subscribe'), 'unsubscribe' => t('Unsubscribe')),
+          '#weight' => -20,
+        );
+        $form['submit'] = array(
+          '#type' => 'submit',
+          '#value' => t('Accept')
+        );
+        //Proccess with alternative submit so remove ald function
+        if(($key = array_search('simplenews_block_form_submit', $form['#submit'])) !== false) {
+          unset($form['#submit'][$key]);
+        }
+        $form['#submit'][] = 'dge_basic_simplenews_block_form_submit';
+      }
+      $form['condiciones'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('I accept to the <a href="@url">terms of use</a>', array ('@url'=> $terms_page)),
+        '#return_value' => 1,
+        '#default_value' => 0,
+        '#required' => TRUE,
+        '#weight' => 9,
+      );
+      $form['submit']['#weight'] = 10;
+
+      //FIX SEARCH VIEW ERROR WITH SOME FORMS
+      if (current_path() == 'site-search') {
+        $form['#action'] = url('<front>');
+      }
+   //LOGIN BLOCK: ALTER CREATE USER LINK
+   } elseif ($form_id == 'user_login_block' ) {
+      unset($form['#build_id'], $form['form_build_id']);
+      $items = array();
+      if (variable_get('user_register', 1)) {
+        $items[] = l(t('Create new account'), "organismo/register", array('attributes' => array('title' => t('Create a new user account.'))));
+      }
+      $items[] = l(t('Have you forgotten your password?'), 'user/password', array('attributes' => array('title' => t('Have you forgotten your password?'))));
+      $form['links']['#markup'] = theme('item_list', array('items' => $items));
+
+      //FIX SEARCH VIEW ERROR WITH SOME FORMS
+      if (current_path() == 'site-search') {
+        $form['#action'] = url('<front>');
+      }
+      //Securize URL Destination
+      if (variable_get('dge_basic_https_login', FALSE)) {
+         $form['#action'] = dge_basic_generate_secure_url($form['#action']);
+      }
+   //USER LOGIN PAGE
+   } elseif ($form_id == 'user_login' ) {
+      //Securize URL Destination
+      if (variable_get('dge_basic_https_login', FALSE)) {
+         $form['#action'] = dge_basic_generate_secure_url($form['#action']);
+      }
+   //SWITCH LANGUAGE
+   } elseif ($form_id == 'lang_dropdown_form') {
+   	  //Accessibility changes
+   	  $form['lang_dropdown_select']['#attributes']['title'] = t('Language');
+   //REGISTER USER
+   } elseif ($form_id == 'user_register_form') {
+   	  //after_build for editing profile fields
+      $form['#after_build'] = array('dge_basic_change_accept_label');
+      //limitations
+      $form['account']['name']['#maxlength'] = DGE_BASIC_MAX_LENGTH_USERNAME;
+      if (isset($form['account']['name']['#attributes'])) {
+        $form['account']['name']['#attributes']['maxlength'] = DGE_BASIC_MAX_LENGTH_USERNAME;
+        $form['account']['name']['#attributes']['size'] = DGE_BASIC_MAX_LENGTH_USERNAME;
+     } else {
+        $form['account']['name']['#attributes']  = array('maxlength' => DGE_BASIC_MAX_LENGTH_USERNAME, 'size' => DGE_BASIC_MAX_LENGTH_USERNAME);
+     }
+   //FAQ ORDER
+   } elseif ($form_id == 'faq_order_settings_form') {
+      if (!empty($form['order_no_cats'])) {
+         /* FIX faq module order query: remove duplicate items */
+         $uniqueIds = array();
+         foreach($form['order_no_cats'] as $key=>$item){
+             if (!empty($item) && is_array($item) && !empty($item['nid'])) {
+                if (in_array($item['nid'], $uniqueIds)) {
+                   unset($form['order_no_cats'][$key]);
+                } else {
+                   $uniqueIds[] = $item['nid'];
+                }
+             }
+         }
+      }
+   //WEBFORMS
+   } elseif (strpos($form_id, 'webform_client_form_') !== false) {
+      if (isset($form['submitted']['acepto_las_condiciones_de_servicio'])) {
+        // Change text of terms of use field
+        $terms_label = dge_basic_get_terms_label();
+        $form['submitted']['acepto_las_condiciones_de_servicio']['#options'][1] = $terms_label;
+        //Accessibility change
+        unset($form['submitted']['acepto_las_condiciones_de_servicio']['#title']);
+      }
+   }
+}
+
+//Alter prfile info
+function dge_basic_change_accept_label($form_element, &$form_state) {
+   $form_element['profile_agency_data']['field_terms_service']['und']['#options'][0] = 'TURURU1';
+   if (isset($form_element['profile_agency_data']['field_terms_service']['und'][0]['#title'])) {
+      $terms_label = dge_basic_get_terms_label();
+      $form_element['profile_agency_data']['field_terms_service']['und'][0]['#title'] = $terms_label;
+   }
+
+   return $form_element;
+}
+
+function dge_basic_get_terms_label(){
+   $terms_anchor = variable_get('dge_send_content_terms_of_use_anchor',t('terms of use'));
+   $terms_link = _dge_basic_get_terms_of_use(False);
+   $terms_anchor_link = l($terms_anchor, $terms_link, array('attributes' => array('class' => 'terms-of-use')));
+   $terms_label = variable_get('dge_send_content_terms_of_use_text',t('I read and accept !terms_anchor_link', array('!terms_anchor_link' => $terms_anchor_link)));
+
+   return $terms_label;
+}
+
+/*
+ * Subscribe and unsubscribe functionality on the same block
+ */
+function dge_basic_simplenews_block_form_submit($form, &$form_state) {
+  global $user;
+
+  $tid = $form['#tid'];
+  $account = simplenews_load_user_by_mail($form_state['values']['mail']);
+
+  // If email belongs to the current registered user, don't send confirmation.
+  // Other addresses receive a confirmation if double opt-in is selected.
+  if ($account->uid && $account->uid == $user->uid) {
+    $confirm = FALSE;
+  }
+  else {
+    $confirm = variable_get('simplenews_opt_inout_' . $tid, 'double') == 'double';
+  }
+
+  if($form_state['values']['action2']) {
+     $accion = $form_state['values']['action2'];
+  } elseif($form_state['values']['action']) {
+     $accion = $form_state['values']['action'];
+  }
+
+  $terms_page = _dge_basic_get_terms_of_use();
+
+  switch ($accion) {
+    case 'subscribe':
+      simplenews_subscribe_user($form_state['values']['mail'], $tid, $confirm, 'website');
+      if ($confirm) {
+        drupal_set_message(t('You will receive a confirmation email shortly containing further '.
+                             'instructions on how to complete your subscription. Read <a href="@url">here</a> the terms and conditions of use.',
+                              array ('@url'=> $terms_page)));
+      }
+      else {
+        drupal_set_message(t('You have been subscribed.'));
+      }
+      break;
+    case 'unsubscribe':
+      $subscriber = simplenews_subscriber_load_by_mail($form_state['values']['mail']);
+      if (isset($subscriber) && isset($subscriber->tids) && array_key_exists($tid, $subscriber->tids)) {
+        simplenews_unsubscribe_user($form_state['values']['mail'], $tid, $confirm, 'website');
+      }
+      if ($confirm) {
+        drupal_set_message(t('You will receive a confirmation email shortly containing further '.
+                           'instructions on how to cancel your subscription. Read <a href="@url">here</a> the terms and conditions of use.',
+                           array ('@url'=> $terms_page)));
+      }
+      else {
+        drupal_set_message(t('Your subscription has been cancelled.'));
+      }
+      break;
+  }
+}
+
+function _dge_basic_get_terms_of_use($url = TRUE){
+   $terms_page = variable_get('dge_basic_term_of_use_node_id', '');
+   if (empty($terms_page)){
+     $terms_page = '#';
+   }
+   if (is_numeric($terms_page)){
+     global $language;
+     $node = node_load((int) $terms_page);
+
+     if ($node && i18n_object_langcode($node) && $language->language != i18n_object_langcode($node)
+            && ($translations = translation_node_get_translations($node->tnid)) &&
+            array_key_exists($language->language, $translations)) {
+
+         $node_translation = $translations[$language->language];
+         $terms_page = $node_translation->nid;
+     }
+     if ($url) {
+         $terms_page = url('node/'.$terms_page);
+     } else {
+         $terms_page = 'node/'.$terms_page;
+     }
+   }
+   return $terms_page;
+}
+
+/**
+ * Implements hook_post_build().
+ */
+function dge_basic_views_post_build(&$view) {
+   // If DGE feed then move to feed_icons page
+   if (!empty($view->feed_icon) && !empty($view->display['feed_dge']->display_options['path'])) {
+     drupal_add_feed($view->display['feed_dge']->display_options['path'], NULL);
+     unset($view->feed_icon);
+   }
+}
+
+/**
+* Custom 403 page .
+*/
+function dge_basic_403() {
+   drupal_set_title(t('Access denied'));
+   return t('You are not authorized to access this page.');
+}
+/**
+ * Custom 404 page.
+ */
+function dge_basic_404() {
+   drupal_set_title(t('Page not found'));
+   return t('The requested page could not be found.');
+}
+
+function dge_basic_generate_secure_url($url_base) {
+   global $base_path, $base_secure_url, $is_https;
+   $url = $url_base;
+
+   if (!$is_https) {
+      if (strpos($url_base, $base_path) === 0) {
+            $base_url = variable_get('dge_basic_https_base_path', '');
+            if (empty($base_url)) {
+               $base_url = $base_secure_url;
+            }
+            $url = substr_replace($url_base, $base_url, 0, strlen($base_path) - 1);
+          } else {
+            $url = str_replace('http://', 'https://', $url_base);
+          }
+   }
+
+   return $url;
+}
+
+/**
+ * Implements hook_admin_paths_alter().
+ *
+ * DISPLAY DASHBOARD CUSTOM PAGES WITH DGE_THEME NOT ADMIN THEME
+ */
+function dge_basic_admin_paths_alter(&$paths) {
+    // Treat all user custom admin dashboard pages as not administrative.
+    $paths['admin/dashboard/*'] = FALSE;
+}
+
+/**
+ * Implements hook_field_attach_validate().
+ *
+ */
+function dge_basic_field_attach_validate($entity_type, $entity, &$errors) {
+  // Make sure any images in article nodes have an alt text.
+  if ($entity_type == 'node' && $entity->type == 'initiative') {
+    if (empty($entity->title)) {
+      $errors['field_initiative_link'][LANGUAGE_NONE][0][] = array(
+        'error' => 'field_initiative_link',
+        'message' => t('Title field is required.'),
+      );
+    }
+    if(!isset($entity->field_initiative_organization[LANGUAGE_NONE][0]['value'])) {
+      $errors['field_initiative_organization'][LANGUAGE_NONE][0][] = array(
+        'error' => 'field_initiative_organization',
+        'message' => t('Organization field is required.'),
+      );
+    }
+
+  }
+}
+
+
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function dge_basic_theme_registry_alter(&$theme_registry) {
+  if(isset($theme_registry['pager_link']))
+    $theme_registry['pager_link']['function'] = 'dge_basic_pager_link';
+}
+
+function dge_basic_pager_link($variables) {
+  $text = $variables['text'];
+  $page_new = $variables['page_new'];
+  $element = $variables['element'];
+  $parameters = $variables['parameters'];
+  $attributes = $variables['attributes'];
+
+  $page = isset($_GET['page']) ? $_GET['page'] : '';
+  if ($new_page = implode(',', pager_load_array($page_new[$element], $element, explode(',', $page)))) {
+    $parameters['page'] = $new_page;
+  }
+
+  $query = array();
+  if (count($parameters)) {
+    $query = drupal_get_query_parameters($parameters, array());
+  }
+  if ($query_pager = pager_get_query_parameters()) {
+    $query = array_merge($query, $query_pager);
+  }
+
+  // Set each pager link title
+  if (!isset($attributes['title'])) {
+    static $titles = NULL;
+    if (!isset($titles)) {
+      $titles = array(
+        t('« first') => t('Go to first page'),
+        t('‹ previous') => t('Go to previous page'),
+        t('next ›') => t('Go to next page'),
+        t('last »') => t('Go to last page'),
+      );
+    }
+    if (isset($titles[$text])) {
+      $attributes['title'] = $titles[$text];
+    }
+    elseif (is_numeric($text)) {
+      $attributes['title'] = t('Go to page @number', array('@number' => $text));
+    }
+  }
+
+  // @todo l() cannot be used here, since it adds an 'active' class based on the
+  //   path only (which is always the current path for pager links). Apparently,
+  //   none of the pager links is active at any time - but it should still be
+  //   possible to use l() here.
+  // @see http://drupal.org/node/1410574
+  $attributes['href'] = url($_GET['q'], array('query' => $query));
+  if(!isset($query['page']))
+    $data_page = 0;
+  else
+    $data_page = $query['page'];
+  return '<a' . drupal_attributes($attributes) . ' data-page="'.$data_page.'">' . check_plain($text) . '</a>';
+}
+
+/**
+ * Adds a new additional button for the current page.
+ *
+ * This function can be called as long the HTML header hasn't been sent.
+ *
+ * @param $button
+ *   HTML of the current button or .
+ * @param $weight
+ *   Position on the array of additional buttons
+ */
+function dge_basic_add_additional_button($button = NULL, $weight = NULL) {
+  $stored_buttons = &drupal_static(__FUNCTION__, array());
+
+  if (!(empty($button))) {
+    $index = $weight;
+    if (!isset($index) || !is_numeric($index)) {
+      $index = max(array_keys($stored_buttons));
+      $index = (!empty($index))?intval($index)+1:0;
+    } 
+    $stored_buttons[intval ($index)] = $button;
+
+    ksort($stored_buttons);
+  }
+
+  return $stored_buttons;
+}
+
+/**
+ * Gets the additional buttons for the current page.
+ *
+ * @param $delimiter
+ *   A delimiter to split buttons by.
+ */
+function dge_basic_get_additional_buttons($delimiter = "\n") {
+  $feeds = dge_basic_add_additional_button();
+  return implode($feeds, $delimiter);
+}

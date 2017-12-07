@@ -1,0 +1,98 @@
+{% extends "page.html"%}
+{% block seo %}
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement":
+    [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item":
+          {
+            "@id": "{{ g.site_url }}",
+            "name": "{{ _('Home') }}"
+          }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item":
+          {
+            "@id": "{{ g.site_url }}{{ h.url_for(controller='ckanext.dge.controllers:DGEController', action='yasgui') }}",
+            "name": "{{ _('Data Catalog') }}"
+          }
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item":
+          {
+            "@id": "{{ g.site_url }}{{ h.url_for(controller='ckanext.dge.controllers:DGEController', action='yasgui') }}",
+            "name": "{{ _('Sparql Point') }}"
+          }
+      }
+    ]
+  }
+  </script>
+{% endblock %}
+{% block subtitle %}{{ _('Sparql Point') }}{% endblock %}
+{% block breadcrumb_content %}
+  <li>{{ h.nav_link(_('Data Catalog'), controller='ckanext.dge.controllers:DGEController', action='yasgui') }}</li>
+  <li class="active">{{ h.nav_link(_('Sparql Point'), controller='ckanext.dge.controllers:DGEController', action='yasgui') }}</li>
+{% endblock %}
+{% block page_title_content %}{{ _('Sparql Point') }}{% endblock %}
+{% block catalog_downloads %}{% endblock %}
+{% block page_header %}{% endblock %}
+{% block primary %}
+{% set accesible_version_url = h.url_for(controller='ckanext.dge.controllers:DGEController', action='accessible_yasgui') %}
+{% set documentation_url = h.dge_sparql_yasgui_doc_url() %}
+{% trans page=accesible_version_url, doc=documentation_url %}Sparql_Point_introduction {{ page }} {{ doc }}{% endtrans %}
+  <p align="right"><br/><a href="{{ accesible_version_url }}">{{ _('Accessible version') }}</a><br/></p>
+  </div>
+  
+  {% set yasgui_endpoint = h.dge_sparql_yasgui_endpoint() %}
+    <div id="yasqe" data-module="dge_glue" data-module-endpoint="{{ yasgui_endpoint }}"></div>
+    <div id="yasr"></div>
+  </div>
+{% endblock %}
+
+{% block styles %}
+  {{ super() }}
+  <link href='//cdn.jsdelivr.net/g/yasqe@2.11.2(yasqe.min.css),yasr@2.9.0(yasr.min.css)' rel='stylesheet' type='text/css'/>
+  <style>
+  .wrapper {
+    margin: 20px 20px 15px 25px;
+  }
+  .wrapper > div + div {
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    box-shadow: 0px 0px 0px 4px rgba(0, 0, 0, 0.05);
+	margin:20px 0;
+    position: relative;
+    background: none;
+    background-color: #FFFFFF;
+  </style>
+{% endblock %}
+
+{%- block scripts %}
+  <script src='//cdn.jsdelivr.net/yasr/2.9.0/yasr.bundled.min.js'></script>
+  <script src='//cdn.jsdelivr.net/yasqe/2.11.2/yasqe.bundled.min.js'></script>
+  {% resource 'dge/yasgui/dge_glue.js' %}
+
+  <script>
+    Array.prototype.getUnique = function(){
+      var u = {}, a = [];
+      for(var i = 0, l = this.length; i < l; ++i){
+        if(u.hasOwnProperty(this[i])) {
+          continue;
+        }
+        a.push(this[i]);
+        u[this[i]] = 1;
+      }
+      return a;
+    }
+  </script>
+  {{ super() }}
+{% endblock -%}
