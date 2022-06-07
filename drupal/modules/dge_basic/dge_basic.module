@@ -1,24 +1,25 @@
 <?php
 
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dge_basic (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
- 
+ 	* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+ 	*
+ 	* This file is part of "dge_basic (datos.gob.es)".
+ 	*
+ 	* This program is free software: you can redistribute it and/or modify
+ 	* it under the terms of the GNU General Public License as published by
+ 	* the Free Software Foundation, either version 2 of the License, or
+ 	* (at your option) any later version.
+ 	*
+ 	* This program is distributed in the hope that it will be useful,
+ 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ 	* GNU General Public License for more details.
+ 	*
+ 	* You should have received a copy of the GNU General Public License
+ 	* along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
 define('DGE_BASIC_MAX_LENGTH_USERNAME',20);
 
 /**
@@ -375,10 +376,10 @@ function dge_basic_form_alter(&$form, &$form_state, $form_id) {
    //WEBFORMS
    } elseif (strpos($form_id, 'webform_client_form_') !== false) {
       if (isset($form['submitted']['acepto_las_condiciones_de_servicio'])) {
+        /*
         // Change text of terms of use field
-        $terms_label = dge_basic_get_terms_label();
-        $form['submitted']['acepto_las_condiciones_de_servicio']['#options'][1] = $terms_label;
-        //Accessibility change
+        $terms_label = dge_basic_get_terms_label();*/
+        //$form['submitted']['acepto_las_condiciones_de_servicio']['#options'][1] = $terms_label;
         unset($form['submitted']['acepto_las_condiciones_de_servicio']['#title']);
       }
    }
@@ -389,18 +390,19 @@ function dge_basic_change_accept_label($form_element, &$form_state) {
    $form_element['profile_agency_data']['field_terms_service']['und']['#options'][0] = 'TURURU1';
    if (isset($form_element['profile_agency_data']['field_terms_service']['und'][0]['#title'])) {
       $terms_label = dge_basic_get_terms_label();
-      $form_element['profile_agency_data']['field_terms_service']['und'][0]['#title'] = $terms_label;
+      //$form_element['profile_agency_data']['field_terms_service']['und'][0]['#title'] = $terms_label;
    }
 
    return $form_element;
 }
 
 function dge_basic_get_terms_label(){
-   $terms_anchor = variable_get('dge_send_content_terms_of_use_anchor',t('terms of use'));
-   $terms_link = _dge_basic_get_terms_of_use(False);
-   $terms_anchor_link = l($terms_anchor, $terms_link, array('attributes' => array('class' => 'terms-of-use')));
-   $terms_label = variable_get('dge_send_content_terms_of_use_text',t('I read and accept !terms_anchor_link', array('!terms_anchor_link' => $terms_anchor_link)));
-
+  $terms_anchor = variable_get('dge_send_content_terms_of_use_anchor',t('the hola consent'));
+  $terms_link = 'http://www.red.es/redes/es/quienes-somos/protecci%C3%B3n-de-datos-de-car%C3%A1cter-personal';
+  $terms_anchor_link = l($terms_anchor, $terms_link);
+  //$terms_anchor_link = l($terms_anchor, $terms_link, array('attributes' => array('class' => 'terms-of-use')));
+ $terms_label = variable_get('dge_send_content_terms_of_use_text', t('I read and accept !terms_anchor_link', array('!terms_anchor_link' => $terms_anchor_link)));
+   //$terms_label = t("I read and accept the express consent.");
    return $terms_label;
 }
 
@@ -642,7 +644,7 @@ function dge_basic_add_additional_button($button = NULL, $weight = NULL) {
     if (!isset($index) || !is_numeric($index)) {
       $index = max(array_keys($stored_buttons));
       $index = (!empty($index))?intval($index)+1:0;
-    } 
+    }
     $stored_buttons[intval ($index)] = $button;
 
     ksort($stored_buttons);
@@ -660,4 +662,20 @@ function dge_basic_add_additional_button($button = NULL, $weight = NULL) {
 function dge_basic_get_additional_buttons($delimiter = "\n") {
   $feeds = dge_basic_add_additional_button();
   return implode($feeds, $delimiter);
+}
+
+function dge_basic_init(){
+  global $user;
+  $uri=$_SERVER['REQUEST_URI'];
+  if(strpos($uri,'organismo/register')){
+    if(!user_has_role(1)){
+      drupal_set_message(t('Access to the user registration form is only accessible from the public area of ​​the portal. The visitor can access it without being registered'),'error');
+      drupal_goto('/');
+    }
+  }
+  drupal_add_css(drupal_add_library('codesnippet', 'codesnippet') . 'sites/all/libraries/codesnippet/lib/highlight/styles/atelier-forest.light.css',
+                array('every_page' => TRUE));
+  drupal_add_js(drupal_add_library('codesnippet', 'codesnippet') . 'sites/all/modules/contrib/ckeditor/ckeditor.js');
+  drupal_add_js(drupal_add_library('codesnippet', 'codesnippet') . 'sites/all/libraries/codesnippet/lib/highlight/highlight.pack.js');
+  drupal_add_js('jQuery(document).ready(function () { hljs.initHighlightingOnLoad(); });', 'inline');
 }

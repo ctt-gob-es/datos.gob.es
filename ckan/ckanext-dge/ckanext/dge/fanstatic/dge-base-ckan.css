@@ -1,21 +1,21 @@
 /*
- * Copyright (C) 2017 Entidad P�blica Empresarial Red.es
- * 
- * This file is part of "ckanext-dge (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
-
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+*
+* This file is part of "dge (datos.gob.es)".
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 /* $$ DGE BASE CKAN */
 #map_canvas img,
@@ -1669,6 +1669,17 @@ input[type="button"].btn-block {
 .btn-primary.active {
   background-color: #053341 \9;
 }
+
+.btn-tag {
+  color:#ffffff !important;
+  text-shadow:0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color:#6E2585;
+  border-radius:25px;
+  min-width:100px;
+  margin-left: 40px !important;
+  padding: 5px !important;
+}
+
 .btn-warning {
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
@@ -7252,3 +7263,159 @@ iframe {border:none}
 .p-bottom{padding-bottom:15px}
 .no-padding{padding:0}
 .reduced-padding{padding:3px 5px}
+
+
+
+/* SDA-929  Estilos ordenacion de facetas y tipo de busqueda*/
+.radio-button__filter__type__search {
+  cursor: pointer;
+  padding-right: 10px;
+  font-weight: bold;
+  float: right;
+}
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+input {
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 11px 23px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0;
+  outline: 0;
+  background-color: transparent;
+}
+
+.radio-button__input {
+  opacity: 0;
+  position: absolute;
+}
+
+.radio-button__control {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 0px;
+  vertical-align: middle;
+  background-color: inherit;
+  color: #6e2685;
+  border: 2px solid #666;
+  border-radius: 24px;
+}
+
+.radio-button__input[type="radio"][checked] ~ a .radio-button__control:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 10px;
+  height: 10px;
+  background-color: #7a338b;
+  border-radius: 12px;
+}
+
+.radio-button__input[type="radio"][checked] ~ a .radio-button__control {
+  border-color: #7a338b;
+}
+
+.radio-button__control {
+  transform: scale(0.75);
+}
+
+.radio-button__filter__type__search:after {
+  content: "";
+}
+
+.container__filter__type__search {
+  margin-top: 0px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  background-image: url(/images/configurar_buscador.png);
+  background-repeat: no-repeat;
+  background-size: 30px auto;
+  background-position: 15px 7px;
+  width: 100% !important;
+  display: flow-root;
+}
+
+label.radio-button__filter__type__search a {
+  background-color: transparent !important;
+  padding: 0px 5px 0px 5px !important;
+}
+
+.span__filter__type__search {
+  background-repeat: no-repeat;
+  background-size: 30px auto;
+  background-position: 15px 7px;
+  float: left;
+  width: auto !important;
+  margin: 0;
+  padding: 10px 10px 0px 60px;
+}
+
+.container__filter__type__search_and__or {
+  justify-self: center;
+  float: right;
+  width: auto;
+  padding: 10px 0px 10px 0px;
+}
+
+.container__full__module-narrow {
+  background-color: #d0d0d0;
+  display: flex;
+}
+
+.filter_sort_both {
+  margin-top: 0px;
+  padding-bottom: 10px;
+  padding-top: 0px;
+  background-repeat: no-repeat;
+  background-size: 40px;
+  background-position: 0px 6px;
+  display: inline;
+  margin: 0;
+  padding: 0px 15px 29px 25px;
+  background-size: 300px 100px;
+  background-repeat: no-repeat;
+  background-size: auto;
+  float: right;
+  margin-right: 15px;
+}
+
+.filter_sort_alpha {
+  margin-left: auto;
+}
+
+.filter_sort_alpha_active {
+  background-image: url(/images/orden-alfabetico-Activo.png);
+}
+.filter_sort_alpha_inactive {
+  background-image: url(/images/orden-alfabetico-Desactivado.png);
+}
+.filter_sort_numb_active {
+  background-image: url(/images/orden-numerico-Activo.png);
+}
+.filter_sort_numb_inactive {
+  background-image: url(/images/orden-numerico-Desactivado.png);
+}
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  section.module.module-narrow.module-shallow:nth-child(2) .container__full__module-narrow {
+      display: table;
+      width: 100%;
+  }
+  section.module.module-narrow.module-shallow .container__full__module-narrow h2 {
+      display: inline-block;
+  }
+  section.module.module-narrow.module-shallow .container__full__module-narrow a.filter_sort_both {
+      height: 20px;
+  }
+  section.module.module-narrow.module-shallow li.container__filter__type__search {
+      height: 50px;
+  }
+
+}

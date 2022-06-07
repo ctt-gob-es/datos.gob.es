@@ -1,60 +1,150 @@
-/*
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dge_theme (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+/**
+ 	* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+ 	*
+ 	* This file is part of "dge_theme (datos.gob.es)".
+ 	*
+ 	* This program is free software: you can redistribute it and/or modify
+ 	* it under the terms of the GNU General Public License as published by
+ 	* the Free Software Foundation, either version 2 of the License, or
+ 	* (at your option) any later version.
+ 	*
+ 	* This program is distributed in the hope that it will be useful,
+ 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ 	* GNU General Public License for more details.
+ 	*
+ 	* You should have received a copy of the GNU General Public License
+ 	* along with this program. If not, see <http://www.gnu.org/licenses/>.
+ 	*/
 
-body {Margin: 0; padding: 0; min-width: 100%!important;	height:100%!important;font-family: Helvetica, Arial, sans-serif;font-size: 13px;}
-img {height: auto;border-style:none;}
-.content {width: 100%; max-width: 600px;}
-table{mso-table-lspace:0pt; mso-table-rspace:0pt;}
-.header {padding: 30px 30px 5px 30px;}
-.subtitle {padding: 20px 0px 5px 0px;letter-spacing: 5px;font-size:15px;color: #6E2585;}
-.innerpadding {padding: 18px;}
-.borderbottom {border-bottom: 2px solid #f2eeed;}
-.h1 {font-size: 25px; line-height: 38px; font-weight: bold;color: #6E2585;}
-.h2 {padding: 0 0 15px 0; font-size: 20px; line-height: 20px; font-weight: bold;color: #6E2585;}
-.bodycopy {font-size: 13px; line-height: 22px;}
-.bodycopy p {text-align:justify;}
-.bodycopy strong {color:#6E2585;}
-.bodycopy a {color:#C64A1A;}
-.paragraph-link-mail {font-weight: bold; padding: 0 30px 0 30px;}
-.paragraph-link-mail a {font-size: 15px;color: #E05206;}
-.footer {padding: 20px 30px 15px 30px;}
-.footercopy {font-family: sans-serif; font-size: 14px; color: #ffffff;}
-.footercopy a {color: #ffffff; text-decoration: underline;}
-.bodycopy img { max-width: 560px; height: auto;}
-.image-full-width{ width: 560px!important; height: auto!important;}
-.image-90-width{ width: 504px!important; height: auto!important;}
-.image-75-width{ width: 420px!important; height: auto!important;}
+/* COLORS */
+/* GENERAL COLORS */
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 100% !important;
+  height: 100% !important;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 13px; }
+
+img {
+  height: auto;
+  border-style: none; }
+
+.content {
+  width: 100%;
+  max-width: 600px; }
+
+table {
+  mso-table-lspace: 0pt;
+  mso-table-rspace: 0pt; }
+
+.header {
+  padding: 30px 30px 5px 30px; }
+
+.subtitle {
+  padding: 20px 0px 5px 0px;
+  letter-spacing: 5px;
+  font-size: 15px;
+  color: #6E2585; }
+
+.innerpadding {
+  padding: 18px; }
+
+.borderbottom {
+  border-bottom: 2px solid #f2eeed; }
+
+.h1 {
+  font-size: 25px;
+  line-height: 38px;
+  font-weight: bold;
+  color: #6E2585; }
+
+.h2 {
+  padding: 0 0 15px 0;
+  font-size: 20px;
+  line-height: 20px;
+  font-weight: bold;
+  color: #6E2585; }
+
+.bodycopy {
+  font-size: 13px;
+  line-height: 22px; }
+
+.bodycopy p {
+  text-align: justify; }
+
+.bodycopy strong {
+  color: #6E2585; }
+
+.bodycopy a {
+  color: #C64A1A; }
+
+.paragraph-link-mail {
+  font-weight: bold;
+  padding: 0 30px 0 30px; }
+
+.paragraph-link-mail a {
+  font-size: 15px;
+  color: #E05206; }
+
+.footer {
+  padding: 20px 30px 15px 30px; }
+
+.footercopy {
+  font-family: sans-serif;
+  font-size: 14px;
+  color: #ffffff; }
+
+.footercopy a {
+  color: #ffffff;
+  text-decoration: underline; }
+
+.bodycopy img {
+  max-width: 560px;
+  height: auto; }
+
+.image-full-width {
+  width: 560px !important;
+  height: auto !important; }
+
+.image-90-width {
+  width: 504px !important;
+  height: auto !important; }
+
+.image-75-width {
+  width: 420px !important;
+  height: auto !important; }
+
+.dge-nl-link {
+  margin-top: 15px; }
+
+.dge-nl-link a {
+  display: inline-block; }
+
+.dge-nl-text p {
+  margin: 0; }
+
+.with-quote .dge-nl-text {
+  color: #444444;
+  font-style: italic; }
 
 @media only screen and (max-width: 550px), screen and (max-device-width: 550px) {
-  body[yahoo] .hide {display: none!important;}
-  body[yahoo] .buttonwrapper {background-color: transparent!important;}
-  body[yahoo] .paragraph-link-mail {font-weight: bold; padding: 0 30px 0 30px;}
-  body[yahoo] .paragraph-link-mail a {font-size: 15px;color: #6E2585;}
-  body[yahoo] .unsubscribe {display: block; margin-top: 20px; padding: 10px 50px; background: #2f3942; border-radius: 5px; text-decoration: none!important; font-weight: bold;}
-}
-
-/*@media only screen and (min-device-width: 601px) {
-    .content {width: 600px !important;}
-    .col265 {width: 265px!important;}
-    .col270 {width: 270px!important;}
-    .col370 {width: 370px!important;}
-    .col340 {width: 340px!important;}
-    .col440 {width: 440px!important;}
-    .col560 {width: 560px!important;}
-}*/
+  body[yahoo] .hide {
+    display: none !important; }
+  body[yahoo] .buttonwrapper {
+    background-color: transparent !important; }
+  body[yahoo] .paragraph-link-mail {
+    font-weight: bold;
+    padding: 0 30px 0 30px; }
+  body[yahoo] .paragraph-link-mail a {
+    font-size: 15px;
+    color: #6E2585; }
+  body[yahoo] .unsubscribe {
+    display: block;
+    margin-top: 20px;
+    padding: 10px 50px;
+    background: #2f3942;
+    border-radius: 5px;
+    text-decoration: none !important;
+    font-weight: bold; } }

@@ -1,23 +1,22 @@
 <?php
-
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dgef_blog (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+* 
+* This file is part of "dgef_blog (datos.gob.es)".
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 /**
  * @file
@@ -61,7 +60,20 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['row_options']['hide_empty'] = TRUE;
   $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
-  /* Field: Content: Título */
+  /* Campo: Contenido: Service links */
+  $handler->display->display_options['fields']['service_links']['id'] = 'service_links';
+  $handler->display->display_options['fields']['service_links']['table'] = 'node';
+  $handler->display->display_options['fields']['service_links']['field'] = 'service_links';
+  $handler->display->display_options['fields']['service_links']['label'] = 'Compartir';
+  $handler->display->display_options['fields']['service_links']['element_type'] = 'div';
+  $handler->display->display_options['fields']['service_links']['element_class'] = 'dge-detail__share-cont';
+  $handler->display->display_options['fields']['service_links']['element_label_type'] = 'strong';
+  $handler->display->display_options['fields']['service_links']['element_label_class'] = 'dge-detail__share-title';
+  $handler->display->display_options['fields']['service_links']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['service_links']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['service_links']['element_wrapper_class'] = 'dge-detail__share';
+  $handler->display->display_options['fields']['service_links']['element_default_classes'] = FALSE;
+  /* Campo: Contenido: Título */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
@@ -76,7 +88,7 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['fields']['title']['element_wrapper_class'] = 'dge-detail__title';
   $handler->display->display_options['fields']['title']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Fecha de la noticia */
+  /* Campo: Contenido: Fecha de la noticia */
   $handler->display->display_options['fields']['field_blog_date']['id'] = 'field_blog_date';
   $handler->display->display_options['fields']['field_blog_date']['table'] = 'field_data_field_blog_date';
   $handler->display->display_options['fields']['field_blog_date']['field'] = 'field_blog_date';
@@ -94,7 +106,7 @@ function dgef_blog_views_default_views() {
     'multiple_to' => '',
     'show_remaining_days' => 0,
   );
-  /* Field: Content: Fuente */
+  /* Campo: Contenido: Fuente */
   $handler->display->display_options['fields']['field_blog_source']['id'] = 'field_blog_source';
   $handler->display->display_options['fields']['field_blog_source']['table'] = 'field_data_field_blog_source';
   $handler->display->display_options['fields']['field_blog_source']['field'] = 'field_blog_source';
@@ -105,7 +117,7 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['fields']['field_blog_source']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['field_blog_source']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['field_blog_source']['type'] = 'text_plain';
-  /* Field: Content: Imagen */
+  /* Campo: Contenido: Imagen */
   $handler->display->display_options['fields']['field_blog_image']['id'] = 'field_blog_image';
   $handler->display->display_options['fields']['field_blog_image']['table'] = 'field_data_field_blog_image';
   $handler->display->display_options['fields']['field_blog_image']['field'] = 'field_blog_image';
@@ -121,19 +133,58 @@ function dgef_blog_views_default_views() {
     'image_style' => 'blog_image',
     'image_link' => '',
   );
-  /* Field: Content: Descripción */
+  /* Campo: Contenido: Descripción */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
+  $handler->display->display_options['fields']['body']['label'] = '';
   $handler->display->display_options['fields']['body']['element_type'] = 'div';
   $handler->display->display_options['fields']['body']['element_class'] = 'dge-detail__desc-cont';
   $handler->display->display_options['fields']['body']['element_label_type'] = 'h2';
   $handler->display->display_options['fields']['body']['element_label_class'] = 'dge-detail__desc-title';
+  $handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['body']['element_wrapper_type'] = 'div';
-  $handler->display->display_options['fields']['body']['element_wrapper_class'] = 'dge-detail__desc';
+  $handler->display->display_options['fields']['body']['element_wrapper_class'] = 'dge-detail__desc clearfix';
   $handler->display->display_options['fields']['body']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['body']['hide_empty'] = TRUE;
-  /* Field: Content: Etiquetas */
+  /* Campo: Contenido: Ficheros externos adjuntos */
+  $handler->display->display_options['fields']['field_ficheros_externos_adjuntos']['id'] = 'field_ficheros_externos_adjuntos';
+  $handler->display->display_options['fields']['field_ficheros_externos_adjuntos']['table'] = 'field_data_field_ficheros_externos_adjuntos';
+  $handler->display->display_options['fields']['field_ficheros_externos_adjuntos']['field'] = 'field_ficheros_externos_adjuntos';
+  $handler->display->display_options['fields']['field_ficheros_externos_adjuntos']['label'] = '';
+  $handler->display->display_options['fields']['field_ficheros_externos_adjuntos']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_ficheros_externos_adjuntos']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_ficheros_externos_adjuntos']['type'] = 'external_files_dge_list';
+  $handler->display->display_options['fields']['field_ficheros_externos_adjuntos']['settings'] = array(
+    'edit' => 'Editar',
+    'delete' => 'Eliminar',
+    'add' => 'Agregar',
+    'description' => 1,
+    'view_mode' => 'full',
+  );
+  $handler->display->display_options['fields']['field_ficheros_externos_adjuntos']['delta_offset'] = '0';
+  /* Campo: Contenido: Ficheros adjuntos */
+  $handler->display->display_options['fields']['field_blog_files']['id'] = 'field_blog_files';
+  $handler->display->display_options['fields']['field_blog_files']['table'] = 'field_data_field_blog_files';
+  $handler->display->display_options['fields']['field_blog_files']['field'] = 'field_blog_files';
+  $handler->display->display_options['fields']['field_blog_files']['label'] = 'Ficheros Adjuntos';
+  $handler->display->display_options['fields']['field_blog_files']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_blog_files']['alter']['text'] = '[field_blog_files]
+[field_ficheros_externos_adjuntos]';
+  $handler->display->display_options['fields']['field_blog_files']['element_type'] = 'div';
+  $handler->display->display_options['fields']['field_blog_files']['element_class'] = 'dge-detail__docs-cont';
+  $handler->display->display_options['fields']['field_blog_files']['element_label_type'] = 'h2';
+  $handler->display->display_options['fields']['field_blog_files']['element_label_class'] = 'dge-detail__docs-title';
+  $handler->display->display_options['fields']['field_blog_files']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['field_blog_files']['element_wrapper_class'] = 'dge-detail__docs';
+  $handler->display->display_options['fields']['field_blog_files']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_blog_files']['empty'] = '[field_ficheros_externos_adjuntos]';
+  $handler->display->display_options['fields']['field_blog_files']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['field_blog_files']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_blog_files']['type'] = 'file_dge_table';
+  $handler->display->display_options['fields']['field_blog_files']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_blog_files']['multi_type'] = 'ul';
+  /* Campo: Contenido: Etiquetas */
   $handler->display->display_options['fields']['field_blog_tags']['id'] = 'field_blog_tags';
   $handler->display->display_options['fields']['field_blog_tags']['table'] = 'field_data_field_blog_tags';
   $handler->display->display_options['fields']['field_blog_tags']['field'] = 'field_blog_tags';
@@ -147,50 +198,29 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['fields']['field_blog_tags']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['field_blog_tags']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_blog_tags']['multi_type'] = 'ul';
-  /* Field: Content: Fichero adjunto */
-  $handler->display->display_options['fields']['field_blog_files']['id'] = 'field_blog_files';
-  $handler->display->display_options['fields']['field_blog_files']['table'] = 'field_data_field_blog_files';
-  $handler->display->display_options['fields']['field_blog_files']['field'] = 'field_blog_files';
-  $handler->display->display_options['fields']['field_blog_files']['label'] = 'Adjuntos';
-  $handler->display->display_options['fields']['field_blog_files']['element_type'] = 'div';
-  $handler->display->display_options['fields']['field_blog_files']['element_class'] = 'dge-detail__files-cont';
-  $handler->display->display_options['fields']['field_blog_files']['element_label_type'] = 'h2';
-  $handler->display->display_options['fields']['field_blog_files']['element_label_class'] = 'dge-detail__files-title';
-  $handler->display->display_options['fields']['field_blog_files']['element_wrapper_type'] = 'div';
-  $handler->display->display_options['fields']['field_blog_files']['element_wrapper_class'] = 'dge-detail__files';
-  $handler->display->display_options['fields']['field_blog_files']['element_default_classes'] = FALSE;
-  $handler->display->display_options['fields']['field_blog_files']['hide_empty'] = TRUE;
-  $handler->display->display_options['fields']['field_blog_files']['click_sort_column'] = 'fid';
-  $handler->display->display_options['fields']['field_blog_files']['delta_offset'] = '0';
-  $handler->display->display_options['fields']['field_blog_files']['multi_type'] = 'ul';
-  /* Sort criterion: Content: Post date */
+  /* Sort criterion: Contenido: Fecha de publicación */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Contextual filter: Content: Nid */
+  /* Contextual filter: Contenido: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
   $handler->display->display_options['arguments']['nid']['field'] = 'nid';
   $handler->display->display_options['arguments']['nid']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['nid']['exception']['title'] = 'Todo';
   $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
-  /* Filter criterion: Content: Publicado */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Tipo */
+  /* Filter criterion: Contenido: Tipo */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'blog' => 'blog',
   );
+  $handler->display->display_options['filters']['type']['group'] = 1;
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
@@ -222,7 +252,7 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['css_class'] = 'dge-news dge-news--home';
   $handler->display->display_options['use_more'] = TRUE;
   $handler->display->display_options['use_more_always'] = TRUE;
-  $handler->display->display_options['use_more_text'] = 'más';
+  $handler->display->display_options['use_more_text'] = 'ver más';
   $handler->display->display_options['link_display'] = 'custom_url';
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -232,16 +262,14 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Reiniciar';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Ordenar por';
   $handler->display->display_options['pager']['type'] = 'some';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '3';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '9';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'list';
   $handler->display->display_options['style_options']['default_row_class'] = FALSE;
   $handler->display->display_options['style_options']['row_class_special'] = FALSE;
   $handler->display->display_options['style_options']['wrapper_class'] = 'dge-news__content';
   $handler->display->display_options['row_plugin'] = 'fields';
-  $handler->display->display_options['row_options']['hide_empty'] = TRUE;
-  $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
-  /* Field: Content: Imagen */
+  /* Campo: Contenido: Imagen */
   $handler->display->display_options['fields']['field_blog_image']['id'] = 'field_blog_image';
   $handler->display->display_options['fields']['field_blog_image']['table'] = 'field_data_field_blog_image';
   $handler->display->display_options['fields']['field_blog_image']['field'] = 'field_blog_image';
@@ -257,7 +285,41 @@ function dgef_blog_views_default_views() {
     'image_style' => 'blog_carousel',
     'image_link' => '',
   );
-  /* Field: Content: Post date */
+  /* Campo: Contenido: Imagen */
+  $handler->display->display_options['fields']['field_event_image']['id'] = 'field_event_image';
+  $handler->display->display_options['fields']['field_event_image']['table'] = 'field_data_field_event_image';
+  $handler->display->display_options['fields']['field_event_image']['field'] = 'field_event_image';
+  $handler->display->display_options['fields']['field_event_image']['label'] = '';
+  $handler->display->display_options['fields']['field_event_image']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_event_image']['element_type'] = '0';
+  $handler->display->display_options['fields']['field_event_image']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['field_event_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_event_image']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['field_event_image']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_event_image']['empty'] = '[field_blog_image]';
+  $handler->display->display_options['fields']['field_event_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_event_image']['settings'] = array(
+    'image_style' => 'blog_carousel',
+    'image_link' => '',
+  );
+  /* Campo: Contenido: Imagen */
+  $handler->display->display_options['fields']['field_talk_image']['id'] = 'field_talk_image';
+  $handler->display->display_options['fields']['field_talk_image']['table'] = 'field_data_field_talk_image';
+  $handler->display->display_options['fields']['field_talk_image']['field'] = 'field_talk_image';
+  $handler->display->display_options['fields']['field_talk_image']['label'] = '';
+  $handler->display->display_options['fields']['field_talk_image']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_talk_image']['element_type'] = '0';
+  $handler->display->display_options['fields']['field_talk_image']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['field_talk_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_talk_image']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['field_talk_image']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_talk_image']['empty'] = '[field_event_image]';
+  $handler->display->display_options['fields']['field_talk_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_talk_image']['settings'] = array(
+    'image_style' => 'blog_carousel',
+    'image_link' => '',
+  );
+  /* Campo: Contenido: Fecha de publicación */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
@@ -271,13 +333,13 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['fields']['created']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['created']['date_format'] = 'short';
   $handler->display->display_options['fields']['created']['second_date_format'] = 'search_api_facetapi_YEAR';
-  /* Field: Content: Título */
+  /* Campo: Contenido: Título */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['text'] = '<span class="dge-news__img">[field_blog_image]</span>
+  $handler->display->display_options['fields']['title']['alter']['text'] = '<span class="dge-news__img">[field_talk_image]</span>
 <em class="dge-news__date">[created]</em>
 <strong class="dge-news__title">[title]</strong>';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
@@ -287,35 +349,122 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['element_wrapper_type'] = '0';
   $handler->display->display_options['fields']['title']['element_default_classes'] = FALSE;
-  /* Sort criterion: Content: Post date */
+  /* Sort criterion: Contenido: Fecha de publicación */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Filter criterion: Content: Publicado */
+  /* Filter criterion: Contenido: Publicado */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Tipo */
+  /* Filter criterion: Contenido: Tipo */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
+    'bulletin' => 'bulletin',
+    'talk' => 'talk',
+    'event' => 'event',
     'blog' => 'blog',
   );
-  /* Filter criterion: Content: Language */
+  /* Filter criterion: Contenido: Idioma */
   $handler->display->display_options['filters']['language']['id'] = 'language';
   $handler->display->display_options['filters']['language']['table'] = 'node';
   $handler->display->display_options['filters']['language']['field'] = 'language';
   $handler->display->display_options['filters']['language']['value'] = array(
     '***CURRENT_LANGUAGE***' => '***CURRENT_LANGUAGE***',
+    'und' => 'und',
   );
 
-  /* Display: Home */
-  $handler = $view->new_display('block', 'Home', 'block_1');
+  /* Display: Noticias */
+  $handler = $view->new_display('block', 'Noticias', 'block_1');
+  $handler->display->display_options['link_url'] = 'noticias';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Campo: Contenido: Imagen */
+  $handler->display->display_options['fields']['field_blog_image']['id'] = 'field_blog_image';
+  $handler->display->display_options['fields']['field_blog_image']['table'] = 'field_data_field_blog_image';
+  $handler->display->display_options['fields']['field_blog_image']['field'] = 'field_blog_image';
+  $handler->display->display_options['fields']['field_blog_image']['label'] = '';
+  $handler->display->display_options['fields']['field_blog_image']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_blog_image']['element_type'] = '0';
+  $handler->display->display_options['fields']['field_blog_image']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['field_blog_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_blog_image']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['field_blog_image']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_blog_image']['empty'] = '<img src="/sites/default/files/blog/image/dge-img-default.jpg" alt="" />';
+  $handler->display->display_options['fields']['field_blog_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_blog_image']['settings'] = array(
+    'image_style' => 'blog_carousel',
+    'image_link' => '',
+  );
+  /* Campo: Contenido: Imagen */
+  $handler->display->display_options['fields']['field_event_image']['id'] = 'field_event_image';
+  $handler->display->display_options['fields']['field_event_image']['table'] = 'field_data_field_event_image';
+  $handler->display->display_options['fields']['field_event_image']['field'] = 'field_event_image';
+  $handler->display->display_options['fields']['field_event_image']['label'] = '';
+  $handler->display->display_options['fields']['field_event_image']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_event_image']['element_type'] = '0';
+  $handler->display->display_options['fields']['field_event_image']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['field_event_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_event_image']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['field_event_image']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_event_image']['empty'] = '[field_blog_image]';
+  $handler->display->display_options['fields']['field_event_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_event_image']['settings'] = array(
+    'image_style' => 'blog_carousel',
+    'image_link' => '',
+  );
+  /* Campo: Contenido: Imagen */
+  $handler->display->display_options['fields']['field_talk_image']['id'] = 'field_talk_image';
+  $handler->display->display_options['fields']['field_talk_image']['table'] = 'field_data_field_talk_image';
+  $handler->display->display_options['fields']['field_talk_image']['field'] = 'field_talk_image';
+  $handler->display->display_options['fields']['field_talk_image']['label'] = '';
+  $handler->display->display_options['fields']['field_talk_image']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_talk_image']['element_type'] = '0';
+  $handler->display->display_options['fields']['field_talk_image']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['field_talk_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_talk_image']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['field_talk_image']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_talk_image']['empty'] = '[field_event_image]';
+  $handler->display->display_options['fields']['field_talk_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_talk_image']['settings'] = array(
+    'image_style' => 'blog_carousel',
+    'image_link' => '',
+  );
+  /* Campo: Contenido: Fecha de publicación */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'node';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['label'] = '';
+  $handler->display->display_options['fields']['created']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['created']['element_type'] = '0';
+  $handler->display->display_options['fields']['created']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['created']['element_wrapper_type'] = 'em';
+  $handler->display->display_options['fields']['created']['element_wrapper_class'] = 'dge-news__date';
+  $handler->display->display_options['fields']['created']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['created']['date_format'] = 'short';
+  $handler->display->display_options['fields']['created']['second_date_format'] = 'search_api_facetapi_YEAR';
+  /* Campo: Contenido: Título */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '<span class="dge-news__img">[field_talk_image]</span>
+<em class="dge-news__date">[created]</em>
+<strong class="dge-news__title">[title]</strong>';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_type'] = '0';
+  $handler->display->display_options['fields']['title']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['title']['element_default_classes'] = FALSE;
   $export['blog_home'] = $view;
 
   $view = new view();
@@ -335,20 +484,24 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['use_more_text'] = 'más';
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'search_api_views_cache';
-  $handler->display->display_options['cache']['results_lifespan'] = '3600';
+  $handler->display->display_options['cache']['results_lifespan'] = '1800';
   $handler->display->display_options['cache']['results_lifespan_custom'] = '0';
-  $handler->display->display_options['cache']['output_lifespan'] = '3600';
+  $handler->display->display_options['cache']['output_lifespan'] = '1800';
   $handler->display->display_options['cache']['output_lifespan_custom'] = '0';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Aplicar';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Buscar';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Reiniciar';
-  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Ordenar por';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Ordenar por:';
   $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_label'] = 'Elementos por página';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all_label'] = '- Todo -';
   $handler->display->display_options['pager']['options']['expose']['offset_label'] = 'Desplazamiento';
-  $handler->display->display_options['pager']['options']['tags']['first'] = '« primero';
+  $handler->display->display_options['pager']['options']['tags']['first'] = '« primera';
   $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ anterior';
   $handler->display->display_options['pager']['options']['tags']['next'] = 'siguiente ›';
   $handler->display->display_options['pager']['options']['tags']['last'] = 'última »';
@@ -367,7 +520,19 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['empty']['area_text_custom']['field'] = 'area_text_custom';
   $handler->display->display_options['empty']['area_text_custom']['empty'] = TRUE;
   $handler->display->display_options['empty']['area_text_custom']['content'] = 'No hay resultados';
-  /* Field: Indexed Node: Imagen */
+  /* Campo: Indexed Contenido: Título */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'search_api_index_blog_index';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['element_type'] = '0';
+  $handler->display->display_options['fields']['title']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_wrapper_type'] = 'strong';
+  $handler->display->display_options['fields']['title']['element_wrapper_class'] = 'dge-list__title';
+  $handler->display->display_options['fields']['title']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
+  /* Campo: Indexed Contenido: Imagen */
   $handler->display->display_options['fields']['field_blog_image']['id'] = 'field_blog_image';
   $handler->display->display_options['fields']['field_blog_image']['table'] = 'search_api_index_blog_index';
   $handler->display->display_options['fields']['field_blog_image']['field'] = 'field_blog_image';
@@ -380,22 +545,10 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['fields']['field_blog_image']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['field_blog_image']['click_sort_column'] = 'fid';
   $handler->display->display_options['fields']['field_blog_image']['settings'] = array(
-    'image_style' => 'blog_teaser',
+    'image_style' => 'app_teaser',
     'image_link' => 'content',
   );
-  /* Field: Indexed Node: Título */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'search_api_index_blog_index';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['element_type'] = '0';
-  $handler->display->display_options['fields']['title']['element_label_type'] = '0';
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['title']['element_wrapper_type'] = 'strong';
-  $handler->display->display_options['fields']['title']['element_wrapper_class'] = 'dge-list__title';
-  $handler->display->display_options['fields']['title']['element_default_classes'] = FALSE;
-  $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
-  /* Field: Indexed Node: Fecha de la noticia */
+  /* Campo: Indexed Contenido: Fecha de la noticia */
   $handler->display->display_options['fields']['field_blog_date']['id'] = 'field_blog_date';
   $handler->display->display_options['fields']['field_blog_date']['table'] = 'search_api_index_blog_index';
   $handler->display->display_options['fields']['field_blog_date']['field'] = 'field_blog_date';
@@ -414,7 +567,7 @@ function dgef_blog_views_default_views() {
     'multiple_to' => '',
     'show_remaining_days' => 0,
   );
-  /* Field: Indexed Node: The main body text */
+  /* Campo: Indexed Contenido: The main body text */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'search_api_index_blog_index';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -429,7 +582,7 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['fields']['body']['settings'] = array(
     'trim_length' => '162',
   );
-  /* Field: Indexed Node: Etiquetas */
+  /* Campo: Indexed Contenido: Etiquetas */
   $handler->display->display_options['fields']['field_blog_tags']['id'] = 'field_blog_tags';
   $handler->display->display_options['fields']['field_blog_tags']['table'] = 'search_api_index_blog_index';
   $handler->display->display_options['fields']['field_blog_tags']['field'] = 'field_blog_tags';
@@ -442,7 +595,7 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['fields']['field_blog_tags']['link_to_entity'] = 1;
   $handler->display->display_options['fields']['field_blog_tags']['view_mode'] = 'full';
   $handler->display->display_options['fields']['field_blog_tags']['bypass_access'] = 0;
-  /* Filter criterion: Indexed Node: Item language */
+  /* Filter criterion: Indexed Contenido: Item language */
   $handler->display->display_options['filters']['search_api_language']['id'] = 'search_api_language';
   $handler->display->display_options['filters']['search_api_language']['table'] = 'search_api_index_blog_index';
   $handler->display->display_options['filters']['search_api_language']['field'] = 'search_api_language';
@@ -450,7 +603,7 @@ function dgef_blog_views_default_views() {
     'current' => 'current',
   );
   $handler->display->display_options['filters']['search_api_language']['group'] = 1;
-  /* Filter criterion: Search: Fulltext search */
+  /* Filter criterion: Buscar: Fulltext search */
   $handler->display->display_options['filters']['search_api_views_fulltext']['id'] = 'search_api_views_fulltext';
   $handler->display->display_options['filters']['search_api_views_fulltext']['table'] = 'search_api_index_blog_index';
   $handler->display->display_options['filters']['search_api_views_fulltext']['field'] = 'search_api_views_fulltext';
@@ -484,9 +637,88 @@ function dgef_blog_views_default_views() {
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
   $handler->display->display_options['exposed_block'] = TRUE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Campo: Indexed Contenido: Título */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'search_api_index_blog_index';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['element_type'] = '0';
+  $handler->display->display_options['fields']['title']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_wrapper_type'] = 'strong';
+  $handler->display->display_options['fields']['title']['element_wrapper_class'] = 'dge-list__title';
+  $handler->display->display_options['fields']['title']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
+  /* Campo: Indexed Contenido: Imagen */
+  $handler->display->display_options['fields']['field_blog_image']['id'] = 'field_blog_image';
+  $handler->display->display_options['fields']['field_blog_image']['table'] = 'search_api_index_blog_index';
+  $handler->display->display_options['fields']['field_blog_image']['field'] = 'field_blog_image';
+  $handler->display->display_options['fields']['field_blog_image']['label'] = '';
+  $handler->display->display_options['fields']['field_blog_image']['element_type'] = '0';
+  $handler->display->display_options['fields']['field_blog_image']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['field_blog_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_blog_image']['element_wrapper_type'] = 'span';
+  $handler->display->display_options['fields']['field_blog_image']['element_wrapper_class'] = 'dge-list__img';
+  $handler->display->display_options['fields']['field_blog_image']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_blog_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_blog_image']['settings'] = array(
+    'image_style' => 'app_teaser',
+    'image_link' => '',
+  );
+  /* Campo: Indexed Contenido: Fecha de la noticia */
+  $handler->display->display_options['fields']['field_blog_date']['id'] = 'field_blog_date';
+  $handler->display->display_options['fields']['field_blog_date']['table'] = 'search_api_index_blog_index';
+  $handler->display->display_options['fields']['field_blog_date']['field'] = 'field_blog_date';
+  $handler->display->display_options['fields']['field_blog_date']['label'] = '';
+  $handler->display->display_options['fields']['field_blog_date']['element_type'] = '0';
+  $handler->display->display_options['fields']['field_blog_date']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['field_blog_date']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_blog_date']['element_wrapper_type'] = 'span';
+  $handler->display->display_options['fields']['field_blog_date']['element_wrapper_class'] = 'dge-list__date';
+  $handler->display->display_options['fields']['field_blog_date']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_blog_date']['settings'] = array(
+    'format_type' => 'short',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_remaining_days' => 0,
+  );
+  /* Campo: Indexed Contenido: The main body text */
+  $handler->display->display_options['fields']['body']['id'] = 'body';
+  $handler->display->display_options['fields']['body']['table'] = 'search_api_index_blog_index';
+  $handler->display->display_options['fields']['body']['field'] = 'body';
+  $handler->display->display_options['fields']['body']['label'] = '';
+  $handler->display->display_options['fields']['body']['alter']['max_length'] = '255';
+  $handler->display->display_options['fields']['body']['alter']['trim'] = TRUE;
+  $handler->display->display_options['fields']['body']['element_type'] = 'p';
+  $handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['body']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['body']['element_wrapper_class'] = 'dge-list__desc';
+  $handler->display->display_options['fields']['body']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['body']['type'] = 'text_plain';
+  $handler->display->display_options['fields']['body']['settings'] = array(
+    'trim_length' => '162',
+  );
+  /* Campo: Indexed Contenido: Etiquetas */
+  $handler->display->display_options['fields']['field_blog_tags']['id'] = 'field_blog_tags';
+  $handler->display->display_options['fields']['field_blog_tags']['table'] = 'search_api_index_blog_index';
+  $handler->display->display_options['fields']['field_blog_tags']['field'] = 'field_blog_tags';
+  $handler->display->display_options['fields']['field_blog_tags']['label'] = '';
+  $handler->display->display_options['fields']['field_blog_tags']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_blog_tags']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['field_blog_tags']['element_wrapper_class'] = 'dge-list__tags';
+  $handler->display->display_options['fields']['field_blog_tags']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_blog_tags']['list']['mode'] = 'list';
+  $handler->display->display_options['fields']['field_blog_tags']['link_to_entity'] = 1;
+  $handler->display->display_options['fields']['field_blog_tags']['view_mode'] = 'full';
+  $handler->display->display_options['fields']['field_blog_tags']['bypass_access'] = 0;
 
   /* Display: Feed */
   $handler = $view->new_display('feed', 'Feed', 'feed_dge');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Noticias | datos.gob.es';
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['style_plugin'] = 'rss';
   $handler->display->display_options['row_plugin'] = 'rss_fields';
@@ -500,14 +732,14 @@ function dgef_blog_views_default_views() {
     'guid_field_is_permalink' => 0,
   );
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Indexed Node: Título */
+  /* Campo: Indexed Contenido: Título */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_blog_index';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_entity'] = 0;
-  /* Field: Indexed Node: The main body text */
+  /* Campo: Indexed Contenido: The main body text */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'search_api_index_blog_index';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -516,7 +748,7 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['fields']['body']['alter']['trim'] = TRUE;
   $handler->display->display_options['fields']['body']['alter']['html'] = TRUE;
   $handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
-  /* Field: Indexed Node: Node ID */
+  /* Campo: Indexed Contenido: ID del nodo */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'search_api_index_blog_index';
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
@@ -524,7 +756,7 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['nid']['separator'] = '';
   $handler->display->display_options['fields']['nid']['link_to_entity'] = 0;
-  /* Field: Indexed Node: URL */
+  /* Campo: Indexed Contenido: URL */
   $handler->display->display_options['fields']['url']['id'] = 'url';
   $handler->display->display_options['fields']['url']['table'] = 'search_api_index_blog_index';
   $handler->display->display_options['fields']['url']['field'] = 'url';
@@ -532,7 +764,7 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['fields']['url']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['url']['display_as_link'] = FALSE;
   $handler->display->display_options['fields']['url']['link_to_entity'] = 0;
-  /* Field: Indexed Node: Autor */
+  /* Campo: Indexed Contenido: Autor */
   $handler->display->display_options['fields']['author']['id'] = 'author';
   $handler->display->display_options['fields']['author']['table'] = 'search_api_index_blog_index';
   $handler->display->display_options['fields']['author']['field'] = 'author';
@@ -541,7 +773,7 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['fields']['author']['link_to_entity'] = 0;
   $handler->display->display_options['fields']['author']['view_mode'] = 'full';
   $handler->display->display_options['fields']['author']['bypass_access'] = 0;
-  /* Field: Indexed Node: Date created */
+  /* Campo: Indexed Contenido: Fecha de creación */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'search_api_index_blog_index';
   $handler->display->display_options['fields']['created']['field'] = 'created';
@@ -551,26 +783,27 @@ function dgef_blog_views_default_views() {
   $handler->display->display_options['fields']['created']['second_date_format'] = 'search_api_facetapi_YEAR';
   $handler->display->display_options['fields']['created']['link_to_entity'] = 0;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Indexed Node: Date created */
+  /* Sort criterion: Indexed Contenido: Fecha de creación */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'search_api_index_blog_index';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Indexed Node: Item language */
+  /* Filter criterion: Indexed Contenido: Item language */
   $handler->display->display_options['filters']['search_api_language']['id'] = 'search_api_language';
   $handler->display->display_options['filters']['search_api_language']['table'] = 'search_api_index_blog_index';
   $handler->display->display_options['filters']['search_api_language']['field'] = 'search_api_language';
   $handler->display->display_options['filters']['search_api_language']['value'] = array(
     'current' => 'current',
   );
-  $handler->display->display_options['path'] = 'rss-blog.xml';
+  $handler->display->display_options['path'] = 'rss-noticias.xml';
   $handler->display->display_options['displays'] = array(
     'panel_pane_1' => 'panel_pane_1',
     'default' => 0,
     'ctools_context_1' => 0,
   );
+  $handler->display->display_options['sitename_title'] = 0;
   $export['blog_search'] = $view;
 
   return $export;

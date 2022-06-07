@@ -1,23 +1,23 @@
 <?php
 
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dge_leaflet (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+ 	* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+ 	*
+ 	* This file is part of "dge_leaflet (datos.gob.es)".
+ 	*
+ 	* This program is free software: you can redistribute it and/or modify
+ 	* it under the terms of the GNU General Public License as published by
+ 	* the Free Software Foundation, either version 2 of the License, or
+ 	* (at your option) any later version.
+ 	*
+ 	* This program is distributed in the hope that it will be useful,
+ 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ 	* GNU General Public License for more details.
+ 	*
+ 	* You should have received a copy of the GNU General Public License
+ 	* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 define('GOOGLE_MAPS_API_KEY','AIzaSyDHouuNseoZO81sQhNuW3s41mvBy-3CpxI');
 
@@ -28,7 +28,8 @@ define('GOOGLE_MAPS_API_KEY','AIzaSyDHouuNseoZO81sQhNuW3s41mvBy-3CpxI');
  */
 function dge_leaflet_libraries_info() {
 
-  $libraries['leaflet-search'] = array(
+  /*SDA-1004 nos piden eliminar el control del buscador en el mapa*/
+  /*$libraries['leaflet-search'] = array(
     'name' => 'Leaflet Search',
     'vendor url' => 'https://github.com/stefanocudini/leaflet-search',
     'download url' => 'https://github.com/stefanocudini/leaflet-search/archive/master.zip',
@@ -41,7 +42,7 @@ function dge_leaflet_libraries_info() {
       'css' => array('src/leaflet-search.css'),
     ),
     'dependencies' => array('leaflet'),
-  );
+  );*/
   $libraries['leaflet-fullscreen'] = array(
     'name' => 'Leaflet Fullscreen',
     'vendor url' => 'https://github.com/Leaflet/Leaflet.fullscreen',
@@ -56,22 +57,32 @@ function dge_leaflet_libraries_info() {
     ),
     'dependencies' => array('leaflet'),
   );
+  $libraries['leaflet-zoomBar'] = array(
+    'name' => 'Leaflet ZoomBar',
+    'vendor url' => 'https://github.com/elrobis/L.Control.ZoomBar',
+    'download url' => 'https://github.com/elrobis/L.Control.ZoomBar/archive/refs/heads/master.zip',
+    /*'version arguments' => array(
+      'file' => 'package.json',
+      'pattern' => '/"version":\s+"([\d+\.]*\d+)"/',
+    ),*/
+    'files' => array(
+      'js' => array('src/L.Control.ZoomBar.js'),
+      'css' => array('src/L.Control.ZoomBar.css'),
+    ),
+    'dependencies' => array('leaflet'),
+  );
 
   return $libraries;
 }
 
 function dge_leaflet_get_baselayers() {
-  $prot = '//';
   $attr_google = 'Map data &copy; <a target="attr" href="http://googlemaps.com">Google</a>';
 
   return array(
     'IGN Base' => array(
-      'type' => 'wms',
-      'urlTemplate' => 'http://www.ign.es/wms-inspire/ign-base',
+      'urlTemplate' => 'https://www.ign.es/wmts/ign-base?layer=IGNBaseTodo&tilematrixset=EPSG%3A3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix={z}&TileCol={x}&TileRow={y}',
       'options' => array(
-        'attribution' => '© <a href="http://www.ign.es/ign/main/index.do" target="_blank">Instituto Geográfico Nacional de España</a>',
-        'layers' => 'IGNBaseTodo',
-        'format' => 'image/png',
+        'attribution' => '© <a href="https://www.ign.es/ign/main/index.do" target="_blank">Instituto Geográfico Nacional de España</a>',
         'transparent' => false,
         'continuousWorld' => true,
       ),
@@ -79,28 +90,14 @@ function dge_leaflet_get_baselayers() {
     ),
     'Google Maps' => array(
       'type' => 'google',
-      // For retina displays we append '&style=high_dpi&w=512',
-      'urlTemplate' => $prot . 'mt{s}.googleapis.com/vt?x={x}&y={y}&z={z}',
+      'urlTemplate' => '//mt{s}.googleapis.com/vt?x={x}&y={y}&z={z}',
       'options' => array(
         'attribution' => $attr_google,
         'detectRetina' => TRUE,
         'subdomains' => array(0, 1, 2, 3),
       ),
       'layer_type' => 'base',
-    ),
-    /*'CartoCiudad' => array(
-      'type' => 'wms',
-      'urlTemplate' => 'http://www.cartociudad.es/wms/CARTOCIUDAD/CARTOCIUDAD',
-      'options' => array(
-        'attribution' => '<a href="http://www.cartociudad.es" target="_blank">CartoCiudad © Instituto Geográfico Nacional de España</a>',
-        'layers' => array('Callejero','FondoUrbano'),
-        'maxZoom' => 21,
-        'format' => 'image/png',
-        'transparent' => false,
-        'version' => '1.3.0'
-      ),
-      'layer_type' => 'base',
-    ),*/
+    )
   );
 }
 
@@ -111,8 +108,14 @@ function dge_leaflet_leaflet_map_prebuild_alter(&$variables = NULL) {
 
   drupal_add_js(drupal_get_path('module', 'dge_leaflet').'/js/dge_leaflet.js');
   dge_leaflet_load_google_maps();
-  libraries_load('leaflet-search');
+  libraries_load('leaflet-zoomBar');
+  //SDA-1004 Nos piden quitar el control del buscador.
+  //libraries_load('leaflet-search');
   libraries_load('leaflet-fullscreen');
+
+  drupal_add_css(drupal_add_library('leaflet-zoomBar', 'leaflet-zoomBar') . 'sites/all/libraries/leaflet-zoomBar/src/L.Control.ZoomBar.css', array('every_page' => TRUE));
+  drupal_add_js(drupal_add_library('leaflet-zoomBar', 'leaflet-zoomBar') . 'sites/all/libraries/leaflet-zoomBar/src/L.Control.ZoomBar.js');
+
 }
 
 /**
@@ -133,7 +136,7 @@ function dge_leaflet_leaflet_map_info() {
     'touchZoom'          => TRUE,
     'trackResize'        => TRUE,
     'zoomAnimation'      => TRUE,
-    'zoomControl'        => TRUE,
+    'zoomControl'        => FALSE, //SDA-1004 para añadir el control de zoomBar es necesario poner a FALSE el control de zoomControl que viene por defecto.
   );
 
   // Two non-transparent layers, so entered as base_layers.

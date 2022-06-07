@@ -1,7 +1,7 @@
 name = DGEF Home
 core = 7.x
 package = Features
-version = 7.x-1.0
+version = 7.x-0.11
 dependencies[] = boxes
 dependencies[] = ctools
 dependencies[] = dge_ckan_blocks

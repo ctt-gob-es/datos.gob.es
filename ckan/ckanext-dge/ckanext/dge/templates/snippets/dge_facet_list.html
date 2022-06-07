@@ -36,11 +36,15 @@ within_tertiary
   Boolean for when a facet list should appear in the the right column of the
   page and not the left column.
 
+show_sort_facet
+  Do not show sort facet, Default: false
+
 #}
 
 {% block facet_list %}
+  {% set show_sort_facet = show_sort_facet or false %}
   {% set hide_empty = hide_empty or false %}
-  {% with items = items or h.get_facet_items_dict(name) %}
+  {% with items = items or h.dge_get_facet_items_dict(name, default_sort=(not show_sort_facet)) %}
     {% if items or not hide_empty %}
       {% if within_tertiary %}
         {% set nav_class = 'nav nav-pills nav-stacked' %}
@@ -50,31 +54,44 @@ within_tertiary
       {% block facet_list_item %}
         <section class="{{ wrapper_class or 'module module-narrow module-shallow' }}">
           {% block facet_list_heading %}
-            <h2 class="module-heading">
-              <i class="icon-medium icon-filter"></i>
-              {% set title = title or h.get_facet_title(name) %}
-              {{ title }}
-            </h2>
+            <!-- SDA-929 -->
+            <div class="container__full__module-narrow" style="">
+              <h2 class="module-heading">
+                <i class="icon-medium icon-filter"></i>
+                {% set title = title or h.get_facet_title(name) %}
+                {{ title }}
+              </h2>
+            {% set items = items or h.dge_get_facet_items_dict(name, default_sort=(not show_sort_facet)) %}
+            {% if items %}
+              {% if show_sort_facet and h.dge_get_show_sort_facet(name) %}
+                {% set facet_sort = request.params.get(('_%s_sort' % name),  h.dge_default_facet_sort_by_facet(name)) %}
+                <a href="{{ h.remove_url_param('_%s_sort' % name, replace='index', extras=extras, alternative_url=alternative_url) }}" class="filter_sort_alpha filter_sort_both {% if facet_sort == 'index' %} filter_sort_alpha_active {% else %} filter_sort_alpha_inactive {% endif %}" ></a>
+                <a href="{{ h.remove_url_param('_%s_sort' % name, replace='count', extras=extras, alternative_url=alternative_url) }}" class="filter_sort_numb filter_sort_both {% if facet_sort == 'count' %} filter_sort_numb_active {% else %} filter_sort_numb_inactive {% endif %}"></a>
+              {% endif %}
+            {% endif %}
+            </div>
           {% endblock %}
           {% block facet_list_items %}
-            {% with items = items or h.get_facet_items_dict(name) %}
+            {% with items = items or h.dge_get_facet_items_dict(name, default_sort=(not show_sort_facet)) %}
             {% if items %}
               <nav>
-                <ul class="{{ nav_class or 'unstyled nav nav-simple nav-facet' }}">
+                <ul class="{{ nav_class or 'unstyled img-filter-in-anchor nav nav-simple nav-facet' }}">
                   {% for item in items %}
                     {% set href = h.remove_url_param(name, item.name, extras=extras, alternative_url=alternative_url) if item.active else h.add_url_param(new_params={name: item.name}, extras=extras, alternative_url=alternative_url) %}
                     {% set label = label_function(item) if label_function else item.display_name %}
                     {% set label_truncated = label %}
                     {% set count = count_label(item['count']) if count_label else ('(%d)' % item['count']) %}
-                      <li class="{{ nav_item_class or 'nav-item' }}{% if item.active %} active{% endif %}{% if item['class'] %} {{item['class']}}{% endif %}">
-                        <a href="{{ href }}" title="{{ label if label != label_truncated else '' }}">
-                          <span>{{ _(label_truncated) }} {{ count }}</span>
+                    <!-- Iconos SDA-584    -->
+                      <li class="{{ nav_item_class or 'nav-item' }}{% if item.active %} active{% endif %} {% if item['class'] %} {{item['class']}} {% endif %} {% if item['format_class'] %} {{item['format_class']}} {% endif %}">
+                        {% if item.lang %}<span lang="{{item.lang}}" xml:lang="{{item.lang}}">{% endif %}
+                        <a href="{{ href }}" title="{{ label_truncated }}">
+                          <span>{{ _(label_truncated) }} {{ count }} </span>
                         </a>
+                        {% if item.lang %}</span>{% endif %}
                       </li>
                   {% endfor %}
                 </ul>
               </nav>
-
               <p class="module-footer">
                 {% if h.get_param_int('_%s_limit' % name) %}
                   {% if h.has_more_facets(name) %}

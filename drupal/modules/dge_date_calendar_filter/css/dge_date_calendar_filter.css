@@ -1,21 +1,22 @@
-/*
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dge_date_calendar_filter (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+/**
+ 	* Copyright (C) 2022 Entidad PÃºblica Empresarial Red.es
+ 	*
+ 	* This file is part of "dge_date_calendar_filter (datos.gob.es)".
+ 	*
+ 	* This program is free software: you can redistribute it and/or modify
+ 	* it under the terms of the GNU General Public License as published by
+ 	* the Free Software Foundation, either version 2 of the License, or
+ 	* (at your option) any later version.
+ 	*
+ 	* This program is distributed in the hope that it will be useful,
+ 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ 	* GNU General Public License for more details.
+ 	*
+ 	* You should have received a copy of the GNU General Public License
+ 	* along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+*/
 
 .dge_calendar_filter_block .ui-state-highlight,
 .dge_calendar_filter_block .ui-widget-content .ui-state-highlight,
@@ -43,7 +44,7 @@
 .dge_calendar_filter_block .dge_calendar_filter_form{width:17em;margin-bottom:16px;margin-top:30px;}
 .dge_calendar_filter_block .dge_calendar_filter_form .form-item label{display:inline-block;width:4.75em;margin-right:10px;font-weight:bold;}
 .dge_calendar_filter_block .dge_calendar_filter_form .form-item .form-text{width:5.5em;margin:0 0 2px;padding:1px 3px;border:1px solid #85569C;}
-.dge_calendar_filter_block .dge_calendar_filter_form .range-form-filter-button .form-submit{margin:0;padding:7px 30px 6px 7px;color:#FFF;background:#C64A1A url(/sites/all/themes/dge_theme/images/ico-arrow-buttton.png) no-repeat 92% 50%;border:0 none;border-radius:18px;font-size:.778em;text-transform:lowercase;cursor:pointer;transition:.3s;}
+.dge_calendar_filter_block .dge_calendar_filter_form .range-form-filter-button .form-submit{margin:0;padding:7px 30px 6px 7px;color:#FFF;background:#E05206 url(/sites/all/themes/dge_theme/images/ico-arrow-buttton.png) no-repeat 92% 50%;border:0 none;border-radius:18px;font-size:.778em;text-transform:lowercase;cursor:pointer;transition:.3s;}
 .dge_calendar_filter_block .dge_calendar_filter_form .range-form-filter-button .form-submit:hover,
 .dge_calendar_filter_block .dge_calendar_filter_form .range-form-filter-button .form-submit:focus{color:#FFF;background-color:#6E2585;transition:.3s;}
 

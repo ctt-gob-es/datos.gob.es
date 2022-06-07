@@ -1,0 +1,5 @@
+{
+    "require": {
+        "sendinblue/api-v3-sdk": "6.x.x"
+    }
+}

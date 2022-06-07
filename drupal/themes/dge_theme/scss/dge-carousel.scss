@@ -1,0 +1,229 @@
+@import "variables";
+@import "dge-base-fonts";
+
+/**
+ 	* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+ 	*
+ 	* This file is part of "dge_theme (datos.gob.es)".
+ 	*
+ 	* This program is free software: you can redistribute it and/or modify
+ 	* it under the terms of the GNU General Public License as published by
+ 	* the Free Software Foundation, either version 2 of the License, or
+ 	* (at your option) any later version.
+ 	*
+ 	* This program is distributed in the hope that it will be useful,
+ 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ 	* GNU General Public License for more details.
+ 	*
+ 	* You should have received a copy of the GNU General Public License
+ 	* along with this program. If not, see <http://www.gnu.org/licenses/>.
+ 	*/
+
+/**CONTENT FLEX LATERAL MENU CAROUSEL**/
+.col-width-70 {
+	width:70%;
+	float:left;
+}
+.col-width-30 {
+	width:29%;
+	float:left;
+  margin-left: -27px;
+  margin-top: 0px;
+	display: flex;
+	flex-direction: column;
+	position:relative;
+	z-index:3;
+}
+ul.listadoMenu{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  li{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color:$black;
+    border-bottom:1px solid $white;
+    border-left:1px solid $white;
+    margin:0;
+    padding:20px 0;
+    color:$white;
+    text-align: center;
+    text-decoration: none;
+    position: relative;
+
+    &.selectedMenu{
+      background-color:$datosgob;
+      &:before{
+        content:'';
+        display: inline-block;
+        background: url(../images/arrow_carousel.png) top left no-repeat;
+        position:absolute;
+        left: -12px;
+        width: 13px;
+        height: 24px;
+
+      }
+    }
+    a{
+      color:$white;
+      text-align: center;
+      font-size: 22px;
+      text-decoration: none;
+      font-family: 'neutra_text', Helvetica, Arial, sans-serif;
+      position: absolute;
+      width: 100%;
+      padding-top:10%;
+        height: 100%;
+        top: 16%;
+        left: 50%;
+        /* margin-right: -50%; */
+        transform: translate(-50%, -16%);
+    }
+  }
+  iframe#cambioTam {
+    height: 500px;
+  }
+}
+
+.owl-item{
+  .field.field-name-field-video.field-type-text-with-summary.field-label-hidden {
+    margin-right: 0px;
+  }
+  .content{
+    margin:0;
+  }
+}
+
+.field.field-name-field-video.field-type-text-with-summary.field-label-hidden {
+    margin-right: 20px;
+}
+
+.field-name-field-video{
+  .field-items{
+    .field-item{
+      position: relative;
+      padding-bottom: 56.25%;
+      padding-top: 25px;
+      height: 0;
+      iframe{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        min-height: 500px;
+      }
+    }
+  }
+}
+
+.node-carousel{
+  .content{
+    .carousel-left-content{
+      position: relative;
+      .owl-carousel{
+        .owl-stage-outer{
+          .owl-stage{
+            .owl-item{
+              height: 500px;
+              .item-even,
+              .item-odd{
+                .entity-paragraphs-item{
+                  background: rgba(0, 0, 0, 0.7);
+                  .content{
+                    //padding:40px 0;
+                    padding:0;
+                    margin:0;
+                    div{
+                      text-align: center;
+                      position: relative;
+                      z-index: -1;
+                      a{
+                        text-align: center;
+                        color: $datosgob;
+                        display: inline-block;
+                        margin: 0 auto;
+                        font-family: 'myriad_pro', Helvetica, Arial, sans-serif;
+                        font-weight: bold;
+                        font-size: 3.056em;
+                      }
+                    }
+                    .contentMenu{
+                      position: absolute;
+                      top:25px;
+                      height: 1px;
+                      text-align: center;
+                      margin: 0 auto;
+                      width: 100%;
+                      z-index: 10;
+                      font-family: 'myriad_pro', Helvetica, Arial, sans-serif;
+                      h3,h4,h5{
+                        z-index: 10;
+                        color:$white;
+                        font-size: 1.3rem;
+                        font-family: 'myriad_pro', Helvetica, Arial, sans-serif;
+                        font-weight: normal;
+                      }
+                      div,p{
+                        z-index: 10;
+                        color:$white;
+                        font-size: 1.5em;
+                      }
+                      a.title{
+                        font-family: 'neutra_text-bold';
+                        font-size: 52px;
+                        color:#fff;
+                        background: transparent;
+                      }
+                      a{
+                        font-size: 18px;
+                        display: inline-block;
+                        background: $white;
+                        color:$datosgob;
+                        padding: 15px;
+                        text-decoration:none;
+                        margin-top:20px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .owl-nav{
+        position: absolute;
+        top: 42%;
+        padding: 0;
+        width: 100%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        .owl-prev{
+          left:0;
+          position: absolute;
+          color: transparent;
+          background:url(../images/ico-arrow-buttton-rvs@2x.png) top left no-repeat;
+          width: 50px;
+          height: 50px;
+        }
+        .owl-next{
+          right:0;
+          position: absolute;
+          color: transparent;
+          background:url(../images/ico-arrow-buttton@2x.png) top left no-repeat;
+          width: 50px;
+          height: 50px;
+        }
+      }
+    }
+  }
+
+}
+
+

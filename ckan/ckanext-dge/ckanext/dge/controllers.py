@@ -1,19 +1,19 @@
-# Copyright (C) 2017 Entidad P�blica Empresarial Red.es
-# 
-# This file is part of "ckanext-dge (datos.gob.es)".
-# 
+# Copyright (C) 2022 Entidad Pública Empresarial Red.es
+#
+# This file is part of "dge (datos.gob.es)".
+#
 # This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-# 
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-# 
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import json
 import pytz
@@ -40,12 +40,21 @@ import ckan.authz as authz
 import webhelpers.feedgenerator
 from pylons import config
 
-
-
 import logging
 from ckan.logic.action.create import _check_access
+from ckanext.dcat.controllers import check_access_header
+
+CONTENT_TYPES = {
+    'rdf': 'application/rdf+xml',
+    'xml': 'application/rdf+xml',
+    'n3': 'text/n3',
+    'ttl': 'text/turtle',
+    'jsonld': 'application/ld+json',
+    'csv': 'text/csv'
+}
 
 log = logging.getLogger(__name__)
+
 
 class DGEController(BaseController):
 
@@ -87,6 +96,9 @@ class DGEController(BaseController):
             log.error('Exception in organism: %s', e)
         c.organization_list = organization_list
         return render('static/organism.html')
+
+    def default_spatial_coverage(self):
+        return render('static/default_spatial_coverage.html')
 
     def spatial_coverage(self, type, name):
         spatial_dict = {}
@@ -138,6 +150,9 @@ class DGEController(BaseController):
         request.environ['PATH_INFO'] = urllib.quote(request.environ['PATH_INFO'])
         return render('static/spatial-coverage.html')
     
+    def default_theme(self):
+        return render('static/default_theme.html')
+
     def theme(self, name):
         apidatahost = config.get('ckanext.dge.apidata.host', None)
         apidataurl = config.get('ckanext.dge.apidata.url.sector', None)
@@ -173,6 +188,26 @@ class DGEController(BaseController):
             theme_dict['rows'] = rows
         c.theme_dict = theme_dict
         return render('static/theme.html')
+
+    def read_dataset(self, _id, _format=None):
+
+        if not _format:
+            _format = check_access_header()
+
+        if not _format:
+            return PackageController().read(_id)
+
+        toolkit.response.headers.update(
+            {'Content-type': CONTENT_TYPES[_format]})
+
+        try:
+            result = toolkit.get_action('dge_harvest_dataset_show')({}, {'id': _id,
+                                                                         'format': _format})
+        except toolkit.ObjectNotFound:
+            toolkit.abort(404)
+
+        return result
+
 
 class DGEOrganizationController(OrganizationController):
 
@@ -276,8 +311,6 @@ class DGEFeedController(FeedController):
         datetime_ = from_timezone.localize(datetime_)
 
         return datetime_
-
-        
     
     def _alternate_url(self, params, **kwargs):
         search_params = params.copy()
@@ -338,7 +371,6 @@ class DGEFeedController(FeedController):
             first_page=navigation_urls['first'],
             last_page=navigation_urls['last'],
         )
-        
         
         for pkg in results:
             description= pkg.get('description', '').get('es', '')

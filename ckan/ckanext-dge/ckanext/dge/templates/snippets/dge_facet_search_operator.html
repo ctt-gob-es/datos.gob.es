@@ -1,0 +1,75 @@
+{#
+	Construct a facet module with two search options: and, and or.
+
+
+	title
+	  The title of the facet, eg. "Tags", or "Tag Cloud"
+
+	label_function
+	  Renders the human-readable label for each facet value.
+	  If defined, this should be a callable that accepts a `facet_item`.
+	  eg. lambda facet_item: facet_item.display_name.upper()
+	  By default it displays the facet item's display name, which should
+	  usually be good enough
+
+	if_empty
+	  A string, which if defined, and the list of possible facet items is empty,
+	  is displayed in lieu of an empty list.
+
+	count_label
+	  A callable which accepts an integer, and returns a string.  This controls
+	  how a facet-item's count is displayed.
+
+	extras
+	  Extra info passed into the add/remove params to make the url
+
+	alternative_url
+	  URL to use when building the necessary URLs, instead of the default
+	  ones returned by url_for. Useful eg for dataset types.
+
+	hide_empty
+	  Do not show facet if there are none, Default: false.
+
+	within_tertiary
+	  Boolean for when a facet list should appear in the the right column of the
+	  page and not the left column.
+
+	#}
+
+	{% block facet_search_operator %}
+			<section class="{{ wrapper_class or 'module module-narrow module-shallow' }}">
+			  {% block facet_search_operator_heading %}
+				<h2 class="module-heading">
+				  <i class="icon-medium icon-filter"></i>
+				  {% set title = title %}
+				  {{ title }}
+				</h2>
+			  {% endblock %}
+			  {% block facet_operator_items %}
+				{% set facet_operator = request.params.get('_facet_operator',  h.dge_default_facet_search_operator()) %}
+				<nav>
+				  <ul class="unstyled nav nav-simple nav-facet">
+					<li class="nav-item container__filter__type__search">
+						<span class="span__filter__type__search"> <strong>{{ _('Search type') }} </strong></span>
+						<div class="container__filter__type__search_and__or">
+							<label class="radio-button__filter__type__search">
+								<input type="radio" class="radio-button__input" id="choice1-2" name="choice1" {%if facet_operator == 'OR'%} checked{% endif %}>
+								<a href="{{ h.remove_url_param('_facet_operator', replace='OR', extras=extras, alternative_url=alternative_url) }}">
+									<span class="radio-button__control"></span>
+									<span class="radio-button__label">{{ _('OR') }}</span>
+								</a>
+							</label>
+							<label class="radio-button__filter__type__search">
+								<input type="radio" class="radio-button__input" id="choice1-1" name="choice1"  {%if facet_operator == 'AND'%} checked{% endif %}>
+								<a href="{{ h.remove_url_param('_facet_operator', replace='AND', extras=extras, alternative_url=alternative_url) }}">
+									<span class="radio-button__control"></span>
+									<span class="radio-button__label">{{ _('AND') }}</span>
+								</a>
+							</label>
+						</div>
+					</li>
+				  </ul>
+				</nav>
+			  {% endblock %}
+			</section>
+	{% endblock %}

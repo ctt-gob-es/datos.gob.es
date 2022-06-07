@@ -1,23 +1,23 @@
 <?php
 
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dge_ckan_php_client (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+ 	* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+ 	*
+ 	* This file is part of "dge_ckan_php_client (datos.gob.es)".
+ 	*
+ 	* This program is free software: you can redistribute it and/or modify
+ 	* it under the terms of the GNU General Public License as published by
+ 	* the Free Software Foundation, either version 2 of the License, or
+ 	* (at your option) any later version.
+ 	*
+ 	* This program is distributed in the hope that it will be useful,
+ 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ 	* GNU General Public License for more details.
+ 	*
+ 	* You should have received a copy of the GNU General Public License
+ 	* along with this program. If not, see <http://www.gnu.org/licenses/>.
+ 	*/
 
 //namespace DGECKAN;
 //
@@ -506,7 +506,7 @@ class DgeCkanClient
         $data
       );
     }
-    
+
     /**
      * Patch a organization
      *
@@ -597,7 +597,7 @@ class DgeCkanClient
         $data
       );
     }
-    
+
     /**
      * Associate member to organization
      *
@@ -626,7 +626,7 @@ class DgeCkanClient
         $data
       );
     }
-    
+
 
     /**
      * Returns user with matching id or name
@@ -714,6 +714,22 @@ class DgeCkanClient
         'action/user_autocomplete?q=' . $name
       );
     }
+
+  public function user_delete($user_id)
+    {
+        $solr_request = [
+            'id' => $user_id,
+        ];
+        $data = json_encode($solr_request, JSON_PRETTY_PRINT);
+
+        return $this->make_request(
+            'POST',
+            'action/user_delete',
+            $data
+        );
+    }
+
+
     /**
      * @param $package_id
      *
@@ -749,7 +765,7 @@ class DgeCkanClient
      * @return mixed
      * @link http://docs.ckan.org/en/latest/api/index.html#ckan.logic.action.get.package_search
      */
-    public function package_search($q = '', $fq = '', $rows = 100, $start = 0, $sort = 'score desc, name asc')
+    public function package_search($q = '', $fq = '', $rows = 100, $start = 0, $sort = 'score desc, name asc', $facet_field=null)
     {
         $solr_request = [
             'q' => $q,
@@ -758,6 +774,9 @@ class DgeCkanClient
             'start' => $start,
             'sort' => $sort
         ];
+        if($facet_field){
+            $solr_request['facet.field']=$facet_field;
+        }
         $data = json_encode($solr_request, JSON_PRETTY_PRINT);
 
         return $this->make_request(
@@ -830,6 +849,24 @@ class DgeCkanClient
             'action/package_update',
             $data
         );
+    }
+
+    /**
+     * Get all packages
+     *
+     * @return mixed
+     * @link http://docs.ckan.org/en/latest/api/index.html#ckan.logic.action.get.package_list
+     */
+    public function package_list($limit=null, $offset= null)
+    {
+      $query_string = '';
+      if (is_int($limit) && is_int($offset)) {
+        $query_string = '?limit=' . $limit . '&offset=' . $offset;
+      }
+      return $this->make_request(
+        'GET',
+        'action/package_list' . $query_string
+      );
     }
 
     /**

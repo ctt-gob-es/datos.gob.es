@@ -1,0 +1,5 @@
+name = "dge_address_map"
+description = "Añade un nuevo tipo de campo para busqueda de direcciones"
+core = 7.x
+dependencies[] = geofield
+files[] = dge_address_map.module

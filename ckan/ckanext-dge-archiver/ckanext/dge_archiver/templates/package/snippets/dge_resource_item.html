@@ -1,0 +1,23 @@
+{% ckan_extends %}
+
+{% block resource_item_explore %}
+
+  {# Original content from resource_item_explore #}
+  <div class="btn-group">
+    <a href="{{ res.url }}" class="btn btn-primary resource-url-analytics" target="_blank">
+      {%- set format_label = h.scheming_choices_label(dict_fields['format'].choices, res[dict_fields['format'].field_name]) -%}
+      {% if h.dge_is_downloadable_resource(res.url, format_label) %}
+        <i class="icon-download"></i>
+        {{ _('Download') }}
+      {% else %}
+        <i class="icon-external-link"></i>
+        {{ _('Access') }}
+      {% endif %}
+    </a>
+
+    {% block archiver_resource %}
+      {% snippet 'package/snippets/dge_archiver_resource.html', res = res %}
+    {% endblock %}
+  </div>
+
+{% endblock %}

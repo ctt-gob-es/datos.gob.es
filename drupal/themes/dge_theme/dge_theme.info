@@ -1,6 +1,6 @@
 name = DGE Theme
+description = Tema personalizado para datos.gob.es por GMV e ILUNION.
 core = 7.x
-version = 7.x-1.0
 
 stylesheets[all][] = css/dge-base-normalize.css
 stylesheets[all][] = css/dge-base-fonts.css
@@ -12,13 +12,27 @@ stylesheets[all][] = css/dge-modules-jqueryui.css
 stylesheets[all][] = css/dge-modules-colorbox.css
 stylesheets[all][] = css/dge-modules.css
 stylesheets[all][] = css/dge-stats.css
+stylesheets[all][] = css/dge-carousel.css
+stylesheets[all][] = css/dge-aporta.css
+stylesheets[all][] = css/dge-speakers.css
+stylesheets[all][] = css/variables.css
+stylesheets[all][] = css/layout.css
+stylesheets[all][] = css/dge-general.css
+stylesheets[all][] = css/dge-home-smallcarousel.css
+stylesheets[all][] = css/accesibility.css
+
 
 scripts[] = js/jquery-ui.min.js
+scripts[] = js/jquery.equalHeights.js
 scripts[] = js/jquery.mobile.min.js
 scripts[] = js/jquery.bxslider.min.js
 scripts[] = js/jquery.sidr.min.js
 scripts[] = js/jquery.colorbox-min.js
 scripts[] = js/dge.js
+scripts[] = js/datalayer.js
+scripts[] = js/seo.js
+scripts[] = js/accesibility.js
+
 
 regions[header] = Header
 regions[navigation] = Navigation
@@ -26,6 +40,8 @@ regions[sub_navigation] = Sub Navigation
 regions[content] = Content
 regions[sidebar_first] = Sidebar first
 regions[sidebar_second] = Sidebar second
+regions[footer_pre_iniciativas] = Pre Footer Iniciativas
 regions[footer_pre] = Pre Footer
 regions[footer] = Footer
 regions[footer_post] = Post Footer
+regions[footer_post_companies] = Post Footer Companies

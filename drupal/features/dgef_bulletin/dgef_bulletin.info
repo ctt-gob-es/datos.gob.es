@@ -1,7 +1,7 @@
 name = DGEF Bulletin
 core = 7.x
 package = Features
-version = 7.x-1.0
+version = 7.x-0.10
 dependencies[] = ctools
 dependencies[] = current_search
 dependencies[] = date

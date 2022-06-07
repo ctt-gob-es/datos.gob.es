@@ -1,1 +1,1 @@
-ckanext-dge-harvest==1.0.0
+ckanext-dge-harvest==0.0.1

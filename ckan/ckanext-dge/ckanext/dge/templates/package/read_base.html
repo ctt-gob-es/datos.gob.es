@@ -1,6 +1,8 @@
 {% ckan_extends %}
+{% set dataset_title_language, dataset_title = h.dge_dataset_field_value(pkg.title_translated) %}
+{% set dataset_language, dataset_description = h.dge_dataset_field_value(pkg.description) %}
+
 {% block seo %}
- {% set dataset_title_language, dataset_title = h.dge_dataset_field_value(pkg.title_translated) %}
   <script type="application/ld+json">
   {
     "@context": "http://schema.org",
@@ -47,7 +49,6 @@
   }
   </script>
 
-  {% set dataset_language, dataset_description = h.dge_dataset_field_value(pkg.description) %}
   {% set tag_name_list = h.dge_dataset_tag_list_display_names(pkg.tags) %}
   {% if pkg.organization.id != pkg.publisher %}
      {% set publisher_name = pkg.organization.title %}
@@ -83,6 +84,13 @@
   </script>
 
 {% endblock %}
+
+{% block head_extras -%}
+<meta property="og:title" content="{{ dataset_title }} - {{ _('Dataset') }}">
+<meta property="og:description" content="{{ dataset_description|forceescape|truncate(157) }}">
+{% endblock -%}
+
+{% block subtitle %}{{ dataset_title }} - {{ _('Dataset') }}{% endblock %}
 {% block content_primary_nav %} {# Supress tabs #}{% endblock %}
 
 {% block package_revision_info %}

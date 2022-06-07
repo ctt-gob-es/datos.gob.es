@@ -1,23 +1,24 @@
 <?php
 
 /**
- * Copyright (C) 2017 Entidad P�blica Empresarial Red.es
- * 
- * This file is part of "dge_theme (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+ 	* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+ 	*
+ 	* This file is part of "dge_theme (datos.gob.es)".
+ 	*
+ 	* This program is free software: you can redistribute it and/or modify
+ 	* it under the terms of the GNU General Public License as published by
+ 	* the Free Software Foundation, either version 2 of the License, or
+ 	* (at your option) any later version.
+ 	*
+ 	* This program is distributed in the hope that it will be useful,
+ 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ 	* GNU General Public License for more details.
+ 	*
+ 	* You should have received a copy of the GNU General Public License
+ 	* along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+ 	*/
 
 function dge_theme_preprocess_html(&$vars) {
   $parameters = drupal_get_query_parameters();
@@ -61,6 +62,7 @@ function dge_theme_feed_icon($variables) {
 }
 /* ILN A11y: Modify Breadcrumb: title + list links */
 function dge_theme_breadcrumb($variables) {
+    //var_dump($variables);
   $breadcrumb = $variables['breadcrumb'];
   $output = '';
   if (!empty($breadcrumb)) {
@@ -73,7 +75,7 @@ function dge_theme_breadcrumb($variables) {
     $output .= '<ul>';
     foreach($breadcrumb as $path){
       if (!empty($path)){
-        $output .= '<li>' . $path . '</li>';
+        $output .= '<li>' . t($path) . '</li>';
       }
     }
     $output .= '</ul>';
@@ -82,7 +84,7 @@ function dge_theme_breadcrumb($variables) {
 }
 
 /**
- * 
+ *
  **/
 function dge_theme_preprocess_page(&$variables) {
     // OPCION 1 -- UTILIZAR ADDITIONAL_ICONS EN LA TEMPLATE PAGE.TPL.PHP
@@ -111,6 +113,10 @@ function dge_theme_preprocess_page(&$variables) {
       }
       $variables['feed_icons'] = $output;
     }
+
+  if (isset($variables['node']->type) && $variables['node']->type == "sectores") {
+    drupal_add_css(drupal_get_path('theme', 'dge_theme') . '/css/dge-sector.css');
+  }
 }
 
 /* ILN RWD: Remove default system css */
@@ -346,12 +352,12 @@ function dge_theme_filter_tips($variables) {
     $tips = $variables['tips'];
     $long = $variables['long'];
     $output = '';
- 
+
     $multiple = count($tips) > 1;
     if ($multiple) {
       $output = '<h2>' . t('Text Formats') . '</h2>';
     }
- 
+
     if (count($tips)) {
       if ($multiple) {
         $output .= '<div class="compose-tips">';
@@ -361,7 +367,7 @@ function dge_theme_filter_tips($variables) {
           $output .= '<div class="filter-type filter-' . drupal_html_class($name) . '">';
           $output .= '<h3>' . check_plain($name) . '</h3>';
         }
- 
+
         if (count($tiplist) > 0) {
           $output .= '<ul class="tips">';
           foreach ($tiplist as $tip) {
@@ -369,7 +375,7 @@ function dge_theme_filter_tips($variables) {
           }
           $output .= '</ul>';
         }
- 
+
         if ($multiple) {
           $output .= '</div>';
         }
@@ -378,7 +384,7 @@ function dge_theme_filter_tips($variables) {
         $output .= '</div>';
       }
     }
- 
+
     return $output;
   }
 }
@@ -392,25 +398,25 @@ function dge_theme_filter_tips_more_info() {
 function dge_theme_search_api_sorts_list(array $variables) {
   $items = array_map('render', $variables['items']);
   $options = $variables['options'];
- 
+
   $return_html = '';
   if (!empty($variables['items'])) {
     $return_html .= '<div class="search-api-sorts">';
     $return_html .= '<select onchange="location = this.options[this.selectedIndex].value;" class="search-api-sorts-select" title="'.t('Sort by').'">';
- 
+
     foreach ($variables['items'] as $i => $sort) {
        $name = $sort['#name'];
        $path = $sort['#path'];
        $options = $sort['#options'] + array('attributes' => array());
        $options['attributes'] += array('class' => array());
- 
+
        $options = array();
        if ($sort['#active']){
           $options['query'] = $sort['#order_options']['query'];
        } else {
           $options['query'] = $sort['#options']['query'];
        }
- 
+
        //Create ascending option
        $options['query']['order'] = 'asc';
        $return_html .= '<option value="';
@@ -434,13 +440,13 @@ function dge_theme_search_api_sorts_list(array $variables) {
        $return_html .= t($name).' '.t('descending');
        $return_html .= "</option>";
     }
- 
+
     $return_html .= '</select></div>';
   }
- 
+
   return $return_html;
 }
- 
+
 /**
 * GMV: CHANGE CLOSE ICON
 */
@@ -459,14 +465,14 @@ function dge_theme_facetapi_link_active($variables) {
   if (isset($variables['count'])) {
     $link_text .= ' ' . theme('facetapi_count', $variables);
   }
- 
+
   // Theme function variables fro accessible markup.
   // @see http://drupal.org/node/1316580
   $accessible_vars = array(
     'text' => $variables['text'],
     'active' => TRUE,
   );
- 
+
   // Builds link, passes through t() which gives us the ability to change the
   // position of the widget on a per-language basis.
   $replacements = array(
@@ -474,7 +480,7 @@ function dge_theme_facetapi_link_active($variables) {
     '!facetapi_accessible_markup' => theme('facetapi_accessible_markup', $accessible_vars),
   );
   $variables['text'] = t('!facetapi_deactivate_widget !facetapi_accessible_markup', $replacements);
- 
+
   $variables['options']['html'] = TRUE;
   return theme_link($variables) . $link_text;
 }
@@ -534,7 +540,7 @@ function dge_theme_preprocess_node(&$variables) {
     } else {
        hide($variables['content']['field_initiative_collaborate']);
     }
- 
+
   }
 }
 
@@ -546,7 +552,7 @@ function dge_theme_site_map_menu_link(array $variables) {
   $output = '';
   if ($element['#href'] != '#login' && $element['#href'] != '#search') {
     $sub_menu = '';
-  
+
     if ($element['#below']) {
       $sub_menu = drupal_render($element['#below']);
     }
@@ -606,3 +612,284 @@ function dge_theme_webform_number($variables) {
 
   return '<input' . drupal_attributes($element['#attributes']) . ' />';
 }
+
+/**
+ * Returns HTML for the group list title.
+ *
+ * @param $variables
+ *   An associative array containing:
+ *   - title: The title of the group list.
+ *
+ * @ingroup themeable
+ */
+function dge_theme_current_search_group_title(array $variables) {
+  return '<span class="current-search-group-title facet">' . $variables['title'] . '</span>';
+}
+
+
+
+function dge_theme_custom_breadcrumb() {
+  global $language;
+  $parent_candidates = dge_theme_get_parent_candidates(drupal_get_path_alias());
+
+  if (empty($parent_candidates)) {
+    return $breadcrumb;
+  }
+
+  $matched_menus = array();
+  $matched_link_titles = array();
+  $query = db_select('menu_links', 'ml')
+    ->fields('ml', array('menu_name', 'mlid', 'link_path', 'link_title', 'depth', 'weight'))
+    ->condition('link_path', $parent_candidates, 'IN')
+    // Do not touch admin menu.
+    ->condition('menu_name', 'management', '!=')
+    // Only consider normal, visible menu links.
+    ->condition('hidden', 0);
+
+  if (module_exists('i18n_menu')) {
+    $query->condition('language', $language->language);
+  }
+
+  $results = $query->execute();
+
+  foreach ($results as $record) {
+    // If there is more than one matched link in a menu,
+    // use the deepest, heaviest.
+    if (!isset($matched_menus[$record->menu_name]) || $record->depth > $matched_menus[$record->menu_name]['depth'] || ($record->depth == $matched_menus[$record->menu_name]['depth'] && $record->weight > $matched_menus[$record->menu_name]['weight'])) {
+      $matched_menus[$record->menu_name]['link_path'] = $record->link_path;
+      $matched_menus[$record->menu_name]['depth'] = $record->depth;
+      $matched_menus[$record->menu_name]['weight'] = $record->weight;
+    }
+
+    // Get the Link Title if it can be found in a menu item.
+    if ($record->link_title && !isset($matched_link_titles[$record->link_path])) {
+      $matched_link_titles[$record->link_path] = $record->link_title;
+      if (module_exists('i18n_menu')) {
+        $matched_link_titles[$record->link_path] = _i18n_menu_link_title((array)$record, $language->language);
+      }
+    }
+  }
+
+  // Remove current page from breadcrumb.
+  array_pop($parent_candidates);
+
+  foreach ($parent_candidates as $link_path) {
+    // If the page title is found on a menu item, use it.
+    if (isset($matched_link_titles[$link_path])) {
+      $breadcrumb[] = l($matched_link_titles[$link_path], $link_path);
+    }
+    // Otherwise, use slow method to find out the title of a page.
+    elseif ($menu_item = menu_get_item($link_path)) {
+      $breadcrumb[] = l($menu_item['title'], $link_path);
+    }
+  }
+
+  return $breadcrumb;
+}
+
+/**
+ * Returns an array of parent candidates
+ *
+ * e.g. given the argument 'foo/bar/zee', this returns an array of
+ * internal Drupal paths for 'foo', 'foo/bar', 'foo/bar/zee'.
+ *
+ * @param string $path
+ *   A Drupal path alias.
+ *
+ * @return array
+ *   An array of internal Drupal paths.
+ */
+function dge_theme_get_parent_candidates() {
+  global $language;
+  $menu_string = array();
+  $cont=0;
+
+  foreach(drupal_get_breadcrumb() as $menu_item) {
+    $link_element = explode('"', $menu_item)[1];
+    if ($link_element === '/' . $language->language) { //Tratamiento de la home
+      continue;
+    }
+    if (arg(0)=="node") { // Tratamiento de nodo
+      $node = node_load(arg(1));
+      //print_r($node->type);
+      if($node->type == 'bulletin') {
+        $node_reference = 'boletines';
+      }
+      elseif ($node->type == 'blog' ) {
+        $node_reference = 'noticias';
+      }
+      elseif ($node->type == 'event') {
+        $node_reference = 'eventos';
+      }
+      elseif ($node->type == 'talk') {
+        $node_reference = 'comunidad-risp';
+      }
+      elseif ($node->type == 'app') {
+        $node_reference = 'aplicaciones';
+      }
+      elseif ($node->type == 'aporta') {
+        $node_reference = 'encuentros-aporta';
+      }
+      elseif ($node->type == 'success') {
+        $node_reference = 'casos-exito';
+      }
+      elseif ($node->type == 'doc') {
+        $node_reference = 'documentacion';
+      }
+      elseif ($node->type == 'request') {
+        $node_reference = 'peticiones-datos';
+      }
+      elseif ($node->type == 'current_aporta') {
+        $node_reference = 'encuentros-aporta';
+      }
+      elseif ($node->type == 'blog_blog') {
+        $node_reference = 'blog';
+      }
+      elseif ($node->type == 'sectores') {
+        $node_reference = '<void>';
+      }
+      elseif ($node->type == 'challenge_aporta') {
+        $node_reference = 'desafios-aporta';
+      }
+      elseif ($node->type == 'aporta_awards') {
+        $node_reference = 'premios-aporta';
+      }
+      else {
+        $node_reference = "node/" . $node->tnid;
+      }
+      $menu_string[] = _dge_theme_get_menu_name($node_reference);
+      continue;
+    }
+    //Páginas
+    if($cont === 0) {
+      $cont++;
+      if(arg(1) == ''){
+        $node_reference = arg(0);
+        $menu_string[] = _dge_theme_get_menu_name($node_reference, true);
+      }
+      //AQUÍ SE ESTÁ IMPRIMIENDO LOS TÍTULOS EN ESPAÑOL, MIRANDO DGE_THEME_GET_MENU_NAME
+      if($link_element == '/' . $language->language . '/user'){
+        if(!empty(arg(2))){
+          $node_reference = 'admin/dashboard/' . arg(2);
+          $menu_string[] = _dge_theme_get_menu_name($node_reference, true);
+        }
+      }
+      continue;
+    }
+    if($cont === 1) {
+      $node_reference = arg(0) . '/' . arg(1);
+      $cont++;
+      $menu_string[] = _dge_theme_get_menu_name($node_reference, true);
+
+      continue;
+    }
+  }
+
+  $return = '';
+  if($menu_string[0] === $menu_string[1]){
+    $return = $menu_string[0];
+  } else {
+    $return = implode(' | ', $menu_string);
+  }
+
+  if ($return == ''){
+    $return = 'home';
+  }
+
+  return $return;
+}
+
+function _dge_theme_get_menu_name($path, $page = FALSE) {
+  $menu_text = '';
+
+  $query = db_select('menu_links', 'ml')
+    ->fields('ml')
+    ->condition('link_path', $path, '=')
+    ->condition('menu_name', 'main-menu', '=')
+    ->execute()
+    ->fetchAll();
+  $menu_text = $query[0]->link_title;
+
+  //Parche SDA-359 Premis aporta
+  if($menu_text=="Premis Aporta"){
+    $menu_text="Premios Aporta";
+  }
+
+  if(!$page){
+
+    if ($query[0]->plid!=0) {
+      $query = db_select('menu_links', 'ml')
+        ->fields('ml')
+        ->condition('mlid', $query[0]->plid, '=')
+        ->condition('menu_name', 'main-menu', '=')
+        ->execute()
+        ->fetchAll();
+      $menu_text = $query[0]->link_title . ' | ' . $menu_text;
+    }
+  } else {
+    while ($query[0]->plid!=0) {
+      $query = db_select('menu_links', 'ml')
+        ->fields('ml')
+        ->condition('mlid', $query[0]->plid, '=')
+        ->condition('menu_name', 'main-menu', '=')
+        ->execute()
+        ->fetchAll();
+      $menu_text = $query[0]->link_title . ' | ' . $menu_text;
+    }
+  }
+
+    // añade el evento/noticia/boletin que se esta visualizando
+  $fixpath = '';
+  if (arg(0) == "node") { // Tratamiento de nodo
+    $node = node_load(arg(1));
+    if (isset($node->tnid)) {
+      $node = node_load($node->tnid);
+    }
+    if ($node->type == 'aporta_awards' || $node->type == 'challenge_aporta' || $node->type == 'sectores' || $node->type == 'blog_blog' || $node->type == 'current_aporta' || $node->type == 'bulletin' || $node->type == 'blog' || $node->type == 'event' || $node->type == 'talk' || $node->type == 'app'|| $node->type == 'aporta'|| $node->type == 'success'|| $node->type == 'doc'|| $node->type == 'request'){
+      $fixpath = $node->title;
+      if ($node->type == 'current_aporta') {
+        $fixpath .= ": " . $node->field_aporta_subtitle[und][0][value];
+      }
+    }
+  }
+  if (!empty($fixpath)) {
+    return $menu_text . ' | ' . $fixpath;
+  }
+  return $menu_text;
+}
+
+/**
+ *
+ */
+function dge_theme_preprocess_entity(&$vars) {
+  static $_slide_position;
+  global $slide_position;
+  if ($vars['entity_type'] == 'paragraphs_item' && $vars['elements']['#bundle'] == 'carousel_4') {
+    $_slide_position = (!isset($_slide_position)) ? 0 : $_slide_position + 1;
+    $slide_position = $_slide_position;
+  }
+
+}
+
+/**
+ * Default theme function for all RSS rows.
+ */
+function dge_theme_preprocess_views_view_row_rss(&$vars) {
+  $item = &$vars['row'];
+  $view= &$vars['view'];
+
+  $id = $item->elements[2]['value'];
+  $node	= node_load($id);
+  $flag = $node->field_feed_included['und'][0]['value'];
+
+  if($view->name == 'feed_view' && ($flag != 1)){
+    $vars['item_elements'] = '';
+    $vars['title'] = '';
+    $vars['link'] = '';
+    $vars['description'] = '';
+  } else {
+	  $vars['item_elements'] = empty($item->elements) ? '' : format_xml_elements($item->elements);
+  }
+}
+
+?>

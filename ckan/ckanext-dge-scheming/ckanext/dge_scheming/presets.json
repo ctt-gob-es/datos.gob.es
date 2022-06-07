@@ -1,7 +1,7 @@
 {
   "scheming_presets_version": 1,
-  "about": "NTI dataset schema - scheming presets",
-  "about_url": "http://datos.gob.es",
+  "about": "scheming presets for Red.es NTI",
+  "about_url": "http://www.gmv.com",
   "presets": [
     {
       "preset_name": "uri_text",
@@ -28,6 +28,19 @@
         "error_snippet": "multiple_uri_text.html",
         "validators": "multiple_uri_text",
         "output_validators": "multiple_uri_text_output"
+      }
+    },
+    {
+      "preset_name": "multilanguage_tag",
+      "values": {
+        "form_snippet": "multilanguage_tags.html",
+        "display_snippet": "multilanguage_tags.html",
+        "validators": "fluent_tags",
+        "output_validators": "fluent_tags_output",
+        "form_attrs": {
+          "data-module": "autocomplete",
+          "data-module-tags": ""
+        }
       }
     },
     {

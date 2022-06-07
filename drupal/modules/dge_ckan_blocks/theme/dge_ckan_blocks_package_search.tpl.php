@@ -1,26 +1,26 @@
 <?php
 
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dge_ckan_blocks (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+ 	* Copyright (C) 2022 Entidad PÃºblica Empresarial Red.es
+ 	*
+ 	* This file is part of "dge_ckan_blocks (datos.gob.es)".
+ 	*
+ 	* This program is free software: you can redistribute it and/or modify
+ 	* it under the terms of the GNU General Public License as published by
+ 	* the Free Software Foundation, either version 2 of the License, or
+ 	* (at your option) any later version.
+ 	*
+ 	* This program is distributed in the hope that it will be useful,
+ 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ 	* GNU General Public License for more details.
+ 	*
+ 	* You should have received a copy of the GNU General Public License
+ 	* along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-?>
-<?php global $language; ?>
+*/
+
+?><?php global $language; ?>
 <?php if (empty($packages)): ?>
   <?php print t('No results.'); ?>
 <?php else: ?>
@@ -33,7 +33,17 @@
           <div class="dge-ckan-last-datasets-title"><?php if (array_key_exists('language', $package['title']) &&
                         $language->language != $package['title']['language']):
                ?><div lang="es" xml:lang="es"><?php endif;
-               ?><a href="<?php print $package['url']?>"><?php print $package['title']['value']?></a><?php
+               ?><p class="titleblockckan"><a href="<?php print $package['url']?>">
+		<?php
+
+              		 $inicioChar = 0;
+               		 $finalChar = 78;
+               		 print substr($package['title']['value'], $inicioChar, $finalChar);
+              		 if (strlen($package['title']['value'])>78) {
+                		 print "...";
+	       		 }
+                 ?>
+			</a></p><?php
                   if (array_key_exists('language', $package['title']) &&
                         $language->language != $package['title']['language']):
                      ?></div><?php endif; ?></div>

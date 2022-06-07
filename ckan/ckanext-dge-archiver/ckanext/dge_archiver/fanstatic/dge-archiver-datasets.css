@@ -1,0 +1,48 @@
+/*
+* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+*
+* This file is part of "dge_archiver (datos.gob.es)".
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+.archiver-icon-stack {
+  vertical-align: middle
+}
+
+.archiver-icon-background {
+  color: white;
+  margin-left: .15em
+}
+
+.archiver-icon {
+  font-size: 1.3em !important
+}
+
+.archiver-icon.link-ok {
+  color: #41ad49 !important
+}
+
+.archiver-icon.link-broken {
+  color: #fb0000 !important
+}
+
+.archiver-icon.link-not-known {
+  color: #545454 !important
+}
+
+.archiver-icon.question-mark {
+  font-size: .8em !important;
+  margin-left: .18em
+}

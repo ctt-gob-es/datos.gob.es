@@ -1,23 +1,22 @@
 <?php
-
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dgef_blog (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2022 Entidad PÃºblica Empresarial Red.es
+* 
+* This file is part of "dgef_blog (datos.gob.es)".
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 /**
  * @file
@@ -34,21 +33,21 @@ function dgef_blog_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_blog';
-  $strongarm->value = 'edit-i18n';
+  $strongarm->value = 'edit-comment';
   $export['additional_settings__active_tab_blog'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_anonymous_blog';
-  $strongarm->value = 0;
+  $strongarm->value = '2';
   $export['comment_anonymous_blog'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_blog';
-  $strongarm->value = '1';
+  $strongarm->value = '2';
   $export['comment_blog'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -62,28 +61,28 @@ function dgef_blog_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_default_per_page_blog';
-  $strongarm->value = '50';
+  $strongarm->value = '10';
   $export['comment_default_per_page_blog'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_form_location_blog';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['comment_form_location_blog'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_preview_blog';
-  $strongarm->value = '1';
+  $strongarm->value = '0';
   $export['comment_preview_blog'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_subject_field_blog';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['comment_subject_field_blog'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -153,6 +152,33 @@ function dgef_blog_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
+      'actual_challenge' => array(
+        'custom_settings' => TRUE,
+      ),
+      'actual_meeting' => array(
+        'custom_settings' => TRUE,
+      ),
+      'actual_winners' => array(
+        'custom_settings' => TRUE,
+      ),
+      'agenda' => array(
+        'custom_settings' => TRUE,
+      ),
+      'carousel_view' => array(
+        'custom_settings' => TRUE,
+      ),
+      'challenge_aporta' => array(
+        'custom_settings' => TRUE,
+      ),
+      'referenced_content' => array(
+        'custom_settings' => TRUE,
+      ),
+      'speakers' => array(
+        'custom_settings' => TRUE,
+      ),
+      'ponentes_encuentro_aporta' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -161,6 +187,15 @@ function dgef_blog_strongarm() {
         ),
         'title' => array(
           'weight' => '0',
+        ),
+        'metatags' => array(
+          'weight' => '11',
+        ),
+        'path' => array(
+          'weight' => '10',
+        ),
+        'xmlsitemap' => array(
+          'weight' => '9',
         ),
       ),
       'display' => array(
@@ -177,6 +212,14 @@ function dgef_blog_strongarm() {
             'weight' => '2',
             'visible' => FALSE,
           ),
+          'carousel_view' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'referenced_content' => array(
+            'weight' => '-5',
+            'visible' => TRUE,
+          ),
         ),
         'author' => array(
           'default' => array(
@@ -190,6 +233,14 @@ function dgef_blog_strongarm() {
           'carousel_item' => array(
             'weight' => '5',
             'visible' => FALSE,
+          ),
+          'carousel_view' => array(
+            'weight' => '2',
+            'visible' => TRUE,
+          ),
+          'referenced_content' => array(
+            'weight' => '-3',
+            'visible' => TRUE,
           ),
         ),
         'title' => array(
@@ -205,6 +256,14 @@ function dgef_blog_strongarm() {
             'weight' => '4',
             'visible' => FALSE,
           ),
+          'carousel_view' => array(
+            'weight' => '1',
+            'visible' => TRUE,
+          ),
+          'referenced_content' => array(
+            'weight' => '-4',
+            'visible' => TRUE,
+          ),
         ),
         'language_markup_enabled' => array(
           'default' => array(
@@ -219,6 +278,14 @@ function dgef_blog_strongarm() {
             'weight' => '10',
             'visible' => FALSE,
           ),
+          'carousel_view' => array(
+            'weight' => '4',
+            'visible' => TRUE,
+          ),
+          'referenced_content' => array(
+            'weight' => '100',
+            'visible' => TRUE,
+          ),
         ),
         'language' => array(
           'default' => array(
@@ -232,6 +299,14 @@ function dgef_blog_strongarm() {
           'carousel_item' => array(
             'weight' => '3',
             'visible' => FALSE,
+          ),
+          'carousel_view' => array(
+            'weight' => '3',
+            'visible' => TRUE,
+          ),
+          'referenced_content' => array(
+            'weight' => '0',
+            'visible' => TRUE,
           ),
         ),
       ),
@@ -278,6 +353,13 @@ function dgef_blog_strongarm() {
   $strongarm->name = 'menu_parent_blog';
   $strongarm->value = 'main-menu:0';
   $export['menu_parent_blog'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'metatag_enable_taxonomy_term__blog_tags';
+  $strongarm->value = TRUE;
+  $export['metatag_enable_taxonomy_term__blog_tags'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -342,7 +424,7 @@ function dgef_blog_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_node_blog_pattern';
-  $strongarm->value = 'blog/[node:title]';
+  $strongarm->value = 'noticia/[node:title]';
   $export['pathauto_node_blog_pattern'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -358,6 +440,16 @@ function dgef_blog_strongarm() {
   $strongarm->name = 'pathauto_taxonomy_term_blog_tags_pattern';
   $strongarm->value = '';
   $export['pathauto_taxonomy_term_blog_tags_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'xmlsitemap_settings_node_blog';
+  $strongarm->value = array(
+    'status' => '0',
+    'priority' => '0.5',
+  );
+  $export['xmlsitemap_settings_node_blog'] = $strongarm;
 
   return $export;
 }

@@ -2,23 +2,23 @@
 <?php
 
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dge_theme (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+ 	* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+ 	*
+ 	* This file is part of "dge_theme (datos.gob.es)".
+ 	*
+ 	* This program is free software: you can redistribute it and/or modify
+ 	* it under the terms of the GNU General Public License as published by
+ 	* the Free Software Foundation, either version 2 of the License, or
+ 	* (at your option) any later version.
+ 	*
+ 	* This program is distributed in the hope that it will be useful,
+ 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ 	* GNU General Public License for more details.
+ 	*
+ 	* You should have received a copy of the GNU General Public License
+ 	* along with this program. If not, see <http://www.gnu.org/licenses/>.
+ 	*/
 
 /**
  * @file
@@ -50,10 +50,15 @@
       <?php print $css ?>
       -->
     </style>
+    <style type="text/css">
+    v\:* {behavior: url(#default#VML);display:inline-block;}
+    body{width:100% !important;}
+
+    </style>
     <?php endif; ?>
   </head>
-	<body id="mimemail-body" yahoo bgcolor="#eeeeee" <?php if ($module && $key): print 'class="'. $module .'-'. $key .'"'; endif; ?>>
-		<table width="100%" bgcolor="#eeeeee" border="0" cellpadding="0" cellspacing="0">
+	<body id="mimemail-body" yahoo bgcolor="#f6f6f6"  style="background-color:#f6f6f6;margin:0;" <?php if ($module && $key): print 'class="'. $module .'-'. $key .'"'; endif; ?>>
+  <table style="width:600px;height:100%;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;text-align:center;border-collapse:collapse;background-color:#ffffff;border:15px solid #ffffff;" width="600" height="100%" cellspacing="0" cellpadding="0" border="0" align="center">
       <tr>
         <td>
           <!--[if (gte mso 9)|(IE)]>

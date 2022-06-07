@@ -1,23 +1,23 @@
 <?php
 
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dge_send_content (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+ 	* Copyright (C) 2022 Entidad PÃºblica Empresarial Red.es
+ 	*
+ 	* This file is part of "dge_send_content (datos.gob.es)".
+ 	*
+ 	* This program is free software: you can redistribute it and/or modify
+ 	* it under the terms of the GNU General Public License as published by
+ 	* the Free Software Foundation, either version 2 of the License, or
+ 	* (at your option) any later version.
+ 	*
+ 	* This program is distributed in the hope that it will be useful,
+ 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ 	* GNU General Public License for more details.
+ 	*
+ 	* You should have received a copy of the GNU General Public License
+ 	* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 const ADD_CONTENT_TYPES = array('app', 'initiative', 'request', 'success');
 
@@ -83,6 +83,11 @@ function dge_send_content_get_node_form($type) {
           $form[$field_name]['#access'] = $field_options['anonymous visible'];
         }
       }
+
+    }
+    if($type='request'){
+      $form['field_organismo_pub']['#access'] =FALSE;
+      $form['field_number_subscriptors']['#access'] =FALSE;
     }
     return $form;
   }
@@ -94,11 +99,13 @@ function dge_send_content_get_node_form($type) {
  */
 function dge_send_content_form_node_form_alter(&$form, $form_state, $form_id) {
   global $user;
-
   if (isset($form['#node'])) {
     $type = $form['#node']->type;
+
+
     // Without this line, you suffer pain
     form_load_include($form_state, 'inc', 'node', 'node.pages');
+
     if(isset($form['field_sender_terms_of_use'])) {
       if($user->uid) {
         // Avoid show terms of use if the user is not anonymous
@@ -121,20 +128,37 @@ function dge_send_content_form_node_form_alter(&$form, $form_state, $form_id) {
         drupal_get_messages('warning');
 
         //Limit request title
+        //Modificacion formulario de peticion de datos
         if ($form_id == 'request_node_form') {
-           $form['title']['#maxlength'] = DGE_SEND_CONTENT_MAX_LENGTH_TITLE;
+            //Formulario de peticion de datos, modificado para que obligue a rellenar los campos.
+
+            $form['title']['#maxlength'] = DGE_SEND_CONTENT_MAX_LENGTH_TITLE;
            $form['title']['#attributes'] = array(
                 'maxlength' => DGE_SEND_CONTENT_MAX_LENGTH_TITLE,
                 'size' => DGE_SEND_CONTENT_MAX_LENGTH_TITLE);
+            $form['title']['#attributes']['required'] = 'required';
+            $form['field_sender_terms_of_use']['und']['#attributes']['required'] = 'required';
+            $form['body']['und'][0]['#attributes']['required'] = 'required';
+            $form['field_request_category']['und']['#attributes']['required'] = 'required';
+
+
         }
 
-        // Change text of terms of use field
-        $terms_anchor = variable_get('dge_send_content_terms_of_use_anchor',t('terms of use'));
-        $terms_link = _dge_basic_get_terms_of_use(False);
-        $terms_anchor_link = l($terms_anchor, $terms_link, array('attributes' => array('class' => 'terms-of-use')));
-        $terms_label = variable_get('dge_send_content_terms_of_use_text', t('I read and accept !terms_anchor_link', array('!terms_anchor_link' => $terms_anchor_link)));
-        $form['field_sender_terms_of_use'][LANGUAGE_NONE]['#title'] = $terms_label;
+        if ($form_id == 'app_node_form') {
+          //To solve redirection problem creating a new app (anonymous)
+          $form['#submit'][] = 'clean_url_form_submit';
 
+        }
+
+/*
+        // Change text of terms of use field
+        $terms_anchor = variable_get('dge_send_content_terms_of_use_anchor',t('the express consent'));
+        $terms_link = 'http://www.red.es/redes/es/quienes-somos/protecci%C3%B3n-de-datos-de-car%C3%A1cter-personal';
+        $terms_anchor_link = l($terms_anchor, $terms_link);
+        //$terms_anchor_link = l($terms_anchor, $terms_link, array('attributes' => array('class' => 'terms-of-use')));
+       $terms_label = variable_get('dge_send_content_terms_of_use_text', t('I read and accept !terms_anchor_link', array('!terms_anchor_link' => $terms_anchor_link)));
+       //$terms_label = $terms_label = t("I read and accept the express consent.");
+       $form['field_sender_terms_of_use'][LANGUAGE_NONE]['#title'] = $terms_label;
         // Make required sender data
         $fields_data = dge_send_content_sender_data_fields();
         $fields_data = array_merge($fields_data,
@@ -151,7 +175,7 @@ function dge_send_content_form_node_form_alter(&$form, $form_state, $form_id) {
           if(isset($form[$field_name]) && isset($field_options['anonymous visible'])) {
             $form[$field_name]['#access'] = $field_options['anonymous visible'];
           }
-        }
+        }*/
         // Remove additional settings
         unset($form['additional_settings']);
         unset($form['actions']['preview']);
@@ -177,13 +201,20 @@ function dge_send_content_form_node_form_alter(&$form, $form_state, $form_id) {
 }
 
 /**
+ * Function to solve clean_url problem on submit a new app (anonymous)
+ */
+function clean_url_form_submit()
+{
+  $GLOBALS['conf']['clean_url']=TRUE;
+}
+/**
  * Sender fields definitions
  */
 function dge_send_content_sender_data_fields() {
   return array(
     'field_sender_terms_of_use' => array(
       'anonymous required'  => true,
-      'view visible'        => false,
+      'view visible'        => true,
     ),
     'field_sender_name'     => array(
       'anonymous required'  => true,
@@ -240,6 +271,11 @@ function dge_send_content_specific_data_fields($type) {
         'view visible'        => false,
         'anonymous visible'   => false,
       ),
+      'field_organismo_pub'   => array(
+        'anonymous required'  => false,
+        'view visible'        => false,
+        'anonymous visible'   => false,
+      ),
     );
   } elseif ($type == 'app') {
     $fields = array(
@@ -273,8 +309,14 @@ function dge_send_content_specific_data_fields($type) {
   } elseif ($type == 'success') {
     $fields = array(
       'field_success_tags'    => array(
-        'anonymous required'  => true,
-        'view visible'        => true,
+        'anonymous required'  => false,
+        'view visible'        => false,
+        'anonymous visible'   => false,
+      ),
+      'language'    => array(
+        'anonymous required'  => false,
+        'view visible'        => false,
+        'anonymous visible'   => false,
       ),
       'field_success_company' => array(
         'anonymous required'  => true,
@@ -287,7 +329,7 @@ function dge_send_content_specific_data_fields($type) {
       'field_success_app'     => array(
         'anonymous required'  => false,
         'view visible'        => false,
-        'anonymous visible'   => false,
+        'anonymous visible'   => true,
       ),
     );
   } elseif ($type == 'initiative') {

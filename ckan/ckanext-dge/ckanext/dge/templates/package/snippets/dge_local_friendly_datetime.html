@@ -11,6 +11,13 @@ Example:
 #}
 
 {% resource 'dge/dge_main.js' %}
-<span class="automatic-local-datetime" data-module="dge_main" data-datetime="{{ h.dge_render_datetime(datetime_obj, date_format='%Y-%m-%dT%H:%M:%S%z') }}">
+{% set datetime = h.dge_parse_datetime(datetime_obj) %}
+{% if datetime and datetime.year %}
+   {%if datetime.year < 100: %}
     {{ h.dge_render_datetime(datetime_obj, with_hours=True) }}
-</span>
+    {% else %}
+    <span class="automatic-local-datetime" data-module="dge_main" data-datetime="{{ h.dge_render_datetime(datetime_obj, date_format='%Y-%m-%dT%H:%M:%S%z') }}">
+        {{ h.dge_render_datetime(datetime_obj, with_hours=True) }}
+    </span>
+    {% endif %}
+{% endif %}

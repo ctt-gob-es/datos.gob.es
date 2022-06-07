@@ -1,0 +1,9 @@
+name = DGEF Layout Panel
+description = Añade nueva layout a Panel
+core = 7.x
+package = Features
+dependencies[] = ctools
+dependencies[] = panels
+features[ctools][] = panels:layouts:1
+features[features_api][] = api:2
+features[panels_layout][] = dge_lists_2cols_1row

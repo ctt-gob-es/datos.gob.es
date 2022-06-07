@@ -54,32 +54,31 @@
           'remove_field': c.remove_field }
         %}
         {% set sorting = [
+          (_('Relevance'), 'score desc, metadata_created desc'),
           (_('Modified Descending'), 'metadata_modified desc'),
           (_('Modified Ascending'), 'metadata_modified asc'),
           (_('Published Descending'), 'metadata_created desc'),
           (_('Published Ascending'), 'metadata_created asc'),
-          (_('Name'), 'title_string asc'),
-          (_('Popular'), 'views_recent desc') if g.tracking_enabled else (false, false),
-          (_('Relevance'), 'score desc, metadata_modified desc')
+          (_('Name'), 'title_string_sort asc')
           ]
         %}
-        {% snippet 'snippets/dge_search_form.html', form_id='dataset-search-form', type='dataset', query=c.q, sorting=sorting, sorting_selected=c.sort_by_selected, count=c.page.item_count, facets=facets, show_empty=request.params, error=c.query_error, fields=c.fields %}
+        {% snippet 'snippets/dge_search_form.html', form_id='dataset-search-form', type='dataset', query=c.q, sorting=sorting, sorting_selected=c.sort_by_selected, count=c.page.item_count, facets=facets, show_empty=request.params, error=c.query_error, fields=h.dge_add_additional_facet_fields(c.fields, c.facet_titles), custom_data=custom_data %}
       {% endblock %}
 
       {% block package_search_results_list %}
         {{ h.snippet('snippets/dge_package_list.html', packages=c.page.items) }}
       {% endblock %}
- 
+
 {% block package_search_results_api %}{% endblock %}
 
 {% block secondary_content %}
 <div class="filters">
   <div>
+    {{ h.snippet('snippets/dge_facet_search_operator.html', title= _('Search configuration')) }}
     {% for facet in c.facet_titles %}
-      {{ h.snippet('snippets/dge_facet_list.html', title=c.facet_titles[facet], name=facet) }}
+      {{ h.snippet('snippets/dge_facet_list.html', title=c.facet_titles[facet], name=facet, show_sort_facet=true) }}
     {% endfor %}
   </div>
   <a class="close no-text hide-filters"><i class="icon-remove-sign"></i><span class="text">close</span></a>
 </div>
 {% endblock %}
-

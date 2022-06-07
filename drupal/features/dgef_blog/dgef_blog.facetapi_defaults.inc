@@ -1,23 +1,22 @@
 <?php
-
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dgef_blog (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+* 
+* This file is part of "dgef_blog (datos.gob.es)".
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 /**
  * @file
@@ -72,7 +71,7 @@ function dgef_blog_facetapi_default_facet_settings() {
   $facet->enabled = FALSE;
   $facet->settings = array(
     'operator' => 'and',
-    'hard_limit' => '50',
+    'hard_limit' => '-1',
     'dependencies' => array(
       'facets' => array(),
       'reverse_dependency' => FALSE,
@@ -88,7 +87,7 @@ function dgef_blog_facetapi_default_facet_settings() {
     'individual_parent' => 0,
     'query_type' => 'date_range',
     'limit_active_items' => 0,
-    'default_true' => TRUE,
+    'default_true' => '1',
     'facet_search_ids' => array(),
     'date_granularity' => 'MINUTE',
   );
@@ -120,7 +119,7 @@ function dgef_blog_facetapi_default_facet_settings() {
     'individual_parent' => '0',
     'query_type' => 'term',
     'limit_active_items' => 0,
-    'default_true' => TRUE,
+    'default_true' => '1',
     'facet_search_ids' => array(),
     'exclude' => 0,
   );
@@ -470,7 +469,7 @@ function dgef_blog_facetapi_default_facet_settings() {
         'delete' => 0,
       ),
       'more_than_1_year' => array(
-        'label' => 'More than a year',
+        'label' => 'Más de un año',
         'machine_name' => 'more_than_1_year',
         'date_range_start_op' => '-',
         'date_range_start_amount' => '100',
@@ -486,7 +485,7 @@ function dgef_blog_facetapi_default_facet_settings() {
       'add_range' => 'Add a new date range',
     ),
     'empty_text' => array(
-      'value' => 'There are no Dates that match this search',
+      'value' => 'No hay fechas que coincidan con la búsqueda',
       'format' => 'plain_text',
     ),
   );
@@ -562,9 +561,9 @@ function dgef_blog_facetapi_default_facet_settings() {
       'indexed' => '4',
     ),
     'empty_behavior' => 'text',
-    'facet_more_text' => 'Show more',
-    'facet_fewer_text' => 'Show fewer',
-    'soft_limit' => '20',
+    'facet_more_text' => 'Mostrar más',
+    'facet_fewer_text' => 'Mostrar menos',
+    'soft_limit' => '10',
     'nofollow' => 1,
     'show_expanded' => 0,
     'ranges' => array(
@@ -633,7 +632,7 @@ function dgef_blog_facetapi_default_facet_settings() {
       'add_range' => 'Add a new date range',
     ),
     'empty_text' => array(
-      'value' => 'There are no Tags that match this search',
+      'value' => 'No hay etiquetas que coincidan con la búsqueda',
       'format' => 'plain_text',
     ),
   );

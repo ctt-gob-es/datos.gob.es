@@ -1,23 +1,24 @@
 <?php
 
 /**
- * Copyright (C) 2017 Entidad P�blica Empresarial Red.es
- * 
- * This file is part of "dge_ckan (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+ 	* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+ 	*
+ 	* This file is part of "dge_ckan (datos.gob.es)".
+ 	*
+ 	* This program is free software: you can redistribute it and/or modify
+ 	* it under the terms of the GNU General Public License as published by
+ 	* the Free Software Foundation, either version 2 of the License, or
+ 	* (at your option) any later version.
+ 	*
+ 	* This program is distributed in the hope that it will be useful,
+ 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ 	* GNU General Public License for more details.
+ 	*
+ 	* You should have received a copy of the GNU General Public License
+ 	* along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+*/
 
 include 'dge_ckan_json.inc';
 
@@ -29,12 +30,25 @@ define('CKAN_USER_NAME_FIELD','field_ckan_user_name');
 define('CKAN_ORGANIZATION_OLD_ID','field_reference_id');
 define('CKAN_PACKAGE_FIELD','field_ckan_package_id');
 define('CKAN_PACKAGE_NAME_FIELD','field_ckan_package_name');
+define('CKAN_DELETED_DATASET_PREF', '[ELIMINADO]');
 
 /**
  * Implements hook_libraries_info().
  *
  * CKAN client library inclusion.
  */
+
+function dge_ckan_init()
+{
+    $node_type   = 'dataset';
+    $node = menu_get_object();
+    if ($node && property_exists($node, "type") && $node->type === $node_type) {
+        $nid=$node->nid;
+        cache_clear_all('field:node:'.$nid, 'cache_field');
+        $node=node_load($nid);
+    }
+}
+
 function dge_ckan_libraries_info() {
 
   $libraries['dge_ckan_php_client'] = array(
@@ -128,9 +142,10 @@ function dge_ckan_access_to_ckan_administration() {
  * Redirects to the CKAN user organization page
  */
 function dge_ckan_datasets_page() {
+
   global $user;
   global $language;
-
+  drupal_page_is_cacheable(FALSE);
   //Common path
   $path = variable_get('ckan_url', '');
 
@@ -620,7 +635,26 @@ function dge_ckan_user_presave(&$edit, $account, $category) {
     }
   }
 }
+function dge_ckan_user_delete($account) {
+  if (in_array('organization', $account->roles)) {
+	//Prueba SVN 2
+    //$profile_delete = profile2_load_by_user($account, PROFILE_ORGANIZATION_SHORT);
+    //$ckan_id = dge_ckan_get_id_from_profile($profile_delete);
+    $ckan_id = dge_ckan_get_id_from_user($account);
+    $ckan = dge_ckan_init_class();
 
+    $response = $ckan->request(
+           'user_delete',
+           $ckan_id
+         );
+    //Delete member
+    $profile = profile2_load_by_user($account, PROFILE_ORGANIZATION_SHORT);
+    //Remove old permission on old organization if it changes
+    if(isset($profile->{PROFILE_ORGANIZATION_FIELD}[LANGUAGE_NONE][0]['tid'])) {
+      dge_ckan_organization_member_delete($profile);
+    }
+  }
+}
 /**
  * Implements hook_profile2_presave().
  */
@@ -990,4 +1024,39 @@ function dge_ckan_organization_generate_reference_id() {
        $new_id = $current_value + 1;
    }
    return $new_id;
+ }
+
+
+/**
+ * Implements hook_cron().
+ */
+function dge_ckan_cron() {
+    // Se obtienen los name registrados
+    $query = db_select('node', 'n');
+    $query->join('node_revision', 'nr', 'n.vid = nr.vid');
+    $query->condition('n.type', 'dataset', '=');
+    $query->condition('n.title', CKAN_DELETED_DATASET_PREF . '%', 'like');
+    $query->addField('n', 'nid', 'nid');
+    $query->addField('n', 'vid', 'vid');
+    $query->addField('n', 'title', 'node_title');
+    $query->addField('nr', 'title', 'revision_title');
+
+    $result = $query->execute();
+
+    // Se comprueba que los names registrados sean válidos
+    $wrong_nodes = array();
+    $num_ok = 0;
+    $num_bad = 0;
+    while($record = $result->fetchAssoc()){
+        if ($record['revision_title'] !== $record['node_title'] && strpos($record['node_title'], CKAN_DELETED_DATASET_PREF) === 0) {
+            watchdog('dge_ckan', 'DELETED DATASET SYNC -> Updated dataset !nid with title "!title"', array(
+                '!nid' => $record['nid'],
+                '!title' => $record['node_title']), WATCHDOG_INFO);
+
+            $dataset_node = node_load($record['nid']);
+            $dataset_node->title = $record['node_title'];
+            node_save($dataset_node);
+            $num_bad++;
+        }
+    }
 }

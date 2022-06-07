@@ -1,23 +1,23 @@
 <?php
 
 /**
- * Copyright (C) 2017 Entidad P�blica Empresarial Red.es
- * 
- * This file is part of "dge_user (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+ 	* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+ 	*
+ 	* This file is part of "dge_user (datos.gob.es)".
+ 	*
+ 	* This program is free software: you can redistribute it and/or modify
+ 	* it under the terms of the GNU General Public License as published by
+ 	* the Free Software Foundation, either version 2 of the License, or
+ 	* (at your option) any later version.
+ 	*
+ 	* This program is distributed in the hope that it will be useful,
+ 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ 	* GNU General Public License for more details.
+ 	*
+ 	* You should have received a copy of the GNU General Public License
+ 	* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 define('PROFILE_ORGANIZATION','profile_agency_data');
 define('PROFILE_ORGANIZATION_SHORT',str_replace('profile_','',PROFILE_ORGANIZATION));
@@ -121,4 +121,48 @@ function dge_user_has_role_name($role_name, $account = NULL) {
 function dge_basic_get_role_by_name($name) {
   $roles = user_roles();
   return array_search($name, $roles);
+}
+
+/**
+ * Implements hook_user_view
+ */
+function dge_user_user_view($account, $view_mode, $langcode)
+{
+  //Se hacen los nombres de los profiles traducibles
+  foreach ($account->content as $key=>$value)
+  {
+    if (strlen($key) > 7 && substr( $key, 0, 8 ) === "profile_" &&
+        is_array($account->content[$key]) && array_key_exists('#title', $account->content[$key]))
+    {
+      $account->content[$key]['#title'] = t($account->content[$key]['#title']);
+    }
+  }
+}
+
+/**
+* Implements hook_module_implements_alter
+*/
+function dge_user_module_implements_alter(&$implementations, $hook)
+{
+  //Se fuerza a que el hook de user se ejecute el último
+  if ($hook == 'user_view')
+  {
+    $group = $implementations['dge_user'];
+    unset($implementations['dge_user']);
+    $implementations['dge_user'] = $group;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function dge_user_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
+  $form['account']['name']['#description'] = t("Alphanumeric characters, spaces, and the special characters (.), (_), ('), (-), and (@) are allowed.");
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function dge_user_form_user_register_form_alter(&$form, &$form_state, $form_id) {
+  $form['account']['name']['#description'] = t("Alphanumeric characters, spaces, and the special characters (.), (_), ('), (-), and (@) are allowed.");
 }

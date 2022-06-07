@@ -1,23 +1,25 @@
 /*
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "ckanext-dge (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
-
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+*
+* This file is part of "dge (datos.gob.es)".
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 /* $$ DGE MODULES CKAN
+@charset "UTF-8";
+@charset 'iso-8859-15';
 ######### SISTEM ########### */
 /* Tabs */
 .page-header .nav-tabs{float:none;display:block;width:100%;list-style:none;margin:0;padding:0;border:0 none;/* box-shadow:inset 0 -5px 10px rgba(0,0,0,.1); */}
@@ -51,6 +53,15 @@
 .dge-user-menu .block__content li{display:inline-block;margin:0;color:#555;text-transform:uppercase;font-weight:500;}
 .dge-user-menu .block__content a{display:inline-block;padding:0 1em;color:#555;text-decoration:none;}
 .dge-user-menu .block__content a:hover,.menu a:focus{color:#000;transition:.3s;}
+
+/*Modificador imagenes footer*/
+.dge-entidades .block__content a{margin-left: 2px !important;}
+.block__content .hoover_efect{display:inline-block;padding:0 0.5em;color:#555;text-decoration:none;height:70px !important}
+/*.dge-entidades .block__content li:first-child{margin-right:3px !important;}*/
+.block__content .hoover_efect:hover,.menu a:focus{color:#000;transition:.1s  !important}
+.block__content .hoover_efect img{height: 60px !important }
+.block-certifications ul.certifications{list-style: none;}
+
 @media all and (min-width: 60em){ /* +960 */
 	.dge-user-menu{display:none;}
 	.dge-user-menu.is-visible{display:block;}
@@ -94,7 +105,7 @@ footer.site-footer > .content{padding:0;}
 .filters .module-heading i{display:none;}
 .filters .pane-content{padding:0;}
 .filters ul{list-style:none;margin:0;padding:0;}
-.filters li{position:relative;margin:0;padding:0;color:#FFF;background-color:#7A338B;border-bottom:1px solid #CFCAD0;}
+.filters li{position:relative;margin:0;padding:0;/*color:#FFF;background-color:#7A338B;*/border-bottom:1px solid #CFCAD0;}
 .filters .last{border-bottom:0 none;}
 .filters .is-active{padding:10px 10px 10px 35px;}
 .filters .nav-item a{position:relative;display:block;padding:10px 10px 10px 25px;color:#333;background-color:#FFF;text-decoration:none;transition:.3s;}
@@ -103,6 +114,14 @@ footer.site-footer > .content{padding:0;}
 .filters .active a{color:#FFF;background-color:#7A338B;transition:.3s;padding-right:25px;}
 .filters .active a:after{content:"";position:absolute;top:0;right:-8px;height:87.5%;padding:3px 17px;color:#FFF;background-color:#7A338B;text-indent:-999px;-webkit-transform:skewX(-20deg);-moz-transform:skewX(-20deg);transform:skewX(-20deg);-webkit-transition:.3s;-moz-transition:.3s;transition:.3s;}
 .filters .active a:before{content:"";position:absolute;z-index:10;top:11px;right:0;width:22px;height:22px;background:url(/images/ico-cross-close.png) no-repeat center center;border-radius:50%;-webkit-transition:.3s;-moz-transition:.3s;transition:.3s;}
+
+/*SDA-929 - Eliminar imagen "x" de cierre*/
+.filter_sort_numb_inactive:before{ background: none !important;}
+.filter_sort_numb_active:before{background: none !important;}
+
+/*SDA-1117*/
+.img-filter-in-anchor li.nav-item { background-image: unset;}
+
 .filters .active a:hover,
 .filters .active a:focus{color:#FFF;background-color:#7A338B;transition:.3s;}
 .filters .active a:hover:after,
@@ -112,8 +131,8 @@ footer.site-footer > .content{padding:0;}
 .filters .active a span{overflow:visible;white-space:normal;}
 .filters .facetapi-active{position:absolute;top:0;right:-7px;height:75%;padding:3px 15px;color:#FFF;background-color:#7A338B;text-indent:-999px;-webkit-transform:skewX(-20deg);-moz-transform:skewX(-20deg);transform:skewX(-20deg);}
 .filters .empty{margin:0;padding:10px 25px;color:#333;background-color:#FFF;}
-.filters .module-footer{margin:0;}
-.filters .module .read-more{display:block;padding:10px 10px 10px 25px;color:#7A338B;font-weight:500;text-decoration:none;-webkit-transition:.3s;-moz-transition:.3s;transition:.3s;}
+.filters .module-footer{margin:0;border-bottom:1px solid #CFCAD0;}
+.filters .module .read-more{display:block;padding:10px 10px 10px 25px;color:#7A338B;font-weight:500;text-decoration:none;border-top:1px solid #AE6EBD;-webkit-transition:.3s;-moz-transition:.3s;transition:.3s;}
 .filters .module .read-more:hover,
 .filters .module .read-more:focus{color:#7A338B;background-color:#E9DEEB;transition:.3s;}
 @media all and (min-width: 48em){/* +768 */
@@ -122,9 +141,9 @@ footer.site-footer > .content{padding:0;}
 	.filters .nav-item a{padding:10px 26px 10px 25px;}
 	.filters .module .read-more{display:block;padding:10px 10px 10px 25px;}
 }
-
 /* Buscador (filtro) - listado interiores (ckan) */
 .search-form h2{margin:0;padding:0 10px 10px;color:#7A338B;font-size:1.125em;font-weight:normal;}
+.search-input{display:flex}
 .search-input{margin:0 -10px 25px;padding:20px;background-color:#D0D0D0;text-align:right;}
 .search-input .search{display:inline-block;vertical-align:middle;width:100%;margin:0;padding:4px 5px;background:#FFF;border:1px solid #FFF;border-radius:0;box-sizing:border-box;line-height:1.4;}
 .search-input button{margin:10px 0 0;padding:10px 36px 9px 15px;color:#FFF;background:#6E2585 url(/images/ico-arrow-buttton.png) no-repeat 87% 50%;border:0 none;border-radius:18px;font-size:.833em;text-transform:uppercase;cursor:pointer;transition:.3s;}
@@ -133,6 +152,8 @@ footer.site-footer > .content{padding:0;}
 .search-input button:active{background-color:#E05206;box-shadow:inset 1px 1px 4px rgba(0,0,0,.75);transition:.3s;}
 .search-input button span{}
 .search-input .icon-search{display:none;}
+
+
 @media all and (min-width: 48em){/* +768 */
 	.search-form h2{padding:0 0 10px;}
 	.search-input{margin:0 0 45px;text-align:left;}
@@ -146,7 +167,7 @@ footer.site-footer > .content{padding:0;}
 	.search-input .search{width:37em;}
 }
 @media all and (min-width: 100em){/* +1600 */
-	.search-input .search{width:49em;}
+	.search-input .search{width:41em;}
 }
 
 
@@ -215,6 +236,7 @@ footer.site-footer > .content{padding:0;}
 }
 
 /* Dataset detail CKAN */
+.dge-dataset-detail{margin:0 10px 25px;}
 .dge-dataset-detail{margin:0 10px 25px;}
 .dge-dataset-detail .dataset-private.label{float:left;overflow:hidden;display:inline-block;vertical-align:middle;margin:12px 10px 0 0;padding:2px 5px;color:#FFF;background-color:#C64A1A;font-size:.875rem;}
 .dge-dataset-detail .dataset-private.label .icon-lock{color:#FFF;}
@@ -318,8 +340,8 @@ footer.site-footer > .content{padding:0;}
 .dge-dataset-detail .description .notes{padding:0;font-size:0.889em;}
 .dge-dataset-detail .tags{margin:25px 25px 40px;}
 .dge-dataset-detail .tag-list{list-style:none;margin:0;padding:0;}
-.dge-dataset-detail .tag-list li{color:#666666;padding:0;font-size:0.778em;}
-.dge-dataset-detail .tag-list a{color:#666666;background-color:#E8E8E8;list-style:none;margin:0;padding:5px 25px;text-decoration:none;border-radius:15px;}
+.dge-dataset-detail .tag-list li{color:#474747;padding:0;font-size:0.778em;}
+.dge-dataset-detail .tag-list a{color:#474747;background-color:#E8E8E8;list-style:none;margin:0;padding:5px 25px;text-decoration:none;border-radius:15px;}
 .dge-dataset-detail .tag-list a:hover,
 .dge-dataset-detail .tag-list a:focus{color:#FFF;background-color:#C64A1A;}
 .dge-dataset-detail .additional-info__content{margin:0 0 25px;}
@@ -327,12 +349,18 @@ footer.site-footer > .content{padding:0;}
 .dge-dataset-detail .additional-info .table th{display:block;width:auto;padding:0 0 3px;border:0 none;line-height:1.2;}
 .dge-dataset-detail .additional-info .table td{display:block;width:auto;padding:0 0 10px;border:0 none;line-height:1.2;overflow-wrap:break-word;word-wrap:break-word;word-break:break-all;}
 .dge-dataset-detail .additional-info .table td p{margin:0;}
-.dge-dataset-detail .additional-info .table ul,
-.dge-dataset-detail .additional-info .table ol{list-style:none;margin:0;padding:0;}
-.dge-dataset-detail .additional-info .table li{margin:0 0 5px;}
+.dge-dataset-detail .additional-info .additional-table ul,
+.dge-dataset-detail .additional-info .additional-table ol{list-style:none;margin:0;padding:0;}
+.dge-dataset-detail .additional-info .additional-table li{margin:0 0 5px;}
 .dge-dataset-detail .additional-info a{color:#6E2585;text-decoration:none;overflow-wrap:break-word;word-wrap:break-word;word-break:break-all;}
 .dge-dataset-detail .additional-info a:hover,
 .dge-dataset-detail .additional-info a:focus{color:#E05206;}
+.dge-dataset-detail .additional-info .additional-table{display: table;  flex-direction: column; text-align: left;  font-size: 0.889em}
+.dge-dataset-detail .additional-info .additional-row{display: table-row;flex-wrap: wrap; text-align: left;}
+.dge-dataset-detail .additional-info .dataset-label{display: table-row; font-weight: bold; width: 25%; padding: 8px}
+.dge-dataset-detail .additional-info .dataset-details{display: table-cell; text-align: left; width: 75%; padding: 8px}
+
+
 /* resources - dataset editing */
 .ui-sortable.resource-list{position:relative;margin:0 0 1em;}
 .ui-sortable .resource-item{position:relative;display:block;}
@@ -369,6 +397,8 @@ footer.site-footer > .content{padding:0;}
 	.dge-dataset-detail .additional-info__content{margin:0 0 25px 25px;}
 	.dge-dataset-detail .additional-info .table th{display:table-cell;width:25%;padding:8px;}
 	.dge-dataset-detail .additional-info .table td{display:table-cell;width:75%;padding:8px;}
+	.dge-dataset-detail .additional-info .additional-row{display: table-row;flex-wrap: wrap; text-align: left;}
+	.dge-dataset-detail .additional-info .dataset-details{display: table-cell; padding: 8px 8px 8px 25px}
 	.ui-sortable .resource-item .heading{padding:5px 5px 5px 75px;}
 }
 @media all and (min-width: 80em){ /* +768 */
@@ -376,7 +406,16 @@ footer.site-footer > .content{padding:0;}
 	.dge-dataset-detail .dataset-metadata span{display:inline-block;vertical-align:top;width:78%;max-width:81.5%;}
 	.dge-dataset-detail .additional-info .table th{width:18%;max-width:15em;border:0 none;}
 	.dge-dataset-detail .additional-info .table td{width:82%;border:0 none;}
+	.dge-dataset-detail .additional-info .additional-row{display: table-row;flex-wrap: wrap; text-align: left;}
+	.dge-dataset-detail .additional-info .dataset-label{display: table-cell; font-weight: bold; width: 25%; padding: 8px}
+	.dge-dataset-detail .additional-info .dataset-details{display: table-cell; text-align: left; width: 75%; padding: 8px}
 }
+@media all and (max-width: 48em){ /* +768 */
+	.dge-dataset-detail .additional-info .additional-row{display: grid; flex-direction: row; text-align: left;}
+	.dge-dataset-detail .additional-info .dataset-label{display: block;font-weight: bold; width: 100%; padding: 0 0 3px}
+	.dge-dataset-detail .additional-info .dataset-details{display: block;text-align: left; width: 100%; padding: 0 0 10px}
+}
+
 
 /* background categories */
 .dge-list--dataset .dataset-categories{list-style:none;margin:0 0 5px;transition:.3s;}
@@ -560,6 +599,45 @@ footer.site-footer > .content{padding:0;}
 	.dataset-categories a{display:block;overflow:hidden;text-indent:-9999px;height:50px;width:50px;background-repeat:no-repeat;background-position:center center;background-size:100% 100%;font-size:1em;}
 }
 
+/* SDA-584 - icons format*/
+/*background-position y padding-left para ajustar la posicion del icono*/
+
+.filters .WMS a{background-repeat:no-repeat;background-size:30px auto;background-position:115px;padding-left:25px;}
+.filters .WFS a{background-repeat:no-repeat;background-size:30px auto;background-position:110px;padding-left:25px;}
+.filters .WMS-XML a{background-repeat:no-repeat;background-size:30px auto;background-position:145px;padding-left:25px !important;}
+.filters .API a{background-repeat:no-repeat;background-size:30px auto;background-position:105px;padding-left:25px !important;}
+.filters .active.WMS a{background-repeat:no-repeat;background-size:30px auto;background-position:115px;padding-left:25px !important;}
+
+.WMS a{background-image:url(/images/ico-category/ico-cat-formato.png);!important}
+.active.WMS a{background-image:url(/images/ico-category/ico-cat-formato-hover-alt.png);!important}
+.WFS a{background-image:url(/images/ico-category/ico-cat-formato.png);}
+.active.WFS a{background-image:url(/images/ico-category/ico-cat-formato-hover-alt.png);}
+.WMS-XML a{background-image:url(/images/ico-category/ico-cat-formato.png);}
+.active.WMS-XML a{background-image:url(/images/ico-category/ico-cat-formato-hover-alt.png);}
+.API a{background-image:url(/images/ico-category/ico-cat-formato.png);}
+.active.API a{background-image:url(/images/ico-category/ico-cat-formato-hover-alt.png);}
+
+.WMS{background-image:url(/images/ico-category/ico-cat-formato.png);background-repeat: no-repeat;background-size: 25%;}
+.WMS:hover,
+.WMS:focus{background-image:url(/images/ico-category/ico-cat-formato-hover.png);background-repeat: no-repeat;background-size: 25%;}
+.WFS{background-image:url(/images/ico-category/ico-cat-formato.png);background-repeat: no-repeat;background-size: 25%;}
+.WFS:hover,
+.WFS:focus{background-image:url(/images/ico-category/ico-cat-formato-hover.png);background-repeat: no-repeat;background-size: 25%;}
+.WMS-XML{background-image:url(/images/ico-category/ico-cat-formato.png);background-repeat: no-repeat;background-size: 25%;}
+.WMS-XML:hover,
+.WMS-XML:focus{background-image:url(/images/ico-category/ico-cat-formato-hover.png);background-repeat: no-repeat;background-size: 25%;}
+.API{background-image:url(/images/ico-category/ico-cat-formato.png);background-repeat: no-repeat;background-size: 15%;}
+.API:hover,
+.API:focus{background-image:url(/images/ico-category/ico-cat-formato-hover.png);background-repeat: no-repeat;background-size: 15%;}
+
+
+@media all and (min-width: 48em;){
+	.dge-dataset-detail .dataset-categories a{display:inline-block;width:auto;height:auto;text-indent:0;background:none;font-size:0.889em;}
+}
+@media all and (min-width: 60em){
+	.dataset-categories a{display:block;overflow:hidden;text-indent:-9999px;height:50px;width:50px;background-repeat:no-repeat;background-position:center center;background-size:100% 100%;font-size:1em;}
+}
+
 /* form source new (crear fuente federador */
 #source-new .control-label[for="field-title"]{float:left;}
 #source-new .control-label[for="field-title"] + .controls{display:block;width:100%;}
@@ -673,3 +751,140 @@ footer.site-footer > .content{padding:0;}
 	.comments-add-link{background-image:url(/images/ico-arrow-buttton@2x.png);background-size:22px 26px;}
 	.comment .comment-reply a{background-image:url(/images/ico-arrow-buttton@2x.png);background-size:22px 26px;}
 }
+
+/******* SDA-607 ********/
+.tiny-administration-level {
+    padding:1px 5px;
+    font-size:12px;
+    min-width: 0px !important;
+    margin-left: 0px !important;
+  }
+
+/******* SDA-504 ********/
+.rate-widget {
+    display: inline-block;
+    width:100%;
+    margin: 30px 0 0 0;
+    text-align: center;
+    /* right: 270px;
+    position: absolute;*/
+    top: 10px;
+  }
+  
+  @media (min-width: 32em) {
+    .rate-widget {
+      display: inline-block;
+      width:100%;
+      margin: 12px;
+      /* text-align: center; */
+      /* right: 20px;
+      position: absolute; */
+      top: 10px;
+    }
+  }
+  
+  @media (min-width: 36em) {
+    .rate-widget {
+      display: inline-block;
+      width:auto;
+      margin: 12px;
+      /* text-align: center; */
+      text-align: none;
+    }
+  }
+  
+  .rate-info {
+    color: #ffffff;
+    display: inline-block;
+    margin-left: 15px;
+    padding: 0px;
+    position: relative;
+    border-radius: 5px 5px 5px 5px;
+    width: 50px;
+    background-color: #c2c2c2;
+    text-align: center;
+  }
+  
+  .rate-info span {
+    font-size: 12px;
+  }
+  
+  .rate-info:before {
+    content: "";
+    position: absolute;
+    top: 21%;
+    left: -4px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 6px solid;
+    border-right-color: #c2c2c2;
+  }
+  
+  .rate-thumbs-up {
+    background: url(/images/thumb_up.png) 100% 100% no-repeat;
+    height: 28px;
+    width: 28px;
+    text-indent: -9999px;
+    display: inline-block;
+  }
+  
+  .rate-thumbs-up-voted {
+    background: url(/images/thumb_up_purple.png) 100% 100% no-repeat;
+    height: 28px;
+    width: 28px;
+    text-indent: -9999px;
+    display: inline-block;
+  }
+  
+  .rate-thumbs-up-voted + .rate-info{
+    background-color: #6E2585;
+  }
+  
+  .rate-thumbs-up-voted + .rate-info:before{
+    border-right-color: #6E2585;
+  }
+  
+  .add-link-wrapper {
+    position: relative;
+    float: right;
+  }
+
+/******* SDA-673 ********/
+
+.rate-button{
+    position: relative;
+  }
+  
+  .rate-button-is-loading{
+    cursor: default;
+    pointer-events: none;
+  }
+  .rate-loading{
+    background: url(/images/loading_vote.gif);
+    background-size: cover;
+      background-repeat: no-repeat;
+      cursor: default;
+      pointer-events: none;
+      background-color: #fff;
+      visibility: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+  }
+  
+  
+  .rate-button-is-loading .rate-loading{
+    visibility:visible;
+  }
+  
+
+  /***** SDA-704 ******/
+.comment .links a.disabled,.comment .links a:hover.disabled,.comment .links a:focus.disabled{
+cursor:not-allowed;
+box-shadow: none;
+background-color:#6E258566;
+}
+
+  

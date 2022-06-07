@@ -1,0 +1,4 @@
+name = DGE Translations Upgrade
+description = Custom Translations Upgrades
+core = 7.x
+package = DGE

@@ -1,19 +1,19 @@
-# Copyright (C) 2017 Entidad P�blica Empresarial Red.es
-# 
-# This file is part of "ckanext-dge-ga-report (datos.gob.es)".
-# 
+# Copyright (C) 2022 Entidad Pública Empresarial Red.es
+#
+# This file is part of "dge_ga_report (datos.gob.es)".
+#
 # This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-# 
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-# 
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import httplib2
@@ -73,7 +73,10 @@ def get_profile_id(service):
         return None
 
     accountName = config.get('googleanalytics.account')
-    webPropertyId = config.get('googleanalytics.id')
+    # SDA-896 - Separar propiedad de la vista desde la que se descarga las analitcas de GA,
+    # de la propiedad de seguimiento de paginas de googleanalytics
+    #webPropertyId = config.get('googleanalytics.id')
+    webPropertyId = config.get('ckanext-dge-ga-report.prop_id')
     for acc in accounts.get('items'):
         if acc.get('name') == accountName:
             accountId = acc.get('id')

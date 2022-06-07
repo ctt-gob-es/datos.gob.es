@@ -6,14 +6,35 @@
 
   {% block errors %}{{ form.errors(error_summary) }}{% endblock %}
 
+    <!-- URL Federador SDA-568-->
+
+{% set user_is_sysadmin = h.check_access('sysadmin') %}
+  <!-- {# note: #} -->
+  {% if data.url %}
+  {% if user_is_sysadmin == false %}
+        {% call form.input('url', id='field-url', label=_('URL'), value=data.url, error=errors.url, classes=['control-full', 'control-large'], attrs={'readonly':'readonly'} ) %}
+      <span class="info-block">
+        {{ _('This can be edited only by the admin') }}
+      </span>
+      {% endcall %}
+  {% endif %}
+  {% endif %}
+
+
+  {% if (user_is_sysadmin == true) or not(data.url)  %}
   {% call form.input('url', id='field-url', label=_('URL'), value=data.url, error=errors.url, classes=['control-full', 'control-large']) %}
       <span class="info-block">
         {{ _('This should include the http:// part of the URL') }}
       </span>
   {% endcall %}
+  {% endif %}
+    
+  
 
-  {{ form.input('title', id='field-title', label=_('Title'), placeholder=_('eg. A descriptive title'), value=data.title, error=errors.title, classes=['control-full'], attrs={'data-module': 'slug-preview-target'}) }}
+    <!-- Title input -->
+    {{ form.input('title', id='field-title', label=_('Title'), placeholder=_('eg. A descriptive title'), value=data.title, error=errors.title, classes=['control-full'], attrs={'data-module': 'slug-preview-target'}) }}
 
+    <!--Second URL field -->
   {% set prefix = 'harvest' %}
   {% set domain = h.url_for('{0}_read'.format(c.dataset_type), id='', qualified=true) %}
   {% set domain = domain|replace("http://", "")|replace("https://", "") %}
@@ -41,7 +62,7 @@
     </div>
   </div>
 
-  {{ form.select('frequency', id='field-frequency', label=_('Update frequency'), options=h.harvest_frequencies(), selected=data.frequency, error=errors.frequency) }}
+  {{ form.select('frequency', id='field-frequency', label=_('Update frequency'), options=h.dge_harvest_frequencies(), selected=data.frequency, error=errors.frequency) }}
 
   {% block extra_config %}
   {{ form.textarea('config', id='field-config', label=_('Configuration'), value=data.config, error=errors.config) }}

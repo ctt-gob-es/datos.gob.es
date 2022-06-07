@@ -1,23 +1,24 @@
 <?php
 
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dge_ckan_blocks (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+ 	* Copyright (C) 2022 Entidad PÃºblica Empresarial Red.es
+ 	*
+ 	* This file is part of "dge_ckan_blocks (datos.gob.es)".
+ 	*
+ 	* This program is free software: you can redistribute it and/or modify
+ 	* it under the terms of the GNU General Public License as published by
+ 	* the Free Software Foundation, either version 2 of the License, or
+ 	* (at your option) any later version.
+ 	*
+ 	* This program is distributed in the hope that it will be useful,
+ 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ 	* GNU General Public License for more details.
+ 	*
+ 	* You should have received a copy of the GNU General Public License
+ 	* along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+*/
 
 /**
  * Countries vocabulary
@@ -91,6 +92,14 @@ function dge_ckan_blocks_block_info() {
     'info' => t('DGE CKAN Blocks Package Search'),
     'cache' => DRUPAL_NO_CACHE,
   );
+  $blocks["dge_ckan_blocks_package_csv"] = array(
+    'info' => t('DGE CKAN Blocks Package Csv'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks["dge_ckan_blocks_package_api"] = array(
+    'info' => t('DGE CKAN Blocks Package Api'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
   $blocks["dge_ckan_blocks_init_review"] = array(
     'info' => t('DGE Home Initiatives Review'),
     'cache' => DRUPAL_NO_CACHE,
@@ -99,46 +108,183 @@ function dge_ckan_blocks_block_info() {
     'info' => t('DGE Home Category List'),
     'cache' => DRUPAL_NO_CACHE,
   );
+  $blocks["dge_ckan_small_color_block_datos"]=array(
+    'info'=>t('DGE Small Color Block Datos'),
+    'cache'=>DRUPAL_NO_CACHE
+  );
+  $blocks["dge_ckan_small_color_block_dis"]=array(
+    'info'=>t('DGE Small Color Block Distribucione'),
+    'cache'=>DRUPAL_NO_CACHE
+  );
+   $blocks["dge_ckan_block_cdd"]=array(
+    'info'=>t('DGE   Block Conjunto Datos y Distribuciones'),
+    'cache'=>DRUPAL_NO_CACHE
+  );
   return $blocks;
 }
 
 /**
  * Implements hook_block_view().
  */
-function dge_ckan_blocks_block_view($delta) {
-  if ($delta == 'dge_ckan_blocks_package_search') {
-    global $language;
+function dge_ckan_blocks_block_view($delta)
+{
+    switch ($delta) {
+    case 'dge_ckan_blocks_package_search':
+      global $language;
 
-    $settings = array(
-      'rows' => 3,
-      'start' => 0,
-      'sort' => 'metadata_created desc',
-    );
-    return array(
-      'subject' => t('Last datasets'),
-      'content' => theme('dge_ckan_blocks_package_search',
-        array(
-          'packages' => dge_ckan_blocks_package_search('','',$settings['rows'],$settings['start'],$settings['sort']),
-          'ckan_url' => variable_get('ckan_url', '').'/'.$language->language.'/'.variable_get('ckan_pagina_dataset', 'dataset'),
-      )),
-    );
-  } elseif ($delta == 'dge_ckan_blocks_init_review') {
-    return array(
-      'subject' => t('Open data initiatives'),
-      'content' => dge_ckan_blocks_initiatives_block(),
-    );
-  } elseif ($delta == 'dge_ckan_blocks_categories') {
-    return array(
-      'subject' => t('Data Catalog'),
-      'content' => dge_ckan_blocks_categories_block(),
-    );
+      $settings = [
+          'rows'  => 3,
+          'start' => 0,
+          'sort'  => 'metadata_created desc',
+      ];
+
+      return [
+          'subject' => t('Last datasets'),
+          'content' => theme('dge_ckan_blocks_package_search',
+            [
+                'packages' => dge_ckan_blocks_package_search('', '', $settings['rows'], $settings['start'], $settings['sort']),
+                'ckan_url' => variable_get('ckan_url', '').'/'.$language->language.'/'.variable_get('ckan_pagina_dataset', 'dataset'),
+            ]),
+      ];
+      case 'dge_ckan_blocks_package_csv':
+        global $language;
+
+        $settings = [
+            'rows'  => 3,
+            'start' => 0,
+            'sort'  => get_random_seed().' desc',
+        ];
+
+        return [
+            'subject' => t('Last datasets'),
+            'content' => theme('dge_ckan_blocks_package_search',
+              [
+                  'packages' => dge_ckan_blocks_package_search('', 'res_format:text/csv', $settings['rows'], $settings['start'], $settings['sort']),
+                  'ckan_url' => variable_get('ckan_url', '').'/'.$language->language.'/'.variable_get('ckan_pagina_dataset', 'dataset').'?res_format_label=CSV',
+              ]),
+        ];
+        case 'dge_ckan_blocks_package_api':
+          global $language;
+
+          $settings = [
+              'rows'  => 3,
+              'start' => 0,
+              'sort'  => get_random_seed().' desc',
+          ];
+
+          return [
+              'subject' => t('Last datasets'),
+              'content' => theme('dge_ckan_blocks_package_search',
+                [
+                    'packages' => dge_ckan_blocks_package_search('', 'res_format:(text/wms OR text/wfs OR application/vnd.ogc.wms_xml OR application/api)', $settings['rows'], $settings['start'], $settings['sort']),
+                    'ckan_url' => variable_get('ckan_url', '').'/'.$language->language.'/'.variable_get('ckan_pagina_dataset', 'dataset').'?res_format_label=API',
+                ]),
+          ];
+    case 'dge_ckan_blocks_init_review':
+      return [
+          'subject' => t('Open data initiatives'),
+          'content' => dge_ckan_blocks_initiatives_block(),
+      ];
+    case 'dge_ckan_blocks_categories':
+      return [
+          'subject' => t('Data Catalog'),
+          'content' => dge_ckan_blocks_categories_block(),
+      ];
+    case 'dge_ckan_small_color_block_dis':
+      return [
+          'subject' => t('Small Color Block Distribucione'),
+          'content' => dge_ckan_small_color_block_dis(),
+      ];
+    case 'dge_ckan_small_color_block_datos':
+      return [
+          'subject' => t('Small Color Block Datos'),
+          'content' => dge_ckan_small_color_block_datos(),
+      ];
+    case 'dge_ckan_block_cdd':
+      return [
+          'subject'=> t('Block Conjunto Datos y Distribuciones'),
+          'content'=> dge_ckan_block_cdd(),
+      ];
   }
+
+}
+function dge_ckan_block_cdd(){
+  return theme('dge_ckan_block_datos_template',
+  array(
+    'counter1'=>get_datos_count(),
+    'counter2'=>get_dis_count()
+  ));
+}
+function get_dis_count(){
+  $ckan= dge_ckan_init_class();
+  $response = $ckan->request(
+    'package_search','','',0,0,'metadata_created desc','["num_resources"]'
+  );
+  $total=0;
+  if($response['success']){
+    foreach($response['result']['facets']['num_resources'] as $key=>$value){
+
+     $total+= intval($key)*$value;
+    }
+  }
+  return $total;
+}
+function get_datos_count(){
+  $ckan= dge_ckan_init_class();
+  $response = $ckan->request(
+    'package_search','','',0,0,''
+  );
+  $total=0;
+  if($response['success']){
+    $total= $response['result']['count'];
+  }
+  return $total;
+}
+function dge_ckan_small_color_block_datos(){
+  $ckan= dge_ckan_init_class();
+  $response = $ckan->request(
+    'package_search','','',0,0,''
+  );
+  $total=0;
+  if($response['success']){
+    $total= $response['result']['count'];
+  }
+  return theme('dge_ckan_small_color_block',
+  array(
+    'total'=>$total,
+    'label1'=>'Conjuntos',
+    'label2'=>'de datos',
+    'backgroundColor'=>'#E05206',
+    'color'=>'#FFF',
+    'image_path'=>'conjunto_datos.png'
+  ));
+}
+function dge_ckan_small_color_block_dis(){
+  $ckan= dge_ckan_init_class();
+  $response = $ckan->request(
+    'package_search','','',0,0,'metadata_created desc','["num_resources"]'
+  );
+  $total=0;
+  if($response['success']){
+    foreach($response['result']['facets']['num_resources'] as $key=>$value){
+
+     $total+= intval($key)*$value;
+    }
+  }
+  return theme('dge_ckan_small_color_block',
+  array(
+    'total'=>$total,
+    'label1'=>'',
+    'label2'=>'Distribuciones',
+    'backgroundColor'=>'#6F2586',
+    'color'=>'#fff',
+    'image_path'=>'distribuciones.png'
+
+  ));
 }
 
 function dge_ckan_blocks_package_search($q='',$fq='',$rows, $start, $sort) {
-
   $ckan = dge_ckan_init_class();
-
   $response = $ckan->request(
     'package_search',
     $q,
@@ -147,12 +293,10 @@ function dge_ckan_blocks_package_search($q='',$fq='',$rows, $start, $sort) {
     $start,
     $sort
   );
-
   $packages = array();
   if($response['success']) {
     module_load_include('inc', 'dge_ckan', 'dge_ckan_json_label');
     $nti_dge_dataset_label = new dge_ckan_json_label('nti_dge_dataset.json');
-
     foreach($response['result']['results'] as $result) {
       $date = DateTime::createFromFormat('Y-m-d\TH:i:s.u', $result['metadata_created'], new DateTimeZone('UTC'));
       $date->setTimeZone(new DateTimeZone('Europe/Madrid'));
@@ -198,6 +342,28 @@ function dge_ckan_blocks_theme() {
          'categories' => array(),
       ),
     ),
+    'dge_ckan_small_color_block'=>array(
+      'template'=>'dge_ckan_small_color_block',
+      'path'=>$path,
+      'variables'=>array(
+        'total'=>0,
+        'label'=>'label',
+        'backgroundColor'=>'red'
+     )
+    ),
+    'dge_ckan_block_datos_template'=>array(
+        'template'=>'dge_ckan_block_datos_template',
+        'path'=>$path,
+        'variables'=>array(
+          'label1'=>'Datasets ',
+          'label2'=>'Distributions',
+          'counter1'=>20008,
+          'counter2'=>117978,
+          'link_label'=>'open catalog',
+          'url'=>'./catalogo'
+
+        )
+      )
   );
 }
 
@@ -367,4 +533,9 @@ function dge_ckan_blocks_categories_retrieve($language) {
      array(
        'categories' => $categories,
    ));;
+}
+
+function get_random_seed(){
+  srand(time());
+  return ('random_'.strval(rand()));
 }

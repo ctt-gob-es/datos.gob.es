@@ -1,0 +1,159 @@
+{% extends "page.html" %}
+{% block seo %}
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement":
+    [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item":
+          {
+            "@id": "{{ g.site_url }}",
+            "name": "{{ _('Home') }}"
+          }
+      },
+       {
+        "@type": "ListItem",
+        "position": 2,
+        "item":
+          {
+            "@id": "{{ g.site_url }}{{ h.url_for(controller='package', action='search') }}",
+            "name": "{{ _('Data Catalog') }}"
+          }
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item":
+          {
+            "@id": "{{ g.site_url }}{{ h.url_for(controller='ckanext.dge.controllers:DGEController', action='default_spatial_coverage') }}",
+            "name": "Identificación de la cobertura geográfica en España"
+          }
+      }
+    ]
+  }
+  </script>
+{% endblock %}
+
+{% block subtitle %}Identificación de la cobertura geográfica en España{% endblock %}
+{% block breadcrumb_content %}
+  <li>{{ h.nav_link(_('Data Catalog'), controller='package', action='search', highlight_actions = 'new index') }}</li>
+  <li class="active">{{ h.nav_link(_('Datasets'), controller='package', action='search', highlight_actions = 'new index') }}</li>
+{% endblock %}
+{% block page_title_content %}Identificación de la cobertura geográfica en España{% endblock %}
+{% block catalog_downloads %}{% endblock %}
+{% block primary_content_inner %}
+{% set current_lang = request.environ.CKAN_LANG %}
+{% if current_lang !='es' %}
+<div lang="es" xml:lang="es">
+{% endif %}
+<div class="table-responsive">
+<table class="table table-bordered table-condensed table-hover">
+<thead><tr>
+<th>País</th><th>URI</th>
+</tr></thead>
+<tbody>
+<tr><td>España</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Pais/España">http://datos.gob.es/recurso/sector-publico/territorio/Pais/España</a></td>
+</tbody>
+</table>
+</div>
+
+<div class="table-responsive">
+<table class="table table-bordered table-condensed table-hover">
+<thead><tr>
+<th>Comunidad/Ciudad Autónoma</th><th>URI</th>
+</tr></thead>
+<tbody>
+<tr><td>Andalucía</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Andalucia">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Andalucia</a></td></tr>
+<tr><td>Aragón</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Aragon">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Aragon</a></td></tr>
+<tr><td>Principado de Asturias</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Principado-Asturias">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Principado-Asturias</a></td></tr>
+<tr><td>Illes Balears</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Illes-Balears">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Illes-Balears</a></td></tr>
+<tr><td>Canarias</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Canarias">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Canarias</a></td></tr>
+<tr><td>Cantabria</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Cantabria">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Cantabria</a></td></tr>
+<tr><td>Castilla y León</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Castilla-Leon">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Castilla-Leon</a></td></tr>
+<tr><td>Castilla-La Mancha</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Castilla-La-Mancha">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Castilla-La-Mancha</a></td></tr>
+<tr><td>Cataluña</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Cataluna">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Cataluna</a></td></tr>
+<tr><td>Comunitat Valenciana</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Comunitat-Valenciana">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Comunitat-Valenciana</a></td></tr>
+<tr><td>Extremadura</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Extremadura">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Extremadura</a></td></tr>
+<tr><td>Galicia</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Galicia">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Galicia</a></td></tr>
+<tr><td>Comunidad de Madrid</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Comunidad-Madrid">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Comunidad-Madrid</a></td></tr>
+<tr><td>Región de Murcia</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Region-Murcia">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Region-Murcia</a></td></tr>
+<tr><td>C. Foral de Navarra</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Comunidad-Foral-Navarra">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Comunidad-Foral-Navarra</a></td></tr>
+<tr><td>País Vasco</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Pais-Vasco">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Pais-Vasco</a></td></tr>
+<tr><td>La Rioja</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/La-Rioja">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/La-Rioja</a></td></tr>
+<tr><td>Ceuta</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Ceuta">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Ceuta</a></td></tr>
+<tr><td>Melilla</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Melilla">http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Melilla</a></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="table-responsive">
+<table class="table table-bordered table-condensed table-hover">
+<thead><tr>
+<th>Comunidad/Ciudad Autónoma</th><th>Provincia</th><th>URI Identificador</th>
+</tr></thead>
+<tbody>
+<tr><td rowspan='8'>Andalucía</td><td>Almería</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Almeria">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Almeria</a></td></tr>
+<tr></td><td>Cádiz</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Cadiz">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Cadiz</a></td></tr>
+<tr><td>Córdoba</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Cordoba">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Cordoba</a></td></tr>
+<tr><td>Granada</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Granada">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Granada</a></td></tr>
+<tr><td>Huelva</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Huelva">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Huelva</a></td></tr>
+<tr><td>Jaén</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Jaen">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Jaen</a></td></tr>
+<tr><td>Málaga</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Malaga">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Malaga</a></td></tr>
+<tr><td>Sevilla</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Sevilla">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Sevilla</a></td></tr>
+<tr><td rowspan='3'>Aragón</td><td>Huesca</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Huesca">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Huesca</a></td></tr>
+<tr><td>Teruel</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Teruel">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Teruel</a></td></tr>
+<tr><td>Zaragoza</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Zaragoza">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Zaragoza</a></td></tr>
+<tr><td>Principado de Asturias</td><td>Asturias</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Asturias">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Asturias</a></td></tr>
+<tr><td>Illes Balears</td><td>Illes Balears</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Illes-Balears">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Illes-Balears</a></td></tr>
+<tr><td rowspan='2'>Canarias</td><td>Las Palmas</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Las-Palmas">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Las-Palmas</a></td></tr>
+<tr><td>Santa Cruz de Tenerife</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Santa-Cruz-Tenerife">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Santa-Cruz-Tenerife</a></td></tr>
+<tr><td>Cantabria</td><td>Cantabria</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Cantabria">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Cantabria</a></td></tr>
+<tr><td rowspan='9'>Castilla y León</td><td>Ávila</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Avila">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Avila</a></td></tr>
+<tr><td>Burgos</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Burgos">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Burgos</a></td></tr>
+<tr><td>León</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Leon">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Leon</a></td></tr>
+<tr><td>Palencia</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Palencia">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Palencia</a></td></tr>
+<tr><td>Salamanca</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Salamanca">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Salamanca</a></td></tr>
+<tr><td>Segovia</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Segovia">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Segovia</a></td></tr>
+<tr><td>Soria</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Soria">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Soria</a></td></tr>
+<tr><td>Valladolid</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Valladolid">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Valladolid</a></td></tr>
+<tr><td>Zamora</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Zamora">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Zamora</a></td></tr>
+<tr><td rowspan='5'>Castilla-La Mancha</td><td>Albacete</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Albacete">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Albacete</a></td></tr>
+<tr><td>Ciudad Real</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Ciudad-Real">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Ciudad-Real</a></td></tr>
+<tr><td>Cuenca</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Cuenca">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Cuenca</a></td></tr>
+<tr><td>Guadalajara</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Guadalajara">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Guadalajara</a></td></tr>
+<tr><td>Toledo</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Toledo">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Toledo</a></td></tr>
+<tr><td rowspan='4'>Cataluña</td><td>Barcelona</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Barcelona">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Barcelona</a></td></tr>
+<tr><td>Girona</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Girona">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Girona</a></td></tr>
+<tr><td>Lleida</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Lleida">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Lleida</a></td></tr>
+<tr><td>Tarragona</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Tarragona">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Tarragona</a></td></tr>
+<tr><td rowspan='3'>Comunitat Valenciana</td><td>Alicante/Alacant</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Alicante">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Alicante</a></td></tr>
+<tr><td>Castellón/Castelló</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Castellon">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Castellon</a></td></tr>
+<tr><td>Valencia/València</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Valencia">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Valencia</a></td></tr>
+<tr><td rowspan='2'>Extremadura</td><td>Badajoz</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Badajoz">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Badajoz</a></td></tr>
+<tr><td>Cáceres</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Caceres">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Caceres</a></td></tr>
+<tr><td rowspan='4'>Galicia</td><td>A Coruña</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/A-Coruna">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/A-Coruna</a></td></tr>
+<tr><td>Lugo</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Lugo">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Lugo</a></td></tr>
+<tr><td>Ourense</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Ourense">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Ourense</a></td></tr>
+<tr><td>Pontevedra</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Pontevedra">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Pontevedra</a></td></tr>
+<tr><td>Comunidad de Madrid</td><td>Madrid</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Madrid">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Madrid</a></td></tr>
+<tr><td>Región de Murcia</td><td>Murcia</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Murcia">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Murcia</a></td></tr>
+<tr><td>C. Foral de Navarra</td><td>Navarra</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Navarra">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Navarra</a></td></tr>
+<tr><td rowspan='3'>País Vasco</td><td>Álava</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Alava">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Alava</a></td></tr>
+<tr><td>Guipúzcoa</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Guipuzcoa">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Guipuzcoa</a></td></tr>
+<tr><td>Vizcaya</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Vizcaya">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Vizcaya</a></td></tr>
+<tr><td>La Rioja</td><td>La Rioja</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/La-Rioja">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/La-Rioja</a></td></tr>
+<tr><td>Ceuta</td><td>Ceuta</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Ceuta">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Ceuta</a></td></tr>
+<tr><td>Melilla</td><td>Melilla</td><td><a href="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Melilla">http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Melilla</a></td></tr>
+
+</tbody>
+</table>
+</div>
+{% if current_lang !='es' %}</div>{% endif %}
+{% endblock %}
+{% block secondary %}
+{# Supress left column #}
+{% endblock %}

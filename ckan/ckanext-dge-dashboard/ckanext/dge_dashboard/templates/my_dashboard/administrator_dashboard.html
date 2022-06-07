@@ -48,6 +48,7 @@
 {% block page_header %}{% endblock %}
 {% block primary_content_inner %}
 {% set current_lang = request.environ.CKAN_LANG %}
+{% set special_org = h.dge_dashboard_special_org() %}
 <div class="dge-dashboard-intro">{% trans %}Dashboard_introduction{% endtrans %}</div>
 <div class="dge-dashboard">
   <h2>{{ _('General statistics') }}</h2>
@@ -56,7 +57,7 @@
   <div>
     <p>
      <strong>{{ _('Evolution of datos.gob.es visits by section') }}</strong>
-      {% set description = _('Evolution of datos.gob.es visits by section description') %} 
+      {% set description = _('Evolution of datos.gob.es visits by section description') %}
       {% if description %}<br/> {{ description }}{% endif %}
     </p>
     {% if error_loading_data %}
@@ -83,7 +84,7 @@
     <p>
      <strong>{{ _('Number of content published by section') }}</strong>
       {% if (data_date) %}<br/>{{ _('Updated date') }}: {{ data_date }}{% endif %}
-      {% set description = _('Number of content published by section description') %} 
+      {% set description = _('Number of content published by section description') %}
       {% if description %}<br/> {{ description }}{% endif %}
     </p>
     {% if error_loading_data %}
@@ -106,6 +107,37 @@
     {% endif %}
   </div>
 
+    <p><br/><br/><br/></p>
+
+    {% set likes_info, likes_column_titles, error_loading_data =
+    h.dge_dashboard_administrator_drupal_contents_by_likes(limit=10) %}
+    <div>
+        <p>
+            <strong>{{ _('Number of votes for published content') }}</strong>
+            {% if (likes_info['update_date']) %}<br/>{{ _('Updated date') }}: {{ likes_info['update_date'] }}{% endif %}
+        </p>
+        {% if error_loading_data %}
+        <p class="text-center alert alert-error">{{ _('Error loading data') }}</p>
+        {% elif likes_info['data']|length <= 2 %}
+        <p class="text-center alert alert-info">{{ _('No data') }}</p>
+        {% else %}
+        <div id="tableAdmDrupalContentsByLikes" class="tablediv"
+             data-module="dge_dashboard_adm_drupalContentsByLikes"
+             data-module-data_provider="{{ likes_info['data'] }}"
+             data-module-language="{{ current_lang }}"
+             data-module-column_titles="{{ likes_column_titles }}"
+             data-module-divid="tableAdmDrupalContentsByLikes"
+             data-module-pager_divid="externalPager_likes"
+             data-module-no_data="{{ _('The table contains no data') }}">
+        </div>
+        <div id="externalPager_likes" class="external-pager jsgrid-pager-container" style="text-align:center"></div>
+        {% set download_link=h.url_for(controller='ckanext.dge_dashboard.controllers:DGEDashboardController',action='adm_drupal_contents_by_likes_csv')%}
+        <p><br/><a class="btn button btn-primary btn-sm pull-right" href="{{download_link}}"><i
+                class="icon-download"></i>{{ _('Download as CSV') }}</a></p>
+        {% endif %}
+    </div>
+
+
 <p><br/><br/><br/></p>
 
   <h2>{{ _('Data Catalog') }}</h2>
@@ -115,7 +147,7 @@
   <div>
     <p>
       <strong>{{ _('Evolution of published datasets by administration level') }}</strong>
-      {% set description = _('Evolution of published datasets by administration level description') %} 
+      {% set description = _('Evolution of published datasets by administration level description') %}
       {% if description %}<br/> {{ description }}{% endif %}
    </p>
     {% if error_loading_data %}
@@ -123,7 +155,7 @@
     {% elif datasetsByAdmLevel_data|length <= 2 %}
       <p class="text-center alert alert-info">{{ _('No data') }}</p>
     {% else %}
-      <div id="chartAdmNumDatasetsByAdmLevel" class="chartdiv" 
+      <div id="chartAdmNumDatasetsByAdmLevel" class="chartdiv"
            data-module="dge_dashboard_adm_numDatasetsByAdmLevel"
            data-module-data_provider='{{ datasetsByAdmLevel_data }}'
            data-module-graphs="{{ datasetsByAdmLevel_graphs }}"
@@ -135,7 +167,7 @@
     {% endif %}
   </div>
 
-<p><br/><br/><br/></p>
+  <p><br/><br/><br/></p>
 
   {% set data_date = None %}
   {% set datasets_org, error_loading_data = h.dge_dashboard_administrator_data_num_datasets_by_organization() %}
@@ -143,7 +175,7 @@
     <p>
       <strong>{{ _('Evolution of published datasets by organization') }}</strong>
       {% if (data_date) %}<br/>{{ _('Updated date') }}: {{ data_date }}{% endif %}
-      {% set description = _('Evolution of published datasets by organization description') %} 
+      {% set description = _('Evolution of published datasets by organization description') %}
       {% if description %}<br/> {{ description }}{% endif %}
    </p>
     {% if error_loading_data %}
@@ -151,7 +183,7 @@
     {% elif datasets_org|length <= 2 %}
       <p class="text-center alert alert-info">{{ _('No data') }}</p>
     {% else %}
-      <div id="chartAdmNumDatasetsByOrg" class="chartdiv" 
+      <div id="chartAdmNumDatasetsByOrg" class="chartdiv"
            data-module="dge_dashboard_adm_numDatasetsByOrg"
            data-module-data_sets="{{ datasets_org }}"
            data-module-language="{{ current_lang }}"
@@ -162,6 +194,8 @@
            data-module-divid = "chartAdmNumDatasetsByOrg"
            data-module-no_data = "{{ _('The chart contains no data') }}">
       </div>
+      {% set download_link=h.url_for(controller='ckanext.dge_dashboard.controllers:DGEDashboardController',action='adm_datasets_by_org_csv')%}
+      <p><br/><br/><br/><a class="btn button btn-primary btn-sm pull-right" href="{{download_link}}"><i class="icon-download"></i>{{ _('Download all publishing entities') }}</a></p>
     {% endif %}
   </div>
 
@@ -173,7 +207,7 @@
     <p>
       <strong>{{ _('Volume of datasets according to number of distributions') }}</strong>
       {% if (data_date) %}<br/>{{ _('Updated date') }}: {{ data_date }}{% endif %}
-      {% set description = _('Volume of datasets according to number of distributions description') %} 
+      {% set description = _('Volume of datasets according to number of distributions description') %}
       {% if description %}<br/> {{ description }}{% endif %}
    </p>
     {% if error_loading_data %}
@@ -211,12 +245,42 @@
 
 <p><br/><br/><br/></p>
 
+    {% set top10vd_info, top10vd_column_titles, top10vd_error_loading_data =
+    h.dge_dashboard_administrator_drupal_top10_voted_datasets(limit=10) %}
+    <div>
+        <p>
+            <strong>{{ _('Data sets with the highest number of votes') }}</strong>
+            {% if (top10vd_info['update_date']) %}<br/>{{ _('Updated date') }}: {{ top10vd_info['update_date'] }}{% endif %}
+        </p>
+        {% if top10vd_error_loading_data %}
+        <p class="text-center alert alert-error">{{ _('Error loading data') }}</p>
+        {% elif top10vd_info['data']|length <= 2 %}
+        <p class="text-center alert alert-info">{{ _('No data') }}</p>
+        {% else %}
+        <div id="tableAdmDrupalTop10VotedDatasets" class="tablediv"
+             data-module="dge_dashboard_adm_drupalTop10VotedDatasets"
+             data-module-data_provider="{{ top10vd_info['data'] }}"
+             data-module-language="{{ current_lang }}"
+             data-module-column_titles="{{ top10vd_column_titles }}"
+             data-module-divid="tableAdmDrupalTop10VotedDatasets"
+             data-module-pager_divid="externalPager_top10vd"
+             data-module-no_data="{{ _('The table contains no data') }}">
+        </div>
+        <div id="externalPager_top10vd" class="external-pager jsgrid-pager-container" style="text-align:center"></div>
+        {% set download_link=h.url_for(controller='ckanext.dge_dashboard.controllers:DGEDashboardController',action='adm_drupal_contents_top10_voted_datasets_csv')%}
+        <p><br/><a class="btn button btn-primary btn-sm pull-right" href="{{download_link}}"><i
+                class="icon-download"></i>{{ _('Download as CSV') }}</a></p>
+        {% endif %}
+    </div>
+    
+<p><br/><br/><br/></p>
+
   {% set data_date = None %}
   {% set publishers_data, publishers_graphs, error_loading_data = h.dge_dashboard_administrator_data_num_publishers_by_month_year() %}
   <div>
     <p>
       <strong>{{ _('Evolution of publisher organizations') }}</strong>
-      {% set description = _('Evolution of publisher organizations description') %} 
+      {% set description = _('Evolution of publisher organizations description') %}
       {% if description %}<br/> {{ description }}{% endif %}
    </p>
     {% if error_loading_data %}
@@ -224,7 +288,7 @@
     {% elif publishers_data|length <= 2 %}
       <p class="text-center alert alert-info">{{ _('No data') }}</p>
     {% else %}
-      <div id="chartAdmNumPublishersByMonthYear" class="chartdiv" 
+      <div id="chartAdmNumPublishersByMonthYear" class="chartdiv"
            data-module="dge_dashboard_adm_numPublishersByMonthYear"
            data-module-data_provider='{{ publishers_data }}'
            data-module-graphs="{{ publishers_graphs }}"
@@ -235,7 +299,7 @@
       </div>
     {% endif %}
   </div>
-  
+
 <p><br/><br/><br/></p>
 
   {% set data_date = None %}
@@ -244,7 +308,7 @@
     <p>
       <strong>{{ _('Publisher organizations by administration level') }}</strong>
       {% if (data_date) %}<br/>{{ _('Updated date') }}: {{ data_date }}{% endif %}
-      {% set description = _('Publisher organizations by administration level description') %} 
+      {% set description = _('Publisher organizations by administration level description') %}
       {% if description %}<br/> {{ description }}{% endif %}
     </p>
     {% if error_loading_data %}
@@ -252,7 +316,7 @@
     {% elif publishers_al_data|length <= 2 %}
       <p class="text-center alert alert-info">{{ _('No data') }}</p>
     {% else %}
-    <div id="chartAdmNumPublishersByAdministrationLevel" class="specialchartdiv" 
+    <div id="chartAdmNumPublishersByAdministrationLevel" class="specialchartdiv"
          data-module="dge_dashboard_administrator_numPublishersByAdministrationLevel"
          data-module-data_provider='{{ publishers_al_data }}'
          data-module-graphs="{{ publishers_al_graphs }}"
@@ -265,6 +329,18 @@
   </div>
 
 <p><br/><br/><br/></p>
+  <div>
+	<p>
+	 <strong>{{ _('Publisher organizations by administration level and update mode') }}</strong>
+	 {% if (data_date) %}<br/>{{ _('Updated date') }}: {{ data_date }}{% endif %}
+	 {% set description = _('Publisher organizations by administration level and update mode description') %}
+	 {% if description %}<br/> {{ description }}{% endif %}
+	</p>
+	{% set download_link=h.url_for(controller='ckanext.dge_dashboard.controllers:DGEDashboardController',action='adm_organizations_by_level')%}
+	<p><br/><a class="btn button btn-primary btn-sm pull-right" href="{{download_link}}"><i class="icon-download"></i>{{ _('Download as CSV') }}</a></p>
+  </div>
+
+<p><br/><br/><br/></p>
 
   <h2>{{ _('Registered users') }}</h2>
 
@@ -273,7 +349,7 @@
     <p>
      <strong>{{ _('Active user accounts by organization') }}</strong>
       {% if (data_date) %}<br/>{{ _('Updated date') }}: {{ data_date }}{% endif %}
-      {% set description = _('Active user accounts by organization description') %} 
+      {% set description = _('Active user accounts by organization description') %}
       {% if description %}<br/> {{ description }}{% endif %}
     </p>
     {% if error_loading_data %}
@@ -303,7 +379,7 @@
     <p>
      <strong>{{ _('Active user accounts by administration level') }}</strong>
       {% if (data_date) %}<br/>{{ _('Updated date') }}: {{ data_date }}{% endif %}
-      {% set description = _('Active user accounts by administration level description') %} 
+      {% set description = _('Active user accounts by administration level description') %}
       {% if description %}<br/> {{ description }}{% endif %}
     </p>
     {% if error_loading_data %}
@@ -311,7 +387,7 @@
     {% elif users_al|length <= 2 %}
       <p class="text-center alert alert-info">{{ _('No data') }}</p>
     {% else %}
-      <div id="chartAdmNumUsersByAdministrationLevel" class="chartdiv" 
+      <div id="chartAdmNumUsersByAdministrationLevel" class="chartdiv"
            data-module="dge_dashboard_adm_numUsersByAdministrationLevel"
            data-module-data_provider="{{ users_al }}"
            data-module-language="{{ current_lang }}"
@@ -333,7 +409,7 @@
     <p>
      <strong>{{ _('Data availability requests by state') }}</strong>
       {% if (data_date) %}<br/>{{ _('Updated date') }}: {{ data_date }}{% endif %}
-      {% set description = _('Data availability requests by state description') %} 
+      {% set description = _('Data availability requests by state description') %}
       {% if description %}<br/> {{ description }}{% endif %}
     </p>
     {% if error_loading_data %}
@@ -341,7 +417,7 @@
     {% elif requests|length <= 2 %}
       <p class="text-center alert alert-info">{{ _('No data') }}</p>
     {% else %}
-      <div id="chartAdmAssignedRequests" class="chartdiv" 
+      <div id="chartAdmAssignedRequests" class="chartdiv"
            data-module="dge_dashboard_adm_assignedRequests"
            data-module-data_provider="{{ requests }}"
            data-module-language="{{ current_lang }}"
@@ -364,7 +440,7 @@
     <p>
      <strong>{{ _('Evolution of received comments') }}</strong>
       {% if (data_date) %}<br/>{{ _('Updated date') }}: {{ data_date }}{% endif %}
-      {% set description = _('Evolution of received comments description') %} 
+      {% set description = _('Evolution of received comments description') %}
       {% if description %}<br/> {{ description }}{% endif %}
     </p>
     {% if error_loading_data %}
@@ -403,39 +479,39 @@
 {%- block scripts %}
    {{ super() }}
    <!-- amCharts javascript sources -->
-    <script type="text/javascript" src="{% url_for_static "amcharts/amcharts.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/pie.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/serial.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/animate/animate.min.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/export.min.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/dataloader/dataloader.min.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/themes/light.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/responsive/responsive.min.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/lang/en.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/lang/ca.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/lang/ca.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/lang/gl.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/lang/gl.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/lang/eu.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/lang/eu.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/lang/es.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/lang/es.js" %}"></script>
+    <script src="{% url_for_static "amcharts/amcharts.js" %}"></script>
+    <script src="{% url_for_static "amcharts/pie.js" %}"></script>
+    <script src="{% url_for_static "amcharts/serial.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/animate/animate.min.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/export/export.min.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/dataloader/dataloader.min.js" %}"></script>
+    <script src="{% url_for_static "amcharts/themes/light.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/responsive/responsive.min.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/export/lang/en.js" %}"></script>
+    <script src="{% url_for_static "amcharts/lang/ca.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/export/lang/ca.js" %}"></script>
+    <script src="{% url_for_static "amcharts/lang/gl.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/export/lang/gl.js" %}"></script>
+    <script src="{% url_for_static "amcharts/lang/eu.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/export/lang/eu.js" %}"></script>
+    <script src="{% url_for_static "amcharts/lang/es.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/export/lang/es.js" %}"></script>
 
 
-    <script type="text/javascript" src="{% url_for_static "amstockchart/amcharts.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amstockchart/serial.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amstockchart/amstock.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amstockchart/plugins/responsive/responsive.min.js" %}"></script>
+    <script src="{% url_for_static "amstockchart/amcharts.js" %}"></script>
+    <script src="{% url_for_static "amstockchart/serial.js" %}"></script>
+    <script src="{% url_for_static "amstockchart/amstock.js" %}"></script>
+    <script src="{% url_for_static "amstockchart/plugins/responsive/responsive.min.js" %}"></script>
 
-    <script type="text/javascript" src="{% url_for_static "jsgrid/jquery-1.8.3.min.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "jsgrid/jsgrid.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "jsgrid/i18n/jsgrid-es.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "jsgrid/i18n/jsgrid-en.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "jsgrid/i18n/jsgrid-ca.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "jsgrid/i18n/jsgrid-gl.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "jsgrid/i18n/jsgrid-eu.js" %}"></script>
- 
-   
+    <script src="{% url_for_static "jsgrid/jquery-1.8.3.min.js" %}"></script>
+    <script src="{% url_for_static "jsgrid/jsgrid.js" %}"></script>
+    <script src="{% url_for_static "jsgrid/i18n/jsgrid-es.js" %}"></script>
+    <script src="{% url_for_static "jsgrid/i18n/jsgrid-en.js" %}"></script>
+    <script src="{% url_for_static "jsgrid/i18n/jsgrid-ca.js" %}"></script>
+    <script src="{% url_for_static "jsgrid/i18n/jsgrid-gl.js" %}"></script>
+    <script src="{% url_for_static "jsgrid/i18n/jsgrid-eu.js" %}"></script>
+
+
     {% resource "dge_dashboard/amcharts/administrator/dge_dashboard_adm_numDatasetsByAdmLevel.js" %}
     {% resource "dge_dashboard/amstockchart/administrator/dge_dashboard_adm_numDatasetsByOrg.js" %}
     {% resource "dge_dashboard/amcharts/administrator/dge_dashboard_adm_numPublishersByMonthYear.js" %}
@@ -447,5 +523,7 @@
     {% resource "dge_dashboard/jsgrid/administrator/dge_dashboard_adm_numDrupalContentsByContentType.js" %}
 	{% resource "dge_dashboard/jsgrid/administrator/dge_dashboard_adm_numUsersByOrg.js" %}
 	{% resource "dge_dashboard/amcharts/administrator/dge_dashboard_adm_numPublishersByAdministrationLevel.js" %}
+    {% resource "dge_dashboard/jsgrid/administrator/dge_dashboard_adm_drupalContentsByLikes.js" %}
+    {% resource "dge_dashboard/jsgrid/administrator/dge_dashboard_adm_drupalTop10VotedDatasets.js" %}
 {% endblock -%}
 

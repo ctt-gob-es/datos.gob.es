@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="146" height="32" viewBox="0 0 146 32">
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <rect width="146" height="32" fill="#6E2585" rx="16"/>
+            <text fill="#FFF" font-family="MyriadPro-Regular, Myriad Pro" font-size="18">
+                <tspan x="20" y="21">Acceder</tspan>
+            </text>
+        </g>
+        <path d="M102 3h24v24h-24z"/>
+        <path fill="#FFF" d="M112.09 18.59L113.5 20l5-5-5-5-1.41 1.41 2.58 2.59H105v2h9.67l-2.58 2.59zM121 6h-14a2 2 0 0 0-2 2v4h2V8h14v14h-14v-4h-2v4a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/>
+    </g>
+</svg>

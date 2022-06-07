@@ -1,26 +1,28 @@
-# Copyright (C) 2017 Entidad P�blica Empresarial Red.es
-# 
-# This file is part of "ckanext-dge-harvest (datos.gob.es)".
-# 
+# Copyright (C) 2022 Entidad Pública Empresarial Red.es
+#
+# This file is part of "dge_harvest (datos.gob.es)".
+#
 # This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-# 
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-# 
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 import logging
 
 from ckanext.dge_harvest import helpers
-from ckanext.dge_harvest.logic import (dge_harvest_catalog_show,
+from ckanext.dge_harvest.logic import (dge_harvest_dataset_show,
+                                       dge_harvest_catalog_show,
+                                       dge_harvest_catalog_show_EDP,
                                        dge_harvest_clear_old_harvest_jobs,
                                        dge_harvest_source_email_job_finished,
                                        dge_harvest_get_running_harvest_jobs,
@@ -36,23 +38,27 @@ class DgeHarvestPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.ITemplateHelpers, inherit=True)
     plugins.implements(plugins.IActions, inherit=True)
     plugins.implements(plugins.IAuthFunctions, inherit=True)
-#     log.info('[ DgeHarvestPlugin] Running Profile %s with local default %s' % 
-#               (config.get('ckanext.dcat.rdf.profiles', None), 
+#     log.info('[ DgeHarvestPlugin] Running Profile %s with local default %s' %
+#               (config.get('ckanext.dcat.rdf.profiles', None),
 #                config.get('ckan.locale_default', None)))
 
     # ########################### IActions ####################################
     def get_actions(self):
         return {
+            'dge_harvest_dataset_show': dge_harvest_dataset_show,
             'dge_harvest_catalog_show': dge_harvest_catalog_show,
+            'dge_harvest_catalog_show_EDP': dge_harvest_catalog_show_EDP,
             'dge_harvest_clear_old_harvest_jobs': dge_harvest_clear_old_harvest_jobs,
-            'dge_harvest_source_email_job_finished' : dge_harvest_source_email_job_finished,
+            'dge_harvest_source_email_job_finished': dge_harvest_source_email_job_finished,
             'dge_harvest_get_running_harvest_jobs': dge_harvest_get_running_harvest_jobs,
         }
 
     # ########################### IAuthFunctions ##############################
     def get_auth_functions(self):
         return {
+            'dge_harvest_dataset_show': dge_harvest_auth,
             'dge_harvest_catalog_show': dge_harvest_auth,
+            'dge_harvest_catalog_show_EDP': dge_harvest_auth,
             'dge_harvest_clear_old_harvest_jobs': dge_harvest_is_sysadmin,
             'dge_harvest_source_email_job_finished': dge_harvest_is_sysadmin,
             'dge_harvest_get_running_harvest_jobs': dge_harvest_is_sysadmin,

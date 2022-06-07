@@ -2,8 +2,10 @@
 
     {%- block meta -%}
       {{ super() }}
+      <!-- meta charset="utf-8" /-->
+      <script async src="//datos--gob--es.insuit.net/i4tservice/jscm_loader.js"></script>
       {% block meta_generator %}{% endblock%}
-      <meta name="description" value="{{ _('Datos.gob.es. Reuses the public data') }}" />
+      <meta name="description" content="{{ _('Datos.gob.es. Reuses the public data') }}" />
     {%- endblock -%}
 
     {% block links -%}
@@ -42,6 +44,7 @@
      {% resource 'dge/jquery.sidr.js' %}
      {% resource 'dge/dge.js' %}
      {% resource 'dge/dge-comments.js' %}
+     {% resource 'dge/rate.js' %}
     {% endblock -%}
     
     {% block bodytag %} 

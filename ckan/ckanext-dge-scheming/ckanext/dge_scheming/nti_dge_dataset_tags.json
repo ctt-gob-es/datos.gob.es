@@ -1,0 +1,2433 @@
+{
+  "scheming_version": 1,
+  "dataset_type": "dataset",
+  "about": "Spanish NTI dataset schema",
+  "about_url": "http://github.com/ckan/ckanext-scheming",
+  "dataset_fields": [
+    {
+      "field_name": "title_translated",
+      "label": {
+        "en": "Name",
+        "es": "Nombre",
+        "ca": "Nom",
+        "gl": "Nome",
+        "eu": "Izena"
+     },
+      "preset": "fluent_core_translated",
+      "display_snippet": "multilanguage_text.html",
+      "form_snippet": "multiple_required_language_text.html",
+      "validators": "tags_html_detected multiple_one_value multiple_required_language fluent_text",
+      "required_language": "es",
+      "fluent_form_placeholder": {
+        "en": {
+          "en": "Nombre o t\u00EDtulo del conjunto de datos en ingl\u00E9s.",
+          "es": "Nombre o t\u00EDtulo del conjunto de datos en ingl\u00E9s.",
+          "ca": "Nombre o t\u00EDtulo del conjunto de datos en ingl\u00E9s.",
+          "gl": "Nombre o t\u00EDtulo del conjunto de datos en ingl\u00E9s.",
+          "eu": "Nombre o t\u00EDtulo del conjunto de datos en ingl\u00E9s."
+        },
+       "es": {
+          "en": "Nombre o t\u00EDtulo del conjunto de datos en espa\u00F1ol.",
+          "es": "Nombre o t\u00EDtulo del conjunto de datos en espa\u00F1ol.",
+          "ca": "Nombre o t\u00EDtulo del conjunto de datos en espa\u00F1ol.",
+          "gl": "Nombre o t\u00EDtulo del conjunto de datos en espa\u00F1ol.",
+          "eu": "Nombre o t\u00EDtulo del conjunto de datos en espa\u00F1ol."
+        },
+        "ca": {
+          "en": "Nombre o t\u00EDtulo del conjunto de datos en catal\u00E1n.",
+          "es": "Nombre o t\u00EDtulo del conjunto de datos en catal\u00E1n.",
+          "ca": "Nombre o t\u00EDtulo del conjunto de datos en catal\u00E1n.",
+          "gl": "Nombre o t\u00EDtulo del conjunto de datos en catal\u00E1n.",
+          "eu": "Nombre o t\u00EDtulo del conjunto de datos en catal\u00E1n."
+        },
+        "gl": {
+          "en": "Nombre o t\u00EDtulo del conjunto de datos en gallego.",
+          "es": "Nombre o t\u00EDtulo del conjunto de datos en gallego.",
+          "ca": "Nombre o t\u00EDtulo del conjunto de datos en gallego.",
+          "gl": "Nombre o t\u00EDtulo del conjunto de datos en gallego.",
+          "eu": "Nombre o t\u00EDtulo del conjunto de datos en gallego."
+        },
+        "eu": {
+          "en": "Nombre o t\u00EDtulo del conjunto de datos en euskera.",
+          "es": "Nombre o t\u00EDtulo del conjunto de datos en euskera.",
+          "ca": "Nombre o t\u00EDtulo del conjunto de datos en euskera.",
+          "gl": "Nombre o t\u00EDtulo del conjunto de datos en euskera.",
+          "eu": "Nombre o t\u00EDtulo del conjunto de datos en euskera."
+        }
+      },
+      "fluent_help_text": {
+        "en": {
+          "en": "",
+          "es": "",
+          "ca": "",
+          "gl": "",
+          "eu": ""
+        },
+        "es": {
+          "en": "Requiere al menos un nombre en espa\u00F1ol.",
+          "es": "Requiere al menos un nombre en espa\u00F1ol.",
+          "ca": "Requiere al menos un nombre en espa\u00F1ol.",
+          "gl": "Requiere al menos un nombre en espa\u00F1ol.",
+          "eu": "Requiere al menos un nombre en espa\u00F1ol."
+        },
+        "ca": {
+          "en": "",
+          "es": "",
+          "ca": "",
+          "gl": "",
+          "eu": ""
+        },
+        "gl": {
+          "en": "",
+          "es": "",
+          "ca": "",
+          "gl": "",
+          "eu": ""
+        },
+        "eu": {
+          "en": "",
+          "es": "",
+          "ca": "",
+          "gl": "",
+          "eu": ""
+        }
+      }
+    },
+    {
+      "field_name": "name",
+      "label": "URL",
+      "required": true,
+      "preset": "dataset_slug",
+      "validators": "multilanguage_url unicode name_validator package_name_validator",
+      "autogeneration_field": "title_translated",
+      "organization_field": "publisher",
+      "organization_prefix": "C_ID_UD_ORGANICA",
+      "form_snippet": "dge_slug.html",
+      "form_placeholder": {
+        "en": "Sin URL el valor del campo se autogenera.",
+        "es": "Sin URL el valor del campo se autogenera.",
+        "ca": "Sin URL el valor del campo se autogenera.",
+        "gl": "Sin URL el valor del campo se autogenera.",
+        "eu": "Sin URL el valor del campo se autogenera."
+      },
+      "help_text": {
+        "en": "URL en datos.gob.es. Se recomienda no editar.",
+        "es": "URL en datos.gob.es. Se recomienda no editar.",
+        "ca": "URL en datos.gob.es. Se recomienda no editar.",
+        "gl": "URL en datos.gob.es. Se recomienda no editar.",
+        "eu": "URL en datos.gob.es. Se recomienda no editar."
+      }
+    },
+    {
+      "field_name": "description",
+      "label": {
+        "en": "Description",
+        "es": "Descripci\u00F3n",
+        "ca": "Descripci\u00F3",
+        "gl": "Descripci\u00F3n",
+        "eu": "Deskribapena"
+      },
+      "preset": "fluent_markdown",
+      "display_snippet": "multilanguage_markdown.html",
+      "form_snippet": "multiple_required_language_markdown.html",
+      "validators": "tags_html_detected multiple_one_value multiple_required_language fluent_text",
+      "required_language": "es",
+      "fluent_form_placeholder": {
+        "en": {
+          "en": "Descripci\u00F3n detallada del conjunto de datos en ingl\u00E9s.",
+          "es": "Descripci\u00F3n detallada del conjunto de datos en ingl\u00E9s.",
+          "ca": "Descripci\u00F3n detallada del conjunto de datos en ingl\u00E9s.",
+          "gl": "Descripci\u00F3n detallada del conjunto de datos en ingl\u00E9s.",
+          "eu": "Descripci\u00F3n detallada del conjunto de datos en ingl\u00E9s."
+        },
+        "es": {
+          "en": "Descripci\u00F3n detallada del conjunto de datos en espa\u00F1ol.",
+          "es": "Descripci\u00F3n detallada del conjunto de datos en espa\u00F1ol.",
+          "ca": "Descripci\u00F3n detallada del conjunto de datos en espa\u00F1ol.",
+          "gl": "Descripci\u00F3n detalladao del conjunto de datos en espa\u00F1ol.",
+          "eu": "Descripci\u00F3n detallada del conjunto de datos en espa\u00F1ol."
+        },
+        "ca": {
+          "en": "Descripci\u00F3n detallada del conjunto de datos en catal\u00E1n.",
+          "es": "Descripci\u00F3n detallada del conjunto de datos en catal\u00E1n.",
+          "ca": "Descripci\u00F3n detallada del conjunto de datos en catal\u00E1n.",
+          "gl": "Descripci\u00F3n detallada del conjunto de datos en catal\u00E1n.",
+          "eu": "Descripci\u00F3n detallada del conjunto de datos en catal\u00E1n."
+        },
+        "gl": {
+          "en": "Descripci\u00F3n detallada del conjunto de datos en gallego.",
+          "es": "Descripci\u00F3n detallada del conjunto de datos en gallego.",
+          "ca": "Descripci\u00F3n detallada del conjunto de datos en gallego.",
+          "gl": "Descripci\u00F3n detallada del conjunto de datos en gallego.",
+          "eu": "Descripci\u00F3n detallada del conjunto de datos en gallego."
+        },
+        "eu": {
+          "en": "Descripci\u00F3n detallada del conjunto de datos en euskera.",
+          "es": "Descripci\u00F3n detallada del conjunto de datos en euskera.",
+          "ca": "Descripci\u00F3n detallada del conjunto de datos en euskera.",
+          "gl": "Descripci\u00F3n detallada del conjunto de datos en euskera.",
+          "eu": "Descripci\u00F3n detallada del conjunto de datos en euskera."
+        }
+      },
+      "fluent_help_text": {
+        "en": {
+          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+        },
+        "es": {
+          "en": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "gl": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "eu": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+        },
+        "ca": {
+          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+        },
+        "gl": {
+          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+        },
+        "eu": {
+          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+        }
+      }
+    },
+    {
+      "field_name": "theme",
+      "label": {
+        "en": "Categories",
+        "es": "Categor\u00EDas",
+        "ca": "Categories",
+        "gl": "Categor\u00EDas",
+        "eu": "Kategoriak"
+      },
+      "help_text": {
+        "en": "Select a category",
+        "es": "Tem\u00E1tica o materia primaria del conjunto de datos. Puede ser m\u00FAltiple.",
+        "ca": "Tem\u00E1tica o materia primaria del conjunto de datos. Puede ser m\u00FAltiple.",
+        "gl": "Tem\u00E1tica o materia primaria del conjunto de datos. Puede ser m\u00FAltiple.",
+        "eu": "Tem\u00E1tica o materia primaria del conjunto de datos. Puede ser m\u00FAltiple."
+      },
+      "required": true,
+      "preset": "multiple_select",
+      "choices": [
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/ciencia-tecnologia",
+          "notation": "ciencia-tecnologia",
+          "label": {
+            "en": "Science and technology",
+            "es": "Ciencia y tecnolog\u00EDa",
+            "ca": "Ci\u00E8ncia i tecnologia",
+            "gl": "Ciencia e tecnolox\u00EDa",
+            "eu": "Zientzia eta teknologia"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Innovaci\u00F3n, Investigaci\u00F3n, I/u002BD/u002BI, Telecomunicaciones, Inernet y Sociedad de la Informaci\u00F3n.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/TECH"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/comercio",
+          "notation": "comercio",
+          "label": {
+            "en": "Commerce",
+            "es": "Comercio",
+            "ca": "Comer\u00E7",
+            "gl": "Comercio",
+            "eu": "Merkataritza"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Consumo.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/ECON"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/cultura-ocio",
+          "notation": "cultura-ocio",
+          "label": {
+            "en": "Culture and leisure",
+            "es": "Cultura y ocio",
+            "ca": "Cultura i lleure",
+            "gl": "Cultura e lecer",
+            "eu": "Kultura eta aisia"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Tiempo libre.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/EDUC"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/demografia",
+          "notation": "demografia",
+          "label": {
+            "en": "Demography",
+            "es": "Demograf\u00EDa",
+            "ca": "Demografia",
+            "gl": "Demograf\u00EDa",
+            "eu": "Demografia"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Inmigraci\u00F3n y Emigraci\u00F3n, Familia, Mujeres, Infancia, Mayores, Padr\u00F3n.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/SOCI"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/deporte",
+          "notation": "deporte",
+          "label": {
+            "en": "Sport",
+            "es": "Deporte",
+            "ca": "Esport",
+            "gl": "Deporte",
+            "eu": "Kirola"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Instalaciones deportivas, Federaciones, Competiciones.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/EDUC"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/economia",
+          "notation": "economia",
+          "label": {
+            "en": "Economy",
+            "es": "Econom\u00EDa",
+            "ca": "Economia",
+            "gl": "Econom\u00EDa",
+            "eu": "Ekonomia"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Deuda, Moneda y Banca y finanzas.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/ECON"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/educacion",
+          "notation": "educacion",
+          "label": {
+            "en": "Education",
+            "es": "Educaci\u00F3n",
+            "ca": "Educaci\u00F3",
+            "gl": "Educaci\u00F3n",
+            "eu": "Hezkuntza"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Formaci\u00F3n.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/EDUC"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/empleo",
+          "notation": "empleo",
+          "label": {
+            "en": "Employment",
+            "es": "Empleo",
+            "ca": "Ocupaci\u00F3",
+            "gl": "Emprego",
+            "eu": "Enplegua"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Trabajo, Mercado laboral.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/ECON"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/energia",
+          "notation": "energia",
+          "label": {
+            "en": "Energy",
+            "es": "Energ\u00EDa",
+            "ca": "Energia",
+            "gl": "Enerx\u00EDa",
+            "eu": "Energia"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Fuentes renovables.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/ENER"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/hacienda",
+          "notation": "hacienda",
+          "label": {
+            "en": "Treasury",
+            "es": "Hacienda",
+            "ca": "Hisenda",
+            "gl": "Facenda",
+            "eu": "Ogasuna"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Impuestos.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/GOVE"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/industria",
+          "notation": "industria",
+          "label": {
+            "en": "Industry",
+            "es": "Industria",
+            "ca": "Ind\u00FAstria",
+            "gl": "Industria",
+            "eu": "Industria"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Miner\u00EDa.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/ECON"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/legislacion-justicia",
+          "notation": "legislacion-justicia",
+          "label": {
+            "en": "Legislation and justice",
+            "es": "Legislaci\u00F3n y justicia",
+            "ca": "Legislaci\u00F3 i just\u00EDcia",
+            "gl": "Lexislaci\u00F3n e xustiza",
+            "eu": "Legegintza eta justizia"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Registros.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/JUST"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/medio-ambiente",
+          "notation": "medio-ambiente",
+          "label": {
+            "en": "Environment",
+            "es": "Medio ambiente",
+            "ca": "Medi ambient",
+            "gl": "Medio ambiente",
+            "eu": "Ingurumena"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Meteorolog\u00EDa, Geograf\u00EDa, Conservaci\u00F3n fauna y flora.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/ENVI"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/medio-rural-pesca",
+          "notation": "medio-rural-pesca",
+          "label": {
+            "en": "Rural environment",
+            "es": "Medio Rural",
+            "ca": "Medi rural",
+            "gl": "Medio rural",
+            "eu": "Nekazaritza"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Agricultura, Ganader\u00EDa, Pesca y Silvicultura.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/AGRI"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/salud",
+          "notation": "salud",
+          "label": {
+            "en": "Healthcare",
+            "es": "Salud",
+            "ca": "Salut",
+            "gl": "Sa\u00FAde",
+            "eu": "Osasuna"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Sanidad.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/HEAL"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/sector-publico",
+          "notation": "sector-publico",
+          "label": {
+            "en": "Public sector",
+            "es": "Sector p\u00FAblico",
+            "ca": "Sector p\u00FAblic",
+            "gl": "Sector p\u00FAblico",
+            "eu": "Sektore publikoa"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Presupuestos, Organigrama institucional, Legislaci\u00F3n interna, Funci\u00F3n p\u00FAblica.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/GOVE"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/seguridad",
+          "notation": "seguridad",
+          "label": {
+            "en": "Security",
+            "es": "Seguridad",
+            "ca": "Seguretat",
+            "gl": "Seguridade",
+            "eu": "Segurtasuna"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Protecci\u00F3n civil, Defensa.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/JUST"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/sociedad-bienestar",
+          "notation": "sociedad-bienestar",
+          "label": {
+            "en": "Society and welfare",
+            "es": "Sociedad y bienestar",
+            "ca": "Societat i benestar",
+            "gl": "Sociedade e benestar",
+            "eu": "Gizartea eta ongizatea"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Participaci\u00F3n ciudadana, Marginaci\u00F3n, Envejecimiento Activo, Autonom\u00EDa personal y Dependencia, Invalidez, Jubilaci\u00F3n, Seguros y Pensiones, Prestaciones y Subvenciones.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/SOCI"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/transporte",
+          "notation": "transporte",
+          "label": {
+            "en": "Transport",
+            "es": "Transporte",
+            "ca": "Transport",
+            "gl": "Transporte",
+            "eu": "Garraioa"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Comunicaciones y Tr/u00E1fico.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/TRAN"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/turismo",
+          "notation": "turismo",
+          "label": {
+            "en": "Tourism",
+            "es": "Turismo",
+            "ca": "Turisme",
+            "gl": "Turismo",
+            "eu": "Turismoa"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Alojamientos, Hosteler\u00EDa, Gastronom\u00EDa.",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/ECON"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/urbanismo-infraestructuras",
+          "notation": "urbanismo-infraestructuras",
+          "label": {
+            "en": "Town planning and infrastructures",
+            "es": "Urbanismo e infraestructuras",
+            "ca": "Urbanisme i infraestructures",
+            "gl": "Urbanismo e infraestruturas",
+            "eu": "Hirigintza eta azpiegiturak"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Saneamiento p\u00FAblico, Construcci\u00F3n (infraestructuras, equipamientos p\u00FAblicos).",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/REGI"
+        },
+        {
+          "value": "http://datos.gob.es/kos/sector-publico/sector/vivienda",
+          "notation": "vivienda",
+          "label": {
+            "en": "Housing",
+            "es": "Vivienda",
+            "ca": "Habitatge",
+            "gl": "Vivenda",
+            "eu": "Etxebizitza"
+          },
+          "description": {
+            "en": "",
+            "es": "Incluye: Mercado inmobiliario, Construcci\u00F3n (viviendas).",
+            "ca": "",
+            "gl": "",
+            "eu": ""
+          },
+          "dcat_ap": "http://publications.europa.eu/resource/authority/data-theme/REGI"
+        }
+      ]
+    },
+    {
+      "field_name": "tag_string",
+      "label": {
+        "en": "Tags",
+        "es": "Etiquetas",
+        "ca": "Etiquetes",
+        "gl": "Etiquetas",
+        "eu": "Etiketak"
+      },
+      "preset": "tag_string_autocomplete",
+      "form_placeholder": {
+        "en": "Ej: Presupuesto, Comunicaci\u00F3n, Formaci\u00F3n",
+        "es": "Ej: Presupuesto, Comunicaci\u00F3n, Formaci\u00F3n",
+        "ca": "Ej: Presupuesto, Comunicaci\u00F3n, Formaci\u00F3n",
+        "gl": "Ej: Presupuesto, Comunicaci\u00F3n, Formaci\u00F3n",
+        "eu": "Ej: Presupuesto, Comunicaci\u00F3n, Formaci\u00F3n"}
+    },
+    {
+      "field_name": "multilingual_tags",
+      "label": {
+        "en": "Tags (M)",
+        "es": "Etiquetas (M)",
+        "ca": "Etiquetes (M)",
+        "gl": "Etiquetas (M)",
+        "eu": "Etiketak (M)"
+      },
+      "preset": "multilanguage_tag",
+      "form_placeholder": {
+        "en": "Ej: Budget, Communication, Training",
+        "es": "Ej: Presupuesto, Comunicaci\u00F3n, Formaci\u00F3n",
+        "ca": "Ej: Pressupost, Comunicaci\u00F3, Formaci\u00F3",
+        "gl": "Ej: Orzamento, Comunicaci\u00F3n, Formaci\u00F3n",
+        "eu": "Ej: Aurrekontua, Komunikazioa, Prestakuntza"
+      }
+    },
+    {
+      "field_name": "identifier",
+      "label": {
+        "en": "Identifier",
+        "es": "Identificador",
+        "ca": "Identificador",
+        "gl": "Identificador",
+        "eu": "Identifikadorea"
+      },
+      "preset": "uri_text",
+      "form_placeholder": {
+        "en": "Ej: http://organismo.es/catalogo/dataset",
+        "es": "Ej: http://organismo.es/catalogo/dataset",
+        "ca": "Ej: http://organismo.es/catalogo/dataset",
+        "gl": "Ej: http://organismo.es/catalogo/dataset",
+        "eu": "Ej: http://organismo.es/catalogo/dataset"
+      },
+      "help_text": {
+        "en": "Completar  si el conjunto de datos tiene asociado un identificador tipo URI.",
+        "es": "Completar  si el conjunto de datos tiene asociado un identificador tipo URI.",
+        "ca": "Completar  si el conjunto de datos tiene asociado un identificador tipo URI.",
+        "gl": "Completar  si el conjunto de datos tiene asociado un identificador tipo URI.",
+        "eu": "Completar  si el conjunto de datos tiene asociado un identificador tipo URI."
+      }
+    },
+    {
+      "field_name": "issued_date",
+      "label": {
+        "en": "Creation date",
+        "es": "Fecha de creaci\u00F3n",
+        "ca": "Data de creaci\u00F3",
+        "gl": "Data de creaci\u00F3n",
+        "eu": "Sorrera eguna"
+      },
+      "form_snippet": "dge_datetime.html",
+      "preset": "datetime"
+    },
+    {
+      "field_name": "modified_date",
+      "label": {
+        "en": "Last updated",
+        "es": "Fecha \u00FAltima actualizaci\u00F3n",
+        "ca": "Data d'\u00FAltima actualitzaci\u00F3",
+        "gl": "Data da \u00FAltima actualizaci\u00F3n",
+        "eu": "Azken eguneraketaren eguna"
+      },
+      "form_snippet": "dge_datetime.html",
+      "preset": "datetime"
+    },
+    {
+      "field_name": "frequency",
+      "label": {
+        "en": "Refresh rate",
+        "es": "Frecuencia de actualizaci\u00F3n",
+        "ca": "Freq\u00FC\u00E8ncia d'actualitzaci\u00F3",
+        "gl": "Frecuencia de actualizaci\u00F3n",
+        "eu": "Eguneratze maiztasuna"
+      },
+      "label_value": {
+        "en": "Value of the refresh rate",
+        "es": "Valor de la frecuencia de actualizaci\u00F3n",
+        "ca": "Valor de la freq\u00FC\u00E8ncia d'actualitzaci\u00F3",
+        "gl": "Valor da frecuencia de actualizaci\u00F3n",
+        "eu": "Eguneratze maiztasunaren balioa"
+      },
+      "help_text": {
+        "en": "Incluir un n\u00FAmero entero.",
+        "es": "Incluir un n\u00FAmero entero.",
+        "ca": "Incluir un n\u00FAmero entero.",
+        "gl": "Incluir un n\u00FAmero entero.",
+        "eu": "Incluir un n\u00FAmero entero."
+      },
+      "preset": "date_frequency",
+      "form_placeholder": ""
+    },
+    {
+      "field_name": "language",
+      "label": {
+        "en": "Languages",
+        "es": "Idiomas",
+        "ca": "Idiomes",
+        "gl": "Idiomas",
+        "eu": "Hizkuntzak"
+      },
+      "preset": "multiple_checkbox",
+      "choices": [
+        {
+          "value": "es",
+          "label": {
+            "en": "Spanish",
+            "ca": "Espanyol",
+            "gl": "Espa\u00F1ol",
+            "eu": "Espainiera",
+            "es": "Espa\u00F1ol"
+          }
+        },
+        {
+          "value": "ca",
+          "label": {
+            "en": "Catalan",
+            "ca": "Catal\u00E0",
+            "gl": "Catal\u00E1n",
+            "eu": "Katalana",
+            "es": "Catal\u00E1n"
+          }
+        },
+        {
+          "value": "gl",
+          "label": {
+            "en": "Galician",
+            "ca": "Gallec",
+            "gl": "Galego",
+            "eu": "Galegoa",
+            "es": "Gallego"
+          }
+        },
+        {
+          "value": "eu",
+          "label": {
+            "en": "Basque",
+            "ca": "Eusquera",
+            "gl": "\u00C9uscaro",
+            "eu": "Euskara",
+            "es": "Euskera"
+          }
+        },
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "ca": "Angl\u00E8s",
+            "gl": "Ingl\u00E9s",
+            "eu": "Ingelesa",
+            "es": "Ingl\u00E9s"
+          }
+        }
+      ]
+    },
+    {
+      "field_name": "license_id",
+      "label": {
+        "en": "Terms of use",
+        "es": "Condiciones de uso",
+        "ca": "Condicions d'\u00FAs",
+        "gl": "Condici\u00F3ns de uso",
+        "eu": "Erabilera baldintzak"
+      },
+      "preset": "uri_text",
+      "required": true,
+      "is_url": true,
+      "form_placeholder": {
+        "en": "Ej: http://organismo.es/avisolegal",
+        "es": "Ej: http://organismo.es/avisolegal",
+        "ca": "Ej: http://organismo.es/avisolegal",
+        "gl": "Ej: http://organismo.es/avisolegal",
+        "eu": "Ej: http://organismo.es/avisolegal"
+      },
+      "help_text": {
+        "en": "Incluir URL a las condiciones de uso o licencia del conjunto de datos.",
+        "es": "Incluir URL a las condiciones de uso o licencia del conjunto de datos.",
+        "ca": "Incluir URL a las condiciones de uso o licencia del conjunto de datos.",
+        "gl": "Incluir URL a las condiciones de uso o licencia del conjunto de datos.",
+        "eu": "Incluir URL a las condiciones de uso o licencia del conjunto de datos."
+      }
+    },
+    {
+      "field_name": "spatial",
+      "label": {
+        "en": "Geographic coverage",
+        "es": "Cobertura geogr\u00E1fica",
+        "ca": "Cobertura geogr\u00E0fica",
+        "gl": "Cobertura xeogr\u00E1fica",
+        "eu": "Estaldura geografikoa"
+      },
+      "help_text": {
+        "en": "\u00C1mbito geogr\u00E1fico cubierto por el conjunto de datos. Puede ser m\u00FAltiple.",
+        "es": "\u00C1mbito geogr\u00E1fico cubierto por el conjunto de datos. Puede ser m\u00FAltiple.",
+        "ca": "\u00C1mbito geogr\u00E1fico cubierto por el conjunto de datos. Puede ser m\u00FAltiple.",
+        "gl": "\u00C1mbito geogr\u00E1fico cubierto por el conjunto de datos. Puede ser m\u00FAltiple.",
+        "eu": "\u00C1mbito geogr\u00E1fico cubierto por el conjunto de datos. Puede ser m\u00FAltiple."
+      },
+      "preset": "multiple_select",
+      "choices": [
+        {
+          "label": {
+            "es": "Espa\u00F1a",
+            "en": "Spain",
+            "ca": "Espa\u00F1a",
+            "gl": "Espa\u00F1a",
+            "eu": "Espa\u00F1a"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Pais/Espa\u00F1a"
+        },
+        {
+          "label": {
+            "es": "Andaluc\u00EDa",
+            "en": "Andaluc\u00EDa",
+            "ca": "Andaluc\u00EDa",
+            "gl": "Andaluc\u00EDa",
+            "eu": "Andaluc\u00EDa"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Andalucia"
+        },
+        {
+          "label": {
+            "es": "Almer\u00EDa",
+            "en": "Almer\u00EDa",
+            "ca": "Almer\u00EDa",
+            "gl": "Almer\u00EDa",
+            "eu": "Almer\u00EDa"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Almeria"
+        },
+        {
+          "label": {
+            "es": "C\u00E1diz",
+            "en": "C\u00E1diz",
+            "ca": "C\u00E1diz",
+            "gl": "C\u00E1diz",
+            "eu": "C\u00E1diz"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Cadiz"
+        },
+        {
+          "label": {
+            "es": "C\u00F3rdoba",
+            "en": "C\u00F3rdoba",
+            "ca": "C\u00F3rdoba",
+            "gl": "C\u00F3rdoba",
+            "eu": "C\u00F3rdoba"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Cordoba"
+        },
+        {
+          "label": {
+            "es": "Granada",
+            "en": "Granada",
+            "ca": "Granada",
+            "gl": "Granada",
+            "eu": "Granada"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Granada"
+        },
+        {
+          "label": {
+            "es": "Huelva",
+            "en": "Huelva",
+            "ca": "Huelva",
+            "gl": "Huelva",
+            "eu": "Huelva"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Huelva"
+        },
+        {
+          "label": {
+            "es": "Ja\u00E9n",
+            "en": "Ja\u00E9n",
+            "ca": "Ja\u00E9n",
+            "gl": "Ja\u00E9n",
+            "eu": "Ja\u00E9n"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Jaen"
+        },
+        {
+          "label": {
+            "es": "M\u00E1laga",
+            "en": "M\u00E1laga",
+            "ca": "M\u00E1laga",
+            "gl": "M\u00E1laga",
+            "eu": "M\u00E1laga"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Malaga"
+        },
+        {
+          "label": {
+            "es": "Sevilla",
+            "en": "Sevilla",
+            "ca": "Sevilla",
+            "gl": "Sevilla",
+            "eu": "Sevilla"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Sevilla"
+        },
+        {
+          "label": {
+            "es": "Arag\u00F3n",
+            "en": "Arag\u00F3n",
+            "ca": "Arag\u00F3n",
+            "gl": "Arag\u00F3n",
+            "eu": "Arag\u00F3n"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Aragon"
+        },
+        {
+          "label": {
+            "es": "Huesca",
+            "en": "Huesca",
+            "ca": "Huesca",
+            "gl": "Huesca",
+            "eu": "Huesca"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Huesca"
+        },
+        {
+          "label": {
+            "es": "Teruel",
+            "en": "Teruel",
+            "ca": "Teruel",
+            "gl": "Teruel",
+            "eu": "Teruel"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Teruel"
+        },
+        {
+          "label": {
+            "es": "Zaragoza",
+            "en": "Zaragoza",
+            "ca": "Zaragoza",
+            "gl": "Zaragoza",
+            "eu": "Zaragoza"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Zaragoza"
+        },
+        {
+          "label": {
+            "es": "Principado de Asturias",
+            "en": "Principado de Asturias",
+            "ca": "Principado de Asturias",
+            "gl": "Principado de Asturias",
+            "eu": "Principado de Asturias"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Principado-Asturias"
+        },
+        {
+          "label": {
+            "es": "Asturias",
+            "en": "Asturias",
+            "ca": "Asturias",
+            "gl": "Asturias",
+            "eu": "Asturias"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Asturias"
+        },
+        {
+          "label": {
+            "es": "Illes Balears",
+            "en": "Illes Balears",
+            "ca": "Illes Balears",
+            "gl": "Illes Balears",
+            "eu": "Illes Balears"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Illes-Balears"
+        },
+        {
+          "label": {
+            "es": "Provincia de Illes Balears",
+            "en": "Provincia de Illes Balears",
+            "ca": "Provincia de Illes Balears",
+            "gl": "Provincia de Illes Balears",
+            "eu": "Provincia de Illes Balears"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Illes-Balears"
+        },
+        {
+          "label": {
+            "es": "Canarias",
+            "en": "Canarias",
+            "ca": "Canarias",
+            "gl": "Canarias",
+            "eu": "Canarias"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Canarias"
+        },
+        {
+          "label": {
+            "es": "Las Palmas",
+            "en": "Las Palmas",
+            "ca": "Las Palmas",
+            "gl": "Las Palmas",
+            "eu": "Las Palmas"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Las-Palmas"
+        },
+        {
+          "label": {
+            "es": "Santa Cruz de Tenerife",
+            "en": "Santa Cruz de Tenerife",
+            "ca": "Santa Cruz de Tenerife",
+            "gl": "Santa Cruz de Tenerife",
+            "eu": "Santa Cruz de Tenerife"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Santa-Cruz-Tenerife"
+        },
+        {
+          "label": {
+            "es": "Cantabria",
+            "en": "Cantabria",
+            "ca": "Cantabria",
+            "gl": "Cantabria",
+            "eu": "Cantabria"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Cantabria"
+        },
+        {
+          "label": {
+            "es": "Provincia de Cantabria",
+            "en": "Provincia de Cantabria",
+            "ca": "Provincia de Cantabria",
+            "gl": "Provincia de Cantabria",
+            "eu": "Provincia de Cantabria"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Cantabria"
+        },
+        {
+          "label": {
+            "es": "Castilla y Le\u00F3n",
+            "en": "Castilla y Le\u00F3n",
+            "ca": "Castilla y Le\u00F3n",
+            "gl": "Castilla y Le\u00F3n",
+            "eu": "Castilla y Le\u00F3n"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Castilla-Leon"
+        },
+        {
+          "label": {
+            "es": "\u00C1vila",
+            "en": "\u00C1vila",
+            "ca": "\u00C1vila",
+            "gl": "\u00C1vila",
+            "eu": "\u00C1vila"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Avila"
+        },
+        {
+          "label": {
+            "es": "Burgos",
+            "en": "Burgos",
+            "ca": "Burgos",
+            "gl": "Burgos",
+            "eu": "Burgos"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Burgos"
+        },
+        {
+          "label": {
+            "es": "Le\u00F3n",
+            "en": "Le\u00F3n",
+            "ca": "Le\u00F3n",
+            "gl": "Le\u00F3n",
+            "eu": "Le\u00F3n"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Leon"
+        },
+        {
+          "label": {
+            "es": "Palencia",
+            "en": "Palencia",
+            "ca": "Palencia",
+            "gl": "Palencia",
+            "eu": "Palencia"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Palencia"
+        },
+        {
+          "label": {
+            "es": "Salamanca",
+            "en": "Salamanca",
+            "ca": "Salamanca",
+            "gl": "Salamanca",
+            "eu": "Salamanca"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Salamanca"
+        },
+        {
+          "label": {
+            "es": "Segovia",
+            "en": "Segovia",
+            "ca": "Segovia",
+            "gl": "Segovia",
+            "eu": "Segovia"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Segovia"
+        },
+        {
+          "label": {
+            "es": "Soria",
+            "en": "Soria",
+            "ca": "Soria",
+            "gl": "Soria",
+            "eu": "Soria"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Soria"
+        },
+        {
+          "label": {
+            "es": "Valladolid",
+            "en": "Valladolid",
+            "ca": "Valladolid",
+            "gl": "Valladolid",
+            "eu": "Valladolid"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Valladolid"
+        },
+        {
+          "label": {
+            "es": "Zamora",
+            "en": "Zamora",
+            "ca": "Zamora",
+            "gl": "Zamora",
+            "eu": "Zamora"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Zamora"
+        },
+        {
+          "label": {
+            "es": "Castilla-La Mancha",
+            "en": "Castilla-La Mancha",
+            "ca": "Castilla-La Mancha",
+            "gl": "Castilla-La Mancha",
+            "eu": "Castilla-La Mancha"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Castilla-La-Mancha"
+        },
+        {
+          "label": {
+            "es": "Albacete",
+            "en": "Albacete",
+            "ca": "Albacete",
+            "gl": "Albacete",
+            "eu": "Albacete"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Albacete"
+        },
+        {
+          "label": {
+            "es": "Ciudad Real",
+            "en": "Ciudad Real",
+            "ca": "Ciudad Real",
+            "gl": "Ciudad Real",
+            "eu": "Ciudad Real"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Ciudad-Real"
+        },
+        {
+          "label": {
+            "es": "Cuenca",
+            "en": "Cuenca",
+            "ca": "Cuenca",
+            "gl": "Cuenca",
+            "eu": "Cuenca"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Cuenca"
+        },
+        {
+          "label": {
+            "es": "Guadalajara",
+            "en": "Guadalajara",
+            "ca": "Guadalajara",
+            "gl": "Guadalajara",
+            "eu": "Guadalajara"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Guadalajara"
+        },
+        {
+          "label": {
+            "es": "Toledo",
+            "en": "Toledo",
+            "ca": "Toledo",
+            "gl": "Toledo",
+            "eu": "Toledo"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Toledo"
+        },
+        {
+          "label": {
+            "es": "Catalu\u00F1a",
+            "en": "Catalu\u00F1a",
+            "ca": "Catalu\u00F1a",
+            "gl": "Catalu\u00F1a",
+            "eu": "Catalu\u00F1a"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Cataluna"
+        },
+        {
+          "label": {
+            "es": "Barcelona",
+            "en": "Barcelona",
+            "ca": "Barcelona",
+            "gl": "Barcelona",
+            "eu": "Barcelona"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Barcelona"
+        },
+        {
+          "label": {
+            "es": "Girona",
+            "en": "Girona",
+            "ca": "Girona",
+            "gl": "Girona",
+            "eu": "Girona"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Girona"
+        },
+        {
+          "label": {
+            "es": "Lleida",
+            "en": "Lleida",
+            "ca": "Lleida",
+            "gl": "Lleida",
+            "eu": "Lleida"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Lleida"
+        },
+        {
+          "label": {
+            "es": "Tarragona",
+            "en": "Tarragona",
+            "ca": "Tarragona",
+            "gl": "Tarragona",
+            "eu": "Tarragona"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Tarragona"
+        },
+        {
+          "label": {
+            "es": "Comunitat Valenciana",
+            "en": "Comunitat Valenciana",
+            "ca": "Comunitat Valenciana",
+            "gl": "Comunitat Valenciana",
+            "eu": "Comunitat Valenciana"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Comunitat-Valenciana"
+        },
+        {
+          "label": {
+            "es": "Alicante",
+            "en": "Alicante",
+            "ca": "Alicante",
+            "gl": "Alicante",
+            "eu": "Alicante"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Alicante"
+        },
+        {
+          "label": {
+            "es": "Castell\u00F3n",
+            "en": "Castell\u00F3n",
+            "ca": "Castell\u00F3n",
+            "gl": "Castell\u00F3n",
+            "eu": "Castell\u00F3n"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Castellon"
+        },
+        {
+          "label": {
+            "es": "Valencia",
+            "en": "Valencia",
+            "ca": "Valencia",
+            "gl": "Valencia",
+            "eu": "Valencia"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Valencia"
+        },
+        {
+          "label": {
+            "es": "Extremadura",
+            "en": "Extremadura",
+            "ca": "Extremadura",
+            "gl": "Extremadura",
+            "eu": "Extremadura"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Extremadura"
+        },
+        {
+          "label": {
+            "es": "Badajoz",
+            "en": "Badajoz",
+            "ca": "Badajoz",
+            "gl": "Badajoz",
+            "eu": "Badajoz"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Badajoz"
+        },
+        {
+          "label": {
+            "es": "C\u00E1ceres",
+            "en": "C\u00E1ceres",
+            "ca": "C\u00E1ceres",
+            "gl": "C\u00E1ceres",
+            "eu": "C\u00E1ceres"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Caceres"
+        },
+        {
+          "label": {
+            "es": "Galicia",
+            "en": "Galicia",
+            "ca": "Galicia",
+            "gl": "Galicia",
+            "eu": "Galicia"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Galicia"
+        },
+        {
+          "label": {
+            "es": "A Coru\u00F1a",
+            "en": "A Coru\u00F1a",
+            "ca": "A Coru\u00F1a",
+            "gl": "A Coru\u00F1a",
+            "eu": "A Coru\u00F1a"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/A-Coruna"
+        },
+        {
+          "label": {
+            "es": "Lugo",
+            "en": "Lugo",
+            "ca": "Lugo",
+            "gl": "Lugo",
+            "eu": "Lugo"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Lugo"
+        },
+        {
+          "label": {
+            "es": "Ourense",
+            "en": "Ourense",
+            "ca": "Ourense",
+            "gl": "Ourense",
+            "eu": "Ourense"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Ourense"
+        },
+        {
+          "label": {
+            "es": "Pontevedra",
+            "en": "Pontevedra",
+            "ca": "Pontevedra",
+            "gl": "Pontevedra",
+            "eu": "Pontevedra"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Pontevedra"
+        },
+        {
+          "label": {
+            "es": "Comunidad de Madrid",
+            "en": "Comunidad de Madrid",
+            "ca": "Comunidad de Madrid",
+            "gl": "Comunidad de Madrid",
+            "eu": "Comunidad de Madrid"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Comunidad-Madrid"
+        },
+        {
+          "label": {
+            "es": "Madrid",
+            "en": "Madrid",
+            "ca": "Madrid",
+            "gl": "Madrid",
+            "eu": "Madrid"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Madrid"
+        },
+        {
+          "label": {
+            "es": "Regi\u00F3n de Murcia",
+            "en": "Regi\u00F3n de Murcia",
+            "ca": "Regi\u00F3n de Murcia",
+            "gl": "Regi\u00F3n de Murcia",
+            "eu": "Regi\u00F3n de Murcia"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Region-Murcia"
+        },
+        {
+          "label": {
+            "es": "Murcia",
+            "en": "Murcia",
+            "ca": "Murcia",
+            "gl": "Murcia",
+            "eu": "Murcia"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Murcia"
+        },
+        {
+          "label": {
+            "es": "C. Foral de Navarra",
+            "en": "C. Foral de Navarra",
+            "ca": "C. Foral de Navarra",
+            "gl": "C. Foral de Navarra",
+            "eu": "C. Foral de Navarra"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Comunidad-Foral-Navarra"
+        },
+        {
+          "label": {
+            "es": "Navarra",
+            "en": "Navarra",
+            "ca": "Navarra",
+            "gl": "Navarra",
+            "eu": "Navarra"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Navarra"
+        },
+        {
+          "label": {
+            "es": "Pa\u00EDs Vasco",
+            "en": "Pa\u00EDs Vasco",
+            "ca": "Pa\u00EDs Vasco",
+            "gl": "Pa\u00EDs Vasco",
+            "eu": "Pa\u00EDs Vasco"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Pais-Vasco"
+        },
+        {
+          "label": {
+            "es": "\u00C1lava",
+            "en": "\u00C1lava",
+            "ca": "\u00C1lava",
+            "gl": "\u00C1lava",
+            "eu": "\u00C1lava"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Alava"
+        },
+        {
+          "label": {
+            "es": "Guip\u00FAzcoa",
+            "en": "Guip\u00FAzcoa",
+            "ca": "Guip\u00FAzcoa",
+            "gl": "Guip\u00FAzcoa",
+            "eu": "Guip\u00FAzcoa"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Guipuzcoa"
+        },
+        {
+          "label": {
+            "es": "Vizcaya",
+            "en": "Vizcaya",
+            "ca": "Vizcaya",
+            "gl": "Vizcaya",
+            "eu": "Vizcaya"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Vizcaya"
+        },
+        {
+          "label": {
+            "es": "La Rioja",
+            "en": "La Rioja",
+            "ca": "La Rioja",
+            "gl": "La Rioja",
+            "eu": "La Rioja"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/La-Rioja"
+        },
+        {
+          "label": {
+            "es": "Provincia de La Rioja",
+            "en": "Provincia de La Rioja",
+            "ca": "Provincia de La Rioja",
+            "gl": "Provincia de La Rioja",
+            "eu": "Provincia de La Rioja"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/La-Rioja"
+        },
+        {
+          "label": {
+            "es": "Ceuta",
+            "en": "Ceuta",
+            "ca": "Ceuta",
+            "gl": "Ceuta",
+            "eu": "Ceuta"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Ceuta"
+        },
+        {
+          "label": {
+            "es": "Provincia de Ceuta",
+            "en": "Provincia de Ceuta",
+            "ca": "Provincia de Ceuta",
+            "gl": "Provincia de Ceuta",
+            "eu": "Provincia de Ceuta"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Ceuta"
+        },
+        {
+          "label": {
+            "es": "Melilla",
+            "en": "Melilla",
+            "ca": "Melilla",
+            "gl": "Melilla",
+            "eu": "Melilla"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Melilla"
+        },
+        {
+          "label": {
+            "es": "Provincia de Melilla",
+            "en": "Provincia de Melilla",
+            "ca": "Provincia de Melilla",
+            "gl": "Provincia de Melilla",
+            "eu": "Provincia de Melilla"
+          },
+          "value": "http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Melilla"
+        }
+      ]
+    },
+    {
+      "field_name": "coverage_new",
+      "label": {
+        "en": "Time coverage",
+        "es": "Cobertura temporal",
+        "ca": "Cobertura temporal",
+        "gl": "Cobertura temporal",
+        "eu": "Denbora-estaldura"
+      },
+      "help_text": {
+        "en": "Periodo de tiempo cubierto por el conjunto de datos.Se pueden establer m\u00E1s periodos pulsando en \u0022Agregar cobertura temporal\u0022.",
+        "es": "Periodo de tiempo cubierto por el conjunto de datos.Se pueden establer m\u00E1s periodos pulsando en \u0022Agregar cobertura temporal\u0022.",
+        "ca": "Periodo de tiempo cubierto por el conjunto de datos.Se pueden establer m\u00E1s periodos pulsando en \u0022Agregar cobertura temporal\u0022.",
+        "gl": "Periodo de tiempo cubierto por el conjunto de datos.Se pueden establer m\u00E1s periodos pulsando en \u0022Agregar cobertura temporal\u0022.",
+        "eu": "Periodo de tiempo cubierto por el conjunto de datos.Se pueden establer m\u00E1s periodos pulsando en \u0022Agregar cobertura temporal\u0022."
+      },
+      "preset": "date_period"
+    },
+    {
+      "field_name": "valid",
+      "label": {
+        "en": "Effective resource",
+        "es": "Vigencia del recurso",
+        "ca": "Vig\u00E8ncia del recurs",
+        "gl": "Vixencia do recurso",
+        "eu": "Baliabidearen iraunaldia"
+      },
+      "help_text": {
+        "en": "Fecha l\u00EDmite de validez de un conjunto de datos.",
+        "es": "Fecha l\u00EDmite de validez de un conjunto de datos.",
+        "ca": "Fecha l\u00EDmite de validez de un conjunto de datos.",
+        "gl": "Fecha l\u00EDmite de validez de un conjunto de datos.",
+        "eu": "Fecha l\u00EDmite de validez de un conjunto de datos."
+      },
+      "form_snippet": "dge_datetime.html",
+      "preset": "datetime"
+    },
+    {
+      "field_name": "reference",
+      "label": {
+        "en": "Other resources",
+        "es": "Otros recursos",
+        "ca": "Altres recursos",
+        "gl": "Outros recursos",
+        "eu": "Beste baliabide batzuk"
+      },
+      "form_placeholder": {
+        "en": "Ej: http://organismo.es/recursorelacionado",
+        "es": "Ej: http://organismo.es/recursorelacionado",
+        "ca": "Ej: http://organismo.es/recursorelacionado",
+        "gl": "Ej: http://organismo.es/recursorelacionado",
+        "eu": "Ej: http://organismo.es/recursorelacionado"
+      },
+      "help_text": {
+        "en": "Enlaces a recursos relacionados con el conjunto de datos.",
+        "es": "Enlaces a recursos relacionados con el conjunto de datos.",
+        "ca": "Enlaces a recursos relacionados con el conjunto de datos.",
+        "gl": "Enlaces a recursos relacionados con el conjunto de datos.",
+        "eu": "Enlaces a recursos relacionados con el conjunto de datos."
+      },
+      "preset": "multiple_uri_text",
+      "is_url": true
+    },
+    {
+      "field_name": "conforms_to",
+      "label": {
+        "en": "Normative",
+        "es": "Normativa",
+        "ca": "Normativa",
+        "gl": "Normativa",
+        "eu": "Araudia"
+      },
+      "form_placeholder": {
+        "en": "Ej: http://organismo.es/leyA",
+        "es": "Ej: http://organismo.es/leyA",
+        "ca": "Ej: http://organismo.es/leyA",
+        "gl": "Ej: http://organismo.es/leyA",
+        "eu": "Ej: http://organismo.es/leyA"
+      },
+      "help_text": {
+        "en": "Enlaces a la normativa relativa al conjunto de datos. Es un enlace a un documento legal.",
+        "es": "Enlaces a la normativa relativa al conjunto de datos. Es un enlace a un documento legal.",
+        "ca": "Enlaces a la normativa relativa al conjunto de datos. Es un enlace a un documento legal.",
+        "gl": "Enlaces a la normativa relativa al conjunto de datos. Es un enlace a un documento legal.",
+        "eu": "Enlaces a la normativa relativa al conjunto de datos. Es un enlace a un documento legal."
+      },
+      "preset": "multiple_uri_text",
+      "is_url": true
+    },
+    {
+      "field_name": "rate",
+      "label": {
+        "en": "Rate",
+        "es": "Tarifa",
+        "ca": "Tarifa",
+        "gl": "Tarifa",
+        "eu": "Tarifa"
+      },
+      "preset": "select",
+      "choices": [
+        {
+          "value": "0",
+          "label": {
+            "en": "None",
+            "ca": "Ninguno",
+            "gl": "Ninguno",
+            "eu": "Ninguno",
+            "es": "Ninguno"
+          }
+        },
+        {
+          "value": "1",
+          "label": {
+            "en": "Free",
+            "ca": "Gratuita",
+            "gl": "Gratuita",
+            "eu": "Gratuita",
+            "es": "Gratuita"
+          }
+        },
+        {
+          "value": "2",
+          "label": {
+            "en": "Depending on rate",
+            "ca": "Seg\u00FAn tarifa",
+            "gl": "Seg\u00FAn tarifa",
+            "eu": "Seg\u00FAn tarifa",
+            "es": "Seg\u00FAn tarifa"
+          }
+        }
+      ]
+    },
+    {
+      "field_name": "rate_info",
+      "label": {
+        "en": "Rate information",
+        "es": "Informaci\u00F3n de la tarifa",
+        "ca": "Informaci\u00F3 de la tarifa",
+        "gl": "Informaci\u00F3n da tarifa",
+        "eu": "Tarifari buruzko informazioa"
+      },
+      "preset": "fluent_markdown",
+      "display_snippet": "multilanguage_markdown.html",
+      "form_snippet": "multilanguage_markdown.html",
+      "validators": "multiple_required_language fluent_text",
+      "required_language": "es",
+      "fluent_form_placeholder": {
+        "en": {
+          "en": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en ingl\u00E9s.",
+          "es": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en ingl\u00E9s.",
+          "ca": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en ingl\u00E9s.",
+          "gl": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en ingl\u00E9s.",
+          "eu": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en ingl\u00E9s."
+        },
+        "es": {
+          "en": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en espa\u00F1ol.",
+          "es": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en espa\u00F1ol.",
+          "ca": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en espa\u00F1ol.",
+          "gl": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en espa\u00F1ol.",
+          "eu": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en espa\u00F1ol."
+        },
+        "ca": {
+          "en": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en catal\u00E1n.",
+          "es": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en catal\u00E1n.",
+          "ca": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en catal\u00E1n.",
+          "gl": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en catal\u00E1n.",
+          "eu": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en catal\u00E1n."
+        },
+        "gl": {
+          "en": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en gallego.",
+          "es": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en gallego.",
+          "ca": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en gallego.",
+          "gl": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en gallego.",
+          "eu": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en gallego."
+        },
+        "eu": {
+          "en": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en euskera.",
+          "es": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en euskera.",
+          "ca": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en euskera.",
+          "gl": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en euskera.",
+          "eu": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en euskera."
+        }
+      },
+      "fluent_help_text": {
+        "en": {
+          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+        },
+        "es": {
+          "en": "Campo opcional. Si se completa, debe incluirse al menos en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "es": "Campo opcional. Si se completa, debe incluirse al menos en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Campo opcional. Si se completa, debe incluirse al menos en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "gl": "Campo opcional. Si se completa, debe incluirse al menos en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "eu": "Campo opcional. Si se completa, debe incluirse al menos en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+        },
+        "ca": {
+          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+        },
+        "gl": {
+          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+        },
+        "eu": {
+          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+        }
+      }
+    },
+    {
+      "field_name": "publisher",
+      "label": {
+        "en": "Publisher",
+        "es": "Publicador",
+        "ca": "Publicador",
+        "gl": "Publicador",
+        "eu": "Argitaratzailea"
+      },
+      "help_text": {
+        "en": "Organismo que expone y publica los datos.",
+        "es": "Organismo que expone y publica los datos.",
+        "ca": "Organismo que expone y publica los datos.",
+        "gl": "Organismo que expone y publica los datos.",
+        "eu": "Organismo que expone y publica los datos."
+      },
+      "preset": "select_organization",
+      "validators": "",
+      "required": true
+    },
+    {
+      "field_name": "owner_org",
+      "label": {
+        "en": "Organization",
+        "es": "Organizaci\u00F3n",
+        "ca": "Organitzaci\u00F3",
+        "gl": "Organizaci\u00F3n",
+        "eu": "Erakundea"
+      },
+      "help_text": {
+        "en": "Organismo encargado de publicar el conjunto de datos en datos.gob.es. Este campo no es p\u00FAblico.",
+        "es": "Organismo encargado de publicar el conjunto de datos en datos.gob.es. Este campo no es p\u00FAblico.",
+        "ca": "Organismo encargado de publicar el conjunto de datos en datos.gob.es. Este campo no es p\u00FAblico.",
+        "gl": "Organismo encargado de publicar el conjunto de datos en datos.gob.es. Este campo no es p\u00FAblico.",
+        "eu": "Organismo encargado de publicar el conjunto de datos en datos.gob.es. Este campo no es p\u00FAblico."
+      },
+      "visibility_help_text": {
+        "en": "Marque privado si todav\u00EDa no desea que el conjunto de datos est\u00E9 disponible para el p\u00FAblico",
+        "es": "Marque privado si todav\u00EDa no desea que el conjunto de datos est\u00E9 disponible para el p\u00FAblico",
+        "ca": "Marque privado si todav\u00EDa no desea que el conjunto de datos est\u00E9 disponible para el p\u00FAblico",
+        "gl": "Marque privado si todav\u00EDa no desea que el conjunto de datos est\u00E9 disponible para el p\u00FAblico",
+        "eu": "Marque privado si todav\u00EDa no desea que el conjunto de datos est\u00E9 disponible para el p\u00FAblico"
+      },
+      "required": true,
+      "preset": "dataset_organization",
+      "form_snippet": "dge_organization.html"
+    }
+  ],
+  "resource_fields": [
+    {
+      "field_name": "url",
+      "label": "URL",
+      "required": true,
+      "preset": "resource_url_upload",
+      "form_snippet": "dge_upload.html",
+      "form_placeholder": "Ej: http://organismo.es/catalogo/dataset/distribucion",
+      "validators": "uri_text",
+      "help_text": {
+        "en": "URL que permite el acceso o descarga del conjunto de datos.",
+        "es": "URL que permite el acceso o descarga del conjunto de datos.",
+        "ca": "URL que permite el acceso o descarga del conjunto de datos.",
+        "gl": "URL que permite el acceso o descarga del conjunto de datos.",
+        "eu": "URL que permite el acceso o descarga del conjunto de datos."
+      }
+    },
+    {
+      "field_name": "resource_identifier",
+      "label": {
+        "en": "Identifier",
+        "es": "Identificador",
+        "ca": "Identificador",
+        "gl": "Identificador",
+        "eu": "Identifikadorea"
+      },
+      "help_text": {
+        "en": "Completar si la distribuci\u00F3n tiene asociado un identificador tipo URI.",
+        "es": "Completar si la distribuci\u00F3n tiene asociado un identificador tipo URI.",
+        "ca": "Completar si la distribuci\u00F3n tiene asociado un identificador tipo URI.",
+        "gl": "Completar si la distribuci\u00F3n tiene asociado un identificador tipo URI.",
+        "eu": "Completar si la distribuci\u00F3n tiene asociado un identificador tipo URI."
+      },
+      "preset": "uri_text",
+      "form_placeholder": ""
+    },
+    {
+      "field_name": "name_translated",
+      "preset": "fluent_core_translated",
+      "display_snippet": "multilanguage_text.html",
+      "form_snippet": "multilanguage_text.html",
+      "label": {
+        "en": "Name",
+        "es": "Nombre",
+        "ca": "Nom",
+        "gl": "Nome",
+        "eu": "Izena"
+      },
+      "validators": "tags_html_detected multiple_required_language fluent_text",
+      "required_language": "es",
+      "fluent_form_placeholder": {
+        "en": {
+          "en": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en ingl\u00E9s.",
+          "es": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en ingl\u00E9s.",
+          "ca": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en ingl\u00E9s.",
+          "gl": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en ingl\u00E9s.",
+          "eu": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en ingl\u00E9s."
+        },
+        "es": {
+          "en": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en espa\u00F1ol.",
+          "es": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en espa\u00F1ol.",
+          "ca": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en espa\u00F1ol.",
+          "gl": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en espa\u00F1ol.",
+          "eu": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en espa\u00F1ol."
+        },
+        "ca": {
+          "en": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en catal\u00E1n.",
+          "es": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en catal\u00E1n.",
+          "ca": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en catal\u00E1n.",
+          "gl": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en catal\u00E1n.",
+          "eu": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en catal\u00E1n."
+        },
+        "gl": {
+          "en": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en gallego.",
+          "es": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en gallego.",
+          "ca": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en gallego.",
+          "gl": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en gallego.",
+          "eu": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en gallego."
+        },
+        "eu": {
+          "en": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en euskera.",
+          "es": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en euskera.",
+          "ca": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en euskera.",
+          "gl": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en euskera.",
+          "eu": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en euskera."
+        }
+      },
+      "fluent_help_text": {
+        "en": {
+          "en": "",
+          "es": "",
+          "ca": "",
+          "gl": "",
+          "eu": ""
+        },
+        "es": {
+          "en": "Campo opcional. Si se completa, debe incluirse el nombre al menos en espa\u00F1ol.",
+          "es": "Campo opcional. Si se completa, debe incluirse el nombre al menos en espa\u00F1ol.",
+          "ca": "Campo opcional. Si se completa, debe incluirse el nombre al menos en espa\u00F1ol.",
+          "gl": "Campo opcional. Si se completa, debe incluirse el nombre al menos en espa\u00F1ol.",
+          "eu": "Campo opcional. Si se completa, debe incluirse el nombre al menos en espa\u00F1ol."
+        },
+        "ca": {
+          "en": "",
+          "es": "",
+          "ca": "",
+          "gl": "",
+          "eu": ""
+        },
+        "gl": {
+          "en": "",
+          "es": "",
+          "ca": "",
+          "gl": "",
+          "eu": ""
+        },
+        "eu": {
+          "en": "",
+          "es": "",
+          "ca": "",
+          "gl": "",
+          "eu": ""
+        }
+      }
+    },
+    {
+      "field_name": "format",
+      "label": {
+        "en": "Format",
+        "es": "Formato",
+        "ca": "Format",
+        "gl": "Formato",
+        "eu": "Formatua"
+      },
+      "help_text": {
+        "en": "Formato en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n.",
+        "es": "Formato en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n.",
+        "ca": "Formato en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n.",
+        "gl": "Formato en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n.",
+        "eu": "Formato en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n."
+      },
+      "required": true,
+      "preset": "select",
+      "choices": [
+        {
+          "label": "API",
+          "value": "application/api"
+        },
+        {
+          "label": "ASCII",
+          "value": "text/ascii"
+        },
+        {
+          "label": "Atom",
+          "value": "application/atom+xml"
+        },
+        {
+          "label": "Calendar",
+          "value": "text/calendar"
+        },
+        {
+          "label": "CSV",
+          "value": "text/csv"
+        },
+        {
+          "label": "CSW",
+          "value": "application/csw"
+        },
+        {
+          "label": "DBF",
+          "value": "application/dbf"
+        },
+        {
+          "label": "DGN",
+          "value": "image/vnd.dgn"
+        },
+        {
+          "label": "DjVu",
+          "value": "image/vnd.djvu"
+        },
+        {
+          "label": "DOC",
+          "value": "application/msword"
+        },
+        {
+          "label": "DOCX",
+          "value": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        },
+        {
+          "label": "DWG",
+          "value": "image/vnd.dwg"
+        },
+        {
+          "label": "DXF",
+          "value": "application/dxf"
+        },
+        {
+          "label": "ECMAScript",
+          "value": "application/ecmascript"
+        },
+        {
+          "label": "ECW",
+          "value": "application/ecw"
+        },
+        {
+          "label": "ELP",
+          "value": "application/elp"
+        },
+        {
+          "label": "ePub",
+          "value": "application/epub+zip"
+        },
+        {
+          "label": "GDB",
+          "value": "x-lml/x-gdb"
+        },
+        {
+          "label": "GeoJSON",
+          "value": "application/geo+json"
+        },
+        {
+          "label": "GeoJSON",
+          "value": "application/vnd.geo+json"
+        },
+        {
+          "label": "GeoPackage",
+          "value": "application/geopackage+sqlite3"
+        },
+        {
+          "label": "GeoPDF",
+          "value": "application/geo+pdf"
+        },
+        {
+          "label": "GeoRSS",
+          "value": "text/xml+georss"
+        },
+        {
+          "label": "GML",
+          "value": "application/gml+xml"
+        },
+        {
+          "label": "GPX",
+          "value": "application/gpx+xml"
+        },
+        {
+          "label": "GZIP",
+          "value": "application/gzip"
+        },
+        {
+          "label": "HTML",
+          "value": "text/html"
+        },
+        {
+          "label": "HTML",
+          "value": "text/html"
+        },
+        {
+          "label": "IMG",
+          "value": "application/img"
+        },
+        {
+          "label": "JavaScript",
+          "value": "text/javascript"
+        },
+        {
+          "label": "JPG",
+          "value": "image/jpeg"
+        },
+        {
+          "label": "JP2",
+          "value": "image/jp2"
+        },
+        {
+          "label": "JSON",
+          "value": "application/json"
+        },
+        {
+          "label": "JSON",
+          "value": "application/x-json"
+        },
+        {
+          "label": "JSON-LD",
+          "value": "application/ld+json"
+        },
+        {
+          "label": "KML",
+          "value": "application/vnd.google-earth.kml+xml"
+        },
+        {
+          "label": "KMZ",
+          "value": "application/vnd.google-earth.kmz"
+        },
+        {
+          "label": "LAS",
+          "value": "application/las"
+        },
+        {
+          "label": "MARC",
+          "value": "application/marc"
+        },
+        {
+          "label": "MDB",
+          "value": "application/msaccess"
+        },
+        {
+          "label": "MP4",
+          "value": "application/mp4"
+        },
+        {
+          "label": "MPP",
+          "value": "application/vmd.ms-project"
+        },
+        {
+          "label": "N3",
+          "value": "text/rdf+n3"
+        },
+        {
+          "label": "NetCDF",
+          "value": "application/netcdf"
+        },
+        {
+          "label": "OCTET-STREAM",
+          "value": "application/octet-stream"
+        },
+        {
+          "label": "ODP",
+          "value": "application/vnd.oasis.opendocument.presentation"
+        },
+        {
+          "label": "ODS",
+          "value": "application/vnd.oasis.opendocument.spreadsheet"
+        },
+        {
+          "label": "ODT",
+          "value": "application/vnd.oasis.opendocument.text"
+        },
+        {
+          "label": "PC-Axis",
+          "value": "text/pc-axis"
+        },
+        {
+          "label": "PDF",
+          "value": "application/pdf"
+        },
+        {
+          "label": "PGP",
+          "value": "application/pgp-signature"
+        },
+        {
+          "label": "plain",
+          "value": "text/plain"
+        },
+        {
+          "label": "PNG",
+          "value": "image/png"
+        },
+        {
+          "label": "Postscript",
+          "value": "application/postscript"
+        },
+        {
+          "label": "PPT",
+          "value": "application/vms.ms-powerpoint"
+        },
+        {
+          "label": "QGIS",
+          "value": "application/x-qgis"
+        },
+        {
+          "label": "RAR",
+          "value": "application/x-rar-compressed"
+        },
+        {
+          "label": "RASTER",
+          "value": "application/vnd.cups-raster"
+        },
+        {
+          "label": "RDF-N3",
+          "value": "text/n3"
+        },
+        {
+          "label": "RDF-Turtle",
+          "value": "text/turtle"
+        },
+        {
+          "label": "RDF-XML",
+          "value": "application/rdf+xml"
+        },
+        {
+          "label": "RSS",
+          "value": "application/rss+xml"
+        },
+        {
+          "label": "RTF",
+          "value": "text/rtf"
+        },
+        {
+          "label": "SCORM",
+          "value": "application/scorm"
+        },
+        {
+          "label": "SHP",
+          "value": "application/x-zipped-shp"
+        },
+        {
+          "label": "SMIL",
+          "value": "application/smil+xml"
+        },
+        {
+          "label": "SOAP",
+          "value": "application/soap+xml"
+        },
+        {
+          "label": "Solr",
+          "value": "application/solr"
+        },
+        {
+          "label": "SPARQL",
+          "value": "application/sparql-query"
+        },
+        {
+          "label": "SPARQL-JSON",
+          "value": "application/sparql-results+json"
+        },
+        {
+          "label": "SPARQL-XML",
+          "value": "application/sparql-results+xml"
+        },
+        {
+          "label": "SubRip",
+          "value": "application/srt"
+        },
+        {
+          "label": "SVG",
+          "value": "image/svg+xml"
+        },
+        {
+          "label": "TBX",
+          "value": "application/x-tbx+xml"
+        },
+        {
+          "label": "TIFF",
+          "value": "image/tiff"
+        },
+        {
+          "label": "TMX",
+          "value": "application/x-tmx+xml"
+        },
+        {
+          "label": "TSV",
+          "value": "text/tab-separated-values"
+        },
+        {
+          "label": "TURTLE",
+          "value": "application/x-turtle"
+        },
+        {
+          "label": "vCard-texto",
+          "value": "text/vcard"
+        },
+        {
+          "label": "vCard-XML",
+          "value": "application/vcard+xml"
+        },
+        {
+          "label": "Visio",
+          "value": "application/vnd.visio"
+        },
+        {
+          "label": "VoiceXML",
+          "value": "application/voicexml+xml"
+        },
+        {
+          "label": "WCS",
+          "value": "text/wcs"
+        },
+        {
+          "label": "WFS",
+          "value": "text/wfs"
+        },
+        {
+          "label": "WMS",
+          "value": "text/wms"
+        },
+        {
+          "label": "WMS-XML",
+          "value": "application/vnd.ogc.wms_xml"
+        },
+        {
+          "label": "XBRL",
+          "value": "application/xbrl"
+        },
+        {
+          "label": "XHTML",
+          "value": "application/xhtml+xml"
+        },
+        {
+          "label": "XLS",
+          "value": "application/vnd.ms-excel"
+        },
+        {
+          "label": "XLSX",
+          "value": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        },
+        {
+          "label": "XML",
+          "value": "application/xml"
+        },
+        {
+          "label": "XML",
+          "value": "text/xml"
+        },
+        {
+          "label": "XML-APP",
+          "value": "application/xml"
+        },
+        {
+          "label": "Z39.50",
+          "value": "application/z39.50"
+        },
+        {
+          "label": "ZIP",
+          "value": "application/x-zip-compressed"
+        },
+        {
+          "label": "ZIP",
+          "value": "application/zip"
+        }
+      ]
+    },
+    {
+      "field_name": "byte_size",
+      "label": {
+        "en": "Size",
+        "es": "Tama\u00F1o",
+        "ca": "Mida",
+        "gl": "Tama\u00F1o",
+        "eu": "Tamaina"
+      },
+      "form_placeholder": {
+        "en": "eg. 2048",
+        "es": "Ej: 2048",
+        "ca": "Ej: 2048",
+        "gl": "Ej: 2048",
+        "eu": "Ej: 2048"
+      },
+      "help_text": {
+        "en": "Indicar tama\u00F1o del archivo en Bytes.",
+        "es": "Indicar tama\u00F1o del archivo en Bytes.",
+        "ca": "Indicar tama\u00F1o del archivo en Bytes.",
+        "gl": "Indicar tama\u00F1o del archivo en Bytes.",
+        "eu": "Indicar tama\u00F1o del archivo en Bytes."
+      }
+    },
+    {
+      "field_name": "resource_relation",
+      "label": {
+        "en": "Additional information",
+        "es": "Informaci\u00F3n adicional sobre el formato",
+        "ca": "Informaci\u00F3 addicional",
+        "gl": "Informaci\u00F3n adicional",
+        "eu": "Informazio osagarria"
+      },
+      "help_text": {
+        "en": "Enlace a documentos relacionados con la distribuci\u00F3n donde se indique el formato, el esquema utilizado para su representaci\u00F3n y otra informaci\u00F3n t\u00E9cnica.",
+        "es": "Enlace a documentos relacionados con la distribuci\u00F3n donde se indique el formato, el esquema utilizado para su representaci\u00F3n y otra informaci\u00F3n t\u00E9cnica.",
+        "ca": "Enlace a documentos relacionados con la distribuci\u00F3n donde se indique el formato, el esquema utilizado para su representaci\u00F3n y otra informaci\u00F3n t\u00E9cnica.",
+        "gl": "Enlace a documentos relacionados con la distribuci\u00F3n donde se indique el formato, el esquema utilizado para su representaci\u00F3n y otra informaci\u00F3n t\u00E9cnica.",
+        "eu": "Enlace a documentos relacionados con la distribuci\u00F3n donde se indique el formato, el esquema utilizado para su representaci\u00F3n y otra informaci\u00F3n t\u00E9cnica."
+      },
+      "preset": "multiple_uri_text",
+      "is_url": true,
+      "form_placeholder": ""
+    }
+  ]
+}

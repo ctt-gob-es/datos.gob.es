@@ -1,23 +1,23 @@
 <?php
-
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dgef_success (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2022 Entidad PÃºblica Empresarial Red.es
+* 
+* This file is part of "dgef_success (datos.gob.es)".
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 
 /**
  * @file
@@ -34,49 +34,49 @@ function dgef_success_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_success';
-  $strongarm->value = 'edit-i18n';
+  $strongarm->value = 'edit-display';
   $export['additional_settings__active_tab_success'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_anonymous_success';
-  $strongarm->value = 0;
+  $strongarm->value = '2';
   $export['comment_anonymous_success'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_default_mode_success';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['comment_default_mode_success'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_default_per_page_success';
-  $strongarm->value = '50';
+  $strongarm->value = '10';
   $export['comment_default_per_page_success'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_form_location_success';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['comment_form_location_success'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_preview_success';
-  $strongarm->value = '1';
+  $strongarm->value = '0';
   $export['comment_preview_success'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_subject_field_success';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['comment_subject_field_success'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -153,6 +153,9 @@ function dgef_success_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
+      'ponentes_encuentro_aporta' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -160,10 +163,16 @@ function dgef_success_strongarm() {
           'weight' => '0',
         ),
         'language' => array(
-          'weight' => '1',
+          'weight' => '20',
         ),
         'path' => array(
-          'weight' => '15',
+          'weight' => '23',
+        ),
+        'metatags' => array(
+          'weight' => '25',
+        ),
+        'xmlsitemap' => array(
+          'weight' => '24',
         ),
       ),
       'display' => array(
@@ -180,6 +189,10 @@ function dgef_success_strongarm() {
             'weight' => '16',
             'visible' => FALSE,
           ),
+          'carousel_view' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
         ),
         'author' => array(
           'carousel_item' => array(
@@ -193,6 +206,10 @@ function dgef_success_strongarm() {
           'default' => array(
             'weight' => '17',
             'visible' => FALSE,
+          ),
+          'carousel_view' => array(
+            'weight' => '2',
+            'visible' => TRUE,
           ),
         ),
         'title' => array(
@@ -208,6 +225,10 @@ function dgef_success_strongarm() {
             'weight' => '14',
             'visible' => FALSE,
           ),
+          'carousel_view' => array(
+            'weight' => '1',
+            'visible' => TRUE,
+          ),
         ),
         'language_markup_enabled' => array(
           'carousel_item' => array(
@@ -222,6 +243,10 @@ function dgef_success_strongarm() {
             'weight' => '21',
             'visible' => FALSE,
           ),
+          'carousel_view' => array(
+            'weight' => '4',
+            'visible' => TRUE,
+          ),
         ),
         'language' => array(
           'carousel_item' => array(
@@ -235,6 +260,10 @@ function dgef_success_strongarm() {
           'default' => array(
             'weight' => '15',
             'visible' => FALSE,
+          ),
+          'carousel_view' => array(
+            'weight' => '3',
+            'visible' => TRUE,
           ),
         ),
       ),
@@ -303,7 +332,7 @@ function dgef_success_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_submitted_success';
-  $strongarm->value = 0;
+  $strongarm->value = 1;
   $export['node_submitted_success'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -382,6 +411,16 @@ function dgef_success_strongarm() {
   $strongarm->name = 'pathauto_taxonomy_term_success_tags_pattern';
   $strongarm->value = '';
   $export['pathauto_taxonomy_term_success_tags_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'xmlsitemap_settings_node_success';
+  $strongarm->value = array(
+    'status' => '0',
+    'priority' => '0.5',
+  );
+  $export['xmlsitemap_settings_node_success'] = $strongarm;
 
   return $export;
 }

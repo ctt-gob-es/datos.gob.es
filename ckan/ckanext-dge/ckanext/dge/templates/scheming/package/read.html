@@ -34,10 +34,15 @@
  {% endblock %}
 
 {% block package_tags %}
-    {% snippet "package/snippets/dge_tags.html", tags=pkg.tags %}
+    {% snippet "package/snippets/dge_tags.html", tags=pkg.multilingual_tags %}
 {% endblock %}
 
 {% block package_additional_info %}
   {% snippet "package/snippets/dge_additional_info.html",
     pkg_dict=pkg, dataset_type=dataset_type, schema=schema %}
+{% endblock %}
+
+{% block content_primary_nav %}
+  {{ super() }}
+  {% snippet "package/snippets/dge_export_links.html", pkg=pkg %}
 {% endblock %}

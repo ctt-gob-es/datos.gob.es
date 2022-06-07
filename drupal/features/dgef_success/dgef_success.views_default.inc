@@ -1,23 +1,22 @@
 <?php
-
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dgef_success (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+* 
+* This file is part of "dgef_success (datos.gob.es)".
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 /**
  * @file
@@ -42,15 +41,16 @@ function dgef_success_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Successful cases';
+  $handler->display->display_options['title'] = 'Empresas reutilizadoras';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['use_more_text'] = 'más';
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     3 => '3',
+    5 => '5',
     6 => '6',
     7 => '7',
-    5 => '5',
+    8 => '8',
   );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -136,66 +136,73 @@ function dgef_success_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* Encabezado: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = '<p class="add-new-node-view" style="text-align:right;">+ <a href="/es/node/add/success" class="right">Añadir nuevo Caso de éxito</a></p>';
+  $handler->display->display_options['header']['area']['format'] = 'full_html';
   /* No results behavior: Global: Unfiltered text */
   $handler->display->display_options['empty']['area_text_custom']['id'] = 'area_text_custom';
   $handler->display->display_options['empty']['area_text_custom']['table'] = 'views';
   $handler->display->display_options['empty']['area_text_custom']['field'] = 'area_text_custom';
   $handler->display->display_options['empty']['area_text_custom']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area_text_custom']['content'] = 'You do not have any successful case currently';
-  /* Relationship: Content: Autor */
+  $handler->display->display_options['empty']['area_text_custom']['content'] = 'No tienes ningún Caso de éxito actualmente';
+  /* Relationship: Contenido: Autor */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   $handler->display->display_options['relationships']['uid']['label'] = 'uid';
-  /* Field: Content: Título */
+  /* Campo: Contenido: Título */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Language */
+  /* Campo: Contenido: Idioma */
   $handler->display->display_options['fields']['language']['id'] = 'language';
   $handler->display->display_options['fields']['language']['table'] = 'node';
   $handler->display->display_options['fields']['language']['field'] = 'language';
-  /* Field: Content: Language Markup Enabled */
+  /* Campo: Contenido: Lenguaje de marcado activado */
   $handler->display->display_options['fields']['language_markup_enabled']['id'] = 'language_markup_enabled';
   $handler->display->display_options['fields']['language_markup_enabled']['table'] = 'node';
   $handler->display->display_options['fields']['language_markup_enabled']['field'] = 'language_markup_enabled';
   $handler->display->display_options['fields']['language_markup_enabled']['label'] = 'Traducción';
   $handler->display->display_options['fields']['language_markup_enabled']['link_to_entity'] = 0;
-  /* Field: Content: Post date */
+  /* Campo: Contenido: Fecha de publicación */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['date_format'] = 'short';
   $handler->display->display_options['fields']['created']['second_date_format'] = 'search_api_facetapi_YEAR';
-  /* Field: User: Name */
+  /* Campo: Usuario: Nombre */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = 'Autor';
   $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
-  /* Field: Content: Publicado */
+  /* Campo: Contenido: Publicado */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'node';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['not'] = 0;
-  /* Field: Workbench Moderation: State */
+  /* Campo: Workbench Moderation: Estado */
   $handler->display->display_options['fields']['state']['id'] = 'state';
   $handler->display->display_options['fields']['state']['table'] = 'workbench_moderation_node_history';
   $handler->display->display_options['fields']['state']['field'] = 'state';
   $handler->display->display_options['fields']['state']['machine_name'] = 0;
-  /* Field: Content: Edit link */
+  /* Campo: Contenido: Enlace a edición */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
-  /* Sort criterion: Content: Post date */
+  /* Sort criterion: Contenido: Fecha de publicación */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Filter criterion: Content: Tipo */
+  /* Filter criterion: Contenido: Tipo */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
@@ -212,6 +219,30 @@ function dgef_success_views_default_views() {
   $handler->display->display_options['filters']['is_current']['table'] = 'workbench_moderation_node_history';
   $handler->display->display_options['filters']['is_current']['field'] = 'is_current';
   $handler->display->display_options['filters']['is_current']['value'] = '1';
+  /* Filter criterion: Contenido: Idioma */
+  $handler->display->display_options['filters']['language']['id'] = 'language';
+  $handler->display->display_options['filters']['language']['table'] = 'node';
+  $handler->display->display_options['filters']['language']['field'] = 'language';
+  $handler->display->display_options['filters']['language']['value'] = array(
+    'es' => 'es',
+    'en' => 'en',
+    'ca' => 'ca',
+    'gl' => 'gl',
+    'eu' => 'eu',
+  );
+  $handler->display->display_options['filters']['language']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['language']['expose']['operator_id'] = 'language_op';
+  $handler->display->display_options['filters']['language']['expose']['label'] = 'Idioma';
+  $handler->display->display_options['filters']['language']['expose']['operator'] = 'language_op';
+  $handler->display->display_options['filters']['language']['expose']['identifier'] = 'language';
+  $handler->display->display_options['filters']['language']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    7 => 0,
+    5 => 0,
+    6 => 0,
+  );
 
   /* Display: User management */
   $handler = $view->new_display('page', 'User management', 'page');
@@ -239,7 +270,7 @@ function dgef_success_views_default_views() {
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Aplicar';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Reiniciar';
-  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Ordenar por';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Ordenar por:';
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '1';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -249,7 +280,20 @@ function dgef_success_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['row_options']['hide_empty'] = TRUE;
   $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
-  /* Field: Content: Título */
+  /* Campo: Contenido: Service links */
+  $handler->display->display_options['fields']['service_links']['id'] = 'service_links';
+  $handler->display->display_options['fields']['service_links']['table'] = 'node';
+  $handler->display->display_options['fields']['service_links']['field'] = 'service_links';
+  $handler->display->display_options['fields']['service_links']['label'] = 'Compartir';
+  $handler->display->display_options['fields']['service_links']['element_type'] = 'div';
+  $handler->display->display_options['fields']['service_links']['element_class'] = 'dge-detail__share-cont';
+  $handler->display->display_options['fields']['service_links']['element_label_type'] = 'strong';
+  $handler->display->display_options['fields']['service_links']['element_label_class'] = 'dge-detail__share-title';
+  $handler->display->display_options['fields']['service_links']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['service_links']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['service_links']['element_wrapper_class'] = 'dge-detail__share';
+  $handler->display->display_options['fields']['service_links']['element_default_classes'] = FALSE;
+  /* Campo: Contenido: Título */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
@@ -264,47 +308,47 @@ function dgef_success_views_default_views() {
   $handler->display->display_options['fields']['title']['element_wrapper_class'] = 'dge-detail__title';
   $handler->display->display_options['fields']['title']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Categoría */
+  /* Campo: Contenido: Categoría */
   $handler->display->display_options['fields']['field_success_category']['id'] = 'field_success_category';
   $handler->display->display_options['fields']['field_success_category']['table'] = 'field_data_field_success_category';
   $handler->display->display_options['fields']['field_success_category']['field'] = 'field_success_category';
   $handler->display->display_options['fields']['field_success_category']['label'] = '';
-  $handler->display->display_options['fields']['field_success_category']['element_type'] = '0';
-  $handler->display->display_options['fields']['field_success_category']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['field_success_category']['alter']['path'] = 'taxonomy/term/[field_success_category-tid]';
+  $handler->display->display_options['fields']['field_success_category']['alter']['link_class'] = '[field_success_category]';
   $handler->display->display_options['fields']['field_success_category']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_success_category']['element_wrapper_type'] = 'div';
-  $handler->display->display_options['fields']['field_success_category']['element_wrapper_class'] = 'dge-detail__category';
   $handler->display->display_options['fields']['field_success_category']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_success_category']['type'] = 'taxonomy_term_dge_category';
   $handler->display->display_options['fields']['field_success_category']['delta_offset'] = '0';
-  $handler->display->display_options['fields']['field_success_category']['multi_type'] = 'ul';
-  /* Field: Content: Fecha lanzamiento/realización */
+  /* Campo: Contenido: Año de creación de la empresa */
   $handler->display->display_options['fields']['field_success_launch_date']['id'] = 'field_success_launch_date';
   $handler->display->display_options['fields']['field_success_launch_date']['table'] = 'field_data_field_success_launch_date';
   $handler->display->display_options['fields']['field_success_launch_date']['field'] = 'field_success_launch_date';
+  $handler->display->display_options['fields']['field_success_launch_date']['label'] = 'Año creación de empresa';
   $handler->display->display_options['fields']['field_success_launch_date']['element_type'] = 'span';
   $handler->display->display_options['fields']['field_success_launch_date']['element_label_type'] = 'strong';
   $handler->display->display_options['fields']['field_success_launch_date']['element_wrapper_type'] = 'p';
   $handler->display->display_options['fields']['field_success_launch_date']['element_wrapper_class'] = 'dge-detail__date';
   $handler->display->display_options['fields']['field_success_launch_date']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['field_success_launch_date']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'dge_year',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
     'show_remaining_days' => 0,
   );
-  /* Field: Content: URL acceso información */
+  /* Campo: Contenido: Página web de la empresa */
   $handler->display->display_options['fields']['field_success_url']['id'] = 'field_success_url';
   $handler->display->display_options['fields']['field_success_url']['table'] = 'field_data_field_success_url';
   $handler->display->display_options['fields']['field_success_url']['field'] = 'field_success_url';
+  $handler->display->display_options['fields']['field_success_url']['label'] = 'URL acceso información';
   $handler->display->display_options['fields']['field_success_url']['element_type'] = 'span';
   $handler->display->display_options['fields']['field_success_url']['element_label_type'] = 'strong';
   $handler->display->display_options['fields']['field_success_url']['element_wrapper_type'] = 'p';
   $handler->display->display_options['fields']['field_success_url']['element_wrapper_class'] = 'dge-detail__url';
   $handler->display->display_options['fields']['field_success_url']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['field_success_url']['click_sort_column'] = 'url';
-  /* Field: Content: URL al catálogo/s origen de los datos */
+  /* Campo: Contenido: URL al catálogo/s origen de los datos */
   $handler->display->display_options['fields']['field_success_catalog']['id'] = 'field_success_catalog';
   $handler->display->display_options['fields']['field_success_catalog']['table'] = 'field_data_field_success_catalog';
   $handler->display->display_options['fields']['field_success_catalog']['field'] = 'field_success_catalog';
@@ -315,74 +359,76 @@ function dgef_success_views_default_views() {
   $handler->display->display_options['fields']['field_success_catalog']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['field_success_catalog']['click_sort_column'] = 'url';
   $handler->display->display_options['fields']['field_success_catalog']['delta_offset'] = '0';
-  /* Field: Content: Nombre y Apellidos */
+  /* Campo: Contenido: Nombre y Apellidos */
   $handler->display->display_options['fields']['field_sender_name']['id'] = 'field_sender_name';
   $handler->display->display_options['fields']['field_sender_name']['table'] = 'field_data_field_sender_name';
   $handler->display->display_options['fields']['field_sender_name']['field'] = 'field_sender_name';
+  $handler->display->display_options['fields']['field_sender_name']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_sender_name']['element_type'] = 'span';
   $handler->display->display_options['fields']['field_sender_name']['element_label_type'] = 'strong';
   $handler->display->display_options['fields']['field_sender_name']['element_wrapper_type'] = 'p';
   $handler->display->display_options['fields']['field_sender_name']['element_wrapper_class'] = 'dge-detail__url';
   $handler->display->display_options['fields']['field_sender_name']['element_default_classes'] = FALSE;
-  /* Field: Content: Empresa/Organismo/Profesional */
-  $handler->display->display_options['fields']['field_success_company']['id'] = 'field_success_company';
-  $handler->display->display_options['fields']['field_success_company']['table'] = 'field_data_field_success_company';
-  $handler->display->display_options['fields']['field_success_company']['field'] = 'field_success_company';
-  $handler->display->display_options['fields']['field_success_company']['element_type'] = 'span';
-  $handler->display->display_options['fields']['field_success_company']['element_label_type'] = 'strong';
-  $handler->display->display_options['fields']['field_success_company']['element_wrapper_type'] = 'p';
-  $handler->display->display_options['fields']['field_success_company']['element_wrapper_class'] = 'dge-detail__url';
-  $handler->display->display_options['fields']['field_success_company']['element_default_classes'] = FALSE;
-  /* Field: Content: Teléfono */
-  $handler->display->display_options['fields']['field_sender_phone']['id'] = 'field_sender_phone';
-  $handler->display->display_options['fields']['field_sender_phone']['table'] = 'field_data_field_sender_phone';
-  $handler->display->display_options['fields']['field_sender_phone']['field'] = 'field_sender_phone';
-  $handler->display->display_options['fields']['field_sender_phone']['element_type'] = 'span';
-  $handler->display->display_options['fields']['field_sender_phone']['element_label_type'] = 'strong';
-  $handler->display->display_options['fields']['field_sender_phone']['element_wrapper_type'] = 'p';
-  $handler->display->display_options['fields']['field_sender_phone']['element_wrapper_class'] = 'dge-detail__url';
-  $handler->display->display_options['fields']['field_sender_phone']['element_default_classes'] = FALSE;
-  /* Field: Content: Aplicación relacionada */
+  /* Campo: Contenido: Deseo que mi nombre y organización aparezcan en el portal */
+  $handler->display->display_options['fields']['field_sender_show_data']['id'] = 'field_sender_show_data';
+  $handler->display->display_options['fields']['field_sender_show_data']['table'] = 'field_data_field_sender_show_data';
+  $handler->display->display_options['fields']['field_sender_show_data']['field'] = 'field_sender_show_data';
+  $handler->display->display_options['fields']['field_sender_show_data']['label'] = '';
+  $handler->display->display_options['fields']['field_sender_show_data']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_sender_show_data']['alter']['text'] = '[field_sender_show_data]|||[field_sender_name]';
+  $handler->display->display_options['fields']['field_sender_show_data']['element_type'] = '0';
+  $handler->display->display_options['fields']['field_sender_show_data']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['field_sender_show_data']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_sender_show_data']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['field_sender_show_data']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_sender_show_data']['empty_zero'] = TRUE;
+  $handler->display->display_options['fields']['field_sender_show_data']['type'] = 'list_key';
+  /* Campo: Contenido: Aplicación relacionada */
   $handler->display->display_options['fields']['field_success_app']['id'] = 'field_success_app';
   $handler->display->display_options['fields']['field_success_app']['table'] = 'field_data_field_success_app';
   $handler->display->display_options['fields']['field_success_app']['field'] = 'field_success_app';
+  $handler->display->display_options['fields']['field_success_app']['label'] = '';
   $handler->display->display_options['fields']['field_success_app']['element_type'] = 'span';
   $handler->display->display_options['fields']['field_success_app']['element_label_type'] = 'strong';
+  $handler->display->display_options['fields']['field_success_app']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_success_app']['element_wrapper_type'] = 'p';
   $handler->display->display_options['fields']['field_success_app']['element_wrapper_class'] = 'dge-detail__url';
   $handler->display->display_options['fields']['field_success_app']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['field_success_app']['settings'] = array(
+    'bypass_access' => 0,
     'link' => 0,
   );
-  /* Field: Content: Ámbito geográfico de aplicación */
+  /* Campo: Broken/missing handler */
   $handler->display->display_options['fields']['field_success_ambito']['id'] = 'field_success_ambito';
   $handler->display->display_options['fields']['field_success_ambito']['table'] = 'field_data_field_success_ambito';
   $handler->display->display_options['fields']['field_success_ambito']['field'] = 'field_success_ambito';
+  $handler->display->display_options['fields']['field_success_ambito']['label'] = 'Ámbito geográfico de aplicación';
   $handler->display->display_options['fields']['field_success_ambito']['element_type'] = 'span';
   $handler->display->display_options['fields']['field_success_ambito']['element_label_type'] = 'strong';
   $handler->display->display_options['fields']['field_success_ambito']['element_wrapper_type'] = 'p';
   $handler->display->display_options['fields']['field_success_ambito']['element_wrapper_class'] = 'dge-detail__url';
   $handler->display->display_options['fields']['field_success_ambito']['element_default_classes'] = FALSE;
-  /* Field: Content: País */
+  /* Campo: Broken/missing handler */
   $handler->display->display_options['fields']['field_success_country']['id'] = 'field_success_country';
   $handler->display->display_options['fields']['field_success_country']['table'] = 'field_data_field_success_country';
   $handler->display->display_options['fields']['field_success_country']['field'] = 'field_success_country';
+  $handler->display->display_options['fields']['field_success_country']['label'] = 'País';
   $handler->display->display_options['fields']['field_success_country']['element_type'] = 'span';
   $handler->display->display_options['fields']['field_success_country']['element_label_type'] = 'strong';
   $handler->display->display_options['fields']['field_success_country']['element_wrapper_type'] = 'p';
   $handler->display->display_options['fields']['field_success_country']['element_wrapper_class'] = 'dge-detail__url';
   $handler->display->display_options['fields']['field_success_country']['element_default_classes'] = FALSE;
-  /* Field: Content: CCAA */
+  /* Campo: Broken/missing handler */
   $handler->display->display_options['fields']['field_success_ccaa']['id'] = 'field_success_ccaa';
   $handler->display->display_options['fields']['field_success_ccaa']['table'] = 'field_data_field_success_ccaa';
   $handler->display->display_options['fields']['field_success_ccaa']['field'] = 'field_success_ccaa';
+  $handler->display->display_options['fields']['field_success_ccaa']['label'] = 'CCAA';
   $handler->display->display_options['fields']['field_success_ccaa']['element_type'] = 'span';
   $handler->display->display_options['fields']['field_success_ccaa']['element_label_type'] = 'strong';
   $handler->display->display_options['fields']['field_success_ccaa']['element_wrapper_type'] = 'p';
   $handler->display->display_options['fields']['field_success_ccaa']['element_wrapper_class'] = 'dge-detail__url';
   $handler->display->display_options['fields']['field_success_ccaa']['element_default_classes'] = FALSE;
-  $handler->display->display_options['fields']['field_success_ccaa']['type'] = 'taxonomy_term_reference_plain';
-  /* Field: Content: Imagen/logo */
+  /* Campo: Contenido: Imagen/logo */
   $handler->display->display_options['fields']['field_success_image']['id'] = 'field_success_image';
   $handler->display->display_options['fields']['field_success_image']['table'] = 'field_data_field_success_image';
   $handler->display->display_options['fields']['field_success_image']['field'] = 'field_success_image';
@@ -398,18 +444,20 @@ function dgef_success_views_default_views() {
     'image_style' => 'success_image',
     'image_link' => '',
   );
-  /* Field: Content: Descripción */
+  /* Campo: Contenido: Descripción */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
+  $handler->display->display_options['fields']['body']['label'] = '';
   $handler->display->display_options['fields']['body']['element_type'] = 'div';
   $handler->display->display_options['fields']['body']['element_class'] = 'dge-detail__desc-cont';
   $handler->display->display_options['fields']['body']['element_label_type'] = 'h2';
   $handler->display->display_options['fields']['body']['element_label_class'] = 'dge-detail__desc-title';
+  $handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['body']['element_wrapper_type'] = 'div';
-  $handler->display->display_options['fields']['body']['element_wrapper_class'] = 'dge-detail__desc';
+  $handler->display->display_options['fields']['body']['element_wrapper_class'] = 'dge-detail__desc clearfix';
   $handler->display->display_options['fields']['body']['element_default_classes'] = FALSE;
-  /* Field: Content: Etiquetas */
+  /* Campo: Contenido: Etiquetas */
   $handler->display->display_options['fields']['field_success_tags']['id'] = 'field_success_tags';
   $handler->display->display_options['fields']['field_success_tags']['table'] = 'field_data_field_success_tags';
   $handler->display->display_options['fields']['field_success_tags']['field'] = 'field_success_tags';
@@ -422,37 +470,382 @@ function dgef_success_views_default_views() {
   $handler->display->display_options['fields']['field_success_tags']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['field_success_tags']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_success_tags']['multi_type'] = 'ul';
-  /* Sort criterion: Content: Post date */
+  /* Campo: Contenido: Clave del éxito */
+  $handler->display->display_options['fields']['field_success_key']['id'] = 'field_success_key';
+  $handler->display->display_options['fields']['field_success_key']['table'] = 'field_data_field_success_key';
+  $handler->display->display_options['fields']['field_success_key']['field'] = 'field_success_key';
+  $handler->display->display_options['fields']['field_success_key']['label'] = '';
+  $handler->display->display_options['fields']['field_success_key']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Clientes */
+  $handler->display->display_options['fields']['field_clients']['id'] = 'field_clients';
+  $handler->display->display_options['fields']['field_clients']['table'] = 'field_data_field_clients';
+  $handler->display->display_options['fields']['field_clients']['field'] = 'field_clients';
+  $handler->display->display_options['fields']['field_clients']['label'] = '';
+  $handler->display->display_options['fields']['field_clients']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Datos utilizados */
+  $handler->display->display_options['fields']['field_used_data']['id'] = 'field_used_data';
+  $handler->display->display_options['fields']['field_used_data']['table'] = 'field_data_field_used_data';
+  $handler->display->display_options['fields']['field_used_data']['field'] = 'field_used_data';
+  $handler->display->display_options['fields']['field_used_data']['label'] = '';
+  $handler->display->display_options['fields']['field_used_data']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Tamaño de la empresa */
+  $handler->display->display_options['fields']['field_company_size']['id'] = 'field_company_size';
+  $handler->display->display_options['fields']['field_company_size']['table'] = 'field_data_field_company_size';
+  $handler->display->display_options['fields']['field_company_size']['field'] = 'field_company_size';
+  $handler->display->display_options['fields']['field_company_size']['label'] = '';
+  $handler->display->display_options['fields']['field_company_size']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_company_size']['type'] = 'text_default';
+  /* Campo: Contenido: Oficinas en */
+  $handler->display->display_options['fields']['field_offices']['id'] = 'field_offices';
+  $handler->display->display_options['fields']['field_offices']['table'] = 'field_data_field_offices';
+  $handler->display->display_options['fields']['field_offices']['field'] = 'field_offices';
+  $handler->display->display_options['fields']['field_offices']['label'] = '';
+  $handler->display->display_options['fields']['field_offices']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Año de creación de la empresa */
+  $handler->display->display_options['fields']['field_success_launch_date_1']['id'] = 'field_success_launch_date_1';
+  $handler->display->display_options['fields']['field_success_launch_date_1']['table'] = 'field_data_field_success_launch_date';
+  $handler->display->display_options['fields']['field_success_launch_date_1']['field'] = 'field_success_launch_date';
+  $handler->display->display_options['fields']['field_success_launch_date_1']['label'] = '';
+  $handler->display->display_options['fields']['field_success_launch_date_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_success_launch_date_1']['settings'] = array(
+    'format_type' => 'dge_year',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_remaining_days' => 0,
+  );
+  /* Campo: Contenido: Grado de internacionalización */
+  $handler->display->display_options['fields']['field_internationality_grade']['id'] = 'field_internationality_grade';
+  $handler->display->display_options['fields']['field_internationality_grade']['table'] = 'field_data_field_internationality_grade';
+  $handler->display->display_options['fields']['field_internationality_grade']['field'] = 'field_internationality_grade';
+  $handler->display->display_options['fields']['field_internationality_grade']['label'] = '';
+  $handler->display->display_options['fields']['field_internationality_grade']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Más información */
+  $handler->display->display_options['fields']['field_more_information']['id'] = 'field_more_information';
+  $handler->display->display_options['fields']['field_more_information']['table'] = 'field_data_field_more_information';
+  $handler->display->display_options['fields']['field_more_information']['field'] = 'field_more_information';
+  $handler->display->display_options['fields']['field_more_information']['label'] = '';
+  $handler->display->display_options['fields']['field_more_information']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Principales productos y servicios */
+  $handler->display->display_options['fields']['field_products_services']['id'] = 'field_products_services';
+  $handler->display->display_options['fields']['field_products_services']['table'] = 'field_data_field_products_services';
+  $handler->display->display_options['fields']['field_products_services']['field'] = 'field_products_services';
+  $handler->display->display_options['fields']['field_products_services']['label'] = '';
+  $handler->display->display_options['fields']['field_products_services']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Planes de futuro */
+  $handler->display->display_options['fields']['field_future_plans']['id'] = 'field_future_plans';
+  $handler->display->display_options['fields']['field_future_plans']['table'] = 'field_data_field_future_plans';
+  $handler->display->display_options['fields']['field_future_plans']['field'] = 'field_future_plans';
+  $handler->display->display_options['fields']['field_future_plans']['label'] = '';
+  $handler->display->display_options['fields']['field_future_plans']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Modelo de comercialización */
+  $handler->display->display_options['fields']['field_marketing_model']['id'] = 'field_marketing_model';
+  $handler->display->display_options['fields']['field_marketing_model']['table'] = 'field_data_field_marketing_model';
+  $handler->display->display_options['fields']['field_marketing_model']['field'] = 'field_marketing_model';
+  $handler->display->display_options['fields']['field_marketing_model']['label'] = '';
+  $handler->display->display_options['fields']['field_marketing_model']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Crecimiento */
+  $handler->display->display_options['fields']['field_success_increase']['id'] = 'field_success_increase';
+  $handler->display->display_options['fields']['field_success_increase']['table'] = 'field_data_field_success_increase';
+  $handler->display->display_options['fields']['field_success_increase']['field'] = 'field_success_increase';
+  $handler->display->display_options['fields']['field_success_increase']['label'] = '';
+  $handler->display->display_options['fields']['field_success_increase']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Página web de la empresa */
+  $handler->display->display_options['fields']['field_success_url_1']['id'] = 'field_success_url_1';
+  $handler->display->display_options['fields']['field_success_url_1']['table'] = 'field_data_field_success_url';
+  $handler->display->display_options['fields']['field_success_url_1']['field'] = 'field_success_url';
+  $handler->display->display_options['fields']['field_success_url_1']['label'] = '';
+  $handler->display->display_options['fields']['field_success_url_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_success_url_1']['click_sort_column'] = 'url';
+  /* Sort criterion: Contenido: Fecha de publicación */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Contextual filter: Content: Nid */
+  /* Contextual filter: Contenido: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
   $handler->display->display_options['arguments']['nid']['field'] = 'nid';
   $handler->display->display_options['arguments']['nid']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['nid']['exception']['title'] = 'Todo';
   $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
-  /* Filter criterion: Content: Publicado */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Tipo */
+  /* Filter criterion: Contenido: Idioma */
+  $handler->display->display_options['filters']['language']['id'] = 'language';
+  $handler->display->display_options['filters']['language']['table'] = 'node';
+  $handler->display->display_options['filters']['language']['field'] = 'language';
+  $handler->display->display_options['filters']['language']['value'] = array(
+    '***CURRENT_LANGUAGE***' => '***CURRENT_LANGUAGE***',
+  );
+  $handler->display->display_options['filters']['language']['group'] = 1;
+  /* Filter criterion: Contenido: Tipo */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'success' => 'success',
   );
+  $handler->display->display_options['filters']['type']['group'] = 1;
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Campo: Contenido: Service links */
+  $handler->display->display_options['fields']['service_links']['id'] = 'service_links';
+  $handler->display->display_options['fields']['service_links']['table'] = 'node';
+  $handler->display->display_options['fields']['service_links']['field'] = 'service_links';
+  $handler->display->display_options['fields']['service_links']['label'] = 'Compartir';
+  $handler->display->display_options['fields']['service_links']['element_type'] = 'div';
+  $handler->display->display_options['fields']['service_links']['element_class'] = 'dge-detail__share-cont';
+  $handler->display->display_options['fields']['service_links']['element_label_type'] = 'strong';
+  $handler->display->display_options['fields']['service_links']['element_label_class'] = 'dge-detail__share-title';
+  $handler->display->display_options['fields']['service_links']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['service_links']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['service_links']['element_wrapper_class'] = 'dge-detail__share';
+  $handler->display->display_options['fields']['service_links']['element_default_classes'] = FALSE;
+  /* Campo: Contenido: Título */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_type'] = '0';
+  $handler->display->display_options['fields']['title']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_wrapper_type'] = 'h1';
+  $handler->display->display_options['fields']['title']['element_wrapper_class'] = 'dge-detail__title';
+  $handler->display->display_options['fields']['title']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Campo: Contenido: Categoría */
+  $handler->display->display_options['fields']['field_success_category']['id'] = 'field_success_category';
+  $handler->display->display_options['fields']['field_success_category']['table'] = 'field_data_field_success_category';
+  $handler->display->display_options['fields']['field_success_category']['field'] = 'field_success_category';
+  $handler->display->display_options['fields']['field_success_category']['label'] = '';
+  $handler->display->display_options['fields']['field_success_category']['alter']['path'] = 'taxonomy/term/[field_success_category-tid]';
+  $handler->display->display_options['fields']['field_success_category']['alter']['link_class'] = '[field_success_category]';
+  $handler->display->display_options['fields']['field_success_category']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_success_category']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_success_category']['type'] = 'taxonomy_term_dge_category';
+  $handler->display->display_options['fields']['field_success_category']['delta_offset'] = '0';
+  /* Campo: Contenido: Año de creación de la empresa */
+  $handler->display->display_options['fields']['field_success_launch_date']['id'] = 'field_success_launch_date';
+  $handler->display->display_options['fields']['field_success_launch_date']['table'] = 'field_data_field_success_launch_date';
+  $handler->display->display_options['fields']['field_success_launch_date']['field'] = 'field_success_launch_date';
+  $handler->display->display_options['fields']['field_success_launch_date']['label'] = 'Año creación de empresa';
+  $handler->display->display_options['fields']['field_success_launch_date']['element_type'] = 'span';
+  $handler->display->display_options['fields']['field_success_launch_date']['element_label_type'] = 'strong';
+  $handler->display->display_options['fields']['field_success_launch_date']['element_wrapper_type'] = 'p';
+  $handler->display->display_options['fields']['field_success_launch_date']['element_wrapper_class'] = 'dge-detail__date';
+  $handler->display->display_options['fields']['field_success_launch_date']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_success_launch_date']['settings'] = array(
+    'format_type' => 'dge_year',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_remaining_days' => 0,
+  );
+  /* Campo: Contenido: Página web de la empresa */
+  $handler->display->display_options['fields']['field_success_url']['id'] = 'field_success_url';
+  $handler->display->display_options['fields']['field_success_url']['table'] = 'field_data_field_success_url';
+  $handler->display->display_options['fields']['field_success_url']['field'] = 'field_success_url';
+  $handler->display->display_options['fields']['field_success_url']['label'] = 'URL acceso información';
+  $handler->display->display_options['fields']['field_success_url']['element_type'] = 'span';
+  $handler->display->display_options['fields']['field_success_url']['element_label_type'] = 'strong';
+  $handler->display->display_options['fields']['field_success_url']['element_wrapper_type'] = 'p';
+  $handler->display->display_options['fields']['field_success_url']['element_wrapper_class'] = 'dge-detail__url';
+  $handler->display->display_options['fields']['field_success_url']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_success_url']['click_sort_column'] = 'url';
+  /* Campo: Contenido: URL al catálogo/s origen de los datos */
+  $handler->display->display_options['fields']['field_success_catalog']['id'] = 'field_success_catalog';
+  $handler->display->display_options['fields']['field_success_catalog']['table'] = 'field_data_field_success_catalog';
+  $handler->display->display_options['fields']['field_success_catalog']['field'] = 'field_success_catalog';
+  $handler->display->display_options['fields']['field_success_catalog']['element_type'] = 'span';
+  $handler->display->display_options['fields']['field_success_catalog']['element_label_type'] = 'strong';
+  $handler->display->display_options['fields']['field_success_catalog']['element_wrapper_type'] = 'p';
+  $handler->display->display_options['fields']['field_success_catalog']['element_wrapper_class'] = 'dge-detail__url';
+  $handler->display->display_options['fields']['field_success_catalog']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_success_catalog']['click_sort_column'] = 'url';
+  $handler->display->display_options['fields']['field_success_catalog']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_success_catalog']['multi_type'] = 'ul';
+  /* Campo: Contenido: Nombre y Apellidos */
+  $handler->display->display_options['fields']['field_sender_name']['id'] = 'field_sender_name';
+  $handler->display->display_options['fields']['field_sender_name']['table'] = 'field_data_field_sender_name';
+  $handler->display->display_options['fields']['field_sender_name']['field'] = 'field_sender_name';
+  $handler->display->display_options['fields']['field_sender_name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_sender_name']['element_type'] = 'span';
+  $handler->display->display_options['fields']['field_sender_name']['element_label_type'] = 'strong';
+  $handler->display->display_options['fields']['field_sender_name']['element_wrapper_type'] = 'p';
+  $handler->display->display_options['fields']['field_sender_name']['element_wrapper_class'] = 'dge-detail__url';
+  $handler->display->display_options['fields']['field_sender_name']['element_default_classes'] = FALSE;
+  /* Campo: Contenido: Deseo que mi nombre y organización aparezcan en el portal */
+  $handler->display->display_options['fields']['field_sender_show_data']['id'] = 'field_sender_show_data';
+  $handler->display->display_options['fields']['field_sender_show_data']['table'] = 'field_data_field_sender_show_data';
+  $handler->display->display_options['fields']['field_sender_show_data']['field'] = 'field_sender_show_data';
+  $handler->display->display_options['fields']['field_sender_show_data']['label'] = '';
+  $handler->display->display_options['fields']['field_sender_show_data']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_sender_show_data']['alter']['text'] = '[field_sender_show_data]|||[field_sender_name]';
+  $handler->display->display_options['fields']['field_sender_show_data']['element_type'] = '0';
+  $handler->display->display_options['fields']['field_sender_show_data']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['field_sender_show_data']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_sender_show_data']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['field_sender_show_data']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_sender_show_data']['empty_zero'] = TRUE;
+  $handler->display->display_options['fields']['field_sender_show_data']['type'] = 'list_key';
+  /* Campo: Contenido: Aplicación relacionada */
+  $handler->display->display_options['fields']['field_success_app']['id'] = 'field_success_app';
+  $handler->display->display_options['fields']['field_success_app']['table'] = 'field_data_field_success_app';
+  $handler->display->display_options['fields']['field_success_app']['field'] = 'field_success_app';
+  $handler->display->display_options['fields']['field_success_app']['label'] = '';
+  $handler->display->display_options['fields']['field_success_app']['element_type'] = 'span';
+  $handler->display->display_options['fields']['field_success_app']['element_label_type'] = 'strong';
+  $handler->display->display_options['fields']['field_success_app']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_success_app']['element_wrapper_type'] = 'p';
+  $handler->display->display_options['fields']['field_success_app']['element_wrapper_class'] = 'dge-detail__url';
+  $handler->display->display_options['fields']['field_success_app']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_success_app']['settings'] = array(
+    'bypass_access' => 0,
+    'link' => 1,
+  );
+  /* Campo: Contenido: Imagen/logo */
+  $handler->display->display_options['fields']['field_success_image']['id'] = 'field_success_image';
+  $handler->display->display_options['fields']['field_success_image']['table'] = 'field_data_field_success_image';
+  $handler->display->display_options['fields']['field_success_image']['field'] = 'field_success_image';
+  $handler->display->display_options['fields']['field_success_image']['label'] = '';
+  $handler->display->display_options['fields']['field_success_image']['element_type'] = '0';
+  $handler->display->display_options['fields']['field_success_image']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['field_success_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_success_image']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['field_success_image']['element_wrapper_class'] = 'dge-detail__img';
+  $handler->display->display_options['fields']['field_success_image']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_success_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_success_image']['settings'] = array(
+    'image_style' => 'success_image',
+    'image_link' => '',
+  );
+  /* Campo: Contenido: Descripción */
+  $handler->display->display_options['fields']['body']['id'] = 'body';
+  $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
+  $handler->display->display_options['fields']['body']['field'] = 'body';
+  $handler->display->display_options['fields']['body']['label'] = '';
+  $handler->display->display_options['fields']['body']['element_type'] = 'div';
+  $handler->display->display_options['fields']['body']['element_class'] = 'dge-detail__desc-cont';
+  $handler->display->display_options['fields']['body']['element_label_type'] = 'h2';
+  $handler->display->display_options['fields']['body']['element_label_class'] = 'dge-detail__desc-title';
+  $handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['body']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['body']['element_wrapper_class'] = 'dge-detail__desc clearfix';
+  $handler->display->display_options['fields']['body']['element_default_classes'] = FALSE;
+  /* Campo: Contenido: Etiquetas */
+  $handler->display->display_options['fields']['field_success_tags']['id'] = 'field_success_tags';
+  $handler->display->display_options['fields']['field_success_tags']['table'] = 'field_data_field_success_tags';
+  $handler->display->display_options['fields']['field_success_tags']['field'] = 'field_success_tags';
+  $handler->display->display_options['fields']['field_success_tags']['label'] = '';
+  $handler->display->display_options['fields']['field_success_tags']['element_type'] = '0';
+  $handler->display->display_options['fields']['field_success_tags']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['field_success_tags']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_success_tags']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['field_success_tags']['element_wrapper_class'] = 'dge-detail__tags';
+  $handler->display->display_options['fields']['field_success_tags']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_success_tags']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_success_tags']['multi_type'] = 'ul';
+  /* Campo: Contenido: Clave del éxito */
+  $handler->display->display_options['fields']['field_success_key']['id'] = 'field_success_key';
+  $handler->display->display_options['fields']['field_success_key']['table'] = 'field_data_field_success_key';
+  $handler->display->display_options['fields']['field_success_key']['field'] = 'field_success_key';
+  $handler->display->display_options['fields']['field_success_key']['label'] = '';
+  $handler->display->display_options['fields']['field_success_key']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Clientes */
+  $handler->display->display_options['fields']['field_clients']['id'] = 'field_clients';
+  $handler->display->display_options['fields']['field_clients']['table'] = 'field_data_field_clients';
+  $handler->display->display_options['fields']['field_clients']['field'] = 'field_clients';
+  $handler->display->display_options['fields']['field_clients']['label'] = '';
+  $handler->display->display_options['fields']['field_clients']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Datos utilizados */
+  $handler->display->display_options['fields']['field_used_data']['id'] = 'field_used_data';
+  $handler->display->display_options['fields']['field_used_data']['table'] = 'field_data_field_used_data';
+  $handler->display->display_options['fields']['field_used_data']['field'] = 'field_used_data';
+  $handler->display->display_options['fields']['field_used_data']['label'] = '';
+  $handler->display->display_options['fields']['field_used_data']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Tamaño de la empresa */
+  $handler->display->display_options['fields']['field_company_size']['id'] = 'field_company_size';
+  $handler->display->display_options['fields']['field_company_size']['table'] = 'field_data_field_company_size';
+  $handler->display->display_options['fields']['field_company_size']['field'] = 'field_company_size';
+  $handler->display->display_options['fields']['field_company_size']['label'] = '';
+  $handler->display->display_options['fields']['field_company_size']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_company_size']['type'] = 'i18n_list_default';
+  /* Campo: Contenido: Oficinas en */
+  $handler->display->display_options['fields']['field_offices']['id'] = 'field_offices';
+  $handler->display->display_options['fields']['field_offices']['table'] = 'field_data_field_offices';
+  $handler->display->display_options['fields']['field_offices']['field'] = 'field_offices';
+  $handler->display->display_options['fields']['field_offices']['label'] = '';
+  $handler->display->display_options['fields']['field_offices']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Año de creación de la empresa */
+  $handler->display->display_options['fields']['field_success_launch_date_1']['id'] = 'field_success_launch_date_1';
+  $handler->display->display_options['fields']['field_success_launch_date_1']['table'] = 'field_data_field_success_launch_date';
+  $handler->display->display_options['fields']['field_success_launch_date_1']['field'] = 'field_success_launch_date';
+  $handler->display->display_options['fields']['field_success_launch_date_1']['label'] = '';
+  $handler->display->display_options['fields']['field_success_launch_date_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_success_launch_date_1']['settings'] = array(
+    'format_type' => 'dge_year',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_remaining_days' => 0,
+  );
+  /* Campo: Contenido: Grado de internacionalización */
+  $handler->display->display_options['fields']['field_internationality_grade']['id'] = 'field_internationality_grade';
+  $handler->display->display_options['fields']['field_internationality_grade']['table'] = 'field_data_field_internationality_grade';
+  $handler->display->display_options['fields']['field_internationality_grade']['field'] = 'field_internationality_grade';
+  $handler->display->display_options['fields']['field_internationality_grade']['label'] = '';
+  $handler->display->display_options['fields']['field_internationality_grade']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Más información */
+  $handler->display->display_options['fields']['field_more_information']['id'] = 'field_more_information';
+  $handler->display->display_options['fields']['field_more_information']['table'] = 'field_data_field_more_information';
+  $handler->display->display_options['fields']['field_more_information']['field'] = 'field_more_information';
+  $handler->display->display_options['fields']['field_more_information']['label'] = '';
+  $handler->display->display_options['fields']['field_more_information']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Principales productos y servicios */
+  $handler->display->display_options['fields']['field_products_services']['id'] = 'field_products_services';
+  $handler->display->display_options['fields']['field_products_services']['table'] = 'field_data_field_products_services';
+  $handler->display->display_options['fields']['field_products_services']['field'] = 'field_products_services';
+  $handler->display->display_options['fields']['field_products_services']['label'] = '';
+  $handler->display->display_options['fields']['field_products_services']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Planes de futuro */
+  $handler->display->display_options['fields']['field_future_plans']['id'] = 'field_future_plans';
+  $handler->display->display_options['fields']['field_future_plans']['table'] = 'field_data_field_future_plans';
+  $handler->display->display_options['fields']['field_future_plans']['field'] = 'field_future_plans';
+  $handler->display->display_options['fields']['field_future_plans']['label'] = '';
+  $handler->display->display_options['fields']['field_future_plans']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Modelo de comercialización */
+  $handler->display->display_options['fields']['field_marketing_model']['id'] = 'field_marketing_model';
+  $handler->display->display_options['fields']['field_marketing_model']['table'] = 'field_data_field_marketing_model';
+  $handler->display->display_options['fields']['field_marketing_model']['field'] = 'field_marketing_model';
+  $handler->display->display_options['fields']['field_marketing_model']['label'] = '';
+  $handler->display->display_options['fields']['field_marketing_model']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Crecimiento */
+  $handler->display->display_options['fields']['field_success_increase']['id'] = 'field_success_increase';
+  $handler->display->display_options['fields']['field_success_increase']['table'] = 'field_data_field_success_increase';
+  $handler->display->display_options['fields']['field_success_increase']['field'] = 'field_success_increase';
+  $handler->display->display_options['fields']['field_success_increase']['label'] = '';
+  $handler->display->display_options['fields']['field_success_increase']['element_label_colon'] = FALSE;
+  /* Campo: Contenido: Página web de la empresa */
+  $handler->display->display_options['fields']['field_success_url_1']['id'] = 'field_success_url_1';
+  $handler->display->display_options['fields']['field_success_url_1']['table'] = 'field_data_field_success_url';
+  $handler->display->display_options['fields']['field_success_url_1']['field'] = 'field_success_url';
+  $handler->display->display_options['fields']['field_success_url_1']['label'] = '';
+  $handler->display->display_options['fields']['field_success_url_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_success_url_1']['click_sort_column'] = 'url';
+  /* Campo: Contenido: Sede central */
+  $handler->display->display_options['fields']['field_headquarters']['id'] = 'field_headquarters';
+  $handler->display->display_options['fields']['field_headquarters']['table'] = 'field_data_field_headquarters';
+  $handler->display->display_options['fields']['field_headquarters']['field'] = 'field_headquarters';
   $handler->display->display_options['argument_input'] = array(
     'nid' => array(
       'type' => 'context',
@@ -481,20 +874,24 @@ function dgef_success_views_default_views() {
   $handler->display->display_options['use_more_text'] = 'más';
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'search_api_views_cache';
-  $handler->display->display_options['cache']['results_lifespan'] = '3600';
+  $handler->display->display_options['cache']['results_lifespan'] = '1800';
   $handler->display->display_options['cache']['results_lifespan_custom'] = '0';
-  $handler->display->display_options['cache']['output_lifespan'] = '3600';
+  $handler->display->display_options['cache']['output_lifespan'] = '1800';
   $handler->display->display_options['cache']['output_lifespan_custom'] = '0';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Aplicar';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Buscar';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Reiniciar';
-  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Ordenar por';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Ordenar por:';
   $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_label'] = 'Elementos por página';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all_label'] = '- Todo -';
   $handler->display->display_options['pager']['options']['expose']['offset_label'] = 'Desplazamiento';
-  $handler->display->display_options['pager']['options']['tags']['first'] = '« primero';
+  $handler->display->display_options['pager']['options']['tags']['first'] = '« primera';
   $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ anterior';
   $handler->display->display_options['pager']['options']['tags']['next'] = 'siguiente ›';
   $handler->display->display_options['pager']['options']['tags']['last'] = 'última »';
@@ -507,27 +904,27 @@ function dgef_success_views_default_views() {
   $handler->display->display_options['empty']['area_text_custom']['field'] = 'area_text_custom';
   $handler->display->display_options['empty']['area_text_custom']['empty'] = TRUE;
   $handler->display->display_options['empty']['area_text_custom']['content'] = 'No hay resultados';
-  /* Field: Indexed Node: Título */
+  /* Campo: Indexed Contenido: Título */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_success_index';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
-  /* Filter criterion: Indexed Node: Item language */
+  /* Filter criterion: Indexed Contenido: Item language */
   $handler->display->display_options['filters']['search_api_language']['id'] = 'search_api_language';
   $handler->display->display_options['filters']['search_api_language']['table'] = 'search_api_index_success_index';
   $handler->display->display_options['filters']['search_api_language']['field'] = 'search_api_language';
   $handler->display->display_options['filters']['search_api_language']['value'] = array(
     'current' => 'current',
   );
-  /* Filter criterion: Search: Fulltext search */
+  /* Filter criterion: Buscar: Fulltext search */
   $handler->display->display_options['filters']['search_api_views_fulltext']['id'] = 'search_api_views_fulltext';
   $handler->display->display_options['filters']['search_api_views_fulltext']['table'] = 'search_api_index_success_index';
   $handler->display->display_options['filters']['search_api_views_fulltext']['field'] = 'search_api_views_fulltext';
   $handler->display->display_options['filters']['search_api_views_fulltext']['exposed'] = TRUE;
   $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator_id'] = 'search_api_views_fulltext_op';
-  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['label'] = 'Search';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['label'] = 'Buscar';
   $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator'] = 'search_api_views_fulltext_op';
   $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['identifier'] = 'search_api_views_fulltext';
   $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['remember_roles'] = array(
@@ -570,7 +967,19 @@ function dgef_success_views_default_views() {
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Indexed Node: Imagen/logo */
+  /* Campo: Indexed Contenido: Título */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'search_api_index_success_index';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['element_type'] = '0';
+  $handler->display->display_options['fields']['title']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_wrapper_type'] = 'strong';
+  $handler->display->display_options['fields']['title']['element_wrapper_class'] = 'dge-list__title';
+  $handler->display->display_options['fields']['title']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
+  /* Campo: Indexed Contenido: Imagen/logo */
   $handler->display->display_options['fields']['field_success_image']['id'] = 'field_success_image';
   $handler->display->display_options['fields']['field_success_image']['table'] = 'search_api_index_success_index';
   $handler->display->display_options['fields']['field_success_image']['field'] = 'field_success_image';
@@ -586,19 +995,7 @@ function dgef_success_views_default_views() {
     'image_style' => 'success_teaser',
     'image_link' => '',
   );
-  /* Field: Indexed Node: Título */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'search_api_index_success_index';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['element_type'] = '0';
-  $handler->display->display_options['fields']['title']['element_label_type'] = '0';
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['title']['element_wrapper_type'] = 'strong';
-  $handler->display->display_options['fields']['title']['element_wrapper_class'] = 'dge-list__title';
-  $handler->display->display_options['fields']['title']['element_default_classes'] = FALSE;
-  $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
-  /* Field: Indexed Node: Empresa/Organismo/Profesional */
+  /* Campo: Broken/missing handler */
   $handler->display->display_options['fields']['field_success_company']['id'] = 'field_success_company';
   $handler->display->display_options['fields']['field_success_company']['table'] = 'search_api_index_success_index';
   $handler->display->display_options['fields']['field_success_company']['field'] = 'field_success_company';
@@ -609,22 +1006,21 @@ function dgef_success_views_default_views() {
   $handler->display->display_options['fields']['field_success_company']['element_wrapper_type'] = 'span';
   $handler->display->display_options['fields']['field_success_company']['element_wrapper_class'] = 'dge-list__date';
   $handler->display->display_options['fields']['field_success_company']['element_default_classes'] = FALSE;
-  $handler->display->display_options['fields']['field_success_company']['type'] = 'text_plain';
-  /* Field: Indexed Node: The main body text */
+  /* Campo: Indexed Contenido: The main body text */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'search_api_index_success_index';
   $handler->display->display_options['fields']['body']['field'] = 'body';
   $handler->display->display_options['fields']['body']['label'] = '';
   $handler->display->display_options['fields']['body']['alter']['max_length'] = '255';
   $handler->display->display_options['fields']['body']['alter']['trim'] = TRUE;
-  $handler->display->display_options['fields']['body']['element_type'] = '0';
+  $handler->display->display_options['fields']['body']['element_type'] = 'p';
   $handler->display->display_options['fields']['body']['element_label_type'] = '0';
   $handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['body']['element_wrapper_type'] = 'div';
   $handler->display->display_options['fields']['body']['element_wrapper_class'] = 'dge-list__desc';
   $handler->display->display_options['fields']['body']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['body']['type'] = 'text_plain';
-  /* Field: Indexed Node: Categoría */
+  /* Campo: Indexed Contenido: Categoría */
   $handler->display->display_options['fields']['field_success_category']['id'] = 'field_success_category';
   $handler->display->display_options['fields']['field_success_category']['table'] = 'search_api_index_success_index';
   $handler->display->display_options['fields']['field_success_category']['field'] = 'field_success_category';
@@ -642,6 +1038,8 @@ function dgef_success_views_default_views() {
 
   /* Display: Feed */
   $handler = $view->new_display('feed', 'Feed', 'feed_dge');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Casos de reutilización | datos.gob.es';
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['style_plugin'] = 'rss';
   $handler->display->display_options['row_plugin'] = 'rss_fields';
@@ -655,14 +1053,14 @@ function dgef_success_views_default_views() {
     'guid_field_is_permalink' => 0,
   );
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Indexed Node: Título */
+  /* Campo: Indexed Contenido: Título */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_success_index';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_entity'] = 0;
-  /* Field: Indexed Node: The main body text */
+  /* Campo: Indexed Contenido: The main body text */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'search_api_index_success_index';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -671,7 +1069,7 @@ function dgef_success_views_default_views() {
   $handler->display->display_options['fields']['body']['alter']['trim'] = TRUE;
   $handler->display->display_options['fields']['body']['alter']['html'] = TRUE;
   $handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
-  /* Field: Indexed Node: Node ID */
+  /* Campo: Indexed Contenido: ID del nodo */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'search_api_index_success_index';
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
@@ -679,7 +1077,7 @@ function dgef_success_views_default_views() {
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['nid']['separator'] = '';
   $handler->display->display_options['fields']['nid']['link_to_entity'] = 0;
-  /* Field: Indexed Node: URL */
+  /* Campo: Indexed Contenido: URL */
   $handler->display->display_options['fields']['url']['id'] = 'url';
   $handler->display->display_options['fields']['url']['table'] = 'search_api_index_success_index';
   $handler->display->display_options['fields']['url']['field'] = 'url';
@@ -687,7 +1085,7 @@ function dgef_success_views_default_views() {
   $handler->display->display_options['fields']['url']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['url']['display_as_link'] = FALSE;
   $handler->display->display_options['fields']['url']['link_to_entity'] = 0;
-  /* Field: Indexed Node: Autor */
+  /* Campo: Indexed Contenido: Autor */
   $handler->display->display_options['fields']['author']['id'] = 'author';
   $handler->display->display_options['fields']['author']['table'] = 'search_api_index_success_index';
   $handler->display->display_options['fields']['author']['field'] = 'author';
@@ -696,7 +1094,7 @@ function dgef_success_views_default_views() {
   $handler->display->display_options['fields']['author']['link_to_entity'] = 0;
   $handler->display->display_options['fields']['author']['view_mode'] = 'full';
   $handler->display->display_options['fields']['author']['bypass_access'] = 0;
-  /* Field: Indexed Node: Date created */
+  /* Campo: Indexed Contenido: Fecha de creación */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'search_api_index_success_index';
   $handler->display->display_options['fields']['created']['field'] = 'created';
@@ -706,14 +1104,14 @@ function dgef_success_views_default_views() {
   $handler->display->display_options['fields']['created']['second_date_format'] = 'search_api_facetapi_YEAR';
   $handler->display->display_options['fields']['created']['link_to_entity'] = 0;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Indexed Node: Date created */
+  /* Sort criterion: Indexed Contenido: Fecha de creación */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'search_api_index_success_index';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Indexed Node: Item language */
+  /* Filter criterion: Indexed Contenido: Item language */
   $handler->display->display_options['filters']['search_api_language']['id'] = 'search_api_language';
   $handler->display->display_options['filters']['search_api_language']['table'] = 'search_api_index_success_index';
   $handler->display->display_options['filters']['search_api_language']['field'] = 'search_api_language';
@@ -726,6 +1124,7 @@ function dgef_success_views_default_views() {
     'default' => 0,
     'ctools_context_1' => 0,
   );
+  $handler->display->display_options['sitename_title'] = 0;
   $export['success_view'] = $view;
 
   return $export;

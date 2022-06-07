@@ -1,19 +1,19 @@
-# Copyright (C) 2017 Entidad P�blica Empresarial Red.es
-# 
-# This file is part of "ckanext-dge-drupal-users (datos.gob.es)".
-# 
+# Copyright (C) 2022 Entidad Pública Empresarial Red.es
+#
+# This file is part of "dge_drupal_users (datos.gob.es)".
+#
 # This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-# 
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-# 
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import logging
 import uuid
@@ -92,10 +92,10 @@ class DgeDrupalUsersPlugin(p.SingletonPlugin):
             out += str(uuid.uuid4())
         return out
 
-    def create_drupal_session_name(self):
+    def create_drupal_session_name(self, https=True):
         server_name = self.domain or p.toolkit.request.environ['SERVER_NAME']
-        #session_name = 'SESS%s' % hashlib.sha256(server_name).hexdigest()[:32]
-        session_name = 'SSESS%s' % hashlib.sha256(server_name).hexdigest()[:32]
+        prefix = 'SSESS%s' if https else 'SESS%s'
+        session_name = prefix % hashlib.sha256(server_name).hexdigest()[:32]
         self.drupal_session_name = session_name
 
     def destroy_drupal_session(self):
@@ -114,6 +114,10 @@ class DgeDrupalUsersPlugin(p.SingletonPlugin):
         cookies = p.toolkit.request.cookies
 
         drupal_sid = cookies.get(self.drupal_session_name)
+        if not drupal_sid:
+            self.create_drupal_session_name(https=False)
+            drupal_sid = cookies.get(self.drupal_session_name)
+
         if drupal_sid:
             engine = sa.create_engine(self.connection)
             rows = engine.execute(

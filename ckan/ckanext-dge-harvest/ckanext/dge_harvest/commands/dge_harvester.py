@@ -1,19 +1,19 @@
-# Copyright (C) 2017 Entidad P�blica Empresarial Red.es
-# 
-# This file is part of "ckanext-dge-harvest (datos.gob.es)".
-# 
+# Copyright (C) 2022 Entidad Pública Empresarial Red.es
+#
+# This file is part of "dge_harvest (datos.gob.es)".
+#
 # This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-# 
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-# 
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import sys
 import datetime
@@ -92,6 +92,8 @@ class DgeHarvester(CkanCommand):
         cmd = self.args[0]
         if cmd == 'catalog_rdf':
             self.generate_catalog('rdf')
+        elif cmd == 'catalog_rdf_EDP':
+            self.generate_catalog_EDP('rdf')
         elif cmd == 'catalog_csv':
             self.generate_catalog('csv')
         elif cmd == 'clear_old_harvest_jobs':
@@ -132,6 +134,34 @@ class DgeHarvester(CkanCommand):
         }
 
         catalog = get_action('dge_harvest_catalog_show')(context,data_dict)
+
+        print '%s End method' % (method_log_prefix)
+
+    def generate_catalog_EDP(self, _format='rdf'):
+        method_log_prefix = '[%s][generate_catalog]' % type(self).__name__
+        print '%s Init method. Inputs: _format=%s' % (method_log_prefix, _format)
+        context = {
+                'model':model,
+                'session':model.Session,
+                'user': self.admin_user['name'],
+                'ignore_auth': True,
+            }
+
+        if len(self.args) >= 2:
+            try:
+                _limit = int(float(unicode(self.args[1])))
+            except ValueError as e:
+                print '%s Please provide the limit of datasets to export' % (method_log_prefix)
+                sys.exit(1)
+        else:
+            _limit = -1
+
+        data_dict = {
+            'format': _format,
+            'limit': _limit
+        }
+
+        catalog = get_action('dge_harvest_catalog_show_EDP')(context,data_dict)
 
         print '%s End method' % (method_log_prefix)
 

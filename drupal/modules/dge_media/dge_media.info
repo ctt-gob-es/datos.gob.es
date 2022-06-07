@@ -1,0 +1,6 @@
+name = DGE Media
+description = File management
+core = 7.x
+package = DGE
+
+configure = admin/config/dge/media

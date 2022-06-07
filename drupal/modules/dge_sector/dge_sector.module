@@ -1,0 +1,220 @@
+<?php
+
+/**
+ * Implements hook_query_alter().
+ */
+function dge_sector_views_query_alter(&$view, &$query) {
+
+  $indice = [
+    'blog_blog_home' => ['blog_blog'],
+    'apps_home' =>['app'],
+    'success_home' => ['success'],
+    'blog_home' => ['doc','talk','event','blog'],
+  ];
+
+  switch ($view->name) {
+    case 'apps_home':
+    case 'blog_home':
+    case 'success_home':
+    case 'blog_blog_home':
+      // Check if type content is sector.
+      $current_path = current_path();
+      $array_path = explode("/", $current_path);
+      $node_id = $array_path[1];
+      $path = $array_path[0];
+
+      if ($path == 'node' && is_numeric($node_id)) {
+        $node = node_load($node_id);
+        if ($node->type == 'sectores') {
+          $field_paragraph_view = $node->field_views_paragrhaphs['und'];
+          $field_paragraph = entity_load('paragraphs_item', $field_paragraph_view);
+
+          foreach ($field_paragraph as $field) {
+            $field_view_name = explode('|', $field->field_view['und'][0]['vname'])[0];
+            $field_view_tags = array_filter(array_map('trim', explode(',', $field->field_view['und'][0]['vargs'])));
+            // Depends of the view, the field tags changes.
+            if ($field_view_name == $view->name && count($field_view_tags) > 0) {
+
+              $or = db_or();
+              foreach ($indice[$view->name] as $token) {
+                $tags = [];
+                $args_url = [];
+
+                foreach ($field_view_tags as $index => $value) {
+                  $taxonomy = reset(taxonomy_get_term_by_name($value, $token . '_tags'));
+                  if (!empty($taxonomy)) {
+                    $args_url[] = 'f[' . $index . ']=field_' . $token . '_tags:' . $taxonomy->tid;
+                    $tags[] = $taxonomy->tid;
+                  }
+                }
+
+                if(!empty($tags)){
+                  $table = 'field_data_field_' . $token . '_tags';
+                  $field_tid = 'field_' . $token . '_tags_tid';
+                  $field_where = $table . '.' . $field_tid;
+                  $join = new views_join();
+                  $join->table = $table;
+                  $join->field = 'entity_id';
+                  $join->left_table = 'node';
+                  $join->left_field = 'nid';
+                  $join->type = 'left';
+                  $join->extra = "(" . $table . ".entity_type = 'node' AND " . $table . ".deleted = '0')";
+                  $query->add_relationship($table, $join, 'node');
+
+                  $or->condition($field_where, $tags, 'IN');
+                  $query->add_where(1,$or);
+
+                  $args_url = implode('&', $args_url);
+                }
+              }
+              // Prepare url.
+              $url = $view->display_handler->get_option('link_url');
+              $view->display_handler->set_option('link_url', $url . '?' . $args_url);
+
+              break;
+            }
+          }
+        }
+      }
+
+      break;
+  }
+
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function dge_sector_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'sectores_node_form') {
+    $index = 0;
+    // For each field modify the form.
+    while (array_key_exists($index, $form['field_views_paragrhaphs']['und'])) {
+      $options = $form['field_views_paragrhaphs']['und'][$index]['field_view']['und'][0]['vname']['#options'];
+      foreach ($options as $key => $value) {
+        if (strpos($value, 'Master') !== FALSE) {
+          unset($options[$key]);
+        }
+        else {
+          $value = preg_replace('/\D*_home -\s/', '', $value);
+          $options[$key] = $value;
+        }
+      }
+      // Modify field views
+      $form['field_views_paragrhaphs']['und'][$index]['field_view']['und'][0]['vname']['#options'] = $options;
+      $form['field_views_paragrhaphs']['und'][$index]['field_view']['und'][0]['vargs']['#description'] = t('<p>Argumentos que se usarán para filtrar la consulta del listado correspondiente. Los argumentos deben estar separados por comas ej (datos abiertos, open data, ...)<br/>
+                      <b>Los argumentos posibles para cada vista son:</b></p>
+                      <ul>
+                        <li>Aplicaciones: Todo el vocabulario de la taxonomía "App tags"</li>
+                        <li>Blog: Todo el vocabulario de la taxonomía "Blog tags"</li>
+                        <li>Empresas Reutilizadoras: Todo el vocabulario de la taxonomía "Success Tags"</li>
+                        <li>Noticias: Todo el vocabulario de la taxonomía "Noticias tags"</li>
+                      </ul>
+                      <p><b>A tener en cuenta</b> que se obtendrá un resultado en el cual todos los argumentos sean ciertos.<br/>
+                      Para ello puede tomar como ejemplo, en las páginas de consulta de los distintos contenidos, los campos que aparecen debajo de "Etiqueta"<br/>
+                      y escoger los deseados para comprobar si el resultado es el esperado.</p>');
+      $form['field_views_paragrhaphs']['und'][$index]['field_view']['und'][0]['vargs']['#autocomplete_path'] = 'autocomplete-engine/vargs';
+      $form['field_views_paragrhaphs']['und'][$index]['field_view']['und'][0]['vargs']['#size'] = 60;
+      $form['field_views_paragrhaphs']['und'][$index]['field_view']['und'][0]['vargs']['#maxlength'] = 1024;
+      $form['field_views_paragrhaphs']['und'][$index]['field_view']['und'][0]['token_help']['#access'] = FALSE;
+
+      $index++;
+    }
+    // Define length text_format.
+    $index = 0;
+    while (array_key_exists($index, $form['field_contenido_paragrhaphs']['und'])) {
+      $form['field_contenido_paragrhaphs']['und'][$index]['field_descripcion']['und'][0][value]['#maxlength'] = 300;
+      $form['field_contenido_paragrhaphs']['und'][$index]['field_descripcion']['und'][0][value]['#maxlength_js'] = TRUE;
+      $index++;
+    }
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function dge_sector_menu() {
+
+  $items['autocomplete-engine'] = array(
+    'page callback' => 'dge_sector_autocomplete',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+
+}
+
+/**
+ * Undocumented function
+ *
+ * @param string $tags_typed
+ * @return void
+ */
+function dge_sector_autocomplete($tags_typed = '') {
+  // If the request has a '/' in the search text, then the menu system will have
+  // split it into multiple arguments, recover the intended $tags_typed.
+  $args = func_get_args();
+  // Shift off the $field_name argument.
+  array_shift($args);
+  $tags_typed = implode('/', $args);
+
+  // The user enters a comma-separated list of tags. We only autocomplete the last tag.
+  $tags_typed = drupal_explode_tags($tags_typed);
+  $tag_last = drupal_strtolower(array_pop($tags_typed));
+
+  $term_matches = array();
+  if ($tag_last != '') {
+
+    // Part of the criteria for the query come from the field's own settings.
+    $vids = array();
+    $vnames = ['app_tags', 'blog_tags', 'success_tags', 'blog_blog_tags'];
+    $vocabularies = taxonomy_vocabulary_get_names();
+    foreach ($vnames as $vname) {
+      $vids[] = $vocabularies[$vname]->vid;
+    }
+
+    $query = db_select('taxonomy_term_data', 't');
+    $query->addTag('translatable');
+    $query->addTag('taxonomy_term_access');
+
+    // Do not select already entered terms.
+    if (!empty($tags_typed)) {
+      $query->condition('t.name', $tags_typed, 'NOT IN');
+    }
+    // Select rows that match by term name.
+    $tags_return = $query
+      ->fields('t', array('tid', 'name'))
+      ->condition('t.vid', $vids)
+      ->condition('t.name', '%' . db_like($tag_last) . '%', 'LIKE')
+      ->range(0, 10)
+      ->execute()
+      ->fetchAllKeyed();
+
+    $prefix = count($tags_typed) ? drupal_implode_tags($tags_typed) . ', ' : '';
+
+    foreach ($tags_return as $tid => $name) {
+      $n = $name;
+      // Term names containing commas or quotes must be wrapped in quotes.
+      if (strpos($name, ',') !== FALSE || strpos($name, '"') !== FALSE) {
+        $n = '"' . str_replace('"', '""', $name) . '"';
+      }
+      $term_matches[$prefix . $n] = check_plain($name);
+    }
+  }
+
+  drupal_json_output($term_matches);
+}
+
+/**
+ * Implements hook_outbound_alter().
+ */
+function dge_sector_url_outbound_alter(&$path, &$options, $original_path) {
+
+  if ($original_path == 'admin/structure/taxonomy/blog_tags') {
+    $path = 'admin/structure/taxonomy/noticia_tags';
+  }
+
+  if ($original_path == 'admin/structure/taxonomy/blog_blog_tags') {
+    $path = 'admin/structure/taxonomy/blog__tags';
+  }
+}

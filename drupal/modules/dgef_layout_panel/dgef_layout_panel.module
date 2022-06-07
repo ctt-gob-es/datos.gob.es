@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the DGEF Layout Panel feature.
+ */
+
+include_once 'dgef_layout_panel.features.inc';

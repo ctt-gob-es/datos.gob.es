@@ -1,13 +1,75 @@
 {% extends 'snippets/search_form.html' %}
+{% set custom_data = custom_data if custom_data else None %}
   {% block search_input %}
     <div class="search-input control-group {{ search_class }}">
-      <input type="text" class="search" name="q" value="{{ query }}" autocomplete="off" placeholder="{{ placeholder }}" title="{{ placeholder }}">
-      {% block search_input_button %}
-        <button type="submit" value="search">
+      <input id="search_bar" type="text" class="search" name="q" value="{{ query }}" autocomplete="off" placeholder="{{ placeholder }}" title="{{ placeholder }}">
+      <script>
+        window.onload = function search_bar_length() {
+            if (window.jQuery) {
+                $('#search_bar').on("keyup", function (e) {
+                    console.log(this.e.value.length);
+                });
+            }
+        }
+      </script>
+        {% block search_input_button %}
+        <button id="search" type="submit" value="search">
           <i class="icon-search"></i>
           <span>{{ _('Search') }}</span>
         </button>
+
+
+        <!-- Download search as CSV [SDA-492] -->
+        {% if custom_data['display_download'] %}
+            <div  id="download-placeholder">
+              <a id="a-download-csv" style="display: none"></a>
+              <button id="download-csv" type="button" title= "{{ _('Download search result in CSV') }}" >
+                <i class="icon-download"></i>
+                <span>{{ _('Download') }}</span>
+              </button>
+
+              <script>
+                const RESPONSE_PARAM = 'g-recaptcha-response';
+                const url = '{{custom_data['callback_url']}}';
+
+                window.onload = function() {
+                  if (window.jQuery) {
+                    $('#download-csv').click(function (e) {
+                      e.preventDefault();
+                      $('#recaptcha-container').attr({
+                        style: "display: block; position: absolute; margin: 10px;"
+                      });
+
+                    });
+                  }
+                };
+
+                function download_csv(g_response) {
+                    $('#a-download-csv').attr({
+                        target: '_blank',
+                        href  : url + '&' + RESPONSE_PARAM + '=' + encodeURIComponent(g_response)
+                    })[0].click();
+
+                    grecaptcha.reset();
+                    $('#recaptcha-container').attr({
+                      style: "display: none;"
+                    });
+                };
+              </script>
+
+              <div id="recaptcha-container" style="display: none;">
+                <div
+                      class="g-recaptcha"
+                      data-sitekey="{{custom_data['recaptcha_sitekey']}}"
+                      data-callback="download_csv"
+                ></div>
+              </div>
+              <script src="https://www.google.com/recaptcha/api.js"></script>
+            </div>
+        {% endif %}
       {% endblock %}
+
+
     </div>
   {% endblock %}
   {% block search_sortby %}
@@ -29,4 +91,31 @@
       </div>
     {% endif %}
   {% endblock %}
-
+  {% block search_facets %}
+    {% if facets %}
+      <p class="filter-list">
+        {% for field in facets.fields %}
+          {% set search_facets_items = facets.search.get(field)['items'] %}
+          {% set title = facets.titles.get(field) %}
+          {% if title == None and field.startswith('tags_')%}
+            {% set title = _('Tag') + '(' + field.split('_')[1].upper() + ')' %}
+          {% endif %}
+          <span class="facet"> {{ title }}:</span>
+          {% for value in facets.fields[field] %}
+            <span class="filtered pill">
+              {%- if facets.translated_fields and facets.translated_fields.has_key((field,value)) -%}
+                {{ facets.translated_fields[(field,value)] }}
+              {%- else -%}
+                {%- set item, lang  = h.dge_searched_facet_item_filter(search_facets_items, 'name', 'display_name',  value, field) -%}
+                {%- if lang -%}<span lang="{{ lang }}" xml:lang="{{ lang }}">{%- endif -%}
+                {{ item }}
+                {%- if lang -%}</span>{%- endif -%}
+              {%- endif -%}
+              <a aria-label="{{ _('Remove filter') }}" href="{{ facets.remove_field(field, value) }}" title="{{ _('Remove') }}" class="remove"><span class="icon-remove"></span></a>
+            </span>
+          {% endfor %}
+        {% endfor %}
+      </p>
+      <a class="show-filters btn">{{ _('Filter Results') }}</a>
+    {% endif %}
+  {% endblock %}

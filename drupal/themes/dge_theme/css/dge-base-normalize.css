@@ -336,6 +336,7 @@ fieldset {
  * 2. Correct the color inheritance from `fieldset` elements in IE.
  * 3. Remove the padding so developers are not caught out when they zero out
  *    `fieldset` elements in all browsers.
+ * 4. Add position and top to place text 'update options' inside fieldset.
  */
 
 legend {
@@ -345,6 +346,8 @@ legend {
   max-width: 100%; /* 1 */
   padding: 0; /* 3 */
   white-space: normal; /* 1 */
+  position: relative; /* 4 */
+  top: 20px; /* 4 */
 }
 
 /**

@@ -1,19 +1,19 @@
-# Copyright (C) 2017 Entidad P�blica Empresarial Red.es
-# 
-# This file is part of "ckanext-dge-harvest (datos.gob.es)".
-# 
+# Copyright (C) 2022 Entidad Pública Empresarial Red.es
+#
+# This file is part of "dge_harvest (datos.gob.es)".
+#
 # This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-# 
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-# 
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import ckanext.dge_scheming.helpers as dsh
 import ckanext.scheming.helpers as sh
@@ -137,7 +137,7 @@ def dge_harvest_is_url(url):
     ''' 
     Returns True if given url is a valid url
     '''
-    return h.is_url(url)
+    return dsh.dge_is_url(url)
 
 def dge_harvest_is_uri(uri):
     ''' 
@@ -176,11 +176,12 @@ def dge_harvest_organizations_available():
                                     if (value not in idminhap_organizations):
                                         idminhap_organizations[value] = [organization_id, organization_name]
                                     else:
-                                        log.info("Organization %s[id=%s], the publisher %s is used by other organiztion whose id is %s" %(organization.get('name'), organization.get('id'), publisher, dict_idminhaps.get('value')))
-                                break;
+                                        #log.info("Organization %s[id=%s], the publisher %s is used by other organization whose id is %s" %(organization.get('name'), organization.get('id'), value, idminhap_organizations.get('value')[0]))
+                                        log.info("Organization is used by other organization ")
+                                break
                     if  not found:
                         log.info("Organization %s[id=%s] has not an extra extra %s or its value is empty" % (organization.get('name'), organization.get('id'), dhc.ORG_PROP_ID_UD_ORGANICA))
                 else:
                     log.info("Organization %s[id=%s] has not extras" % (organization.get('name'), organization.get('id')))
-    log.debug("idminhap_organizations=%s", idminhap_organizations)
+    #log.debug("idminhap_organizations=%s", idminhap_organizations)
     return idminhap_organizations

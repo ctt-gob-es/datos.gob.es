@@ -12,6 +12,15 @@
           {% if publisher_principal_name %}
           ({{ publisher_principal_name }})
           {% endif%}
+          <div class = "btn-group">
+              <a class="btn btn-tag">
+                  {% if administration_level == _('Private Entity') %}
+                    {{ _('Private') }}
+                  {% else %}
+                   {{  _('Public') }}
+                  {% endif%}
+              </a>
+            </div>
           </span>
     </div>
     {% if administration_level %}

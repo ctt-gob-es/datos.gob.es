@@ -1,19 +1,19 @@
-# Copyright (C) 2017 Entidad P�blica Empresarial Red.es
-# 
-# This file is part of "ckanext-dge (datos.gob.es)".
-# 
+# Copyright (C) 2022 Entidad Pública Empresarial Red.es
+#
+# This file is part of "dge (datos.gob.es)".
+#
 # This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-# 
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-# 
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import ckanext.dge_scheming.helpers as dsh
 import ckanext.scheming.helpers as sh
@@ -24,6 +24,7 @@ import pytz
 import datetime
 import ckan.lib.helpers as h
 import ckan.plugins.toolkit as toolkit
+import paste.deploy.converters as converters
 import urllib, json
 from ckan import logic
 from ckan.common import (
@@ -33,7 +34,12 @@ from operator import itemgetter
 import ckan.model as model
 import ckanext.dge_harvest.helpers as dhh
 
+import ast
+
 import logging
+
+FACET_OPERATOR_PARAM_NAME = '_facet_operator'
+FACET_SORT_PARAM_NAME = '_%s_sort'
 
 TRANSLATED_UNITS = {'E': { 'es': 'Administraci\u00F3n del Estado',
                            'ca': 'Administraci\u00F3 de l\u0027Estat',
@@ -53,8 +59,8 @@ TRANSLATED_UNITS = {'E': { 'es': 'Administraci\u00F3n del Estado',
                     'U': { 'es': 'Universidades',
                            'ca': 'Universitats',
                            'gl': 'Universidades',
-                           'eu': 'Universities',
-                           'en': 'Unibertsitateak'},
+                           'eu': 'Unibertsitateak',
+                           'en': 'Universities'},
                     'I': { 'es': 'Otras Instituciones',
                            'ca': 'Altres institucions',
                            'gl': 'Outras instituci\u00F3ns',
@@ -65,14 +71,16 @@ TRANSLATED_UNITS = {'E': { 'es': 'Administraci\u00F3n del Estado',
                            'gl': 'Administraci\u00F3n de Xustiza',
                            'eu': 'Justizia Administrazioa',
                            'en': 'Legal Administration'},
-                    '-': { 'es': 'Otros',
-                           'ca': 'Altres',
-                           'gl': 'Outros',
-                           'eu': 'OTHER',
-                           'en': 'Beste batzuk'}
+                    'P': { 'es': 'Entidad Privada',
+                           'ca': 'Entitat privada',
+                           'gl': 'Entidade Privada',
+                           'eu': 'Erakunde pribatua',
+                           'en': 'Private Entity'}
                  }
 
-DEFAULT_UNIT =  '-'
+DEFAULT_UNIT =  'I'
+
+DGE_HARVEST_UPDATE_FREQUENCIES = ['MANUAL','MONTHLY','WEEKLY','BIWEEKLY']
 
 
 log = logging.getLogger(__name__)
@@ -154,6 +162,42 @@ def dge_dataset_display_fields(field_name_list, dataset_fields):
                     dataset_dict[field['field_name']] = field
     return dataset_dict
 
+
+def dge_dataset_tag_field_value(tags):
+    """
+    :param tags: {lang: tags}
+
+    Convert "language-text" to users' language by looking up
+    language in dict or using gettext if not a dict but. If the text
+    doesn't exist look for an available text
+    """
+    value = None
+    language = None
+    if not tags:
+        result = u''
+
+    dict_tags = dsh.dge_dataset_form_lang_and_value(tags)
+    if (dict_tags):
+        language = sh.lang()
+        if dict_tags.has_key(language) and dict_tags[language] and \
+            dict_tags[language] is not None:
+            value = dict_tags[language]
+            language = None
+        else:
+            locale_order = config.get('ckan.locale_order', '').split()
+            for l in locale_order:
+                if dict_tags.has_key(l) and dict_tags[l] and \
+                    dict_tags[l] is not None:
+                    value = (dict_tags[l])
+                    language = l
+                    break
+            #for key in dict_tags:
+            #    if (dict_tags[key] and dict_tags[key] is not None):
+            #        value = (dict_tags[key])
+            #        language = key
+            #        break
+    return language, value
+
 def dge_render_datetime(datetime_, date_format=None, with_hours=False):
     '''Render a datetime object or timestamp string as a localised date or
     in the requested format.
@@ -168,28 +212,20 @@ def dge_render_datetime(datetime_, date_format=None, with_hours=False):
 
     :rtype: string
     '''
-    if not datetime_:
-        return ''
-    if isinstance(datetime_, basestring):
-        try:
-            datetime_ = h.date_str_to_datetime(datetime_)
-        except TypeError:
-            return None
-        except ValueError:
-            return None
-    # check we are now a datetime
-    if not isinstance(datetime_, datetime.datetime):
-        return None
+    datetime_ = dge_parse_datetime(datetime_)
+    if not datetime_ or datetime_ == '':
+        return datetime_
 
-    #Timezone in dge is always Europe/Madrid
-    from_timezone = pytz.timezone('Europe/Madrid')
-    to_timezone = pytz.timezone('UTC')
-    datetime_ = from_timezone.localize(datetime_)
     # if date_format was supplied we use it
     if date_format:
-        return datetime_.strftime(date_format)
+        try:
+            return datetime_.strftime(date_format)
+        except ValueError, e:
+            log.info('%s has not correct value for strtime: %s' %
+                     (datetime_, e))
 
     # the localised date
+    to_timezone = pytz.timezone('UTC')
     datetime_ = datetime_.astimezone(tz=to_timezone)
 
     details = {
@@ -205,6 +241,34 @@ def dge_render_datetime(datetime_, date_format=None, with_hours=False):
     else:
         result = ('{day}/{month:02}/{year}').format(**details)
     return result
+
+
+def dge_parse_datetime(datetime_=None):
+    '''Parse a datetime object or timestamp string as a localised date.
+    If timestamp is badly formatted, then a blank string is returned.
+
+    :param datetime_: the date
+    :type datetime_: datetime or ISO string format
+    :rtype: datetime
+    '''
+    if not datetime_:
+        return ''
+    if isinstance(datetime_, basestring):
+        try:
+            datetime_ = h.date_str_to_datetime(datetime_)
+        except TypeError:
+            return None
+        except ValueError:
+            return None
+    # check we are now a datetime
+    if not isinstance(datetime_, datetime.datetime):
+        return None
+
+    # Timezone in dge is always Europe/Madrid
+    from_timezone = pytz.timezone('Europe/Madrid')
+    return from_timezone.localize(datetime_)
+
+
 
 def dge_dataset_display_name(package_or_package_dict):
     """
@@ -615,7 +679,7 @@ def dge_get_translated_administration_level(prefix=None):
              'U': _('Universities'), 
              'I': _('Other Institutions'),
              'J': _('Legal Administration'),
-             '-': _('Other')
+             'P': _('Private Entity')
             }
     if prefix and prefix in units:
         return units.get(prefix, None)
@@ -667,7 +731,7 @@ def dge_get_endpoints_menu(keys=[], lang=None, header=True, footer=False):
     menu['ckanext.dge.drupal_menu.home'] = prefix + '/home'
     menu['ckanext.dge.drupal_menu.aporta.about'] = prefix + '/acerca-de-la-iniciativa-aporta'
     menu['ckanext.dge.drupal_menu.aporta.meetings'] = prefix + '/encuentros-aporta'
-    menu['ckanext.dge.drupal_menu.aporta.challenge'] = prefix + '/desafio-aporta-2017-el-valor-del-dato-para-la-administracion'
+    menu['ckanext.dge.drupal_menu.aporta.challenge'] = prefix + '/desafios-aporta'
     menu['ckanext.dge.drupal_menu.aporta.awards'] = prefix + '/premios-aporta'
     menu['ckanext.dge.drupal_menu.impact.initiatives'] = prefix + '/iniciativas'
     menu['ckanext.dge.drupal_menu.impact.applications'] = prefix + '/aplicaciones'
@@ -687,15 +751,28 @@ def dge_get_endpoints_menu(keys=[], lang=None, header=True, footer=False):
     menu['ckanext.dge.drupal_menu.account.unassigned_requests'] = prefix + '/admin/dashboard/unassigned-requests'
     menu['ckanext.dge.drupal_menu.account.initiatives'] = prefix + '/admin/dashboard/initiatives'
     menu['ckanext.dge.drupal_menu.account.comments'] = prefix + '/admin/dashboard/comment'
+    menu['ckanext.dge.drupal_menu.account.media'] = prefix + '/admin/dashboard/media'
     menu['ckanext.dge.drupal_menu.account.widget'] = prefix + '/admin/dashboard/widget'
     menu['ckanext.dge.drupal_menu.account.users'] = prefix + '/admin/people/dge-user-panel'
     menu['ckanext.dge.drupal_menu.account.logout'] = prefix + '/user/logout'
     menu['ckanext.dge.drupal_menu.sitemap'] = prefix + '/sitemap'
+    menu['ckanext.dge.drupal_menu.technology'] = prefix + '/tecnologia'
     menu['ckanext.dge.drupal_menu.contact'] = prefix + '/contacto'
     menu['ckanext.dge.drupal_menu.legal_notice'] = prefix + '/aviso-legal'
+    menu['ckanext.dge.drupal_menu.proteccion_datos'] = 'http://www.red.es/redes/es/quienes-somos/protecci%C3%B3n-de-datos-de-car%C3%A1cter-personal'
     menu['ckanext.dge.drupal_menu.faq'] = prefix + '/faq-page'
     menu['ckanext.dge.drupal_menu.accesibility'] = prefix + '/accesibilidad'
     menu['ckanext.dge.drupal_menu.cookies_policy'] = prefix + '/politica-de-cookies'
+    #menu['ckanext.dge.drupal_menu.sectors.farming']  = prefix + '/sector/agricultura'
+    menu['ckanext.dge.drupal_menu.sectors.environment'] = prefix + '/sector/medio-ambiente'
+    menu['ckanext.dge.drupal_menu.innovation.blog'] = prefix + '/blog'
+    #menu['ckanext.dge.drupal_menu.sectors.culture'] = prefix + '/sector/cultura'
+    menu['ckanext.dge.drupal_menu.sectors.culture_and_leisure'] = prefix + '/sector/cultura-ocio'
+    menu['ckanext.dge.drupal_menu.sectors.education'] = prefix + '/sector/educacion'
+    menu['ckanext.dge.drupal_menu.sectors.transport'] = prefix + '/sector/transporte'
+    menu['ckanext.dge.drupal_menu.sectors.health'] = prefix + '/sector/salud-bienestar'
+    menu['ckanext.dge.drupal_menu.sectors.tourism'] = prefix + '/sector/turismo'
+
 
     if (keys and len(keys) > 0) or header or footer:
         locales_order = config.get('ckan.locale_order', None)
@@ -762,6 +839,8 @@ def dge_get_endpoints_menu(keys=[], lang=None, header=True, footer=False):
                 keys.append('ckanext.dge.drupal_menu.account.initiatives')
             if 'ckanext.dge.drupal_menu.account.widget' not in keys: 
                 keys.append('ckanext.dge.drupal_menu.account.widget')
+            if 'ckanext.dge.drupal_menu.account.media' not in keys: 
+                keys.append('ckanext.dge.drupal_menu.account.media')
             if 'ckanext.dge.drupal_menu.account.users' not in keys: 
                 keys.append('ckanext.dge.drupal_menu.account.users')
             if 'ckanext.dge.drupal_menu.account.logout' not in keys: 
@@ -780,6 +859,9 @@ def dge_get_endpoints_menu(keys=[], lang=None, header=True, footer=False):
                 keys.append('ckanext.dge.drupal_menu.accesibility')
             if 'ckanext.dge.drupal_menu.cookies_policy' not in keys: 
                 keys.append('ckanext.dge.drupal_menu.cookies_policy')
+            if 'ckanext.dge.drupal_menu.technology' not in keys: 
+                keys.append('ckanext.dge.drupal_menu.technology')
+                
 
         for key in keys:
             value = config.get(key, None)
@@ -820,4 +902,208 @@ def dge_dataset_tag_list_display_names(tags=None):
                 result = result + "," + tag.get('display_name')
     if result and len(result)>0:
         return result[1:]
-                
+
+def dge_transform_archiver_dict(archiver):
+    ''' get a list of tags display_name separated by commas
+    :param keys: tags 
+    :type keys: list
+
+    :rtype: string with display_name of tags separated by commas
+    '''
+    return ast.literal_eval(archiver)
+
+def dge_harvest_frequencies():
+    '''returns a list with all the possible frequencies for harvesting as dge
+    '''
+    return [{'text': toolkit._(f.title()), 'value': f}
+            for f in DGE_HARVEST_UPDATE_FREQUENCIES]
+
+def dge_tag_link(tag, language = None):
+    '''
+    Generate the URL of a tag, taking into account of the language
+
+    :param tag: the tag
+    :type tag: string or unicode
+
+    :param language: the tag language
+    :type language: string
+
+    :rtype string: URL for the provided tag
+    '''
+
+    iface_language = sh.lang()
+    tags_tag = 'tags_' + iface_language
+    pos_tag = '__' + language if (language and language != iface_language) else ''
+
+    arguments = {
+        'controller': 'package',
+        'action': 'search',
+        tags_tag: tag + pos_tag
+    }
+    return h.url_for(**arguments)
+
+def dge_searched_facet_item_filter(list_, search_field, output_field, value, facet_field):
+    ''' Takes a list of dicts and returns the item of a given key if the
+    item has a matching value for a supplied key
+
+    :param list_: the list to search through for matching items
+    :type list_: list of dicts
+
+    :param search_field: the key to use to find matching items
+    :type search_field: string
+
+    :param value: the value to search for
+
+    :param output_field: the key to use to output the value
+    :type output_field: string
+
+    :param facet_field: the facet_field
+    :type search_field: string
+    '''
+    display_name = None
+    lang = None
+    item = None
+    if list_:
+        for list_item in list_:
+            if list_item.get(search_field) == value:
+                item = list_item
+
+    if item != None:
+        lang = item.get('lang', None)
+        display_name = item.get(output_field) or item.get(search_field)
+    else:
+        if facet_field and facet_field.startswith('tags_'):
+
+            value_ = value.split('__')
+            display_name = value_[0]
+            if len(value_) == 2:
+                lang = value_[1]
+        else:
+            display_name = h.list_dict_filter(list_, search_field, output_field, value)
+
+    return display_name, lang
+
+def dge_get_show_sort_facet(facet_name):
+    '''returns true if the facet sort type should be displayed, false otherwise
+    '''
+    return dge_facet_property_default_value('ckanext.dge.facet.default.show_sort', facet_name, False)
+
+def dge_get_facet_items_dict(facet, limit=None, exclude_active=False, default_sort=True):
+    '''Return the list of unselected facet items for the given facet, sorted
+    by count or by index.
+
+    Returns the list of unselected facet contraints or facet items (e.g. tag
+    names like "russian" or "tolstoy") for the given search facet (e.g.
+    "tags"), sorted by facet item count (i.e. the number of search results that
+    match each facet item).
+
+    Reads the complete list of facet items for the given facet from
+    c.search_facets, and filters out the facet items that the user has already
+    selected.
+
+    Arguments:
+    facet -- the name of the facet to filter.
+    limit -- the max. number of facet items to return.
+    exclude_active -- only return unselected facets.
+    default_sort -- return default ckan sort (count).
+    '''
+
+    if not c.search_facets or \
+            not c.search_facets.get(facet) or \
+            not c.search_facets.get(facet).get('items'):
+        return []
+    facets = []
+    
+    for facet_item in c.search_facets.get(facet)['items']:
+        if not len(facet_item['name'].strip()):
+            continue
+        if not (facet, facet_item['name']) in request.params.items():
+            facets.append(dict(active=False, **facet_item))
+        elif not exclude_active:
+            facets.append(dict(active=True, **facet_item))
+
+    sort = 'count'
+    if default_sort == False:
+        if ((FACET_SORT_PARAM_NAME % facet, 'index') in request.params.items()):
+            sort = 'index'
+        elif ((FACET_SORT_PARAM_NAME % facet, 'count') in request.params.items()):
+            sort = 'count'
+        else:
+            sort = dge_default_facet_sort_by_facet(facet)
+
+    if sort == 'index':
+        facets = sorted(facets, key=lambda item: _(item['display_name']), reverse=False)
+    else:
+        facets = sorted(facets, key=lambda item: item['count'], reverse=True)
+
+    if c.search_facets_limits and limit is None:
+        limit = c.search_facets_limits.get(facet)
+        if limit == 0:
+            limit = int(dge_facet_property_default_value('ckanext.dge.facet.default.limit', facet, limit))
+
+    # zero treated as infinite for hysterical raisins
+    if limit is not None and limit > 0:
+        return facets[:limit]
+    return facets
+
+def dge_default_facet_search_operator():
+    '''Returns the default facet search operator: AND/OR 
+    '''
+    facet_operator = config.get('ckanext.dge.facet.default.search.operator', 'AND')
+    if facet_operator and (facet_operator.upper() == 'AND' or facet_operator.upper() == 'OR'):
+        facet_operator = facet_operator.upper()
+    else:
+        facet_operator = 'AND'
+    return facet_operator
+
+def dge_default_facet_sort_by_facet(facet):
+    ''' Returns the default facet sort. Content by default '''
+    return dge_facet_property_default_value('ckanext.dge.facet.default.sort', facet, 'content')
+
+def dge_facet_property_default_value(property_prefix, facet, default_value):
+    ''' Returns the value of the first property found for one for a given facet 
+        following the order, or the default value in case it does not exist:
+            - property_prefix.facet
+            - property_prefix.facet_without_language
+            - property_prefix
+        
+        Params:
+            property_prefix: the property prefix
+            facet: facet name
+            default_value: property default value
+    '''
+    property_value = None
+    if property_prefix is None:
+        return None
+    if facet is not None:
+        property_value = config.get(('%s.%s' % (property_prefix, facet)), None)
+        facet_no_lang = dge_get_facet_without_lang(facet)
+        if property_value is None and facet != facet_no_lang:
+            property_value = config.get(('%s.%s' % (property_prefix, facet_no_lang)), None)
+    if property_value is None:
+        property_value = config.get(('%s' % property_prefix), default_value)
+
+    #print 'facet=%s || property_prefix=%s || value=%s' % (facet, property_prefix, property_value) 
+    return property_value
+
+def dge_get_facet_without_lang(facet):
+    ''' Returns facet's name without lang '''
+    suffix = '_%s' % h.lang()
+    if facet is not None and facet.endswith(suffix):
+        len_suffix = len(suffix)
+        return facet[:-len_suffix]
+    else:
+        return facet
+
+def dge_add_additional_facet_fields(fields, facets):
+    ''' Add fields liked to facet sort or conjunction/disjunction
+    '''
+    param_keys = [FACET_OPERATOR_PARAM_NAME]
+    if facets:
+        for facet in facets:
+            param_keys.append(FACET_SORT_PARAM_NAME % facet)
+    if request.params.items():
+        for (k,v) in request.params.items():
+            if k in param_keys:
+                fields.append((k,v))
+    return fields

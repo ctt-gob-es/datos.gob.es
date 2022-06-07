@@ -1,7 +1,7 @@
 name = DGEF Request
 core = 7.x
 package = Features
-version = 7.x-1.0
+version = 7.x-0.14
 dependencies[] = current_search
 dependencies[] = date
 dependencies[] = dgef_base

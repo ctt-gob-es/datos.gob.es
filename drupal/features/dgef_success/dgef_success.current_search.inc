@@ -1,23 +1,22 @@
 <?php
-
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dgef_success (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+* 
+* This file is part of "dgef_success (datos.gob.es)".
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 /**
  * @file
@@ -40,9 +39,9 @@ function dgef_success_current_search_default_items() {
       'custom_text' => array(
         'id' => 'text',
         'label' => 'custom_text',
-        'text' => '[facetapi_results:result-count] successful case found <span class="keyword-search">for "[facetapi_results:keys]"</span>',
+        'text' => '[facetapi_results:result-count] empresa reutilizadora encontrada',
         'plural' => 1,
-        'text_plural' => '[facetapi_results:result-count] successful cases found <span class="keyword-search">for "[facetapi_results:keys]"</span>',
+        'text_plural' => '[facetapi_results:result-count] empresas reutilizadoras encontradas',
         'plural_condition' => 'facetapi_results:result-count',
         'wrapper' => 0,
         'element' => '0',

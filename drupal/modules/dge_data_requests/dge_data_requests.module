@@ -2,19 +2,19 @@
 
 /**
  * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
+ *
  * This file is part of "dge_data_requests (datos.gob.es)".
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -22,16 +22,17 @@
 /**
  * Organization role
  */
-define('DGE_ORGANIZATION_ROLE','organization');
+define('DGE_ORGANIZATION_ROLE', 'organization');
 /**
  * Organization taxonomy
  */
-define('DGE_ORGANIZATION_TAXONOMY','agencies');
+define('DGE_ORGANIZATION_TAXONOMY', 'agencies');
 
 /**
  * Implements hook_permission().
  */
-function dge_data_requests_permission() {
+function dge_data_requests_permission()
+{
   return array(
     'access request assign' => array(
       'title' => t('Assign Data Requests'),
@@ -41,13 +42,18 @@ function dge_data_requests_permission() {
       'title' => t('Administer Data Requests'),
       'description' => t('Allow users to configure Request mails'),
     ),
+    'access request subscribers' => array(
+        'title' => t('Administer Data Requests Subscribers'),
+        'description' => t('Allow users to see and alter the data request node subscribers'),
+      ),
   );
 }
 
 /**
  * Implements hook_menu().
  */
-function dge_data_requests_menu() {
+function dge_data_requests_menu()
+{
   $items['admin/dashboard/unassigned-requests'] = array(
     'title' => 'Unassigned data requests',
     'page callback' => '_dge_data_requests_unassigned_request_list',
@@ -63,65 +69,88 @@ function dge_data_requests_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
   $items['admin/config/dge/request'] = array(
-    'title'             => 'Data Request published email',
-    'page callback'     => 'drupal_get_form',
-    'page arguments'    => array('dge_data_requests_admin_settings'),
-    'access arguments'  => array('access request admin'),
-    'type'              => MENU_NORMAL_ITEM,
-    'file'              => 'dge_data_requests.admin.inc',
+    'title' => 'Data Request emails',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('dge_data_requests_admin_settings'),
+    'access arguments' => array('access request admin'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'dge_data_requests.admin.inc',
   );
-
+  $items['unirse-a-peticiones-datos/%'] = array(
+    'title' => 'Unirse a peticion de datos',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('dge_data_requests_subs_request_form', 1),
+    'access callback' => TRUE,
+    'access arguments' => array('view', 1),
+  );
+  $items['desunirse-a-peticiones-datos/%'] = array(
+    'title' => 'Desunirse a peticion de datos',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('dge_data_requests_leave_request_form', 1),
+    'access callback' => TRUE,
+    'access arguments' => array('view', 1),
+  );
+  $items['rechazar-a-peticiones-datos/%'] = array(
+    'title' => 'Rechazar peticion de datos',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('dge_data_requests_refuse_request_form', 1),
+    'access callback' => TRUE,
+    'access arguments' => array('view', 1),
+  );
   return $items;
 }
 
 /**
  * Unassigned data request list
  */
-function _dge_data_requests_unassigned_request_list() {
+function _dge_data_requests_unassigned_request_list()
+{
   $params = drupal_get_query_parameters();
 
-  $language = (!empty($params) && array_key_exists('language', $params))?$params['language']:'es';
+  $language = (!empty($params) && array_key_exists('language', $params)) ? $params['language'] : 'all';
 
   // Sortable table
   $table_header = array(
-     'title' => array(
-       'data' => t('Title'),
-       'type' => 'property',
-       'specifier' => 'title',
-     ),
-     'language' => array(
-       'data' => t('Language'),
-       'type' => 'property',
-       'specifier' => 'language',
-     ),
-     'created' => array(
-       'data' => t('Creation date'),
-       'type' => 'property',
-       'specifier' => 'created',
-       'sort' => 'desc',
-     ),
-     'status' => array(
-       'data' => t('Published'),
-       'type' => 'property',
-       'specifier' => 'status',
-     ),
-     t('Operations')
+    'title' => array(
+      'data' => t('Title'),
+      'type' => 'property',
+      'specifier' => 'title',
+    ),
+    'language' => array(
+      'data' => t('Language'),
+      'type' => 'property',
+      'specifier' => 'language',
+    ),
+    'created' => array(
+      'data' => t('Creation date'),
+      'type' => 'property',
+      'specifier' => 'created',
+      'sort' => 'desc',
+    ),
+    'status' => array(
+      'data' => t('Published'),
+      'type' => 'property',
+      'specifier' => 'status',
+    ),
+    t('Operations')
   );
 
   $query = new EntityFieldQuery();
+
   $query->entityCondition('entity_type', 'node')
-    ->entityCondition('bundle', 'request')
-    ->propertyCondition('uid', 0)
-    ->pager(10);
+  ->entityCondition('bundle', 'request')
+  ->propertyCondition('status', NODE_NOT_PUBLISHED)
+  ->pager(10);
+
   if ($language != 'all') {
-  	$query->propertyCondition('language', $language);
+    $query->propertyCondition('language', $language);
   }
   // Sortable table
   $result = $query->tableSort($table_header)
-                  ->execute();
+    ->execute();
   $data_requests = array();
   if ($result) {
-      $data_requests = entity_load('node', array_keys($result['node']));
+    $data_requests = entity_load('node', array_keys($result['node']));
   }
 
   //Auxiliar languages
@@ -129,26 +158,28 @@ function _dge_data_requests_unassigned_request_list() {
 
   $table_contents = array();
   foreach ($data_requests as $data_request) {
-  	 $link_publish = '';
-  	 if (module_exists('workbench_moderation') && workbench_moderation_node_moderated($data_request)){
-  		$my_revision = $data_request->workbench_moderation['my_revision'];
-  		$next_steps = workbench_moderation_states_next($my_revision->state, NULL, $data_request);
-  		if (array_key_exists('published', $next_steps)) {
-  			$link_publish = l(t('Publish'),
-  			                  'node/'.$data_request->nid.'/moderation/'.$data_request->vid.'/change-state/published',
-  			                  array('query' => array('token' => drupal_get_token("{$data_request->nid}:{$data_request->vid}:published"))));
-  		}
-  	 }
+    $link_publish = '';
+    if (module_exists('workbench_moderation') && workbench_moderation_node_moderated($data_request)) {
+      $my_revision = $data_request->workbench_moderation['my_revision'];
+      $next_steps = workbench_moderation_states_next($my_revision->state, NULL, $data_request);
+      if (array_key_exists('published', $next_steps)) {
+        $link_publish = l(
+          t('Publish'),
+          'node/' . $data_request->nid . '/moderation/' . $data_request->vid . '/change-state/published',
+          array('query' => array('token' => drupal_get_token("{$data_request->nid}:{$data_request->vid}:published")))
+        );
+      }
+    }
     $lang = $languages[$data_request->language]->name;
     $row = array(
-      l($data_request->title,'node/'.$data_request->nid),
+      l($data_request->title, 'node/' . $data_request->nid),
       t($lang),
       format_date($data_request->created, 'custom', 'd/m/Y - H:i'),
-      (($data_request->status)?t('Yes'):t('No')),
-      l(t('Assign'),'admin/content/request/assign/'.$data_request->nid).'&nbsp;&nbsp;'
-        .l(t('Edit'),'node/'.$data_request->nid.'/edit').'&nbsp;&nbsp;'
-        .l(t('Delete'),'node/'.$data_request->nid.'/delete').'&nbsp;&nbsp;'
-        .$link_publish
+      (($data_request->status) ? t('Yes') : t('No')),
+      l(t('Assign'), 'admin/content/request/assign/' . $data_request->nid) . '&nbsp;&nbsp;'
+        . l(t('Edit'), 'node/' . $data_request->nid . '/edit') . '&nbsp;&nbsp;'
+        . l(t('Delete'), 'node/' . $data_request->nid . '/delete') . '&nbsp;&nbsp;'
+        . $link_publish
     );
     array_push($table_contents, $row);
   }
@@ -159,53 +190,71 @@ function _dge_data_requests_unassigned_request_list() {
     'attributes' => array('width' => '100%', 'class' => array('views-table'))
   ));
   $output = array(
-    'pager'=> array(
-      '#markup'=> theme('pager'),
-      '#weight'=>10
-  ));
+    'pager' => array(
+      '#markup' => theme('pager'),
+      '#weight' => 10
+    )
+  );
 
   //Create language filter
-  $filter = '<div class="view-filters"><form action="'.url(current_path()).'" method="get" id="form-lang-liter" accept-charset="UTF-8"><div><div class="views-exposed-form">';
+  $filter = '<div class="view-filters"><form action="' . url(current_path()) . '" method="get" id="form-lang-liter" accept-charset="UTF-8"><div><div class="views-exposed-form">';
   $filter .= '<div class="views-exposed-widgets clearfix"><div id="edit-language-wrapper" class="views-exposed-widget views-widget-filter-language">';
-  $filter .= '<label for="edit-language">'.t('Language').'</label><div class="views-widget"><div class="form-item form-type-select form-item-language">';
+  $filter .= '<label for="edit-language">' . t('Language') . '</label><div class="views-widget"><div class="form-item form-type-select form-item-language">';
   $filter .= '<select id="edit-language" name="language" class="form-select">';
   $filter .= '<option value="all"';
   if ($language == 'all') {
-  	$filter .= ' selected="selected"';
+    $filter .= ' selected="selected"';
   }
   $filter .= '>- Any -</option>';
   foreach ($languages as $lg => $lang) {
-  	$filter .= '<option value="'.$lg.'"';
-  	if ($language == $lg) {
-  	  $filter .= ' selected="selected"';
+    $filter .= '<option value="' . $lg . '"';
+    if ($language == $lg) {
+      $filter .= ' selected="selected"';
     }
-  	$filter .= '>'.$lang->name.'</option>';
+    $filter .= '>' . $lang->name . '</option>';
   }
   $filter .= '</select></div></div></div><div class="views-exposed-widget views-submit-button">';
-  $filter .= '<input type="submit" id="edit-submit-requests-admin" name="" value="'.t('Apply').'" class="form-submit"></div></div></div></div></form></div>';
+  $filter .= '<input type="submit" id="edit-submit-requests-admin" name="" value="' . t('Apply') . '" class="form-submit"></div></div></div></div></form></div>';
 
-  return $filter.render($request_table).render($output);
+  return $filter . render($request_table) . render($output);
+}
+
+/**
+ * TAG no_pub_tag utilizable en queries. Uso:
+ *   ->addTag('no_pub_tag')
+ */
+function dge_data_requests_query_no_pub_tag_alter($query)
+{
+  $db_or = db_or();
+  $db_or->where('nid = tnid');
+  $db_or->condition('tnid',0,'=');
+  $query->leftJoin('field_data_field_organismo_pub', 'o', 'node.nid = o.entity_id');
+  $query->condition($db_or);
+
+  $query->isNull('o.field_organismo_pub_tid');
 }
 
 /**
  * Assign data request form
  */
-function dge_data_requests_assign_request_form($form, &$form_state, $nid) {
-
-  if (is_numeric($nid)){
+function dge_data_requests_assign_request_form($form, &$form_state, $nid)
+{
+  if (is_numeric($nid)) {
     $node = node_load($nid);
 
-    if ($node && $node->type == 'request' && $node->uid == 0) {
-      $organizations = _dge_data_request_load_organization();
-      $selected = isset($form_state['values']['organizations']) ? $form_state['values']['organizations'] : key($organizations);
+    _data_request_get_main_translation_node($nid);
+
+    if ($node && $node->type == 'request') {
+      $organizations = _dge_data_request_load_organization($node);
+      $selected = isset($form_state['values']['organizations']) ? $form_state['values']['organizations'] : $organizations;
 
       $form['nid'] = array(
-          '#type' => 'hidden',
-          '#value' => $nid,
+        '#type' => 'hidden',
+        '#value' => $nid,
       );
 
       $form['node_title'] = array(
-        '#markup' => $node_output = '<h3>'.$node->title.'</h3>'
+        '#markup' => $node_output = '<h3>' . $node->title . '</h3>'
       );
       $form['node_info'] = array(
         '#type' => 'fieldset',
@@ -214,7 +263,7 @@ function dge_data_requests_assign_request_form($form, &$form_state, $nid) {
         '#collapsed' => FALSE,
       );
       $form['node_info']['node'] = array(
-          '#markup' => _dge_data_request_info_request($node)
+        '#markup' => _dge_data_request_info_request($node)
       );
       $form['user_info'] = array(
         '#type' => 'fieldset',
@@ -223,34 +272,20 @@ function dge_data_requests_assign_request_form($form, &$form_state, $nid) {
         '#collapsed' => FALSE,
       );
       $form['user_info']['user_node'] = array(
-          '#markup' => _dge_data_request_user_request($node)
+        '#markup' => _dge_data_request_user_request($node)
       );
 
       $form['organizations'] = array(
-          '#type' => 'select',
-          '#title' => t('Organization'),
-          '#options' => $organizations,
-          '#default_value' => $selected,
-          '#ajax' => array(
-            'callback' => '_dge_data_requests_update_users_by_organization',
-            'wrapper' => 'dropdown-user-replace',
-          ),
-      );
-
-      $title = ($selected && $selected != 'none')?$organizations[$selected] . ' ' . t('users'):'Users';
-      $form['user'] = array(
-          '#type' => 'select',
-          '#title' => $title,
-          '#required' => true,
-          '#prefix' => '<div id="dropdown-user-replace">',
-          '#suffix' => '</div>',
-          '#options' => _dge_data_requests_get_users_by_organization($selected),
-          '#default_value' => isset($form_state['values']['user']) ? $form_state['values']['user'] : '',
+        '#type' => 'textfield',
+        '#default_value' => taxonomy_implode_tags($selected),
+        '#title' => t('Responsible organizations'),
+        '#autocomplete_path' => 'taxonomy/autocomplete/field_organismo_pub',
+        '#attributes' => array('style' => array('width:100%'))
       );
 
       $form['submit'] = array(
-          '#type' => 'submit',
-          '#value' => t('Assign'),
+        '#type' => 'submit',
+        '#value' => t('Assign'),
       );
 
       return $form;
@@ -262,24 +297,28 @@ function dge_data_requests_assign_request_form($form, &$form_state, $nid) {
  * Ajax function for dependent combo fields
  *
  */
-function _dge_data_requests_update_users_by_organization($form, $form_state) {
+function _dge_data_requests_update_users_by_organization($form, $form_state)
+{
   return $form['user'];
 }
 
 /**
- * Get list of organizations
+ * Get node organizations
  *
  * @return array
  */
-function _dge_data_request_load_organization() {
-  $taxonomy = taxonomy_vocabulary_machine_name_load(DGE_ORGANIZATION_TAXONOMY);
-  $organizations = taxonomy_get_tree($taxonomy->vid);
-  $options = array();
-  $options['none'] = t('-- Select organization --');
-  foreach ($organizations as $organization) {
-     $options[$organization->tid] = $organization->name;
+function _dge_data_request_load_organization($node)
+{
+  $orgs = [];
+
+  if (!empty($node->field_organismo_pub['und'])) {
+    foreach ($node->field_organismo_pub['und'] as $i => $org) {
+        $orgs[] = $org['tid'];
+    }
+    $orgs =  taxonomy_term_load_multiple($orgs);
   }
-  return $options;
+
+  return $orgs;
 }
 
 /**
@@ -288,38 +327,38 @@ function _dge_data_request_load_organization() {
  * @param $org
  * @return array
  */
-function _dge_data_requests_get_users_by_organization($org = '') {
+function _dge_data_requests_get_users_by_organization($org = '')
+{
   $options = array();
   $options['none'] = t('-- Select user --');
 
   if ($org && is_numeric($org)) {
 
-     $query = new EntityFieldQuery();
-     $query->entityCondition('entity_type', 'profile2')
-         ->propertyCondition('type', 'agency_data')
-         ->fieldCondition('field_root_agency', 'tid', $org, '=');
-     $result = $query->execute();
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'profile2')
+      ->propertyCondition('type', 'agency_data')
+      ->fieldCondition('field_root_agency', 'tid', $org, '=');
+    $result = $query->execute();
 
-     $profiles = array();
-     if ($result) {
-       $profiles = profile2_load_multiple(array_keys($result['profile2']));
-     }
-     foreach ($profiles as $profile) {
-       $user = user_load($profile->uid);
-       if ($user->status == 1 && in_array(DGE_ORGANIZATION_ROLE, $user->roles)) {
-          $main_profile = profile2_load_by_user($user, 'main');
-          if (!empty($main_profile)) {
-             $field_name_contact = field_get_items('profile2', $main_profile, 'field_name_contact');
-             $field_surname_contact = field_get_items('profile2', $main_profile, 'field_surname_contact');
-             $options[$user->uid] = $user->name.' ('.
-                                       $field_name_contact[0]['safe_value'].' '.
-                                       $field_surname_contact[0]['safe_value'].')';
-          } else {
-             $options[$user->uid] = $user->name;
-          }
-       }
-     }
-
+    $profiles = array();
+    if ($result) {
+      $profiles = profile2_load_multiple(array_keys($result['profile2']));
+    }
+    foreach ($profiles as $profile) {
+      $user = user_load($profile->uid);
+      if ($user->status == 1 && in_array(DGE_ORGANIZATION_ROLE, $user->roles)) {
+        $main_profile = profile2_load_by_user($user, 'main');
+        if (!empty($main_profile)) {
+          $field_name_contact = field_get_items('profile2', $main_profile, 'field_name_contact');
+          $field_surname_contact = field_get_items('profile2', $main_profile, 'field_surname_contact');
+          $options[$user->uid] = $user->name . ' (' .
+            $field_name_contact[0]['safe_value'] . ' ' .
+            $field_surname_contact[0]['safe_value'] . ')';
+        } else {
+          $options[$user->uid] = $user->name;
+        }
+      }
+    }
   }
 
   return $options;
@@ -331,17 +370,24 @@ function _dge_data_requests_get_users_by_organization($org = '') {
  * @param $node
  * @return string
  */
-function _dge_data_request_info_request($node) {
-   $aux = field_view_field('node', $node, 'field_request_category');
-   $node_output = drupal_render($aux);
-   $aux = field_view_field('node', $node, 'body');
-   $node_output .= drupal_render($aux);
-   $aux = field_view_field('node', $node, 'field_request_long_reason');
-   $node_output .= drupal_render($aux);
-   $aux = field_view_field('node', $node, 'field_request_long_benefit');
-   $node_output .= drupal_render($aux);
+function _dge_data_request_info_request($node)
+{
+  $aux = field_view_field('node', $node, 'field_request_category');
+  $node_output = drupal_render($aux);
+  $aux = field_view_field('node', $node, 'body');
+  $node_output .= drupal_render($aux);
+  $aux = field_view_field('node', $node, 'field_request_long_reason');
+  $node_output .= drupal_render($aux);
+  $aux = field_view_field('node', $node, 'field_request_long_benefit');
+  $node_output .= drupal_render($aux);
 
-   return $node_output;
+  // SDA-930
+  $aux = field_view_field('node', $node, 'field_organismo_pub');
+  if (!empty($aux)) {
+    $node_output .= drupal_render($aux);
+  }
+
+  return $node_output;
 }
 
 /**
@@ -350,15 +396,16 @@ function _dge_data_request_info_request($node) {
  * @param $node
  * @return string
  */
-function _dge_data_request_user_request($node) {
-   $aux = field_view_field('node', $node, 'field_sender_name');
-   $node_output = drupal_render($aux);
-   $aux = field_view_field('node', $node, 'field_sender_email');
-   $node_output .= drupal_render($aux);
-   $aux = field_view_field('node', $node, 'field_sender_company');
-   $node_output .= drupal_render($aux);
+function _dge_data_request_user_request($node)
+{
+  $aux = field_view_field('node', $node, 'field_sender_name');
+  $node_output = drupal_render($aux);
+  $aux = field_view_field('node', $node, 'field_sender_email');
+  $node_output .= drupal_render($aux);
+  $aux = field_view_field('node', $node, 'field_sender_company');
+  $node_output .= drupal_render($aux);
 
-   return $node_output;
+  return $node_output;
 }
 
 /**
@@ -366,15 +413,83 @@ function _dge_data_request_user_request($node) {
  * Form validation
  *
  */
-function dge_data_requests_assign_request_form_validate($form, &$form_state) {
-  if (empty($form_state['values']['user']) || $form_state['values']['user'] == 'none') {
-    form_set_error('user', t("The user is mandatory"));
-  } elseif (!is_numeric($form_state['values']['user'])) {
-    form_set_error('user', t("The user field is not in the correct format"));
+function dge_data_requests_assign_request_form_validate($form, &$form_state)
+{
+  if (empty($form_state['values']['organizations']) || $form_state['values']['organizations'] == 'none') {
+    form_set_error('user', t("The organizations is mandatory"));
+  } elseif (is_numeric($form_state['values']['organizations'])) {
+    form_set_error('user', t("The organizations field is not in the correct format"));
   }
   if (empty($form_state['values']['nid']) || !is_numeric($form_state['values']['nid'])) {
     form_set_error('', t("An unexpected error occurred. Please, reload the page and try again."));
   }
+
+  $orgs = organizations_from_autocomplete($form_state['values']['organizations']);
+  if (empty($orgs) || sizeof(not_valid_organizations($orgs)) > 0) {
+    form_set_error('organizations', t("The following organizatios are not valid: " . implode(', ', not_valid_organizations($orgs))));
+  }
+}
+
+/**
+ *
+ * Get organizations from autocomplete string
+ *
+ */
+function organizations_from_autocomplete($string_orgs)
+{
+    $orgs = [];
+    //check input
+    preg_match('/^\s*([^,\"]+|\"[^\"]+\")\s*(,\s*([^,\"]+|\"[^\"]+\")\s*)*$/',$string_orgs, $data_from_string);
+    if (sizeof($data_from_string) > 0) {
+        do {
+            $length_orgs = strlen($string_orgs);
+            $coma_pos = strpos($string_orgs, ",");
+            $first_comillas_pos = strpos($string_orgs, "\"");
+            if ($first_comillas_pos === FALSE) {
+                if (substr(trim($string_orgs), 0, 1) === ',') {
+                    $string_orgs = substr($string_orgs, $coma_pos + 1);
+                }
+                $orgs = array_merge($orgs, explode(',', $string_orgs));
+                $string_orgs = '';
+            } elseif($first_comillas_pos > $coma_pos) {
+                $organization = substr($string_orgs, 0, $coma_pos);
+                if (trim($organization) != '') {
+                    $orgs[] = substr($string_orgs, 0, $coma_pos);
+                }
+                $string_orgs = substr($string_orgs, $coma_pos + 1);
+            } else {
+                $next_comillas_pos = strpos($string_orgs, "\"", strpos($string_orgs, "\"") + 1);
+                $organization = substr($string_orgs, 0, $next_comillas_pos +1);
+                $orgs[] = str_replace("\"", '', $organization);
+                $string_orgs = substr($string_orgs, $next_comillas_pos + 1);
+            }
+            $quotes_number = substr_count($string_orgs,"\"");
+            //Control var
+            $new_length_orgs = strlen($string_orgs);
+        } while ($new_length_orgs > 0 && $new_length_orgs < $length_orgs);
+    } else {
+      $orgs[] = $string_orgs;
+    }
+    return $orgs;
+}
+
+/**
+ *
+ * Get not valid organization names
+ *
+ */
+function not_valid_organizations($orgs)
+{
+    $not_valid = [];
+    if (! empty($orgs)) {
+        foreach ($orgs as $k => $org) {
+            $torg = array_pop(taxonomy_get_term_by_name($org, 'agencies'));
+            if ($torg == NULL) {
+                $not_valid[] = $org;
+            }
+        }
+    }
+    return $not_valid;
 }
 
 /**
@@ -382,33 +497,211 @@ function dge_data_requests_assign_request_form_validate($form, &$form_state) {
  * Form submit
  *
  */
-function dge_data_requests_assign_request_form_submit($form, &$form_state) {
+function dge_data_requests_assign_request_form_submit($form, &$form_state)
+{
   //Change the node owner
-  $request_node = node_load($form_state['values']['nid']);
-  $request_node->uid = $form_state['values']['user'];
-  node_save($request_node);
+  $orgs = organizations_from_autocomplete($form_state['values']['organizations']);
 
+  // SDA-930
+  $node = _data_request_get_main_translation_node($form_state['values']['nid']);
+
+  // Obtener organizaciones asignadas antiguas
+  $old_orgs = [];
+  if (!empty($node->field_organismo_pub['und'])) {
+    foreach ($node->field_organismo_pub['und'] as $i => $org) {
+        $old_orgs[] = $org['tid'];
+    }
+  }
+
+  $node->field_organismo_pub['und'] = [];
+  foreach ($orgs as $k => $org) {
+    $torg = array_pop(taxonomy_get_term_by_name($org, 'agencies'));
+    $node->field_organismo_pub['und'][$k]['tid'] = $torg->tid;
+  }
+
+
+  node_save($node);
   drupal_set_message(t('The data request has been assigned successfully'), 'status', FALSE);
-  $form_state['redirect'] = 'admin/dashboard/unassigned-requests';
+
+
+
+
+
+  /*ENVIO MAIL*/
+  // SDA-930 CORREO A ORGANISMOS ASIGNADOS
+  _dge_data_request_organization_assigned_send_mail($node, $old_orgs);
+
+  // SDA-930
+  if ($node->status == 0) {
+    $form_state['redirect'] = 'admin/dashboard/unassigned-requests';
+  } else {
+    $form_state['redirect'] = 'admin/dashboard/requests';
+  }
+}
+
+/**
+ *
+ * SDA-930
+ * Si el data request pertenece a una traducción se obtiene el nodo raíz
+ *
+ */
+function _data_request_get_main_translation_node($nid)
+{
+    $node = node_load($nid);
+
+    if (! empty($node->language_original) && $node->language_original != $node->language) {
+        if (!empty($node->tnid)) {
+            $node = node_load($node->tnid);
+        } else {
+            // por regla general no debe entrar aqui
+            $translations = translation_node_get_translations($node->tnid);
+            if (!empty($translations[$node->language_original])) {
+                $node = node_load($translations[$node->language_original]->nid);
+            }
+        }
+    }
+
+    return $node;
+}
+
+// SDA-930 CORREO A NUEVOS ORGANISMOS ASIGNADOS
+function _dge_data_request_organization_assigned_send_mail($node, $old_orgs)
+{
+    $orgs = [];
+    // Obtener nuevos organismos
+    if (!empty($node->field_organismo_pub['und'])) {
+        foreach ($node->field_organismo_pub['und'] as $i => $org) {
+            $orgs[] = $org['tid'];
+        }
+    }
+    $orgs = array_diff($orgs, $old_orgs);
+
+    // Se envia la notifiacion por correo
+    if (!empty($orgs)) {
+        if (variable_get('dge_data_requests_assigned_org_mail_is_enabled', 0)) {
+            $users = db_query('select * from users where uid in (
+            select p.uid from profile p where p.pid in (
+              select fr.entity_id from field_data_field_root_agency fr where fr.field_root_agency_tid in (:orgs)
+              )
+            )
+            and status = 1;', array(':orgs' => $orgs))->fetchAll();
+
+            foreach ($users as $user) {
+              dge_data_request_send_assignation_mail_to_user($node, $user);
+            }
+        }
+    }
+
 }
 
 
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
  */
-function dge_data_requests_form_node_form_alter(&$form, $form_state, $form_id) {
+function dge_data_requests_form_request_node_form_alter(&$form, $form_state, $form_id)
+{
+  $type=$form['type']['#value'];
+  if ($type === 'request') {
+    global $user;
+    global $language;
+
+    if(! user_access('access request subscribers')) {
+        unset($form['field_request_subscriptor']);
+    }
+    else {
+        $form['#validate'][] = '_dge_data_requests_form_node_validate_alter';
+    }
+
+    if (!(is_array($user->roles) && in_array('administrator', $user->roles))) {
+        unset($form['field_organismo_pub']);
+    }
+    unset($form['field_number_subscriptors']);
+
+    $node = $form['#node'];
+    if (in_array("organization",$user->roles) && $node->nid) {
+      // SDA-930
+      $form['field_request_tx_status']['und']['#required'] = TRUE;
+      unset($form['field_request_tx_status']['und']['#options']['_none']);
+      if (!empty($form['field_request_tx_status']['und']['#default_value']) &&
+          !empty($form['field_request_tx_status']['und']['#default_value'][0]) &&
+          $form['field_request_tx_status']['und']['#default_value'][0] != 1975) {
+            unset($form['field_request_tx_status']['und']['#options'][1975]);
+      }
+
+      $form['info_form2'] = array(
+        '#type' => 'container',
+
+        '#weight' => -4,
+        '#prefix' => '<div class="page_content_card">',
+        '#suffix' => '</div>',
+      );
+
+      $form['info_form2']['header']['#markup']="<h2 style='margin-left:0'  class='page-title'><strong>".translate_request_form_fields("Details of the data query")."</strong></h2>";
+      $form['info_form2']['title']['#markup']="<div class='dge-form_detail__data'> <strong>".translate_request_form_fields('What data are you requesting?')."</strong> <div>{$node->title}</div></div>";
+      $node_lang=language_list()[$node->language]->native;
+      $form['info_form2']['lang']['#markup']="<div class='dge-form_detail__data'> <strong>".translate_request_form_fields('Language')."</strong> <div>{$node_lang}</div></div>";
+      $form['info_form2']['body']['#markup']="<div class='dge-form_detail__data'> <strong>".translate_request_form_fields('Description')."</strong> <div>{$node->body['und'][0]['value']}</div></div>";
+      $categories= array_map(function($el){
+        $category=taxonomy_term_load($el['tid']);
+        $category=i18n_taxonomy_localize_terms($category);
+        return $category->name;
+      },$node->field_request_category['und']);
+
+      $category=implode(", ",$categories);
+      $form['info_form2']['category']['#markup']="<div class='dge-form_detail__data'> <strong>".translate_request_form_fields('Category')."</strong> <div>{$category}</div></div>";
+      $form['info_form2']['long_reason']['#markup']="<div class='dge-form_detail__data'> <strong>".translate_request_form_fields('Reason for request')."</strong> <div>{$node->field_request_long_reason['und'][0]['value']}</div></div>";
+      $form['info_form2']['long_benefit']['#markup']="<div class='dge-form_detail__data'> <strong>".translate_request_form_fields('Expected benefits')."</strong> <div>{$node->field_request_long_benefit['und'][0]['value']}</div></div>";
+      $form['info_form2']['long_benefit']['#markup']="<div class='dge-form_detail__data'> <strong>".translate_request_form_fields('Contact data')."</strong> <div>{$form['field_sender_name']['#markup']}</div></div>";
+      $form['header2'] = array(
+        '#type' => 'container',
+        '#weight' => -3,
+        '#prefix' => '<div  class="header2_description" style="margin:50px 0">',
+        '#suffix' => '</div>',
+      );
+      $form['header2']['header2']['#markup']="<h2 style='margin-left:0'  class='page-title'><strong>".translate_request_form_fields("Respond to request")."</strong></h2>";
+      $content_type_description_field = variable_get($type.'_'.$language->language.'_form_description');
+      $form['header2']['header2_description']['#markup']="<div>".$content_type_description_field['value']."</div>";
+      $form['second_card_top']['#markup']='<div style="margin-bottom:30px" class="page_content_card_body">
+      <div class="purple_column"></div>
+      <div class="field_request_body">
+          <div class="field_request_body_wrapper">  ';
+      $form['second_card_bottom']['#markup']='</div></div></div>';
+      $form['second_card_bottom']['#weight']=40;
+      $form['header3']['#weight']=41;
+      $form['header3']['header3']['#markup']="<p style='margin-left:0' ><strong>".translate_request_form_fields("Revision information")."</strong></p>";
+
+      // SDA-930 -- Corregir error no cambiar de estado
+      $form['revision_information']['#type'] = 'container';
+      $form['revision_information']['#weight'] = 42;
+      $form['revision_information']['#prefix'] = '<style>#revision-container .fieldset-wrapper{width:100%}</style><div  style="margin-bottom:30px" class="page_content_card_body">' .
+                                                 '<div class="purple_column"></div><div class="field_request_body"><div  class="field_request_body_wrapper">';
+      $form['revision_information']['#suffix'] = '</div></div></div></div>';
+    }
+  }
+}
+
+function translate_request_form_fields($string)
+{
+  return t($string, array(), array('context' => 'request_edit_form'));
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function dge_data_requests_form_node_form_alter(&$form, $form_state, $form_id)
+{
   global $user;
   global $language;
-  
+
   $node = $form_state['node'];
-  if($user->uid && in_array(DGE_ORGANIZATION_ROLE, $user->roles)) {
+  if ($user->uid && in_array(DGE_ORGANIZATION_ROLE, $user->roles)) {
     if (isset($node->nid) && !isset($node->is_new) && $node->type == 'request') {
-    	if (field_get_items('node', $node, 'field_sender_name') && field_get_items('node', $node, 'field_sender_email')){
+      if (field_get_items('node', $node, 'field_sender_name') && field_get_items('node', $node, 'field_sender_email')) {
         $form['title'] = array(
           '#markup' => _dge_data_request_basic_form_wrapper(i18n_node_translate_type($node->type, 'title_label', $form['title']['#title']), $node->title),
           '#weight' => $form['title']['#weight'],
         );
-      
+
         //Description
         $instance = field_info_instance('node', 'body', 'request');
         $field = field_get_items('node', $node, 'body');
@@ -420,7 +713,7 @@ function dge_data_requests_form_node_form_alter(&$form, $form_state, $form_id) {
         } else {
           $form['body']['#access'] = false;
         }
-      
+
         //Category
         $instance = field_info_instance('node', 'field_request_category', 'request');
         $field = field_get_items('node', $node, 'field_request_category');
@@ -433,7 +726,7 @@ function dge_data_requests_form_node_form_alter(&$form, $form_state, $form_id) {
         } else {
           $form['field_request_category']['#access'] = false;
         }
-      
+
         //Reason for request
         $instance = field_info_instance('node', 'field_request_long_reason', 'request');
         $field = field_get_items('node', $node, 'field_request_long_reason');
@@ -456,12 +749,12 @@ function dge_data_requests_form_node_form_alter(&$form, $form_state, $form_id) {
         } else {
           $form['field_request_long_benefit']['#access'] = false;
         }
-      
+
         //Expected benefits
         $instance = field_info_instance('node', 'field_sender_name', 'request');
         $field = field_get_items('node', $node, 'field_sender_name');
         $contact_data = _dge_data_request_contact_form_wrapper(i18n_field_translate_property($instance, 'label'), $field[0]['safe_value']);
-      
+
         $instance = field_info_instance('node', 'field_sender_email', 'request');
         $field = field_get_items('node', $node, 'field_sender_email');
         if ($field) {
@@ -479,7 +772,7 @@ function dge_data_requests_form_node_form_alter(&$form, $form_state, $form_id) {
         $form['field_sender_company']['#access'] = false;
         $form['field_sender_show_data']['#access'] = false;
         $form['field_sender_terms_of_use']['#access'] = false;
-     
+
         //Disable the language option
         $form['#after_build'][] = 'dge_data_requests_form_after_build_lang';
       } else {
@@ -487,43 +780,45 @@ function dge_data_requests_form_node_form_alter(&$form, $form_state, $form_id) {
         $form['field_sender_company']['#access'] = false;
         $form['field_sender_show_data']['#access'] = false;
         $form['field_sender_terms_of_use']['#access'] = false;
-        $form['field_sender_name']['#markup'] = '<div style="margin-top:0.28em;"><p><b><i>'.t('This data request was not sent by any anonymous user').'</i></b></p></div>';
+        $form['field_sender_name']['#markup'] = '<div style="margin-top:0.28em;"><p><b><i>' . t('This data request was not sent by any anonymous user') . '</i></b></p></div>';
         $form['field_sender_name']['#type'] = 'markup';
       }
     } elseif ($node->type == 'request' && (!isset($node->nid) || isset($node->is_new))) {
-    	$form['field_sender_email']['#access'] = false;
+      $form['field_sender_email']['#access'] = false;
       $form['field_sender_company']['#access'] = false;
       $form['field_sender_show_data']['#access'] = false;
       $form['field_sender_terms_of_use']['#access'] = false;
-      $form['field_sender_name']['#markup'] = '<div style="margin-top:0.28em;"><p><b><i>'.t('This information is only for anonymous users').'</i></b></p></div>';
+      $form['field_sender_name']['#markup'] = '<div style="margin-top:0.28em;"><p><b><i>' . t('This information is only for anonymous users') . '</i></b></p></div>';
       $form['field_sender_name']['#type'] = 'markup';
     }
   }
-
-
 }
 
-function _dge_data_request_basic_form_wrapper($title, $value, $is_simple=TRUE){
-  return '<fieldset class="field-group-fieldset form-wrapper" style="margin-bottom:20px;"><legend><span class="fieldset-legend">'.
-         $title.
-         '</span></legend><div class="fieldset-wrapper" style="margin-top:0.28em">'.
-         (($is_simple)?'<p>':'').
-         $value.
-         (($is_simple)?'</p>':'').
-         '</div></fieldset>';
-}
-function _dge_data_request_contact_form_wrapper($title, $value){
-  return '<div class="form-item form-type-textfield"><label>'.
-         $title.
-         '</label><p>'.
-         $value.
-         '</p></div>';
+function _dge_data_request_basic_form_wrapper($title, $value, $is_simple = TRUE)
+{
+  return '<fieldset class="field-group-fieldset form-wrapper" style="margin-bottom:20px;"><legend><span class="fieldset-legend">' .
+    $title .
+    '</span></legend><div class="fieldset-wrapper" style="margin-top:0.28em">' .
+    (($is_simple) ? '<p>' : '') .
+    $value .
+    (($is_simple) ? '</p>' : '') .
+    '</div></fieldset>';
 }
 
-function dge_data_requests_form_after_build_lang(&$form, &$form_state){
+function _dge_data_request_contact_form_wrapper($title, $value)
+{
+  return '<div class="form-item form-type-textfield"><label>' .
+    $title .
+    '</label><p>' .
+    $value .
+    '</p></div>';
+}
+
+function dge_data_requests_form_after_build_lang(&$form, &$form_state)
+{
   $form['language'] = array(
-          '#markup' => _dge_data_request_basic_form_wrapper($form['language']['#title'], $form['language']['#options'][$form['language']['#default_value']], false),
-          '#weight' => $form['language']['#weight'],
+    '#markup' => _dge_data_request_basic_form_wrapper($form['language']['#title'], $form['language']['#options'][$form['language']['#default_value']], false),
+    '#weight' => $form['language']['#weight'],
   );
 
   return $form;
@@ -532,61 +827,1146 @@ function dge_data_requests_form_after_build_lang(&$form, &$form_state){
 /**
  * Implements hook_node_update().
  */
-function dge_data_requests_node_update($node) {
-   if ((! module_exists('workbench_moderation') ||
-        ! workbench_moderation_node_type_moderated($node->type))
-        && dge_data_requests_is_request($node)
-        && $node->status == 1) {
-      dge_data_requests_node_send_mail($node);
-   }
+function dge_data_requests_node_update($node)
+{
+  if ((!module_exists('workbench_moderation') ||
+      !workbench_moderation_node_type_moderated($node->type))
+    && dge_data_requests_is_request($node)
+    && $node->language == 'es'
+    && $node->status == 1
+  ) {
+    if (variable_get('dge_data_requests_mail_is_enabled', 0)) {
+        dge_data_requests_node_send_mail($node);
+    }
+  }
 }
 
 /**
  * Implements hook_workbench_moderation_transition().
  */
-function dge_data_requests_workbench_moderation_transition($node, $previous_state, $new_state) {
-   if ($new_state == 'published' && dge_data_requests_is_request($node)) {
-      dge_data_requests_node_send_mail($node);
-   }
+function dge_data_requests_workbench_moderation_transition($node, $previous_state, $new_state)
+{
+  if ($new_state == 'published' && dge_data_requests_is_request($node) && $node->language == 'es') {
+
+    // SDA 930 - ENVIAR MAIL A USUARIOS ORGANISMOS DE QUE SE HA PUBLICADO
+    if (!$node->first_email_sent && !$GLOBALS['request_alter_subscriptors']) {
+        dge_data_request_send_mail_to_org_owners($node);
+        $node->first_email_sent = true;
+    }
+
+    # Notifications to request's suscribers
+    #
+    # Load previous version
+    $vid = db_query('SELECT max(vid) FROM {node_revision} WHERE nid = :nid AND vid != :vid', array(':nid' => $node->nid, ':vid' => $node->vid))->fetchField();
+    if ($vid != $node->vid) {
+        $node_revision = node_load($node->nid, $vid);
+
+        # Notification to owner
+        if (variable_get('dge_data_requests_mail_is_enabled', 0) &&
+             (_is_answer_updated_in_data_request($node, $node_revision) ||
+              _is_state_updated_in_data_request($node, $node_revision))) {
+            dge_data_requests_node_send_mail($node);
+        }
+
+        # If a new response is written then send email to subscribers
+        if ( variable_get('dge_data_requests_response_mail_is_enabled', 0) &&
+              _is_answer_updated_in_data_request($node, $node_revision)) {
+            dge_data_request_send_mai_to_subscribers(
+                $node,
+                'response_request',
+                variable_get('dge_data_requests_response_mail_email',variable_get('site_mail')));
+        # If the data request has been updated then send email to subscribers
+        } elseif (variable_get('dge_data_requests_modification_mail_is_enabled', 0) &&
+                  _is_state_updated_in_data_request($node, $node_revision)) {
+            dge_data_request_send_mai_to_subscribers(
+                $node,
+                'modification_request',
+                variable_get('dge_data_requests_modification_mail_email',variable_get('site_mail')));
+        }
+    } else {
+        # Notification to owner
+        if (variable_get('dge_data_requests_mail_is_enabled', 0) &&
+                !_is_empty_html_field($node->field_request_answer[LANGUAGE_NONE])) {
+               dge_data_requests_node_send_mail($node);
+        }
+    }
+  }
 }
 
-function dge_data_requests_node_send_mail($node) {
-   if(isset($node->dge_email_request_sent))
-      return;
 
-   //If request was sent by an anonymous user, warn him the update
-   if (!empty($node->field_sender_email[LANGUAGE_NONE][0]['email'])) {
-      $mail = drupal_mail('dge_data_requests', 'request',
-                       $node->field_sender_email[LANGUAGE_NONE][0]['email'],
-                       language_default(),
-                       array('node' => $node),
-                       variable_get('dge_data_requests_mail_email', variable_get('site_mail')));
+/**
+ * Check if a data request has been modified by an organization
+ */
+function _is_answer_updated_in_data_request($node, $revision)
+{
+    $origin_response = (!empty($revision->field_request_answer[LANGUAGE_NONE][0]['value']))?$revision->field_request_answer[LANGUAGE_NONE][0]['value']:'';
+    $final_response = (!empty($node->field_request_answer[LANGUAGE_NONE][0]['value']))?$node->field_request_answer[LANGUAGE_NONE][0]['value']:'';
 
-      if ($mail['result'] == FALSE) {
-   	   watchdog('dge_data_requests', 'Error al enviar el correo de aviso al usuario',
-                  array(), WATCHDOG_ERROR);
-      }
-      $node->dge_email_request_sent = TRUE;
-   }
+    return $origin_response != $final_response;
 }
 
-function dge_data_requests_is_request($node){
-   return (!empty($node) && $node->type == 'request' && variable_get('dge_data_requests_mail_is_enabled', 1))?True:False;
+/**
+ * Check if a data request has been modified by an organization
+ */
+function _is_state_updated_in_data_request($node, $revision)
+{
+    $origin_state = (!empty($revision->field_request_tx_status[LANGUAGE_NONE][0]['tid']))?$revision->field_request_tx_status[LANGUAGE_NONE][0]['tid']:-1;
+    $final_state = (!empty($node->field_request_tx_status[LANGUAGE_NONE][0]['tid']))?$node->field_request_tx_status[LANGUAGE_NONE][0]['tid']:-1;
+
+    return $origin_state != $final_state;
+}
+
+/**
+ * Check if an HTML field has been modified.
+ */
+function _is_empty_html_field($field)
+{
+   return empty($field) || empty($field[0]['value']) || empty(trim(strip_tags($field[0]['value'])));
+}
+
+/**
+ * Send mail to data request subscribers.
+ */
+function dge_data_request_send_mai_to_subscribers($node, $mail_type, $from)
+{
+    # Load data request subscribers
+    $ids_subscribers = array();
+    foreach ($node->field_request_subscriptor[LANGUAGE_NONE] as $key => $value) {
+        $ids_subscribers[] = $value['value'];
+    }
+    $subscribers = field_collection_item_load_multiple($ids_subscribers);
+
+    # Send email to each subscriber
+    foreach ($subscribers as $key => $subscriber) {
+
+        if (!empty($subscriber->field_email[LANGUAGE_NONE][0]['email'])) {
+            $mail = drupal_mail(
+                'dge_data_requests',
+                $mail_type,
+                $subscriber->field_email[LANGUAGE_NONE][0]['email'],
+                language_default(),
+                array('node' => $node, 'subscriber' => $subscriber),
+                $from
+            );
+            if ($mail['result'] == FALSE) {
+                watchdog(
+                    'dge_data_requests',
+                    'Error al enviar el correo de aviso de comentario al usuario ' . $subscriber->field_email[LANGUAGE_NONE][0]['email'],
+                    array(),
+                    WATCHDOG_ERROR
+                );
+            }
+        }
+    }
+}
+
+/**
+ * Send mail to data request creator.
+ */
+function dge_data_requests_node_send_mail($node)
+{
+  //If request was sent by an anonymous user, warn him the update
+  if (!empty($node->field_sender_email[LANGUAGE_NONE][0]['email'])) {
+    $mail = drupal_mail(
+      'dge_data_requests',
+      'request',
+      $node->field_sender_email[LANGUAGE_NONE][0]['email'],
+      language_default(),
+      array('node' => $node),
+      variable_get('dge_data_requests_mail_email', variable_get('site_mail'))
+    );
+
+    if ($mail['result'] == FALSE) {
+      watchdog(
+        'dge_data_requests',
+        'Error al enviar el correo de aviso al usuario',
+        array(),
+        WATCHDOG_ERROR
+      );
+    }
+  }
+}
+
+/**
+ * Send mail to data request assigned organization users.
+ */
+function dge_data_request_send_mail_to_org_owners($node)
+{
+  if (variable_get('dge_data_requests_published_org_mail_is_enabled', 0)) {
+    $users = _get_org_owner_users_data_request($node);
+
+    foreach ($users as $user) {
+        $mail = drupal_mail(
+            'dge_data_requests',
+            'owner_publish_request',
+            $user->mail,
+            language_default(),
+            array('node' => $node),
+            variable_get('dge_data_requests_published_org_email_email', variable_get('site_mail'))
+        );
+
+        if ($mail['result'] == FALSE) {
+          watchdog(
+              'dge_data_requests',
+              'Error al enviar el correo de aviso al usuario',
+              array(),
+              WATCHDOG_ERROR
+          );
+        }
+    }
+  }
+}
+
+/**
+ * Check if the node has type request and is not empty.
+ */
+function dge_data_requests_is_request($node)
+{
+  return (!empty($node) && $node->type == 'request') ? True : False;
 }
 
 /**
  * Implements hook_mail().
  */
-function dge_data_requests_mail($key, &$message, $params) {
+function dge_data_requests_mail($key, &$message, $params)
+{
   switch ($key) {
     case 'request':
-      $subject = variable_get('dge_data_requests_mail_subject',
-                 '[datos.gob.es] Tu consulta de disponibilidad de datos ha sido actualizada');
-      $body = variable_get('dge_data_requests_mail_body',
-                 'Se han realizado cambios en tu consulta de disponibilidad de datos "[node:title]".\nPuedes visualizarlos en el siguiente enlace: [node:url]\n\n\nSaludos cordiales,\n\ndatos.gob.es\nMinisterio de Energía, Turismo y Agenda Digital\n\nMinisterio de Hacienda y Función Pública');
+      $subject = variable_get(
+        'dge_data_requests_mail_subject',
+        '[datos.gob.es] Tu consulta de disponibilidad de datos ha sido actualizada'
+      );
+      $body = variable_get(
+        'dge_data_requests_mail_body',
+        "Se han realizado cambios en tu consulta de disponibilidad de datos \"[node:title]\".\nPuedes visualizarlos en el siguiente enlace: [node:url]\n\nSaludos cordiales,\n\ndatos.gob.es\nMinisterio de Energía, Turismo y Agenda Digital\n\nMinisterio de Hacienda y Función Pública"
+      );
+      $message['subject'] = token_replace($subject, array('node' => $params['node']));
+      $message['body'][] = token_replace($body, array('node' => $params['node']));
+      break;
+    case 'subscription_request':
+      $subject = variable_get(
+        'dge_data_subscription_mail_subject',
+        '[datos.gob.es] Nueva suscripción');
+      $body = variable_get(
+        'dge_data_subscription_mail_body',
+        "Se ha realizado una suscripción a \"[node:title]\".\n\nPuedes visualizarlos en el siguiente enlace: [node:url]\n\nSaludos cordiales,\n\ndatos.gob.es\nMinisterio de Energía, Turismo y Agenda Digital\n\nMinisterio de Hacienda y Función Pública")
+      ;
+      $body = _update_user_tokens($body, $params['subscriber']);
+      $message['subject'] = token_replace($subject, array('node' => $params['node']));
+      $subject = _update_user_tokens($subject, $params['subscriber']);
+      $message['body'][] = token_replace($body, array('node' => $params['node']));
+      break;
+    case 'comment_request':
+      $subject = variable_get(
+        'dge_data_requests_comment_mail_subject',
+        '[datos.gob.es] La disponibilidad de datos a la que estas suscrito ha recibido un nuevo comentario'
+      );
+      $body = variable_get(
+        'dge_data_requests_comment_mail_body',
+        "Se han realizado comentarios en la disponibilidad de datos \"[node:title]\".\nPuedes visualizarlos en el siguiente enlace: [node:url]\n\nSaludos cordiales,\n\ndatos.gob.es\nMinisterio de Energía, Turismo y Agenda Digital\n\nMinisterio de Hacienda y Función Pública"
+      );
+      $message['subject'] = token_replace($subject, array('node' => $params['node']));
+      $message['body'][] = token_replace($body, array('node' => $params['node']));
+      break;
+    case 'response_request':
+      $subject = variable_get(
+        'dge_data_requests_response_mail_subject',
+        '[datos.gob.es] La disponibilidad de datos a la que estas suscrito ha recibido una respuesta a petición de datos'
+      );
+      $body = variable_get(
+        'dge_data_requests_response_mail_body',
+        "Se ha realizado una respuesta en la disponibilidad de datos \"[node:title]\".\nPuedes visualizarlos en el siguiente enlace: [node:url]\n\nSaludos cordiales,\n\ndatos.gob.es\nMinisterio de Energía, Turismo y Agenda Digital\n\nMinisterio de Hacienda y Función Pública"
+      );
+      $subject = _update_subscriptor_tokens($subject, $params['subscriber']);
+      $message['subject'] = token_replace($subject, array('node' => $params['node']));
+      $body = _update_subscriptor_tokens($body, $params['subscriber']);
+      $message['body'][] = token_replace($body, array('node' => $params['node']));
+      break;
+    case 'modification_request':
+      $subject = variable_get(
+        'dge_data_requests_modification_mail_subject',
+        '[datos.gob.es] La disponibilidad de datos a la que estas suscrito se ha modificado'
+      );
+      $body = variable_get(
+        'dge_data_requests_modification_mail_body',
+        "Se ha modificado la disponibilidad de datos \"[node:title]\".\nPuedes visualizarlos en el siguiente enlace: [node:url]\n\nSaludos cordiales,\n\ndatos.gob.es\nMinisterio de Energía, Turismo y Agenda Digital\n\nMinisterio de Hacienda y Función Pública"
+      );
+      $subject = _update_subscriptor_tokens($subject, $params['subscriber']);
+      $message['subject'] = token_replace($subject, array('node' => $params['node']));
+      $body = _update_subscriptor_tokens($body, $params['subscriber']);
+      $message['body'][] = token_replace($body, array('node' => $params['node']));
+      break;
+    case 'assignation_request':
+      $subject = variable_get(
+        'dge_data_requests_assigned_org_mail_subject',
+        '[datos.gob.es] Disponibilidad de datos asignada a su organismo'
+      );
+      $body = variable_get(
+        'dge_data_requests_assigned_org_mail_body',
+        "Estimado:\n\nSe le ha asignado una consulta de disponibilidad de datos recibida en la plataforma datos.gob.es. El título es \"[node:title]\" y puedes acceder a ella a través de la URL [node:url]\n\n" .
+        "Para contestar al usuario se debe entrar en el portal con tu usuario y editar la consulta incluyendo una Respuesta y actualizando el Estado en el que se encuentra la gestión de dicha consulta. Tiene todo el detalle de cómo realizar la gestión de estas consultas en el apartado 8 de la “Guía para organismos públicos” disponible en datos.gob.es: https://datos.gob.es/es/documentacion/guias-de-datosgobes \n\n" .
+        "Si necesita alguna aclaración o le quedan dudas, puede contactarnos a través del buzón de soporte soporte@datos.gob.es o llamando al número de teléfono 912 127 620 ext. 4422.\n\nSaludos cordiales,\n\n" .
+        "datos.gob.es\nEntidad pública Red.es\nMinisterio de Asuntos Económicos y Transformación Digital\n"
+      );
+      $message['subject'] = token_replace($subject, array('node' => $params['node']));
+      $message['body'][] = token_replace($body, array('node' => $params['node']));
+      break;
+    case 'owner_publish_request':
+      $subject = variable_get(
+        'dge_data_requests_published_org_email_subject',
+        '[datos.gob.es] La disponibilidad de datos asignada a tu organismo se ha publicado'
+      );
+      $body = variable_get(
+        'dge_data_requests_published_org_email_body',
+        "Se ha publicado la disponibilidad de datos \"[node:title]\" que está asignada a tu organismo.\nPuedes visualizarlos en el siguiente enlace: [node:url]\n\nSaludos cordiales,\n\ndatos.gob.es\nEntidad pública Red.es\nMinisterio de Asuntos Económicos y Transformación Digital"
+      );
+      $message['subject'] = token_replace($subject, array('node' => $params['node']));
+      $message['body'][] = token_replace($body, array('node' => $params['node']));
+      break;
+    case 'requests_leave':
+      $subject = variable_get(
+        'dge_data_requests_leave_mail_subject',
+        '[datos.gob.es] Te has desunido de la disponibilidad de datos [node:title]'
+      );
+      $body = variable_get(
+        'dge_data_requests_leave_mail_body',
+        "Te has desunido correctamente de la la disponibilidad de datos \"[node:title]\" que se encuentra en la URL [node:url].\n\nSaludos cordiales,\n\ndatos.gob.es\nEntidad pública Red.es\nMinisterio de Asuntos Económicos y Transformación Digital"
+      );
       $message['subject'] = token_replace($subject, array('node' => $params['node']));
       $message['body'][] = token_replace($body, array('node' => $params['node']));
       break;
   }
 }
 
+/**
+ * Replace subscriptor "tokens".
+ */
+function _update_subscriptor_tokens($text, $subscriber)
+{
+    $patterns = ["[subscriptor:name]", "[subscriptor:email]", "[subscriptor:organization]"];
+    $values = [
+                $subscriber->field_nombre_y_apellidos[LANGUAGE_NONE][0]['safe_value'],
+                $subscriber->field_email[LANGUAGE_NONE][0]['email'],
+                $subscriber->field_organizaci_n[LANGUAGE_NONE][0]['safe_value']
+    ];
+    return str_replace($patterns, $values, $text);
+}
+
+
+function dge_data_requests_refuse_request_form($form, &$form_state, $nid)
+{
+  if (is_numeric($nid)) {
+    $node = node_load($nid);
+    drupal_set_title(t('Reject data request: ') . $node->title);
+    $form['nid'] = array(
+      '#type' => 'hidden',
+      '#value' => $nid,
+    );
+    $form['names'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Reasons for rejection'),
+      '#required' => true,
+    );
+    $form['submit'] = array(
+      '#prefix' => '<div class="form-actions">',
+      '#suffix' => '</div>',
+      '#type' => 'submit',
+      '#value' => t('Rechazar'),
+    );
+    $form['#attributes'] = array('class' => 'dge-form');
+    return $form;
+  }
+}
+
+function dge_data_requests_refuse_request_form_submit($form, &$form_state)
+{
+  global $user;
+  $entity = profile2_load_by_user($user);
+  $agency_root = $entity['agency_data']->field_root_agency['und'][0]['tid'];
+  // SDA-930
+  $node = _data_request_get_main_translation_node($form_state['values']['nid']);
+
+  $del_key=null;
+  if($node->field_organismo_pub){
+
+    foreach ($node->field_organismo_pub['und']  as $k=>$pub){
+      if($pub['tid']==$agency_root){
+       $del_key=$k;
+      }
+    }
+  }
+
+  unset($node->field_organismo_pub['und'][$del_key]);
+  node_save($node);
+  drupal_set_message(t('You have successfully rejected the data request'), 'status', FALSE);
+  $form_state['redirect'] = 'admin/dashboard/requests';
+}
+
+function dge_data_requests_subs_request_form($form, &$form_state, $nid)
+{
+  if (is_numeric($nid)) {
+    $node = node_load($nid);
+
+    if (! $node || $node->status != 1 || $node->type != 'request') {
+        $form['error'] = array(
+            '#markup' => '<div class="node"><p class="content clearfix">' . t("An unexpected error occurred. Please, reload the page and try again.") . '<p></div>',
+        );
+        return $form;
+    }
+
+    drupal_set_title('Unirse a peticion de datos: ' . $node->title);
+
+    $form['nid'] = array(
+      '#type' => 'hidden',
+      '#value' => $nid,
+    );
+
+    $form['names'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Name and surname'),
+      '#required' => true,
+    );
+    $form['email'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Email'),
+      '#required' => true,
+    );
+    $form['organization'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Organization'),
+      '#required' => true,
+    );
+    $form['temrs'] = array(
+      '#type' => 'fieldset',
+      '#title' => ' ',
+    );
+    $form['temrs']['terms1'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('I want my name and organization to appear on the portal'),
+      '#required' => true,
+    );
+    $form['temrs']['field-sender-terms-of-use-und'] = array(
+      '#type' => 'checkbox',
+      '#title' => t("I consent to Red.es, with Tax ID Q-2891006-E, as the data controller, processing the data provided directly by me, as well as data obtained indirectly from my activity, in accordance with the Privacy Policy and with the General Director's Instruction on Exercising Rights to Personal Data Protection, available at the following link:  <a href='!url'>Personal data protection*.</a>", array('!url' => 'http://www.red.es/redes/es/quienes-somos/protecci%C3%B3n-de-datos-de-car%C3%A1cter-personal')),
+      '#required' => true,
+    );
+
+    $form['submit'] = array(
+      '#prefix' => '<div class="form-actions">',
+      '#suffix' => '</div>',
+      '#type' => 'submit',
+      '#value' => t('Submit'),
+    );
+    $form['#attributes'] = array('class' => 'dge-form');
+
+    return $form;
+  }
+}
+
+function dge_data_requests_subs_request_form_validate($form, &$form_state)
+{
+    if (empty($form_state['values']['email']) || trim($form_state['values']['email']) == false) {
+        form_set_error('email', t("The email is mandatory"));
+    } elseif (!valid_email_address(trim($form_state['values']['email']))) {
+        form_set_error('email', t("The email is not in the correct format: ") . $form_state['values']['email']);
+    }
+}
+
+
+function dge_data_requests_subs_request_form_submit($form, &$form_state)
+{
+  // SDA-930
+  $redirect_nid = $form_state['values']['nid'];
+
+  $email = trim($form_state['values']['email']);
+  $names = trim($form_state['values']['names']);
+  $organization = trim($form_state['values']['organization']);
+
+  // SDA-930
+  // La traduccion original se encargara de tener el listado de suscriptores siempre bien
+  $node = node_load($redirect_nid);
+  if ($node->tnid) {
+    $node = node_load($node->tnid);
+  }
+
+  if (! _email_is_subscribed($node, $email)) {
+    $GLOBALS['request_alter_subscriptors'] = true;
+
+    $collection = entity_create('field_collection_item', array('field_name' => 'field_request_subscriptor'));
+    $collection->setHostEntity('node', $node);
+    $cwrapper = entity_metadata_wrapper('field_collection_item', $collection);
+    $cwrapper->field_nombre_y_apellidos->set($names);
+    $cwrapper->field_email->set($email);
+    $cwrapper->field_organizaci_n->set($organization);
+    $cwrapper->save();
+
+    // SDA-930
+    $count = count(field_get_items('node', $node, 'field_request_subscriptor'));
+
+    // Recargar nodo
+    $node = node_load($node->nid);
+    //$node->field_number_subscriptors[LANGUAGE_NONE][0]['value'] = $count;
+	//SDA-996 - Incrementar contador de suscriptores.
+	$node->field_number_subscriptors[LANGUAGE_NONE][0]['value'] = $count+1;
+    node_save($node);
+
+    // Se obtienen las traducciones para aplicar en los contenidos desligados
+    $nodes = translation_node_get_translations($node->nid);
+    foreach ($nodes as $tnid => $nodet) {
+      cache_clear_all('field:node:'.$nodet->nid, 'cache_field');
+      $nodet=node_load($nodet->nid);
+
+      if ($nodet->nid != $node->nid &&
+          (empty($nodet->language_original) ||
+              $nodet->language_original == $nodet->language)) {
+
+          // Incluir nuevo suscriptor
+          $collection = entity_create('field_collection_item', array('field_name' => 'field_request_subscriptor'));
+          $collection->setHostEntity('node', $nodet);
+          $cwrapper = entity_metadata_wrapper('field_collection_item', $collection);
+          $cwrapper->field_nombre_y_apellidos->set($names);
+          $cwrapper->field_email->set($email);
+          $cwrapper->field_organizaci_n->set($organization);
+          $cwrapper->save();
+
+          // Actualizar suscriptores
+          //$nodet->field_number_subscriptors[LANGUAGE_NONE][0]['value'] = $count;
+		  //SDA-996 - Incrementar contador de suscriptores.
+		  $nodet->field_number_subscriptors[LANGUAGE_NONE][0]['value'] = $count+1;
+          node_save($nodet);
+      }
+    }
+
+    /*ENVIO MAIL*/
+    if (variable_get('dge_data_subscription_mail_is_enabled', 0)) {
+      $users = _get_org_owner_users_data_request($node);
+
+      foreach ($users as $user) {
+        dge_data_request_send_mail_to_user($node, $user, $form_state);
+      }
+    }
+
+    views_invalidate_cache();
+    drupal_add_http_header('cache-control', 'no-cache, no-store, must-revalidate');
+    varnish_purge_all_pages();
+
+    drupal_set_message(t('Thank you for joining the data request'), 'status', FALSE);
+  }
+  else {
+    watchdog(
+        'dge_data_requests',
+        'Intento repetido de unirse a la petición de datos ' . $redirect_nid . ' con email no suscrito ' . $email,
+        array(),
+        WATCHDOG_ERROR
+    );
+
+    drupal_set_message(t('Thank you for trying to join the request but your email was already registered.'), 'status', FALSE);
+  }
+
+  $form_state['redirect'] = 'node/'.$redirect_nid;
+}
+
+function _email_is_subscribed($node, $email) {
+    $found = false;
+    foreach ($node->field_request_subscriptor[LANGUAGE_NONE] as $key => $value) {
+        $subscriber = field_collection_item_load($value['value']);
+
+        if ($email == $subscriber->field_email[LANGUAGE_NONE][0]['email']) {
+            $found = true;
+        }
+    }
+    return $found;
+}
+
+function _get_org_owner_users_data_request($node) {
+    $users = db_query("select * from users where uid in (
+        select p.uid from profile p where p.pid in (
+          select fr.entity_id from field_data_field_root_agency fr where fr.field_root_agency_tid in (
+            select f.field_organismo_pub_tid from field_data_field_organismo_pub f where f.entity_id = :nid
+            )
+          )
+        )
+        and status = 1;", array(':nid' => $node->nid))->fetchAll();
+
+    return $users;
+}
+
+/**
+ * Replace user "tokens".
+ */
+function _update_user_tokens($text, $user)
+{
+    $patterns = ["[subscriptor:name]", "[subscriptor:email]", "[subscriptor:organization]"];
+    $values = [
+      $user['values']['names'],
+      $user['values']['email'],
+      $user['values']['organization']
+    ];
+
+    return str_replace($patterns, $values, $text);
+}
+
+/**
+ * Send mail to data request user.
+ */
+function dge_data_request_send_mail_to_user($node, $user, $subscriptor)
+{
+  $mail = drupal_mail(
+      'dge_data_requests',
+      'subscription_request',
+      $user->mail,
+      language_default(),
+      array('node' => $node, 'subscriber' => $subscriptor),
+      variable_get('dge_data_subscription_mail_email', variable_get('site_mail'))
+  );
+  if ($mail['result'] == FALSE) {
+      watchdog(
+          'dge_data_requests',
+          'Error al enviar el correo de aviso de suscripción al usuario del organismo %nombre',
+          array('%nombre' => $user['name']),
+          WATCHDOG_ERROR
+      );
+  }
+}
+
+/**
+ * Send assignation mail to organization user.
+ */
+function dge_data_request_send_assignation_mail_to_user($node, $user)
+{
+  $mail = drupal_mail(
+      'dge_data_requests',
+      'assignation_request',
+      $user->mail,
+      language_default(),
+      array('node' => $node),
+      $from
+  );
+  if ($mail['result'] == FALSE) {
+      watchdog(
+          'dge_data_requests',
+          'Error al enviar el correo de aviso de asignación al usuario del organismo %nombre',
+          array('%nombre' => $user['name']),
+          WATCHDOG_ERROR
+      );
+  }
+}
+
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function dge_data_requests_views_query_alter(&$view, &$query)
+{
+  if ($view->name === 'requests_admin') {
+    global $user;
+    // This will only work as-is if you always have something in the filter by
+    // default, I guess. This hook runs always so you could just put
+    // 'test@test.com' as the email to filter by in views and this
+    // will always override it. I'm sure there is a cleaner way to put
+    // the filter dynamically at runtime. But i think thats more complex
+    // php that customizes a view.
+    //
+    // The index 2 below is the index of the condition for the email filter.
+    // Your $query structure may be different in your dpm() of the View $query.
+
+    if (in_array('organization', $user->roles)) {
+      $entity = profile2_load_by_user($user);
+      $agency_root = $entity['agency_data']->field_root_agency['und'][0]['tid'];
+      $where = array();
+      $where['field'] = 'field_data_field_organismo_pub.field_organismo_pub_tid';
+      $where['value'] = $agency_root;
+      $where['operator'] = '=';
+      //sobreescribimos
+      $query->where[1]['conditions'][3] = $where;
+    } else {
+      $where['field'] = 'field_data_field_organismo_pub.field_organismo_pub_tid';
+      $where['value'] = 'NULL';
+      $where['operator'] = 'is not null';
+      $query->where[1]['conditions'][3] = $where;
+    }
+  // SDA-930 -- Los organismos no ven las versiones draft de las peticiones de datos
+  } elseif ($view->name === 'request_detail_draft') {
+    global $user;
+
+    // Si el usuario tiene el rol organismo puede ver la versión Draft
+    if (in_array('organization', $user->roles)) {
+        $query->tags = [];
+    }
+  }
+}
+
+/**
+ * Implements hook_node_access().
+ */
+function dge_data_requests_node_access($node, $op, $account)
+{
+  if (in_array('organization', $account->roles)) {
+    if ($op === 'update' && $node->type == 'request') {
+      return NODE_ACCESS_ALLOW;
+    }
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function dge_data_requests_block_info()
+{
+  $block["dge_data_request_states_graph"] = array(
+    'info' => 'DGE Request states graph',
+    'cache' => DRUPAL_NO_CACHE
+  );
+  return $block;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function dge_data_requests_theme()
+{
+  $path = drupal_get_path('module', 'dge_data_requests') . '/theme';
+  return array(
+    'dge_data_request_states_graph' => array(
+      'template' => 'dge_data_request_states_graph',
+      'path' => $path,
+      'variables' => array(),
+    )
+  );
+}
+
+/**
+ * Implements hook_block_view(). field_request_tx_status
+ */
+function dge_data_requests_block_view($delta)
+{
+  switch ($delta) {
+    case 'dge_data_request_states_graph':
+      return [
+        'subject' => 'Request states graph',
+        'content' => request_states_graph()
+      ];
+  }
+}
+
+function request_states_graph()
+{
+  $phases = request_states_graph_phases();
+  return theme('dge_data_request_states_graph', array('phases' => $phases));
+}
+
+function request_states_graph_phases()
+{
+  $levels = get_request_status_taxonmies();
+  $parents = array_filter($levels, function ($el) {
+    return $el->depth ? false : true;
+  });
+  $childs = array_filter($levels, function ($el) {
+    return !$el->depth ? false : true;
+  });
+  $tree = array_map(function ($el) use ($childs) {
+    $el->child = null;
+    $child = array_filter($childs, function ($el_child) use ($el) {
+      return in_array($el->tid, $el_child->parents);
+    });
+    if ($child) {
+      $el->child = array_pop($child);
+    }
+    return $el;
+  }, $parents);
+
+  return $tree;
+}
+
+function get_request_status_taxonmies()
+{
+  $taxonomy = taxonomy_vocabulary_machine_name_load('request_status');
+  $levels = taxonomy_get_tree($taxonomy->vid, 0, null, true);
+  $levels = array_map(function ($el) {
+    $term = i18n_taxonomy_localize_terms($el);
+    $el->name = $term->name;
+    $el->url= get_url_status_query($el->tid);
+    $el->active = check_request_status_query($el->tid);
+    $el->field_nti_reference_key = $el->field_nti_reference_key['und']['0']['value'];
+    return $el;
+  }, $levels);
+
+  return $levels;
+}
+
+function check_request_status_query($tid)
+{
+  $params = drupal_get_query_parameters();
+  if (array_key_exists('f', $params)) {
+    foreach ($params['f'] as $param) {
+      $param_tid = explode(':', $param);
+      if ($param_tid[0] === 'field_request_tx_status') {
+        if($param_tid[1]==$tid){
+          return true;
+        }
+      }
+    }
+  }
+}
+
+function get_url_status_query($tid)
+{
+  $params = drupal_get_query_parameters();
+  $param = 'field_request_tx_status:' . strval($tid);
+  if (!array_key_exists('f', $params)) {
+    $params['f']=array();
+  }
+  if (!check_request_status_query($tid)) {
+    array_push($params['f'], $param);
+  } else {
+    if (($clave = array_search($param, $params['f'])) !== false) {
+      unset($params['f'][$clave]);
+    }
+  }
+  $url = (url('peticiones-datos', array(
+    'query' => array($params),
+    'absolute' => true
+  )));
+
+  return $url;
+}
+
+function request_states_graph_phases_detail($tid)
+{
+  $taxonomy = taxonomy_vocabulary_machine_name_load('request_status');
+  $levels = taxonomy_get_tree($taxonomy->vid, 0, null, true);
+  $levels = array_map(function ($el) use ($tid) {
+    $term = i18n_taxonomy_localize_terms($el);
+    $el->name = $term->name;
+    $el->field_nti_reference_key = $el->field_nti_reference_key['und']['0']['value'];
+
+    $el->active = $el->tid == $tid ? true : false;
+    return $el;
+  }, $levels);
+  $found = false;
+
+  $parents = array_filter($levels, function ($el) {
+    return $el->depth ? false : true;
+  });
+  $childs = array_filter($levels, function ($el) {
+    return !$el->depth ? false : true;
+  });
+  $tree = array_map(function ($el) use ($childs) {
+    $el->child = null;
+    $child = array_filter($childs, function ($el_child) use ($el) {
+      return in_array($el->tid, $el_child->parents);
+    });
+    if ($child) {
+      $el->child = array_pop($child);
+    }
+    return $el;
+  }, $parents);
+  foreach ($tree as $k => $level) {
+    if (!$level->phase) {
+      if (!$found) {
+        if ($level->tid == $tid) {
+          $found = true;
+          $level->phase = 'morado';
+          if($level->child){
+
+            $level->child->phase='gris';
+          }
+        } else {
+          if ($level->child) {
+            if ($level->child->tid == $tid) {
+              $found = true;
+              $level->child->phase = 'morado';
+              $level->phase = 'gris';
+            } else {
+              $level->child->phase = 'gris';
+              $level->phase = 'naranja';
+            }
+          } else {
+            $level->phase = 'naranja';
+          }
+        }
+      } else {
+        $level->phase = 'gris';
+        if($level->child){
+
+          $level->child->phase='gris';
+        }
+      }
+    }
+  }
+  $tree = array_values($tree);
+
+  return $tree;
+}
+
+function dge_migrate_assigns(){
+  variable_set('smtp_deliver', 0);
+
+  $nids = db_query("select nid from node where type like 'request' order by nid desc")->fetchCol();
+  foreach ($nids as $nid){
+    $node= node_load($nid);
+    if($node->uid>1){
+
+      $entity = profile2_load_by_user($node->uid);
+      $agency_root = $entity['agency_data']->field_root_agency['und'][0]['tid'];
+      if($agency_root){
+        $index=count($node->field_organismo_pub['und']);
+        $node->field_organismo_pub['und'][$index]['tid'] = $agency_root;
+        node_save($node);
+      }
+    }
+  }
+  variable_set('smtp_deliver', 1);
+
+  echo 'finish migrate';
+}
+
+// SDA-930
+/**
+ * Implements hook_views_pre_build().
+ */
+function dge_data_requests_views_pre_build(&$view) {
+    // Si el usuario no puede reasignar peticiones no se le muestra la opción
+    if ($view->name == 'requests_admin' && ! user_access('access request assign')) {
+       unset($view->field['nid_1']);
+    }
+}
+
+/**
+* Implements hook_module_implements_alter
+*/
+function dge_data_requests_module_implements_alter(&$implementations, $hook)
+{
+  // Se fuerza a que el hook de dge_data_requests se ejecute el último
+  if ($hook == 'form_alter') {
+    $group = $implementations['dge_data_requests'];
+    unset($implementations['dge_data_requests']);
+    $implementations['dge_data_requests'] = $group;
+  }
+}
+
+/**
+ * Implements hook_comment_publish()
+ */
+function dge_data_requests_comment_publish($comment) {
+    $node = node_load($comment->nid);
+
+    if ($node && $node->type == 'request' && variable_get('dge_data_requests_comment_mail_is_enabled', 0)) {
+        $ids_subscribers = array();
+        foreach ($node->field_request_subscriptor[LANGUAGE_NONE] as $key => $value) {
+            $ids_subscribers[] = $value['value'];
+        }
+        $subscribers = field_collection_item_load_multiple($ids_subscribers);
+
+        foreach ($subscribers as $key => $subscriber) {
+
+            //If request was sent by an anonymous user, warn him the update
+            if (!empty($subscriber->field_email[LANGUAGE_NONE][0]['email'])) {
+                $mail = drupal_mail(
+                    'dge_data_requests',
+                    'comment_request',
+                    $subscriber->field_email[LANGUAGE_NONE][0]['email'],
+                    language_default(),
+                    array('node' => $node),
+                    variable_get('dge_data_requests_comment_mail_email',variable_get('site_mail'))
+                );
+                if ($mail['result'] == FALSE) {
+                    watchdog(
+                        'dge_data_requests',
+                        'Error al enviar el correo de aviso de comentario al usuario ' . $subscriber->field_email[LANGUAGE_NONE][0]['email'],
+                        array(),
+                        WATCHDOG_ERROR
+                    );
+                }
+            }
+        }
+    }
+}
+
+function dge_data_requests_leave_request_form($form, &$form_state, $nid)
+{
+  if (is_numeric($nid)) {
+    $node = node_load($nid);
+
+    if (! $node || $node->status != 1 || $node->type != 'request') {
+        $form['error'] = array(
+            '#markup' => '<div class="node"><p class="content clearfix">' . t("An unexpected error occurred. Please, reload the page and try again.") . '<p></div>',
+        );
+        return $form;
+    }
+
+    drupal_set_title(t('Leave the data request') . ': ' . $node->title);
+
+    $form['nid'] = array(
+      '#type' => 'hidden',
+      '#value' => $nid,
+    );
+    $form['email'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Email'),
+      '#required' => true,
+    );
+    $form['temrs'] = array(
+        '#type' => 'fieldset',
+        '#title' => ' ',
+    );
+    $form['temrs']['field-sender-terms-of-use-und'] = array(
+      '#type' => 'checkbox',
+      '#title' => t("I consent to Red.es, with Tax ID Q-2891006-E, as the data controller, processing the data provided directly by me, as well as data obtained indirectly from my activity, in accordance with the Privacy Policy and with the General Director's Instruction on Exercising Rights to Personal Data Protection, available at the following link:  <a href='!url'>Personal data protection*.</a>", array('!url' => 'http://www.red.es/redes/es/quienes-somos/protecci%C3%B3n-de-datos-de-car%C3%A1cter-personal')),
+      '#required' => true,
+    );
+    $form['submit'] = array(
+      '#prefix' => '<div class="form-actions">',
+      '#suffix' => '</div>',
+      '#type' => 'submit',
+      '#value' => t('Submit'),
+    );
+    $form['#attributes'] = array('class' => 'dge-form');
+
+    return $form;
+  }
+}
+
+function dge_data_requests_leave_request_form_validate($form, &$form_state)
+{
+  if (empty($form_state['values']['email']) || trim($form_state['values']['email']) == false) {
+    form_set_error('email', t("The email is mandatory"));
+  } elseif (!valid_email_address(trim($form_state['values']['email']))) {
+    form_set_error('email', t("The email is not in the correct format: ") . $form_state['values']['email']);
+  }
+}
+
+
+function dge_data_requests_leave_request_form_submit($form, &$form_state)
+{
+  $redirect_nid = $form_state['values']['nid'];
+
+  $email = trim($form_state['values']['email']);
+
+  // La traduccion original se encargara de tener el listado de suscriptores siempre bien
+  $node = node_load($redirect_nid);
+  if ($node->tnid) {
+    $node = node_load($node->tnid);
+  }
+
+  $deleted_elements = [];
+  $deleted_subscriptor;
+  foreach ($node->field_request_subscriptor[LANGUAGE_NONE] as $key => $value) {
+    $subscriber = field_collection_item_load($value['value']);
+
+    if ($email == $subscriber->field_email[LANGUAGE_NONE][0]['email']) {
+      // Registrar coleccion a borrar
+      $deleted_elements[] = $value['value'];
+
+      // Quitar coleccion del contenido
+      unset($node->field_request_subscriptor[LANGUAGE_NONE][$key]);
+
+      // Marcar como encontrado
+      $deleted_subscriptor = $subscriber;
+    }
+  }
+
+  // Si se elimina un suscriptor se actualiza el contenido y traducciones
+  if (sizeof($deleted_elements) > 0) {
+
+    $GLOBALS['request_alter_subscriptors'] = true;
+
+    // Borrar colecciones
+    entity_delete_multiple('field_collection_item', $deleted_elements);
+
+    // Recargar nodo tras cambios
+    $node = node_load($redirect_nid);
+
+    // Actualizar numero de suscriptores
+    $count = count(field_get_items('node', $node, 'field_request_subscriptor'));
+    //$node->field_number_subscriptors[LANGUAGE_NONE][0]['value'] = $count;
+	//SDA-996 - Incrementar contador de suscriptores.
+	$node->field_number_subscriptors[LANGUAGE_NONE][0]['value'] = $count+1;
+    node_save($node);
+
+    // Se obtienen las traducciones para aplicar en los contenidos desligados
+    $nodes = translation_node_get_translations($node->nid);
+    foreach ($nodes as $tnid => $nodet) {
+      cache_clear_all('field:node:'.$nodet->nid, 'cache_field');
+      $nodet=node_load($nodet->nid);
+
+      $deleted_elements = [];
+      if ($nodet->nid != $node->nid &&
+            (empty($nodet->language_original) ||
+            $nodet->language_original == $nodet->language)) {
+
+        // Eliminar suscriptor
+        foreach ($nodet->field_request_subscriptor[LANGUAGE_NONE] as $key => $value) {
+          $subscriber = field_collection_item_load($value['value']);
+
+          if ($email == $subscriber->field_email[LANGUAGE_NONE][0]['email']) {
+            // Quitar coleccion del contenido
+            unset($nodet->field_request_subscriptor[LANGUAGE_NONE][$key]);
+          }
+        }
+
+        entity_delete_multiple('field_collection_item', $deleted_elements);
+
+        // Actualizar suscriptores
+        //$nodet->field_number_subscriptors[LANGUAGE_NONE][0]['value'] = $count;
+        //SDA-996 - Incrementar contador de suscriptores.
+		$nodet->field_number_subscriptors[LANGUAGE_NONE][0]['value'] = $count+1;
+        node_save($nodet);
+      }
+    }
+
+    // Enviar correo de desuscripcion
+    $mail = drupal_mail(
+        'dge_data_requests',
+        'requests_leave',
+        $deleted_subscriptor->field_email[LANGUAGE_NONE][0]['email'],
+        language_default(),
+        array('node' => $node, 'subscriber' => $deleted_subscriptor),
+        variable_get('dge_data_requests_leave_mail_email', variable_get('site_mail'))
+    );
+    if ($mail['result'] == FALSE) {
+        watchdog(
+            'dge_data_requests',
+            'Error al enviar el correo de aviso de comentario al usuario ' . $deleted_subscriptor->field_email[LANGUAGE_NONE][0]['email'],
+            array(),
+            WATCHDOG_ERROR
+        );
+    }
+
+    views_invalidate_cache();
+    drupal_add_http_header('cache-control', 'no-cache, no-store, must-revalidate');
+    varnish_purge_all_pages();
+  }
+  else {
+    watchdog(
+        'dge_data_requests',
+        'Intento de desuscripción de la petición de datos ' . $redirect_nid . ' con email no suscrito ' . $email,
+        array(),
+        WATCHDOG_ERROR
+    );
+  }
+
+  drupal_set_message(t('You have successfully left the data request'), 'status', FALSE);
+  $form_state['redirect'] = 'node/'.$redirect_nid;
+}
+
+function _dge_data_requests_form_node_validate_alter($form, &$form_state) {
+  $subscriptors = $form_state['values']['field_request_subscriptor'][LANGUAGE_NONE];
+
+  // Se eliminan opciones de edicion
+  if (array_key_exists('add_more', $subscriptors)) {
+    unset($subscriptors['add_more']);
+  }
+  //Se reivsa que los suscriptores no esten vacios
+  foreach ($subscriptors as $key => $subscriptor) {
+    if (!array_key_exists('field_email', $subscriptor) ||
+      empty($subscriptor['field_email'][LANGUAGE_NONE][0]['email'])) {
+    unset($subscriptors[$key]);
+    }
+  }
+  // El numero de suscriptores se actualiza con los suscriptores reales del formulario
+  //$form_state['values']['field_number_subscriptors'][LANGUAGE_NONE][0]['value'] = count($subscriptors);
+  //SDA-996 - Incrementar contador de suscriptores.
+  $form_state['values']['field_number_subscriptors'][LANGUAGE_NONE][0]['value'] = count($subscriptors)+1;
+
+}

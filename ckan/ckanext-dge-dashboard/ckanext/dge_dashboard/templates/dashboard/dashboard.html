@@ -350,31 +350,31 @@
 {%- block scripts %}
    {{ super() }}
    <!-- amCharts javascript sources -->
-    <script type="text/javascript" src="{% url_for_static "amcharts/amcharts.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/pie.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/serial.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/animate/animate.min.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/export.min.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/dataloader/dataloader.min.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/themes/light.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/responsive/responsive.min.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/lang/en.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/lang/ca.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/lang/ca.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/lang/gl.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/lang/gl.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/lang/eu.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/lang/eu.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/lang/es.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "amcharts/plugins/export/lang/es.js" %}"></script>
+    <script src="{% url_for_static "amcharts/amcharts.js" %}"></script>
+    <script src="{% url_for_static "amcharts/pie.js" %}"></script>
+    <script src="{% url_for_static "amcharts/serial.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/animate/animate.min.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/export/export.min.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/dataloader/dataloader.min.js" %}"></script>
+    <script src="{% url_for_static "amcharts/themes/light.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/responsive/responsive.min.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/export/lang/en.js" %}"></script>
+    <script src="{% url_for_static "amcharts/lang/ca.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/export/lang/ca.js" %}"></script>
+    <script src="{% url_for_static "amcharts/lang/gl.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/export/lang/gl.js" %}"></script>
+    <script src="{% url_for_static "amcharts/lang/eu.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/export/lang/eu.js" %}"></script>
+    <script src="{% url_for_static "amcharts/lang/es.js" %}"></script>
+    <script src="{% url_for_static "amcharts/plugins/export/lang/es.js" %}"></script>
 
-    <script type="text/javascript" src="{% url_for_static "jsgrid/jquery-1.8.3.min.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "jsgrid/jsgrid.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "jsgrid/i18n/jsgrid-es.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "jsgrid/i18n/jsgrid-en.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "jsgrid/i18n/jsgrid-ca.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "jsgrid/i18n/jsgrid-gl.js" %}"></script>
-    <script type="text/javascript" src="{% url_for_static "jsgrid/i18n/jsgrid-eu.js" %}"></script>
+    <script src="{% url_for_static "jsgrid/jquery-1.8.3.min.js" %}"></script>
+    <script src="{% url_for_static "jsgrid/jsgrid.js" %}"></script>
+    <script src="{% url_for_static "jsgrid/i18n/jsgrid-es.js" %}"></script>
+    <script src="{% url_for_static "jsgrid/i18n/jsgrid-en.js" %}"></script>
+    <script src="{% url_for_static "jsgrid/i18n/jsgrid-ca.js" %}"></script>
+    <script src="{% url_for_static "jsgrid/i18n/jsgrid-gl.js" %}"></script>
+    <script src="{% url_for_static "jsgrid/i18n/jsgrid-eu.js" %}"></script>
 
     {% resource "dge_dashboard/amcharts/public/dge_dashboard_numDatasetsByMonthYear.js" %}
     {% resource "dge_dashboard/amcharts/public/dge_dashboard_numDatasetsByAdministrationLevel.js" %}

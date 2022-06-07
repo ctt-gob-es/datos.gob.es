@@ -5,187 +5,281 @@
 {% set user_logged = c.userobj %}
 {% set drupal_menu_endpoints = h.dge_get_endpoints_menu([], current_lang, False, True) %}
 <!-- #pre-footer -->
-  <div class="site-pre-footer">
+<div class="site-pre-footer">
     <div class="section">
-      <div class="region region-footer-pre">
-        <!-- #block rrss footer -->
-        <div class="block block-block dge-social-links dge-social-links--hightlighted">
-          <h2 class="block__title">{{ _('Follow Us') }}</h2>
-          <div class="block__content content">
-            {% snippet 'snippets/dge_social_list_footer.html' %}
-          </div>
+        <div class="region region-footer-pre">
+            <!-- #block rrss footer -->
+            <div class="block block-block dge-social-links dge-social-links--hightlighted">
+                <div class="dge-social-links-list">
+                    <h2 class="block__title">{{ _('Follow Us') }}</h2>
+                    <div class="block__content content">
+                        {% snippet 'snippets/dge_social_list_footer.html' %}
+                    </div>
+                </div>
+                <div class="edp-footer">
+                    {% snippet 'snippets/dge_edp_footer.html' %}
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div><!-- //pre-footer -->
-  <!-- #footer -->
-  <div class="site-footer clearfix">
+</div><!-- //pre-footer -->
+<!-- #footer -->
+<div class="site-footer clearfix">
     <div class="section">
         <div class="region region-footer">
-          <!-- #block menu website -->
-          <div class="block block-menu-block dge-menu dge-menu--webmap">
-            <h2 class="block__title">{{ _('Index of contents') }}</h2>
-            <div class="block__content content">
-              <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
-                <ul class="menu">
-                  <li class="first expanded active"><a href="/{{ current_lang }}" class="active">{{ _('Aporta initiative') }}</a>
-                    <ul class="menu">
-                      {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.about'] %}
-                      <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.about'] }}">{{ _('About Aporta initiative') }}</a></li>
-                      {% endif %}
-                      {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.meetings'] %}
-                      <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.meetings'] }}">{{ _('Aporta meetings') }}</a></li>
-                      {% endif %}
-                      {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.challenge'] %}
-                      <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.challenge'] }}">{{ _('Aporta challenge') }}</a></li>
-                      {% endif %}
-                      {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.awards'] %}
-                      <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.awards'] }}">{{ _('Aporta awards') }}</a></li>
-                      {% endif %}
-                    </ul>
-                  </li>
-                  <li class="expanded active"><a href="/{{ current_lang }}" class="active">{{ _('Data Catalog') }}</a>
-                    {% set api_url = 'http://docs.ckan.org/en/{0}/api/'.format(g.ckan_doc_version) %}
-                    <ul class="menu">
-                      <li class="first leaf"><a href="{{ h.url_for(controller='package', action='search') }}">{{ _('Datasets') }}</a></li>
-                      <li class="leaf"><a href="{{ h.url_for(controller='ckanext.dge.controllers:DGEController', action='swagger') }}">{{ _('API Data') }}</a></li>
-                      <li class="last leaf"><a href="{{ h.url_for(controller='ckanext.dge.controllers:DGEController', action='yasgui') }}">{{ _('Sparql Point') }}</a></li>
-                    </ul>
-                  </li>
-                  <li class="expanded active"><a href="/{{ current_lang }}" class="active">{{ _('Impact') }}</a>
-                    <ul class="menu">
-                      {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.initiatives'] %}
-                      <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.initiatives'] }}">{{ _('Initiatives map') }}</a></li>
-                      {% endif %}
-                      {% block dashboard %}{% endblock %}
-                      {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.applications'] %}
-                      <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.applications'] }}">{{ _('Applications') }}</a></li>
-                      {% endif %}
-                      {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.success_cases'] %}
-                      <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.success_cases'] }}">{{ _('Success cases') }}</a></li>
-                      {% endif %}
-                    </ul>
-                  </li>
-                  <li class="expanded active"><a href="/{{ current_lang }}" class="active">{{ _('Interact') }}</a>
-                    <ul class="menu">
-                      {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.documentation'] %}
-                      <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.documentation'] }}">{{ _('Documentation') }}</a></li>
-                      {% endif %}
-                      {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.advise_support'] %}
-                      <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.advise_support'] }}">{{ _('Advise and support') }}</a></li>
-                      {% endif %}
-                      {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.requests'] %}
-                      <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.requests'] }}">{{ _('Data requests') }}</a></li>
-                      {% endif %}
-                      {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.about'] %}
-                      <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.about'] }}">{{ _('Informing about') }}</a></li>
-                      {% endif %}
-                    </ul>
-                  </li>
-                  <li class="expanded active"><a href="/{{ current_lang }}" class="active">{{ _('Current News') }}</a>
-                    <ul class="menu">
-                      {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.news.news'] %}
-                      <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.news.news'] }}">{{ _('News') }}</a></li>
-                      {% endif %}
-                      {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.news.newsletters'] %}
-                      <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.news.newsletters'] }}">{{ _('Newsletters') }}</a></li>
-                      {% endif %}
-                      {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.news.events'] %}
-                      <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.news.events'] }}">{{ _('Events') }}</a></li>
-                      {% endif %}
-                      {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.news.risp'] %}
-                      <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.news.risp'] }}">{{ _('RISP community') }}</a></li>
-                      {% endif %}
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div><!-- #block menu website -->
-          <!-- #block newsletter suscription -->
-          <div class="block block-simplenews dge-news-subscription" id="block-simplenews-21">
-            <h2 class="block__title">{{ _('Newsletter') }}</h2>
-            <div class="block__content content">
-              <form id="simplenews-block-form-21" method="post" action="/{{ current_lang }}/home" class="simplenews-subscribe" accept-charset="UTF-8">
-                <div>
-                  {% trans %}<p>Email subscription to the latest news.</p>{% endtrans %}
-                  <div class="form-radios" id="edit-action2">
-                    <div class="form-item form-type-radio form-item-action2">
-                      <input type="radio" class="form-radio" checked="checked" value="subscribe" name="action2" id="edit-action2-subscribe">  
-                      <label for="edit-action2-subscribe" class="option">{{ _('Subscribe') }} </label>
+            <!-- #block menu website -->
+            <div class="block block-menu-block dge-menu dge-menu--webmap">
+                <h2 class="block__title">{{ _('Index of contents') }}</h2>
+                <div class="block__content content">
+                    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                        <ul class="menu">
+                            <li class="first expanded active"><a href="/{{ current_lang }}" class="active">{{ _('Aporta initiative') }}</a>
+                                <ul class="menu">
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.about'] %}
+                                        <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.about'] }}">{{ _('About Aporta initiative') }}</a></li>
+                                    {% endif %}
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.meetings'] %}
+                                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.meetings'] }}">{{ _('Aporta Meetings') }}</a></li>
+                                    {% endif %}
+                                    <!--{% if drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.challenge'] %}
+                                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.challenge'] }}">{{ _('Aporta challenge') }}</a></li>
+                                    {% endif %}-->
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.awards'] %}
+                                        <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.awards'] }}">{{ _('Aporta awards') }}</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                            <li class="expanded active"><a href="/{{ current_lang }}" class="active">{{ _('Data Catalog') }}</a>
+                                {% set api_url = 'http://docs.ckan.org/en/{0}/api/'.format(g.ckan_doc_version) %}
+                                <ul class="menu">
+                                    <li class="first leaf"><a href="{{ h.url_for(controller='package', action='search') }}">{{ _('Datasets') }}</a></li>
+                                    <li class="leaf"><a href="{{ h.url_for(controller='ckanext.dge.controllers:DGEController', action='swagger') }}">{{ _('API Data') }}</a></li>
+                                    <li class="last leaf"><a href="{{ h.url_for(controller='ckanext.dge.controllers:DGEController', action='yasgui') }}">{{ _('Sparql Point') }}</a></li>
+                                </ul>
+                            </li>
+                            <li class="expanded active"><a href="/{{ current_lang }}" class="active">{{ _('Impact') }}</a>
+                                <ul class="menu">
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.success_cases'] %}
+                                        <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.success_cases'] }}">{{ _('Reuse companies') }}</a></li>
+                                    {% endif %}
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.applications'] %}
+                                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.applications'] }}">{{ _('Applications') }}</a></li>
+                                    {% endif %}
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.initiatives'] %}
+                                        <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.impact.initiatives'] }}">{{ _('Initiatives map') }}</a></li>
+                                    {% endif %}
+                                    {% block dashboard %}{% endblock %}
+                                </ul>
+                            </li>
+                            <!--sector reference-->
+                            <li class="expanded active"><a href="/{{ current_lang }}" class="active">{{ _('Sectors') }}</a>
+                                <ul class="menu">
+                                    <!--sector agricultura
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.farming'] %}
+                                        <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.farming'] }}">{{ _('Farming') }}</a></li>
+                                    {% endif %}-->
+                                    <!--sector medio ambiente-->
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.environment'] %}
+                                        <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.environment'] }}">{{ _('Environment') }}</a></li>
+                                    {% endif %}
+                                    <!--sector cultura
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.culture'] %}
+                                        <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.culture'] }}">{{ _('Culture') }}</a></li>
+                                    {% endif %}-->
+                                    <!--sector cultura y ocio-->
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.culture_and_leisure'] %}
+                                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.culture_and_leisure'] }}">{{ _('Culture and Leisure') }}</a></li>
+                                    {% endif %}
+                                    <!--sector educacion-->
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.education'] %}
+                                        <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.education'] }}">{{ _('Education') }}</a></li>
+                                    {% endif %}
+                                    <!--sector transporte-->
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.transport'] %}
+                                        <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.transport'] }}">{{ _('Transport') }}</a></li>
+                                    {% endif %}
+                                    <!--sector salud y bienestar-->
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.health'] %}
+                                        <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.health'] }}">{{ _('Health and Wellness') }}</a></li>
+                                    {% endif %}
+                                    <!--sector turismo-->
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.tourism'] %}
+                                        <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.tourism'] }}">{{ _('Tourism') }}</a></li>
+                                    {% endif %}
+                                    <!--sector sturismo-->
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.tourism'] %}
+                                    <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.sectors.tourism'] }}">{{
+                                        _('Tourism') }}</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                            <li class="expanded active"><a href="/{{ current_lang }}" class="active">{{ _('Current News') }}</a>
+                                <ul class="menu">
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.news.news'] %}
+                                        <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.news.news'] }}">{{ _('News') }}</a></li>
+                                    {% endif %}
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.news.events'] %}
+                                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.news.events'] }}">{{ _('Events') }}</a></li>
+                                    {% endif %}
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.news.risp'] %}
+                                        <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.news.risp'] }}">{{ _('Interviews') }}</a></li>
+                                    {% endif %}
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.news.newsletters'] %}
+                                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.news.newsletters'] }}">{{ _('Newsletters') }}</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                            <li class="expanded active"><a href="/{{ current_lang }}" class="active">{{ _('Innovation') }}</a>
+                                <ul class="menu">
+                                    <!--arreglar este-->
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.news.news'] %}
+                                        <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.news.news'] }}">{{ _('Blog') }}</a></li>
+                                    {% endif %}
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.challenge'] %}
+                                        <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.challenge'] }}">{{ _('Aporta challenge') }}</a></li>
+                                    {% endif %}
+                                    <!--{% if drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.awards'] %}
+                                        <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.aporta.awards'] }}">{{ _('Aporta awards') }}</a></li>
+                                    {% endif %}-->
+                                </ul>
+                            </li>
+                            <li class="expanded active"><a href="/{{ current_lang }}" class="active">{{ _('Interact') }}</a>
+                                <ul class="menu">
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.about'] %}
+                                        <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.about'] }}">{{ _('Informing about') }}</a></li>
+                                    {% endif %}
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.advise_support'] %}
+                                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.advise_support'] }}">{{ _('Advise and support') }}</a></li>
+                                    {% endif %}
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.requests'] %}
+                                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.requests'] }}">{{ _('Data requests') }}</a></li>
+                                    {% endif %}
+                                    {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.documentation'] %}
+                                        <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.interact.documentation'] }}">{{ _('Documentation') }}</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="form-item form-type-radio form-item-action2">
-                      <input type="radio" class="form-radio" value="unsubscribe" name="action2" id="edit-action2-unsubscribe">  
-                      <label for="edit-action2-unsubscribe" class="option">{{ _('Unsubscribe') }} </label>
-                    </div>
-                  </div>
-                  <div class="form-item form-type-textfield form-item-mail">
-                    <label for="edit-mail">{{ _('E-mail') }} <span title="{{ _('This field is required') }}." class="form-required">*</span></label>
-                    <input type="text" class="form-text required" maxlength="128" size="20" value="" name="mail" id="edit-mail">
-                  </div>
-                  <input type="hidden" value="simplenews_block_form_21" name="form_id">
-                  <div class="form-item form-type-checkbox form-item-condiciones">
-                    <input type="checkbox" class="form-checkbox required" value="1" name="condiciones" id="edit-condiciones">  
-                    <label for="edit-condiciones" class="option">
-                    {% trans url= drupal_menu_endpoints['ckanext.dge.drupal_menu.legal_notice'] %}I accept to the <a href="{{ url }}">terms of use</a>{% endtrans %}<span title="{{ _('This field is required') }}." class="form-required">*</span></label>
-                  </div>
-                  <input type="submit" class="form-submit" value="{{ _('Accept') }}" name="op" id="edit-submit--4">
                 </div>
-              </form>  
-            </div>
-          </div><!-- #block newsletter suscription -->
+            </div><!-- #block menu website -->
+            <!-- #block newsletter suscription -->
+            <div class="block block-dge-newsletter" id="block-dge-newsletter-dge-sendinblue-footer">
+                <div class="block__content content">
+                    <h3 class="block__title">{{ _('Newsletter') }}</h3>
+                    <p>{% trans %}Subscribe to our newsletter to receive the latest news from datos.gob{% endtrans %}</p>
+                    <form action="/{{ current_lang}}/formulario-de-alta" method="get">
+                        <button title="{{ _('Email subscription to the latest news of datos.gob.es.') }}" >{{ _('Subscribe') }}</button>
+                    </form>
+                    <p id="baja">{% trans url_baja = '/' + current_lang + '/formulario-de-baja'%}You can cancel your subscription by <a href='{{ url_baja }}' title='unsubscribe from the data.gob.es bulletin'>clicking here</a>{% endtrans %}</p>
+                </div>
+            </div><!-- #block newsletter suscription -->
         </div>
     </div>
-  </div><!-- //footer -->
-  <!-- #post-footer -->
-  <div class="site-post-footer">
+</div><!-- block //footer -->
+<!-- #post-footer -->
+<div class="site-post-footer">
     <div class="section">
-      <div class="region region-footer-post">
-        <!-- #block logos entidades -->
-        <div class="block block-block dge-entidades">
-          <div class="block__content content">
-            <ul>
-              <li><img alt="{{ _('Go to Ministry of Industry, Energy. Government of Spain') }}" src="{{ h.url_for_static('/images/logo_minhap-minetur_gob-es.jpg') }}"></li>
-              <li><img alt="{{ _('Go to Red point es') }}" src="{{ h.url_for_static('/images/logo_red-es.jpg') }}"></li>
-              <li><img alt="{{ _('See Aporta Project') }}" src="{{ h.url_for_static('/images/logo_iniciativa-aporta2.jpg') }}"></li>
-            </ul>
-          </div>
-        </div><!-- #block logos entidades -->
-        <!-- #block menu contact -->
-        <div class="block block-menu dge-menu dge-menu--moreinfo">
-          <h2 class="block__title">{{ _('Contact and more information') }}</h2>
-          <div class="block__content content">
-            <ul class="menu">
-              {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.contact'] %}
-              <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.contact'] }}">{{ _('Contact') }}</a></li>
-              {% endif %}
-              {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.faq'] %}
-              <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.faq'] }}">{{ _('FAQ') }}</a></li>
-              {% endif %}
-              {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.sitemap'] %}
-              <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.sitemap'] }}">{{ _('Sitemap') }}</a></li>
-              {% endif %}
-              {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.legal_notice'] %}
-              <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.legal_notice'] }}">{{ _('Legal notice') }}</a></li>
-              {% endif %}
-              {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.accesibility'] %}
-              <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.accesibility'] }}">{{ _('Accesibility') }}</a></li>
-              {% endif %}
-              {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.cookies_policy'] %}
-              <li class="last leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.cookies_policy'] }}">{{ _('Cookies policiy') }}</a></li>
-              {% endif %}
-            </ul>
-          </div>
+        <div class="region region-footer-post">
+            <!-- #block logos entidades -->
+            <div class="block block-block dge-entidades">
+                <div class="block__content content">
+                    <ul>
+                        <li><a class="hoover_efect" href="https://administracion.gob.es/" target="_blank"><img
+                                alt="{{ _('Go to Government of Spain') }}"
+                                src="{{ h.url_for_static('/images/logo_gob-es.png') }}"></a></li>
+                        <!--<li><a class="hoover_efect" href="http://www.mptfp.es/" target="_blank"><img
+                                alt="{{ _('Go to Ministry of Territorial Government and Public Administrations') }}"
+                                src="{{ h.url_for_static('/images/logo_mptfp.png') }}"></a></li>-->
+                        <li><a class="hoover_efect" href="http://www.mineco.gob.es/" target="_blank"><img
+                                alt="{{ _('Go to Ministry of Economy and Business') }}"
+                                src="{{ h.url_for_static('/images/logo_mineco.png') }}"></a></li>
+                        <li style="margin: 0 15px 0 0;"><a class="hoover_efect" href="http://www.red.es/" target="_blank"><img
+                                alt="{{ _('Go to Red point es') }}"
+                                src="{{ h.url_for_static('/images/logo_red-es.png') }}"></a></li>
+                        <li><a class="hoover_efect" href="https://datos.gob.es/acerca-de-la-iniciativa-aporta" target="_blank"><img
+                                alt="{{ _('See Aporta Initiative') }}"
+                                src="{{ h.url_for_static('/images/logo_iniciativa-aporta.png') }}"></a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- #block logos entidades -->
+            <!-- #block menu contact -->
+            <div class="block block-menu dge-menu dge-menu--moreinfo">
+                <h2 class="block__title">{{ _('Contact and more information') }}</h2>
+                <div class="block__content content">
+                    <ul class="menu">
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.contact'] %}
+                        <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.contact'] }}">{{
+                            _('Contact') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.faq'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.faq'] }}">{{
+                            _('FAQ') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.sitemap'] %}
+                        <li class="first leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.sitemap'] }}">{{
+                            _('Sitemap') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.technology'] %}
+                        <li class="first leaf"><a
+                                href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.technology'] }}">{{
+                            _('Technology') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.legal_notice'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.legal_notice'] }}">{{
+                            _('Legal notice') }}</a></li>
+                        {% endif %}
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.accesibility'] %}
+                        <li class="leaf"><a href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.accesibility'] }}">{{
+                            _('Accesibility') }}</a></li>
+                        {% endif %}
+                        <!-- Enlace Footer Politicas Cookies # Descomentar para volver a colocar las cookies
+                        {% if drupal_menu_endpoints['ckanext.dge.drupal_menu.cookies_policy'] %}
+                        <li class="last leaf"><a
+                                href="{{ drupal_menu_endpoints['ckanext.dge.drupal_menu.cookies_policy'] }}">{{
+                            _('Cookies policiy') }}</a></li>
+                        {% endif %}
+                        -->
+                    </ul>
+                </div>
+                <div class="block-certifications">
+                    <ul class="certifications">
+                        <li><a id="special" href="https://sede.red.gob.es/sites/sede/files/certificado.ens.pdf" target="_blank"><img
+                            alt="{{ _('Certificado de conformidad con el Esquema Nacional de Seguridad') }}"
+                            src="{{ h.url_for_static('/images/distintivo_ens_certificacion_MEDIA.png') }}"
+                            title="Certificado de conformidad con el Esquema Nacional de Seguridad"
+                            style="width:35px;height:47px;padding-right:6px;"></a>
+                        </li>
+                        <li><a id="special1"
+                            href="http://ondemand2.redes.ondemand.flumotion.com/redes/ondemand2/EX-12464/certificados.calidad_2018-2021.pdf"
+                            target="_blank"><img alt="{{ _('Certificado de calidad ISO-9001:2015') }}"
+                                            title="Certificado de calidad ISO-9001:2015"
+                                            src="{{ h.url_for_static('/images/Marca_ER_ISO_9001INF.jpg') }}"
+                                            style="width:35px;height:47px;padding-right:6px;"></a>
+                        </li>
+                        <li>
+                            <a id="special2" href="https://sede.red.gob.es/sites/sede/files/certificados.seguridad_ISO27001.pdf"
+                            target="_blank"><img alt="{{ _('Certificado de calidad UNE-ISO/IEC 27001:2014') }}"
+                                            src="{{ h.url_for_static('/images/Marca_ER_Segur_Info_27001_INF.JPG') }}"
+                                            title="Certificado de calidad UNE-ISO/IEC 27001:2014"
+                                            style="width:35px;height:47px;padding-right:6px;"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div> <!-- block logos_entidades -->
         </div>
-      </div>
     </div>
-  </div><!-- //post-footer -->
-{% endblock %}
+</div><!-- //post-footer -->
+{% endblock %} <!-- block footer_content -->
+
+
 {% block footer_debug %}
     {% if g.debug %}
-    <div class="container" with = "100%">
-      <div class="debug">Controller : {{ c.controller }}<br/>Action : {{ c.action }}</div>
-    </div>
+        <div class="container" with="100%">
+            <div class="debug">Controller : {{ c.controller }}<br/>Action : {{ c.action }}</div>
+        </div>
     {% endif %}
-   {{ super() }}
+    {{ super() }}
 {% endblock %}

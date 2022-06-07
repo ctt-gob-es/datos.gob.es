@@ -1,59 +1,32 @@
-# Copyright (C) 2017 Entidad P�blica Empresarial Red.es
-# 
-# This file is part of "ckanext-dge-dashboard (datos.gob.es)".
-# 
+# Copyright (C) 2022 Entidad Pública Empresarial Red.es
+#
+# This file is part of "dge_dashboard (datos.gob.es)".
+#
 # This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-# 
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-# 
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 '''API functions for updating tables in CKANEXT_DGE_DASHBOARD.'''
 
-import hashlib
-import json
-import pprint
 import logging
-import datetime
+import json
 
+from ckan.logic import check_access
 from pylons import config
-from sqlalchemy import and_, or_, create_engine
-
-from ckan.lib.search.index import PackageSearchIndex
-from ckan.plugins import PluginImplementations
-from ckan.logic import get_action
-from ckanext.harvest.interfaces import IHarvester
-from ckan.lib.search.common import SearchIndexError, make_connection
-
-
-from ckan.model import Package
-from ckan import logic
-from ckan.plugins import toolkit
-
-
-from ckan.logic import NotFound, check_access
-
-from ckanext.harvest.plugin import DATASET_TYPE_NAME
-from ckanext.harvest.queue import get_gather_publisher, resubmit_jobs
-
-from ckanext.harvest.model import HarvestSource, HarvestJob, HarvestObject
-from ckanext.harvest.logic import HarvestJobExists
-from ckanext.harvest.logic.dictization import harvest_job_dictize
-
-from ckanext.harvest.logic.action.get import (
-    harvest_source_show, harvest_job_list, _get_sources_for_user)
-from _sqlite3 import IntegrityError
-
-from pylons import config
+from sqlalchemy import create_engine
+from os import path
 
 log = logging.getLogger(__name__)
+
 
 def dge_dashboard_update_published_datasets(context, data_dict):
     '''
@@ -97,7 +70,7 @@ def dge_dashboard_update_published_datasets(context, data_dict):
         result = model.Session.execute(sql)
         value = result.fetchone()[0]
         results.append((import_date, 'total', '', value))
-        
+
         log.debug("Getting data by organization ....")
         # total active, public dataset pusblished before than {p0} date by organization_id
         sql = '''select count(*), slu.owner_org from 
@@ -119,7 +92,7 @@ def dge_dashboard_update_published_datasets(context, data_dict):
         result = model.Session.execute(sql)
         for row in result:
             results.append((import_date, 'organization_id', row[1], row[0]))
-    
+
         log.debug("Getting data by administration level ....")
         # total active, public dataset pusblished before than {p0} date by administration level
         sql = '''select count(*), substring(dir3.value, 0, 2) as adm from 
@@ -151,10 +124,12 @@ def dge_dashboard_update_published_datasets(context, data_dict):
             log.debug("Updating data...")
             sql = '''begin;'''
             if total > 0:
-                sql += '''DELETE FROM dge_dashboard_published_datasets where year_month like '{p0}' and key not like '{p1}';'''.format(p0=import_date, p1=not_key)
+                sql += '''DELETE FROM dge_dashboard_published_datasets where year_month like '{p0}' and key not like '{p1}';'''.format(
+                    p0=import_date, p1=not_key)
             for result in results:
                 sql += '''INSERT INTO dge_dashboard_published_datasets (year_month, key, key_value, num_datasets)
-                          VALUES ('{p1}', '{p2}', '{p3}', {p4});'''.format(p1 = result[0], p2 = result[1], p3 = result[2], p4 = result[3])
+                          VALUES ('{p1}', '{p2}', '{p3}', {p4});'''.format(p1=result[0], p2=result[1], p3=result[2],
+                                                                           p4=result[3])
             sql += '''
                     commit;
                    '''
@@ -183,7 +158,7 @@ def dge_dashboard_update_published_datasets(context, data_dict):
                  group by s1.num order by num;'''.format(p0=date)
         result = model.Session.execute(sql)
         for row in result:
-            results.append((import_date, key , row[0], row[1]))
+            results.append((import_date, key, row[0], row[1]))
 
         if save:
             # check if there are saved data from this {p0} date
@@ -195,10 +170,12 @@ def dge_dashboard_update_published_datasets(context, data_dict):
             log.debug("Updating data...")
             sql = '''begin;'''
             if total > 0:
-                sql += '''DELETE FROM dge_dashboard_published_datasets where year_month like '{p0}' and key like '{p1}';'''.format(p0=import_date, p1=key)
+                sql += '''DELETE FROM dge_dashboard_published_datasets where year_month like '{p0}' and key like '{p1}';'''.format(
+                    p0=import_date, p1=key)
             for result in results:
                 sql += '''INSERT INTO dge_dashboard_published_datasets (year_month, key, key_value, num_datasets)
-                          VALUES ('{p1}', '{p2}', '{p3}', {p4});'''.format(p1 = result[0], p2 = result[1], p3 = result[2], p4 = result[3])
+                          VALUES ('{p1}', '{p2}', '{p3}', {p4});'''.format(p1=result[0], p2=result[1], p3=result[2],
+                                                                           p4=result[3])
             sql += '''
                     commit;
                    '''
@@ -207,6 +184,7 @@ def dge_dashboard_update_published_datasets(context, data_dict):
             print "Results: "
             for row in results:
                 print row
+
 
 def dge_dashboard_update_publishers(context, data_dict):
     '''
@@ -259,18 +237,79 @@ def dge_dashboard_update_publishers(context, data_dict):
              and h.private = false and h.expired_timestamp >=  '{p0}'::timestamp) slu 
              where sc.continuity_id = slu.continuity_id )s4 on
              s4.owner_org = s3.owner_org'''.format(p0=date)
+    sql_both = '''with subquery as ( select *from (select * ,( CASE WHEN s5.harvest is False OR 
+              s5.guid is False then 'manual_loading_publishers' ELSE 'harvester_publishers' END ) 
+              AS publisher from (select s3.pub,s3.guid AS guid, ( CASE WHEN s4.owner_org IS NULL 
+              THEN false ELSE true end ) AS harvest FROM (SELECT DISTINCT s1.owner_org, s2.pub, s2.guid
+              FROM   (SELECT p1.id, p1.owner_org FROM   package p1 WHERE  p1.state LIKE 'active' 
+              AND p1.type LIKE 'dataset' AND p1.private = false)s1 , (SELECT pe1.pub, pe1.package_id, 
+              ( CASE WHEN pe2.package_id IS NULL THEN false ELSE true end ) AS guid 
+              FROM   (SELECT pe.value AS pub, pe.package_id FROM   package_extra pe 
+              WHERE  pe.state LIKE 'active' AND pe.key LIKE 'publisher') pe1 LEFT OUTER JOIN 
+              (SELECT pe.package_id FROM   package_extra pe WHERE pe.state LIKE 'active' 
+              AND pe.key LIKE 'guid') pe2 ON pe1.package_id = pe2.package_id)s2 
+              WHERE  s1.id = s2. package_id) s3 LEFT OUTER JOIN (SELECT DISTINCT p2.owner_org 
+              FROM   package p2 WHERE p2.state LIKE 'active' AND p2.type LIKE 'harvest' 
+                AND p2.private = false) s4 ON s4.owner_org = s3.owner_org) s5 ) as s6)
+              SELECT Concat('[', Concat(String_agg(s11.dict, ','), ']')) FROM   (
+              SELECT Concat('{"date": "', Concat(( To_char(Now(), 'YYYY-MM-DD') ), Concat( '", "adm_level": "', 
+                      Concat(s10.adm_level, Concat('", ', Concat( String_agg( s10.f, ', '), '}')))))) AS dict
+              FROM   (SELECT Concat('"', Concat(s9.publisher, Concat('": ', s9.total))) AS f, s9.adm_level                          
+              FROM (SELECT count(s8.pub) as total , s8.new_publisher as publisher, s8.adm_level
+              FROM(SELECT DISTINCT q1.pub,(CASE WHEN q2.publisher is not null THEN 'both'
+                  WHEN q1.publisher = 'manual_loading_publishers' THEN 'manual_loading_publishers'
+                WHEN q1.publisher = 'harvester_publishers' THEN 'harvester_publishers' END) AS new_publisher, s7.adm_level
+              FROM subquery q1 LEFT JOIN subquery q2 on q1.pub = q2.pub 
+              AND ((q1.publisher = 'harvester_publishers' AND q2.publisher = 'manual_loading_publishers')or
+              (q1.publisher = 'manual_loading_publishers' AND q2.publisher = 'harvester_publishers')),
+              (SELECT g.id, Substring(ge.value, 0, 2) AS adm_level FROM   "group" g, group_extra ge 
+              WHERE  ge.group_id = g.id AND g.state LIKE 'active' AND g.type LIKE 'organization' 
+              AND ge.state LIKE 'active' AND ge.key LIKE 'C_ID_UD_ORGANICA')s7 WHERE  q1.pub = s7.id) s8
+              GROUP BY s8.adm_level,s8.new_publisher ORDER BY adm_level)s9 GROUP  BY s9.adm_level, s9.publisher, 
+                  s9.total)s10 GROUP  BY s10.adm_level)s11;'''
+
     result = model.Session.execute(sql)
+    result_both = model.Session.execute(sql_both)
+    result_both = result_both.fetchone() if result_both else None
+    result_both = json.loads(result_both[0] if result_both else 'null')
     harvester_publishers = 0
     manual_loading_publishers = 0
+    both = sum(map(lambda d: d.get('both', 0), result_both or []))
     log.debug("Processing the data obtained...")
+    harvester_publishers_pub = []
+    manual_loading_publishers_pub = []
+
     for row in result:
+        pub = row[0]
         guid = row[1]
         harvest = row[2]
+        #log.debug( 'tratado pub %s' % pub)
         if guid == True and harvest == True:
-            harvester_publishers = harvester_publishers + 1;
+            #log.debug( 'pub  %s federa' % pub)
+            if pub not in harvester_publishers_pub:
+                harvester_publishers_pub.append(pub)
+                harvester_publishers = harvester_publishers + 1
+                if pub in manual_loading_publishers_pub:
+                    #log.debug( 'pub %s ya estaba en manual' % pub)
+                    manual_loading_publishers = manual_loading_publishers - 1
+                    harvester_publishers = harvester_publishers - 1
+            #else:
+                #log.debug( 'pub %s que federa ya se habia procesado' % pub)
         else:
-            manual_loading_publishers = manual_loading_publishers + 1;
-    results.append((import_date, harvester_publishers, manual_loading_publishers))
+           # log.debug( 'pub  %s manual' % pub)
+            if pub not in manual_loading_publishers_pub:
+                manual_loading_publishers_pub.append(pub)
+                manual_loading_publishers = manual_loading_publishers + 1
+                if pub in harvester_publishers_pub:
+                    #log.debug( 'pub %s ya estaba en federado' % pub)
+                    harvester_publishers = harvester_publishers - 1
+                    manual_loading_publishers = manual_loading_publishers - 1
+            #else:
+                #log.debug( 'pub  %s manual ya se habia procesado' % pub)
+        log.debug('harvester_publishers=%d  manual_loading_publishers=%d' % (harvester_publishers, manual_loading_publishers))
+
+    results.append((import_date, harvester_publishers,
+                    manual_loading_publishers, both))
 
     if save:
         # check if there are saved data from this {p0} date
@@ -283,8 +322,8 @@ def dge_dashboard_update_publishers(context, data_dict):
         if total > 0:
             sql += '''DELETE FROM dge_dashboard_publishers where year_month like '{p0}';'''.format(p0=import_date)
         for result in results:
-            sql += '''INSERT INTO dge_dashboard_publishers (year_month, harvester_publishers, manual_loading_publishers)
-                      VALUES ('{p1}', '{p2}', '{p3}');'''.format(p1 = result[0], p2 = result[1], p3 = result[2])
+            sql += '''INSERT INTO dge_dashboard_publishers (year_month, harvester_publishers, manual_loading_publishers, "both")
+                      VALUES ('{p1}', '{p2}', '{p3}', '{p4}');'''.format(p1=result[0], p2=result[1], p3=result[2], p4=result[3])
         sql += '''
                 commit;
                '''
@@ -293,6 +332,7 @@ def dge_dashboard_update_publishers(context, data_dict):
         print "Results: "
         for row in results:
             print row
+
 
 def dge_dashboard_update_drupal_published_contents(context, data_dict):
     '''
@@ -317,10 +357,10 @@ def dge_dashboard_update_drupal_published_contents(context, data_dict):
 
     model = context['model']
     engine = create_engine(config.get('ckanext.dge_drupal_users.connection', None))
-    
+
     results = []
     log.debug("Getting total data from app, success, intiative and request ....")
-   # total active, public dataset pusblished before than {p0} date
+    # total active, public dataset pusblished before than {p0} date
     sql = '''SELECT Count(*) As num, n.type As type FROM node n WHERE 
              n.status = 1 AND n.language = 'es' AND
              (n.type like 'app' OR n.type like 'success' OR n.type like 'initiative' OR n.type like 'request') AND
@@ -334,17 +374,20 @@ def dge_dashboard_update_drupal_published_contents(context, data_dict):
         # check if there are saved data from this {p0} date
         sql = '''select count(*) from dge_dashboard_drupal_contents
                  where year_month like '{p0}' and
-                 (content_type like 'app' OR content_type like 'success' OR content_type like 'initiative' OR content_type like 'request');'''.format(p0=import_date)
+                 (content_type like 'app' OR content_type like 'success' OR content_type like 'initiative' OR content_type like 'request');'''.format(
+            p0=import_date)
         result = model.Session.execute(sql)
         total = result.fetchone()[0]
         log.debug("Updating data...")
         sql = '''begin;'''
         if total > 0:
             sql += '''DELETE FROM dge_dashboard_drupal_contents where year_month like '{p0}' and 
-                     (content_type like 'app' OR content_type like 'success' OR content_type like 'initiative' OR content_type like 'request');'''.format(p0=import_date)
+                     (content_type like 'app' OR content_type like 'success' OR content_type like 'initiative' OR content_type like 'request');'''.format(
+                p0=import_date)
         for result in results:
             sql += '''INSERT INTO dge_dashboard_drupal_contents (year_month, content_type, key, key_value, num_contents)
-                      VALUES ('{p1}', '{p2}', '{p3}', '{p4}', {p5});'''.format(p1 = result[0], p2 = result[1], p3 = result[2], p4 = result[3], p5 = result[4])
+                      VALUES ('{p1}', '{p2}', '{p3}', '{p4}', {p5});'''.format(p1=result[0], p2=result[1], p3=result[2],
+                                                                               p4=result[3], p5=result[4])
         sql += '''
                 commit;
                 '''
@@ -398,7 +441,6 @@ def dge_dashboard_update_drupal_comments(context, data_dict):
     for row in result:
         results.append((import_date, 'dataset_comments', 'total', '', row[0]))
 
-
     log.debug("Getting comments by organization ....")
     # getting the drupal equivalence between organizations
     orgs = dict()
@@ -420,7 +462,7 @@ def dge_dashboard_update_drupal_comments(context, data_dict):
     result = engine.execute(sql)
     for row in result:
         if row[0]:
-           results.append((import_date, 'content_comments', 'org', orgs[row[0]], row[1]))
+            results.append((import_date, 'content_comments', 'org', orgs[row[0]], row[1]))
 
     sql = '''SELECT ra.field_root_agency_tid As agency, COUNT(c.cid) As comentarios
              FROM comment c, node n, node_type ntp, users u, profile p,
@@ -433,7 +475,7 @@ def dge_dashboard_update_drupal_comments(context, data_dict):
     result = engine.execute(sql)
     for row in result:
         if row[0]:
-           results.append((import_date, 'dataset_comments', 'org', orgs[row[0]], row[1]))
+            results.append((import_date, 'dataset_comments', 'org', orgs[row[0]], row[1]))
 
     if save:
         # check if there are saved data from this {p0} date
@@ -451,7 +493,8 @@ def dge_dashboard_update_drupal_comments(context, data_dict):
                      (key = 'total' OR key ='org');'''.format(p0=import_date)
         for result in results:
             sql += '''INSERT INTO dge_dashboard_drupal_contents (year_month, content_type, key, key_value, num_contents)
-                      VALUES ('{p1}', '{p2}', '{p3}', '{p4}', {p5});'''.format(p1 = result[0], p2 = result[1], p3 = result[2], p4 = result[3], p5 = result[4])
+                      VALUES ('{p1}', '{p2}', '{p3}', '{p4}', {p5});'''.format(p1=result[0], p2=result[1], p3=result[2],
+                                                                               p4=result[3], p5=result[4])
         sql += '''
                 commit;
                 '''

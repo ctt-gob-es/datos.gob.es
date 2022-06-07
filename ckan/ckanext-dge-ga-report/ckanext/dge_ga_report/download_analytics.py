@@ -1,19 +1,19 @@
-# Copyright (C) 2017 Entidad P�blica Empresarial Red.es
-# 
-# This file is part of "ckanext-dge-ga-report (datos.gob.es)".
-# 
+# Copyright (C) 2022 Entidad Pública Empresarial Red.es
+#
+# This file is part of "dge_ga_report (datos.gob.es)".
+#
 # This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-# 
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-# 
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import datetime
@@ -47,66 +47,223 @@ class DownloadAnalytics(object):
     VISIT_STAT = 'dge_ga_visit'
 
     URL_PREFIX = '^(|/es|/en|/eu|/ca|/gl)/'
-    URL_SUFFIX = '/[a-z0-9-_]+'
-    PACKAGE_URL_REGEX = URL_PREFIX + 'catalogo' + URL_SUFFIX + '/?$'
-    PACKAGE_URL_EXCLUDED_REGEXS = [URL_PREFIX + 'catalogo/new/?$']
+    URL_SUFFIX = '[/?].+'
 
-    SECTIONS = [ 
-                {
-                 'key': 'all',
-                 'name': '', 
-                 'url_regex': '',
-                 'exluded_url_regex': []
-                },
-                {
-                 'key': 'section',
-                 'name': 'catalogo', 
-                 'url_regex': URL_PREFIX + 'catalogo(' + URL_SUFFIX + ')?/?$',
-                 'exluded_url_regex': [URL_PREFIX + 'catalogo/new/?$']
-                },
-                {
-                 'key': 'section',
-                 'name': 'iniciativas', 
-                 'url_regex': URL_PREFIX + 'iniciativas(' + URL_SUFFIX + ')?/?$',
-                 'exluded_url_regex': []
-                }, 
-                {
-                 'key': 'section',
-                 'name': 'documentacion', 
-                 'url_regex': URL_PREFIX + 'documentacion(' + URL_SUFFIX + ')?/?$',
-                 'exluded_url_regex': []
-                }, 
-                {
-                 'key': 'section',
-                 'name': 'aplicaciones', 
-                 'url_regex': URL_PREFIX + 'aplicaciones(' + URL_SUFFIX + ')?/?$',
-                 'exluded_url_regex': []
-                },
-                {
-                 'key': 'section',
-                 'name': 'casos-exito', 
-                 'url_regex': URL_PREFIX + 'casos-exito(' + URL_SUFFIX + ')?/?$',
-                 'exluded_url_regex': []
-                },
-                {
-                 'key': 'section',
-                 'name': 'peticiones-datos', 
-                 'url_regex': URL_PREFIX + 'peticiones-datos(' + URL_SUFFIX + ')?/?$',
-                 'exluded_url_regex': []}, 
-                {
-                 'key': 'section',
-                 'name': 'dashboard', 
-                 'url_regex': URL_PREFIX + 'dashboard(' + URL_SUFFIX + ')?/?$',
-                 'exluded_url_regex': []
-                }
-            ]
-    
+    '''
+        SDA-917 - Constantes para limitar las url que se contabilizan para las visitas a conjuntos de datos y recursos.
+        Se excluyen todas las urls de edicion y creacion de conjuntos de datos y distribuciones, la pagina de visualizacion de un recurso
+        y las paginas de busqueda u ordenacion del catalogo de datos:
+        Listado de patrones de url a excluir:
+            - catalogo/new | catalogo/new/ --> nuevo conjunto de datos de una adminitrador o usuario que pertenece a varias organizaciones
+            - catalogo/new?group=<group_id> --> nuevo conjunto de datos de un usuario que pertenece a una sola organizacion (group_id)
+            - catalogo?q=xxx | catalogo?theme_id=xxx | catalogo?sort=xxx | catalogo?page=xxx --> buscador, facetas, paginador...
+            - catalogo/edit/<package_name> --> edicion de un conjunto de datos
+            - catalogo/resources/<package_name> --> listado de distribuciones de un conjunto de datos en su edicion
+            - catalogo/new_resource/<package_name> --> creacion de un recurso en la edicion de un conjunto de datos
+            - catalogo/<package_name>/resource/<id_resource> --> visualizacion de una distribucion de un conjunto de datos
+            - catalogo/<package_name>resource_edit/<id_resource> --> edicion de una distribucion
+        Se modifica el sufijo para que se ajuste a la url de visualizacion de un conjunto de datos y asi el listado de patrones de url a exluir sea menor.
+        Para distribuciones solo se contabilizan las descargas desde la pagina de visualizacion de un conjunto de datos, por lo que el valor
+        de constantes para conjuntos y distribuciones queda igual
+    '''
+    NAME_REGEX = '[a-z0-9-_]+'
+    PACKAGE_URL_REGEX = URL_PREFIX + 'catalogo/' + NAME_REGEX + '/?$'
+    PACKAGE_URL_EXCLUDED_REGEXS = [
+        URL_PREFIX + 'catalogo/new/?$'
+        # ,URL_PREFIX + 'catalogo/new\?[a-z0-9-_]+=[a-z0-9-_]+$'
+        # ,URL_PREFIX + 'catalogo\?[a-z0-9-_]+'
+        # ,URL_PREFIX + 'catalogo/edit/[a-z0-9-_]+/?$'
+        # ,URL_PREFIX + 'catalogo/resources/[a-z0-9-_]+/?$'
+        # ,URL_PREFIX + 'catalogo/new_resource/[a-z0-9-_]+/?$'
+        # ,URL_PREFIX + 'catalogo/[a-z0-9-_]+/resource/[a-z0-9-_]+/?$'
+        # ,URL_PREFIX + 'catalogo/[a-z0-9-_]+/resource_edit/[a-z0-9-_]+/?$'
+    ]
+    ID_REGEX = '[a-z0-9-]+'
+    # RESOURCE_URL_SUFFIX =  '(/resource/)' + ID_REGEX
+    # RESOURCE_URL_REGEX = URL_PREFIX + 'catalogo/' + NAME_REGEX + '(' + RESOURCE_URL_SUFFIX + ')?' + '/?$'
+    RESOURCE_URL_REGEX = PACKAGE_URL_REGEX
+    RESOURCE_URL_EXCLUDED_REGEXS = PACKAGE_URL_EXCLUDED_REGEXS
 
-    def __init__(self, service=None, token=None, profile_id=None, 
-                 delete_first=False, stat=None, print_progress=False, 
+
+    '''
+        SDA-917 - Se exluyen para la obtencion de las todas sesiones y sesiones al catalogo:
+            - las paginas de edicion o creacion deconjuntos de datos y distribuciones
+            - las paginas de visualizacion de un recurso
+        Solo se contabilizan las paginas de acceso al catalogo, busqueda u ordenacion y visualizacion de conjuntos de datos
+    '''
+    CATALOG_URL_EXCLUDED_REGEXS = [
+        #URL_PREFIX + 'catalogo/new(/?|\?' + NAME_REGEX + '=' + NAME_REGEX + ')$',
+        URL_PREFIX + 'catalogo/new(/?|\?.*)$',
+        URL_PREFIX + 'catalogo/(edit|resources|new_resource)/' + NAME_REGEX + '(|/|/.+)$',
+        URL_PREFIX + 'catalogo/' + NAME_REGEX + '/(resource_edit|resource)/' + ID_REGEX + '(|/|/.+)$'
+    ]
+
+    # SDA-1066 Para las secciones se descargan estadisticas de paginas vistas (ga:pageviews)
+    # excepto para todas las visitas que siguen descargandose estistias de sesiones (ga:sessions)
+    SECTIONS = [
+        {
+            'key': 'all',
+            'name': '',
+            'url_regex': '',
+            'exluded_url_regex': CATALOG_URL_EXCLUDED_REGEXS,
+            'metrics': 'ga:sessions',
+            'sort': '-ga:sessions'
+        },
+        {
+            'key': 'section',
+            'name': 'catalogo',
+            'url_regex': URL_PREFIX + 'catalogo(' + URL_SUFFIX + ')?/?$',
+            'exluded_url_regex': CATALOG_URL_EXCLUDED_REGEXS,
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'iniciativas',
+            'url_regex': URL_PREFIX + 'iniciativas(' + URL_SUFFIX + ')?/?$',
+            'exluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'documentacion',
+            'url_regex': URL_PREFIX + 'documentacion(' + URL_SUFFIX + ')?/?$',
+            'exluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'aplicaciones',
+            'url_regex': URL_PREFIX + 'aplicaciones(' + URL_SUFFIX + ')?/?$',
+            'exluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'empresas-reutilizadoras',
+            'url_regex': URL_PREFIX + 'casos-exito(' + URL_SUFFIX + ')?/?$',
+            'exluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'peticiones-datos',
+            'url_regex': URL_PREFIX + 'peticiones-datos(' + URL_SUFFIX + ')?/?$',
+            'exluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'dashboard',
+            'url_regex': URL_PREFIX + 'dashboard(' + URL_SUFFIX + ')?/?$',
+            'exluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'noticias',
+            'url_regex': URL_PREFIX + 'noticias?(' + URL_SUFFIX + ')?/?$',
+            'excluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'eventos',
+            'url_regex': URL_PREFIX + 'eventos(' + URL_SUFFIX + ')?/?$',
+            'excluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'entrevistas',
+            'url_regex': URL_PREFIX + 'comunidad-risp(' + URL_SUFFIX + ')?/?$',
+            'excluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'boletines',
+            'url_regex': URL_PREFIX + 'boletines(' + URL_SUFFIX + ')?/?$',
+            'excluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'blog_blog',
+            'url_regex': URL_PREFIX + 'blog(' + URL_SUFFIX + ')?/?$',
+            'excluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'agricultura',
+            'url_regex': URL_PREFIX + 'sector/medio-ambiente(' + URL_SUFFIX + ')?/?$',
+            'excluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'cultura',
+            'url_regex': URL_PREFIX + 'sector/cultura-ocio(' + URL_SUFFIX + ')?/?$',
+            'excluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'educacion',
+            'url_regex': URL_PREFIX + 'sector/educacion(' + URL_SUFFIX + ')?/?$',
+            'excluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'transporte',
+            'url_regex': URL_PREFIX + 'sector/transporte(' + URL_SUFFIX + ')?/?$',
+            'excluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'salud-bienestar',
+            'url_regex': URL_PREFIX + 'sector/salud-bienestar(' + URL_SUFFIX + ')?/?$',
+            'excluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        },
+        {
+            'key': 'section',
+            'name': 'turismo',
+            'url_regex': URL_PREFIX + 'sector/turismo(' + URL_SUFFIX + ')?/?$',
+            'excluded_url_regex': [],
+            'metrics': 'ga:pageviews',
+            'sort': '-ga:pageviews'
+        }
+    ]
+
+    def __init__(self, service=None, token=None, profile_id=None,
+                 delete_first=False, stat=None, print_progress=False,
                  kind_stats=None, save_stats=False):
         self.period = config.get('ckanext-dge-ga-report.period', 'monthly')
         self.hostname = config.get('ckanext-dge-ga-report.hostname', None)
+        # SDA-917 - Nueva propiedad opcional para permitir agregar el id de un segmento de google analytics
+        self.segment = config.get('ckanext-dge-ga-report.segment', None)
+        # SDA-917 - Nueva propiedad opcional para permitir agregar un filtro a todas las estadisticas
+        self.default_filter = config.get('ckanext-dge-ga-report.filter', None)
         self.service = service
         self.profile_id = profile_id
         self.delete_first = delete_first
@@ -181,8 +338,8 @@ class DownloadAnalytics(object):
                 if self.save_stats:
                     ga_model.pre_update_dge_ga_package_stats(period_name)
                 log.info('Downloading analytics for package views')
-                data = self.download(start_date, end_date, 
-                                     DownloadAnalytics.PACKAGE_URL_REGEX, 
+                data = self.download(start_date, end_date,
+                                     DownloadAnalytics.PACKAGE_URL_REGEX,
                                      DownloadAnalytics.PACKAGE_URL_EXCLUDED_REGEXS,
                                      stat)
                 if data:
@@ -205,9 +362,9 @@ class DownloadAnalytics(object):
                     ga_model.pre_update_dge_ga_resource_stats(period_name)
 
                 log.info('Downloading analytics for resource views')
-                data = self.download(start_date, end_date, 
-                                     DownloadAnalytics.PACKAGE_URL_REGEX,
-                                     DownloadAnalytics.PACKAGE_URL_EXCLUDED_REGEXS,
+                data = self.download(start_date, end_date,
+                                     DownloadAnalytics.RESOURCE_URL_REGEX,
+                                     DownloadAnalytics.RESOURCE_URL_EXCLUDED_REGEXS,
                                      stat)
                 if data:
                     if self.save_stats:
@@ -233,11 +390,18 @@ class DownloadAnalytics(object):
                     key = section.get('key', None)
                     name = section.get('name', None)
                     path = section.get('url_regex', '')
+                    # SDA-1066 Se obtienen las metricas y ordenacion a obtener porque
+                    # puede ser paginas vistas (ga:pageviews) o sesiones (ga:sessions)
+                    metrics = section.get('metrics', None)
+                    sort = section.get('sort', None)
                     excluded_paths = section.get('exluded_url_regex', [])
                     if name or key:
-                        log.info('Downloading analytics for %s sessions', name, key)
-                        print 'Downloading analytics for %s %s sessions' % (name, key)
-                        data = self.download(start_date, end_date, path, excluded_paths, stat)
+                        print()
+                        log.info(
+                            'Downloading analytics %s for %s %s', metrics, name, key)
+                        print 'Downloading analytics %s for %s %s' % (metrics, name, key)
+                        data = self.download(
+                            start_date, end_date, path, excluded_paths, stat, metrics, sort)
                         if data:
                             visits.append((key, name, data.get(stat, 0)))
                 if visits and len(visits) >= 1:
@@ -250,7 +414,9 @@ class DownloadAnalytics(object):
                         for row in visits:
                             print row
 
-    def download(self, start_date, end_date, path=None, exludedPaths= None, stat=None):
+    # SDA-1066: se agregan los parametros metrics_stat y sort_stat para indicar las metricas y la ordenaciona a descargar
+    # Estos parametros solo son necesrios para estadisticas de visitas porque puede ser ga:pageviews o ga:sessions
+    def download(self, start_date, end_date, path=None, exludedPaths=None, stat=None, metrics_stat=None, sort_stat='None'):
         '''Get views & visits data for particular paths & time period from GA
         '''
         if start_date and end_date and path is not None and stat:
@@ -275,17 +441,21 @@ class DownloadAnalytics(object):
                 metrics = 'ga:totalEvents'
                 sort = '-ga:totalEvents'
                 dimensions = "ga:eventLabel, ga:pagePath"
-            
+
             if stat == DownloadAnalytics.VISIT_STAT:
+                #metrics = 'ga:sessions'
+                #sort = '-ga:sessions'
                 if path:
                     query = 'ga:pagePath=~%s' % path
-                metrics = 'ga:sessions'
-                sort = '-ga:sessions'
+                if metrics_stat:
+                    metrics = metrics_stat
+                if sort_stat:
+                    sort = sort_stat
                 dimensions = ''
 
             if exludedPaths:
                 for path in exludedPaths:
-                    if query: 
+                    if query:
                         query += ';ga:pagePath!~%s' % path
                     else:
                         query = 'ga:pagePath!~%s' % path
@@ -294,6 +464,13 @@ class DownloadAnalytics(object):
                     query += ';ga:hostname=~%s' % self.hostname
                 else:
                     query = 'ga:hostname=~%s' % self.hostname
+
+            # SDA-917 - Se incluye el filtro por defecto en la peticion a GA
+            if self.default_filter:
+                if query:
+                    query += ';%s' % self.default_filter
+                else:
+                    query += '%s' % self.default_filter
 
             # Supported query params at
             # https://developers.google.com/analytics/devguides/reporting/core/v3/reference
@@ -308,9 +485,12 @@ class DownloadAnalytics(object):
                 args["ids"] = "ga:" + self.profile_id
                 args["filters"] = query
                 args["alt"] = "json"
-                
+                # SDA-917 - Se incluye el segmento en la peticion a GA
+                if self.segment:
+                    args['segment'] = 'gaid::%s' % self.segment
+
                 #print "args=%s" % args
-                
+
                 results = self._get_ga_data(args)
 
             except Exception, e:
@@ -339,9 +519,9 @@ class DownloadAnalytics(object):
                 return {stat:packages}
             elif stat == DownloadAnalytics.RESOURCE_STAT:
                 resources = []
-                pattern = re.compile('^' + DownloadAnalytics.PACKAGE_URL_REGEX)
+                pattern = re.compile('^' + DownloadAnalytics.RESOURCE_URL_REGEX)
                 excluded_patterns = []
-                for regex in DownloadAnalytics.PACKAGE_URL_EXCLUDED_REGEXS:
+                for regex in DownloadAnalytics.RESOURCE_URL_EXCLUDED_REGEXS:
                     excluded_patterns.append(re.compile('^' + regex))
                 for entry in results.get('rows'):
                     (event_label, page_path, total_events) = entry

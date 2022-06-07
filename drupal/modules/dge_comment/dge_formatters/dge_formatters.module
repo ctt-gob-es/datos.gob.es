@@ -1,0 +1,431 @@
+<?php
+
+/**
+ 	* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+ 	*
+ 	* This file is part of "dge_comment (datos.gob.es)".
+ 	*
+ 	* This program is free software: you can redistribute it and/or modify
+ 	* it under the terms of the GNU General Public License as published by
+ 	* the Free Software Foundation, either version 2 of the License, or
+ 	* (at your option) any later version.
+ 	*
+ 	* This program is distributed in the hope that it will be useful,
+ 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ 	* GNU General Public License for more details.
+ 	*
+ 	* You should have received a copy of the GNU General Public License
+ 	* along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
+/**
+ * @file
+ * Implement a slideshow formatter for fields.
+ */
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function dge_formatters_field_formatter_info() {
+  $formatters = array(
+    'file_dge_info' => array(
+      'label'       => t('DGE Download'),
+      'field types' => array('file'),
+    ),
+    'file_dge_table' => array(
+      'label'       => t('DGE list of files'),
+      'field types' => array('file'),
+    ),
+    'aporta_documents_dge_list' => array(
+      'label'       => t('DGE Aporta documents'),
+      'field types' => array('field_collection'),
+    ),
+    'external_files_dge_list' => array(
+      'label'       => t('DGE External files'),
+      'field types' => array('field_collection'),
+    ),
+    'aporta_external_files_dge_list' => array(
+      'label'       => t('DGE Aporta External files'),
+      'field types' => array('field_collection'),
+    ),
+    'taxonomy_term_dge_category' => array(
+      'label' => t('DGE categories with icons'),
+      'field types' => array('taxonomy_term_reference'),
+    ),
+  );
+  return $formatters;
+}
+
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function dge_formatters_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+
+  switch ($display['type']) {
+    case 'file_dge_info':
+      if (!empty($items)) {
+         // Display all values in a single element.
+         $element[0] = array(
+           '#theme' => 'dge_file_download',
+           '#items' => $items,
+         );
+      }
+      break;
+    case 'file_dge_table':
+      if (!empty($items)) {
+        // Display all values in a list.
+        $element[0] = array(
+          '#theme' => 'dge_files_table',
+          '#items' => $items,
+        );
+      }
+      break;
+    case 'aporta_documents_dge_list':
+      if (!empty($items)) {
+          // Display all values in a list.
+          $element[0] = array(
+            '#theme' => 'dge_aporta_documents',
+            '#items' => $items,
+          );
+      }
+    break;
+    case 'external_files_dge_list':
+      if (!empty($items)) {
+        // Display all values in a list.
+        $element[0] = array(
+          '#theme' => 'dge_external_files',
+          '#items' => $items,
+        );
+    }
+    break;
+    case 'aporta_external_files_dge_list':
+      if (!empty($items)) {
+        // Display all values in a list.
+        $element[0] = array(
+          '#theme' => 'dge_external_aporta_files',
+          '#items' => $items,
+        );
+    }
+    break;
+    case 'taxonomy_term_dge_category':
+      if (!empty($items)) {
+        // Display all values in a list.
+        $element[0] = array(
+            '#theme' => 'dge_taxonomy_term_category',
+            '#terms' => $items,
+        );
+      }
+    break;
+  }
+
+  return $element;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function dge_formatters_theme() {
+  return array(
+    'dge_file_download' => array(
+      'variables' => array('items' => NULL),
+    ),
+    'dge_files_table' => array(
+      'variables' => array('items' => NULL),
+    ),
+    'dge_aporta_documents' => array(
+      'variables' => array('items' => NULL),
+    ),
+    'dge_external_files' => array(
+      'variables' => array('items' => NULL),
+    ),
+    'dge_external_aporta_files' => array(
+      'variables' => array('items' => NULL),
+    ),
+    'dge_taxonomy_term_category' => array(
+      'variables' => array('terms' => NULL),
+    ),
+  );
+}
+
+/**
+ * Returns HTML for a DGE file attachments download.
+ *
+ * @param $variables
+ *   - items: An array of file attachments.
+ *
+ * @ingroup themeable
+ */
+function theme_dge_file_download($variables) {
+  $header = array(t('Attachment'), t('Size'));
+  $rows = array();
+  $output = '<div class="dge-file-download">';
+  $is_ul = FALSE;
+  if (sizeof($variables['items']) > 1) {
+     $output .= '<ul>';
+     $is_ul = TRUE;
+  }
+  foreach ($variables['items'] as $delta => $item) {
+    $file_type = pathinfo($item['filename'], PATHINFO_EXTENSION);
+    $url_file = empty($item['uri']) ? '' : file_create_url($item['uri']);
+
+    $file = '<div class="dge-file-download-type">';
+    $file .= $file_type;
+    $file .= '</div><div class="dge-file-download-link">';
+    $file .= '<a href="'.$url_file.'" target="_blank" title="'.t('Download the document @filename. Open a new window', array('@filename' => $item['filename'])).'">'.t('Download').'</a>';
+    $file .= '</div>';
+    if ($is_ul) {
+      $output .= '<li class="file-item-li">'.$file.'</li>';
+    } else {
+      $output .= '<div class="file-item">'.$file.'</div>';
+    }
+  }
+  if (sizeof($variables['items']) > 1) {
+     $output .= '</ul>';
+  }
+  $output .= '</div>';
+
+  return $output;
+}
+
+
+/**
+ * Returns HTML for an access button.
+ *
+ * @param $variables
+ *   - items: An array of file attachments.
+ *
+ * @ingroup themeable
+ */
+function theme_dge_files_table($variables) {
+  $items = array();
+
+  foreach ($variables['items'] as $delta => $item) {
+    $item_list = array();
+    $file_type = pathinfo($item['filename'], PATHINFO_EXTENSION);
+    $url_file = empty($item['uri']) ? '' : file_create_url($item['uri']);
+    $file_name = (empty($item['description']))?$item['filename']:$item['description'];
+    $file_size = format_size($item['filesize']);
+
+    $file = '<div class="dge-file-list-item dge-file-type-'.(!empty($file_type)?$file_type:'none').'">';
+    $file .= '<div class="dge-file-list-name">'.$file_name.'</div>';
+    $file .= '<div class="dge-file-list-type">'.$file_type.'</div>';
+    $file .= '<div class="dge-file-list-size">'.$file_size.'</div>';
+    $file .= '<div class="dge-file-list-link">';
+    $file .= '<a href="'.$url_file.'" target="_blank" title="'.t('Download the document @filename. Open a new window', array('@filename' => $file_name)).'">'.t('Download').'</a>';
+    $file .= '</div>';
+    $file .= '</div>';
+
+    $item_list['data'] = $file;
+    $items[] = $item_list;
+  }
+
+  $attributes = array(
+    'class' => 'dge-files-extended-table',
+  );
+
+  return theme_item_list(array(
+    'items' => $items,
+    'title' => NULL,
+    'type' => 'ul',
+    'attributes' => $attributes
+  ));
+}
+
+/**
+ * Returns HTML for an access button.
+ *
+ * @param $variables
+ *   - items: An array of file attachments.
+ *
+ * @ingroup themeable
+ */
+function theme_dge_aporta_documents($variables) {
+  $items = array();
+
+  foreach ($variables['items'] as $delta => $item) {
+    if (($field_collection = field_collection_field_get_entity($item)) && isset($field_collection->field_group_aporta_doc_file['und'])) {
+      $file_type = pathinfo($field_collection->field_group_aporta_doc_file['und'][0]['filename'], PATHINFO_EXTENSION);
+
+      //start the entity
+      $entity_text = '<div class="field-collection-view clearfix view-mode-full dge-file-type-'.$file_type.'">';
+      $entity_text .= '<div class="entity entity-field-collection-item field-collection-item-field-group-aporta-doc clearfix"><div class="content">';
+
+      //Print label
+      $entity_text .= '<div class="field field-name-field-group-aporta-doc-title field-type-text field-label-above"><div class="field-items"><div class="field-item even">';
+      if (isset($field_collection->field_group_aporta_doc_title['und'][0])) {
+        $entity_text .= $field_collection->field_group_aporta_doc_title['und'][0]['safe_value'];
+      } else {
+        $entity_text .= $field_collection->field_group_aporta_doc_file['und'][0]['filename'];
+      }
+      $entity_text .= '</div></div></div>';
+
+      //Print file
+      $entity_text .= '<div class="field field-name-field-group-aporta-doc-file field-type-file field-label-above"><div class="field-items"><div class="field-item even">';
+      $entity_text .= theme('dge_file_download', array( 'items' => $field_collection->field_group_aporta_doc_file['und'] ));
+      $entity_text .= '</div></div></div>';
+
+      //finish the entity
+      $entity_text .= '</div></div></div>';
+      $items[] = $entity_text;
+    }
+  }
+
+  $attributes = array(
+    'class' => 'dge-files-extended-table',
+  );
+
+  return theme_item_list(array(
+    'items' => $items,
+    'title' => NULL,
+    'type' => 'ul',
+    'attributes' => $attributes
+  ));
+}
+
+/**
+ * Returns HTML for an access button.
+ *
+ * @param $variables
+ *   - items: An array of file attachments.
+ *
+ * @ingroup themeable
+ */
+function theme_dge_external_files($variables) {
+  $items = array();
+
+  foreach ($variables['items'] as $delta => $item) {
+    if (($field_collection = field_collection_field_get_entity($item)) && isset($field_collection->field_ext_file_url['und'])) {
+      $item_list = array();
+      $file_type = strtolower(($field_collection->field_ext_file_tipo['und'][0])?$field_collection->field_ext_file_tipo['und'][0]['safe_value']:'');
+      $url_file  = ($field_collection->field_ext_file_url['und'][0])?$field_collection->field_ext_file_url['und'][0]['url']:'';
+      $file_name = ($field_collection->field_ext_file_titulo['und'][0])?$field_collection->field_ext_file_titulo['und'][0]['safe_value']:'';
+      $file_size = ($field_collection->field_ext_file_size['und'][0])?$field_collection->field_ext_file_size['und'][0]['safe_value']:'';
+
+      $file = '<div class="dge-file-list-item dge-file-type-'.(!empty($file_type)?$file_type:'none').'">';
+      $file .= '<div class="dge-file-list-name">'.$file_name.'</div>';
+      $file .= '<div class="dge-file-list-type">'.$file_type.'</div>';
+      $file .= '<div class="dge-file-list-size">'.$file_size.'</div>';
+      $file .= '<div class="dge-file-list-link">';
+      $file .= '<a href="'.$url_file.'" target="_blank" title="'.t('Download the document @filename. Open a new window', array('@filename' => $file_name)).'">'.t('Download').'</a>';
+      $file .= '</div>';
+      $file .= '</div>';
+
+      $item_list['data'] = $file;
+      $items[] = $item_list;
+    }
+  }
+
+  $attributes = array(
+    'class' => 'dge-files-extended-table',
+  );
+
+  return theme_item_list(array(
+    'items' => $items,
+    'title' => NULL,
+    'type' => 'ul',
+    'attributes' => $attributes
+  ));
+}
+
+/**
+ * Returns HTML for an access button.
+ *
+ * @param $variables
+ *   - items: An array of file attachments.
+ *
+ * @ingroup themeable
+ */
+function theme_dge_external_aporta_files($variables) {
+  $items = array();
+
+  foreach ($variables['items'] as $delta => $item) {
+    if (($field_collection = field_collection_field_get_entity($item)) && isset($field_collection->field_ext_file_url['und'])) {
+      $item_list = array();
+      $file_type = strtolower(($field_collection->field_ext_file_tipo['und'][0])?$field_collection->field_ext_file_tipo['und'][0]['safe_value']:'');
+      $url_file  = ($field_collection->field_ext_file_url['und'][0])?$field_collection->field_ext_file_url['und'][0]['url']:'';
+      $file_name = ($field_collection->field_ext_file_titulo['und'][0])?$field_collection->field_ext_file_titulo['und'][0]['safe_value']:'';
+      $file_size = ($field_collection->field_ext_file_size['und'][0])?$field_collection->field_ext_file_size['und'][0]['safe_value']:'';
+
+      //start the entity
+      $entity_text = '<div class="field-collection-view clearfix view-mode-full dge-file-type-'.(!empty($file_type)?$file_type:'none').'">';
+      $entity_text .= '<div class="entity entity-field-collection-item field-collection-item-field-group-aporta-doc clearfix"><div class="content">';
+
+      //Print label
+      $entity_text .= '<div class="field field-name-field-group-aporta-doc-title field-type-text field-label-above"><div class="field-items"><div class="field-item even">';
+      $entity_text .= $file_name.'</div></div></div>';
+
+      //Print file
+      $entity_text .= '<div class="field field-name-field-group-aporta-doc-file field-type-file field-label-above"><div class="field-items"><div class="field-item even">';
+      $entity_text .= '<div class="field field-name-field-group-aporta-doc-file field-type-file field-label-above">';
+      $entity_text .= '<div class="field-items"><div class="field-item even"><div class="dge-file-download"><div class="file-item">';
+      $entity_text .= '<div class="dge-file-download-type">'.$file_type.'</div><div class="dge-file-download-link">';
+      $entity_text .= '<a href="'.$url_file.'" target="_blank" title="'.t('Download the document @filename. Open a new window', array('@filename' => $file_name)).'">'.t('Download').'</a>';
+      $entity_text .= '</div></div></div></div></div></div>';
+      $entity_text .= '</div></div></div>';
+
+      //finish the entity
+      $entity_text .= '</div></div></div>';
+
+      $item_list['data'] = $entity_text;
+      $items[] = $item_list;
+    }
+  }
+
+  $attributes = array(
+    'class' => 'dge-files-extended-table',
+  );
+
+  return theme_item_list(array(
+    'items' => $items,
+    'title' => NULL,
+    'type' => 'ul',
+    'attributes' => $attributes
+  ));
+}
+
+/**
+ * Returns HTML for a DGE file attachments download.
+ *
+ * @param $variables
+ *   - items: An array of file attachments.
+ *
+ * @ingroup themeable
+ */
+function theme_dge_taxonomy_term_category($variables) {
+   $items = $variables['terms'];
+   $output = '';
+   if (!empty($items)) {
+      $elements = array();
+      $output = '<div class="dge-detail__category">';
+      foreach ($items as $delta => $item) {
+         if ($term = taxonomy_term_load($item['tid'])) {
+           $category_class = $term->name;
+           if (function_exists('transliteration_get')) {
+             $category_class = transliteration_get($term->name);
+           }
+           $category_class = drupal_html_class($category_class);
+           $final_title = $term->name;
+           if (module_exists('i18n_taxonomy')) {
+             $term = i18n_taxonomy_localize_terms($term);
+             $final_title = $term->name;
+           } else {
+             $final_title = t($final_title);
+           }
+
+           $elements[] = l($final_title, 'taxonomy/term/' . $term->tid, array('attributes' => array('class' => $category_class)));
+        }
+     }
+     $output .= theme('item_list', array(
+        'items' => $elements,
+        'title' => '',
+        'type' => 'ul',
+        'attributes' => array('class' => 'dge-category-list'),
+     ));
+     $output .= '</div>';
+  }
+  return $output;
+}

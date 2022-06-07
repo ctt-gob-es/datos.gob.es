@@ -1,23 +1,22 @@
 <?php
-
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dgef_success (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2022 Entidad PÃºblica Empresarial Red.es
+* 
+* This file is part of "dgef_success (datos.gob.es)".
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 /**
  * @file
@@ -40,18 +39,18 @@ function dgef_success_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Datos de contacto',
-    'weight' => '14',
+    'label' => 'Contact data',
+    'weight' => '22',
     'children' => array(
-      0 => 'field_sender_name',
-      1 => 'field_sender_email',
+      0 => 'field_sender_email',
+      1 => 'field_sender_name',
       2 => 'field_sender_phone',
-      3 => 'field_sender_terms_of_use',
-      4 => 'field_sender_show_data',
+      3 => 'field_sender_show_data',
+      4 => 'field_sender_terms_of_use',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'label' => 'Datos de contacto',
+      'label' => 'Contact data',
       'instance_settings' => array(
         'required_fields' => 0,
         'id' => '',
@@ -65,7 +64,7 @@ function dgef_success_field_group_info() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Datos de contacto');
+  t('Contact data');
 
   return $field_groups;
 }

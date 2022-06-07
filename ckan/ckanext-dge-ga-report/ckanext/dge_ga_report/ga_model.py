@@ -1,24 +1,25 @@
-# Copyright (C) 2017 Entidad P�blica Empresarial Red.es
-# 
-# This file is part of "ckanext-dge-ga-report (datos.gob.es)".
-# 
+# Copyright (C) 2022 Entidad Pública Empresarial Red.es
+#
+# This file is part of "dge_ga_report (datos.gob.es)".
+#
 # This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-# 
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-# 
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # -*- coding:utf-8 -*-
 import logging
 import re
 import urllib
+import datetime
 
 from ckan.model.domain_object import DomainObject
 
@@ -30,6 +31,7 @@ from sqlalchemy import func
 from sqlalchemy.exc import InvalidRequestError
 
 import ckan.model as model
+
 
 from lib import GaProgressBar
 from paste.util.PySourceColor import null
@@ -540,6 +542,7 @@ def _get_previous_dge_ga_package_stats(url):
     pack_name = None
     org_id = None
     pub_id = None
+    url = url.replace("'","''")
     if url:
         try:
             query = '''select distinct package_name, organization_id, publisher_id
@@ -808,18 +811,55 @@ def post_update_dge_ga_package_stats():
                '''
     res = model.Session.execute(query).fetchall()
 
+    # Get datasets with more than a organizaton
+    query = '''select t.package_name from (select p.package_name, 
+               count(p.organization_id) orgs from (select distinct 
+               package_name, organization_id, publisher_id from 
+               dge_ga_packages where package_name != '' and 
+               organization_id != '' and publisher_id != '') p 
+               group by p.package_name) t where orgs > 1;
+               '''
+    res2 = model.Session.execute(query).fetchall()
+    
+    duplicated = {}
     for package_name, org_id, pub_id, views in res:
-        values = {
-                  'year_month': "All",
-                  'end_day': 0,
-                  'url': '',
-                  'pageviews': views,
-                  'package_name': package_name,
-                  'organization_id': org_id,
-                  'publisher_id': pub_id,
-                  }
-        model.Session.add(DgeGaPackage(**values))
-        model.Session.commit()
+        if not any(d['package_name'] == package_name for d in res2):
+            values = {
+                      'year_month': "All",
+                      'end_day': 0,
+                      'url': '',
+                      'pageviews': views,
+                      'package_name': package_name,
+                      'organization_id': org_id,
+                      'publisher_id': pub_id,
+                      }
+            model.Session.add(DgeGaPackage(**values))
+            model.Session.commit()
+        else:
+            if package_name in duplicated:
+                duplicated[package_name] = duplicated[package_name] + views
+            else:
+                duplicated[package_name] = views
+
+    # Insert duplicated datasets
+    for key in duplicated:
+        query = '''select organization_id, publisher_id from dge_ga_packages 
+                 where package_name = '%s'
+                 and lower(year_month) != 'all' order by year_month desc limit 1;'''
+        res3 = model.Session.execute(query % key).fetchall()
+        if len(res3) > 0:
+            values = {
+                    'year_month': "All",
+                    'end_day': 0,
+                    'url': '',
+                    'pageviews': duplicated[key],
+                    'package_name': key,
+                    'organization_id': res3[0][0],
+                    'publisher_id': res3[0][1],
+                }
+            model.Session.add(DgeGaPackage(**values))
+            model.Session.commit()
+
     log.debug('... Created dge_ga_package "All" records')
     print '... Created dge_ga_package "All" records'
 
@@ -832,6 +872,7 @@ def post_update_dge_ga_resource_stats():
         record regardless of whether the URL has an entry for
         the month being currently processed.
     """
+    init = datetime.datetime.now()
     q = model.Session.query(DgeGaResource).\
         filter_by(year_month='All')
     log.debug("Deleting %d 'All' dge_ga_resource records..." % q.count())
@@ -842,28 +883,86 @@ def post_update_dge_ga_resource_stats():
     # Calculate the total events for All months
     log.debug('Calculating DgeGaResource "All" records')
     print ('Calculating DgeGaResource "All" records')
-    query = '''select resource_id, package_name, organization_id, publisher_id, sum(total_events::int)
+    '''SDA-890
+        Se modifica la query para obtener estadisticas 'All' incluyendo la url del recurso
+        ya que la información que se esta dando sobre los datos de descargas es por url de distribucion.
+        No se tiene en cuenta la url del package, ya que se ha podido acceder a la
+        descarga desde el conjunto de datos /catalogo/<name_conjunto_datos)
+        o desde la pagina de visualización de la distribucion /catalogo/<name_conjunto_datos/resource/<id_resource)
+        La package del url se construira a partir del package_name para que no se tengan en cuenta
+        desde donde se hace la visita
+    '''
+    query = '''select url, resource_id, concat('/catalogo/', package_name) as package_url, package_name,
+               organization_id, publisher_id, sum(total_events::int),
+               concat(resource_id, concat('|', concat(package_name, concat('|' , url)))) as res_id
                from dge_ga_resources
                where resource_id != '' and package_name != ''
                and organization_id != '' and publisher_id != ''
-               group by resource_id, package_name, organization_id, publisher_id
+               and lower(year_month) != 'all'
+               group by url, resource_id, package_name, organization_id, publisher_id
                order by sum(total_events::int) desc
                '''
     res = model.Session.execute(query).fetchall()
- 
-    for resource_id, package_name, org_id, pub_id, events in res:
-        values = {
-                  'year_month': "All",
-                  'end_day': 0,
-                  'url': '',
-                  'package_url': '',
-                  'total_events': events,
-                  'resource_id': resource_id,
-                  'package_name': package_name,
-                  'organization_id': org_id,
-                  'publisher_id': pub_id,
-                  }
-        model.Session.add(DgeGaResource(**values))
-        model.Session.commit()
-    log.debug("... Created 'All' dge_ga_resource records")
-    print("... Created 'All' dge_ga_resource records")
+
+    # Get datasets with more than a organizaton
+    query = '''select concat(t.resource_id, concat('|', concat(t.package_name, concat('|' ,t.url)))) as res_id,
+               t.resource_id, t.url, t.package_name, t.orgs from (select p.resource_id, p.url,
+               p.package_name, count(p.organization_id) orgs from (select distinct
+               resource_id, url, package_name,  organization_id, publisher_id from
+               dge_ga_resources where resource_id != '' and
+               organization_id != '' and publisher_id != '' and lower(year_month) != 'all') p
+               group by p.resource_id, p.url, p.package_name) t where orgs > 1;
+               '''
+    res2 = model.Session.execute(query).fetchall()
+
+    duplicated = {}
+    deleted_resources = []
+    for url, resource_id, package_url, package_name, org_id, pub_id, events, res_id in res:
+        if not any(d['res_id'] == res_id for d in res2):
+            values = {
+                'year_month': "All",
+                'end_day': 0,
+                'url': url,
+                'package_url': package_url,
+                'total_events': events,
+                'resource_id': resource_id,
+                'package_name': package_name,
+                'organization_id': org_id,
+                'publisher_id': pub_id,
+            }
+            model.Session.add(DgeGaResource(**values))
+            model.Session.commit()
+        else:
+            if resource_id in duplicated:
+                duplicated[res_id] = duplicated[res_id] + events
+            else:
+                duplicated[res_id] = events
+
+    # Insert duplicated resources
+    for key in duplicated:
+        query = '''select organization_id, publisher_id, package_name,
+                 concat('/catalogo/', package_name) as packageurl, resource_id, url
+                 from dge_ga_resources
+                 where concat(resource_id, concat('|', concat(package_name, concat('|' ,url)))) = '%s'
+                 and lower(year_month) != 'all' order by year_month desc limit 1;'''
+        res3 = model.Session.execute(query % key).fetchall()
+        if len(res3) > 0:
+            values = {
+                'year_month': "All",
+                'end_day': 0,
+                'url': res3[0][5],
+                'package_url': res3[0][3],
+                'total_events': duplicated[key],
+                'resource_id': res[0][4],
+                'package_name': res3[0][2],
+                'organization_id': res3[0][0],
+                'publisher_id': res3[0][1],
+            }
+            model.Session.add(DgeGaResource(**values))
+            model.Session.commit()
+
+    end = datetime.datetime.now()
+    log.debug("... Created 'All' dge_ga_resource records in %s milliseconds" % (
+        (end-init).total_seconds()*1000))
+    print("... Created 'All' dge_ga_resource records in %s milliseconds" %
+          ((end-init).total_seconds()*1000))

@@ -13,6 +13,7 @@ Se han desarrollado las siguientes extensiones de CKAN:
 * ckanext-dge-ga: integración con Google Analytics.
 * ckanext-dge-ga-report: generación de información de reportes de Google Analytics.
 * ckanext-dge-dashboard: implementa el cuadro de mando del portal.
+* ckanext-dge-archiver: personaliza la comprobación de enlaces rotos y permite la selección de las organizaciones.
 
 ### Dependencias
 
@@ -22,6 +23,9 @@ Requiere CKAN versión 2.5.2 o superior y las siguientes extensiones:
 * [ckanext-harvest](https://github.com/ckan/ckanext-harvest)
 * [ckanext-scheming](https://github.com/ckan/ckanext-scheming)
 * [ckanext-fluent](https://github.com/ckan/ckanext-fluent)
+* [ckanext-archiver](https://github.com/ckan/ckanext-archiver)
+* [ckanext-googleanalytics](https://github.com/ckan/ckanext-googleanalytics)
+* [ckanext-report](https://github.com/ckan/ckanext-report)
 
 ###  Instalación
 

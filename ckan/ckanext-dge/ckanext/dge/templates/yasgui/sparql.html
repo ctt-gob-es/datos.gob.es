@@ -49,9 +49,9 @@
 {% set accesible_version_url = h.url_for(controller='ckanext.dge.controllers:DGEController', action='accessible_yasgui') %}
 {% set documentation_url = h.dge_sparql_yasgui_doc_url() %}
 {% trans page=accesible_version_url, doc=documentation_url %}Sparql_Point_introduction {{ page }} {{ doc }}{% endtrans %}
-  <p align="right"><br/><a href="{{ accesible_version_url }}">{{ _('Accessible version') }}</a><br/></p>
-  </div>
-  
+  <p style="text-align: right"><br/><a href="{{ accesible_version_url }}">{{ _('Accessible version') }}</a><br/></p>
+  <div>
+
   {% set yasgui_endpoint = h.dge_sparql_yasgui_endpoint() %}
     <div id="yasqe" data-module="dge_glue" data-module-endpoint="{{ yasgui_endpoint }}"></div>
     <div id="yasr"></div>
@@ -73,6 +73,7 @@
     position: relative;
     background: none;
     background-color: #FFFFFF;
+  }
   </style>
 {% endblock %}
 

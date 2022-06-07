@@ -1,0 +1,163 @@
+{% set broken_linkOrgName = h.dge_url_for_user_organization() %}
+{% import 'macros/form.html' as form %}
+{% if c.userobj.sysadmin %}
+    {% if c.options['organization'] == None %}
+	  <ul>
+		  <div id="block-broken-datasets">
+			  <li>{{ _('Broken datasets') }}: <span id="partial1" class="hidden">{{ c.data['num_broken_packages'] }}</span><span id="total1" class="hidden">{{ c.data['num_packages'] }}</span> 
+			  <div id="progress_datasets">
+				<div id="broken_datasets_bar">0%</div>
+			  </div></li>
+		  </div>
+		  
+		  <div id="block-broken-links">
+			  <li>{{ _('Broken links') }}: <span id="partial2" class="hidden">{{ c.data['num_broken_resources'] }}</span><span id="total2"class="hidden">{{ c.data['num_resources'] }}</span>
+			  <div id="progress_links" style="overflow-x:auto;">
+				<div id="broken_links_bar">0%</div>
+			  </div> </li>
+		  </div>
+
+		  <div id="block-broken-links">
+			  <li>{{ _('Organisations for checking for broken links is activated') }}:
+			  <div id="block-broken-groups">
+            	<div class="archiver-multiselect">
+				<div class="archiver-selectBox">
+					<select>			
+						<option>{{ _('Organizations') }}</option>
+					</select>
+					<div class="archiver-overSelect"></div>
+				</div>
+				<div id="archiver-checkboxes">
+					<input type="text" placeholder="{{ _('Search') }}" id="archiver-select-search">
+					{% for row in c.data['table']|sort(attribute='organization_title') %}
+						<label>
+							<input type="checkbox"
+								   name="groups"
+								   data-group="{{ row['organization_name'] }}"
+								   data-org="{{ row['organization_name'] }}"
+							>
+							{{ row['organization_title'] }}
+						</label>
+					{% endfor %}
+				</div>
+				</div>
+            	<div class="pull-right">
+                	<button class="btn btn-primary btn-sm pull-right update-checkeable-groups"
+						id="update-report-table" 
+						title="{{ _('Refresh the organisation list to check for broken links') }}" 
+						alt = "{{ _('Refresh the organisation list to check for broken links') }}"
+					>{{ _('Update') }}</button>
+            	</div>
+          </div> </li>
+		  </div>
+	  </ul>
+
+		  
+	  <br>
+	  <table class="broken-links sortable" id="report-table">
+		<thead>
+		  <tr>
+			<th>{{ _('Organization') }}</th>
+			<th class="broken-stats">{{ _('Broken datasets') }}</th>
+			<th class="broken-stats">{{ _('Broken links') }}</th>
+			<th class="broken-stats">{{ _('% Broken links') }}</th>
+		  </tr>
+	   </thead>
+	   <tbody>
+		{% for row in c.data['table'] %}
+		  <tr data-org="{{row['organization_name']}}">
+			<td>{{ h.link_to(row['organization_title'], h.report__relative_url_for(organization=row['organization_name'])) }}</td>
+			<td class="center-align">{{ row['broken_package_count'] }}</td>
+			<td class="center-align">{{ row['broken_resource_count'] }}</td>
+			<td class="center-align">{{ row.get('broken_resource_percent') }}%</td>
+		  </tr>
+		{% endfor %}
+	   </tbody>
+	  </table>
+
+    {% else %}
+	  <ul>
+			<div id="block-broken-datasets">
+				<li>{{ _('Broken datasets') }}: <span id="partial1" class="hidden">{{ c.data['num_broken_packages'] }}</span><span id="total1" class="hidden">{{ c.data['num_packages'] }}</span> </li>
+				<div id="progress_datasets">
+					<div id="broken_datasets_bar">0%</div>
+				</div>
+			</div>
+			<div id="block-broken-links">
+				<li>{{ _('Broken links') }}: <span id="partial2" class="hidden">{{ c.data['num_broken_resources'] }}</span><span id="total2"class="hidden">{{ c.data['num_resources'] }}</span></li>
+				<div id="progress_links" style="overflow-x:auto;">
+					<div id="broken_links_bar">0%</div>
+				</div>
+			</div>
+	  </ul>
+	  <br>
+	  <table class="broken-links sortable" id="report-table" >
+	   <thead>
+		  <tr>
+			<th class="broken-info">{{ _('Dataset') }}</th>
+			<th class="broken-info">{{ _('URL') }}</th>
+			<th class="broken-info">{{ _('Reason') }}</th>
+			<th title="{{ _('The last time it was successfully obtained') }}">{{ _('Last success') }}</th>
+			<th title="{{ _('Most recent failed attempt') }}">{{ _('Latest fail') }}</th>
+		  </tr>
+	   </thead>
+	   <tbody>
+		  {% for row_dict in c.data['table'] %}
+			<tr>
+			  <td><a href="{{ h.url_for(controller='package', action='read', id=row_dict['dataset_name']) }}#{{ row_dict['resource_id'] }}" target="_blank">{{ row_dict['dataset_title'] }}</a></td>
+			  <td><a href="{{ row_dict['resource_url'] }}" target="_blank" style="word-wrap:break-word;">{{ row_dict['resource_url'] }}</a></td>
+			  <td>{{ row_dict.get('reason', _('Not recorded')) }}</td>
+			  <td class="center-align">{{ h.render_datetime(row_dict.get('last_success'), '%d/%m/%Y') if row_dict.get('last_success') else _('Not recorded') }}</td>
+			  <td class="center-align">{{ h.render_datetime(row_dict.get('last_updated'), '%d/%m/%Y') if row_dict.get('last_updated') else _('Not recorded') }}</td>
+			</tr>
+		  {% endfor %}
+		</tbody>
+	  </table>
+
+	{% endif %}
+{% else %}
+	{% if c.options['organization'] != None %}
+		
+	  <ul>
+			<div id="block-broken-datasets">
+				<li>{{ _('Broken datasets') }}: <span id="partial1" class="hidden">{{ c.data['num_broken_packages'] }}</span><span id="total1" class="hidden">{{ c.data['num_packages'] }}</span> </li>
+				<div id="progress_datasets">
+					<div id="broken_datasets_bar">0%</div>
+				</div>
+			</div>
+			<div id="block-broken-links">
+				<li>{{ _('Broken links') }}: <span id="partial2" class="hidden">{{ c.data['num_broken_resources'] }}</span><span id="total2"class="hidden">{{ c.data['num_resources'] }}</span></li>
+				<div id="progress_links" style="overflow-x:auto;">
+					<div id="broken_links_bar">0%</div>
+				</div>
+			</div>
+	  </ul>
+	  <br>
+	  <table class="broken-links sortable" id="report-table" >
+	   <thead>
+		  <tr>
+			<th class="broken-info">{{ _('Dataset') }}</th>
+			<th class="broken-info">{{ _('URL') }}</th>
+			<th class="broken-info">{{ _('Reason') }}</th>
+			<th class="date" title="{{ _('The last time it was successfully obtained') }}">{{ _('Last success') }}</th>
+			<th class="date" title="{{ _('Most recent failed attempt') }}">{{ _('Latest fail') }}</th>
+		  </tr>
+	   </thead>
+	   <tbody>
+		  {% for row_dict in c.data['table'] %}
+			<tr>
+			  <td><a href="{{ h.url_for(controller='package', action='read', id=row_dict['dataset_name']) }}#{{ row_dict['resource_id'] }}" target="_blank">{{ row_dict['dataset_title'] }}</a></td>
+			  <td><a href="{{ row_dict['resource_url'] }}" target="_blank" style="word-wrap:break-word;">{{ row_dict['resource_url'] }}</a></td>
+			  <td>{{ row_dict.get('reason', _('Not recorded')) }}</td>
+			  <td class="center-align">{{ h.render_datetime(row_dict.get('last_success'), '%d/%m/%Y') if row_dict.get('last_success') else _('Not recorded') }}</td>
+			  <td class="center-align">{{ h.render_datetime(row_dict.get('last_updated'), '%d/%m/%Y') if row_dict.get('last_updated') else _('Not recorded') }}</td>
+			</tr>
+		  {% endfor %}
+		</tbody>
+	  </table>
+	 {% else %}
+        <div id="broken_link_title_no_access">Acceso denegado<div>
+		<br>
+        <div id="broken_link_message_no_access">No está autorizado para acceder al recurso solicitado<div>
+	 {% endif %}
+{% endif %}

@@ -1,24 +1,24 @@
 <?php
 
-
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dge_i18n (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+ 	* Copyright (C) 2022 Entidad PÃºblica Empresarial Red.es
+ 	*
+ 	* This file is part of "dge_i18n (datos.gob.es)".
+ 	*
+ 	* This program is free software: you can redistribute it and/or modify
+ 	* it under the terms of the GNU General Public License as published by
+ 	* the Free Software Foundation, either version 2 of the License, or
+ 	* (at your option) any later version.
+ 	*
+ 	* This program is distributed in the hope that it will be useful,
+ 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ 	* GNU General Public License for more details.
+ 	*
+ 	* You should have received a copy of the GNU General Public License
+ 	* along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+*/
 
 /**
  * Implements hook_permission().
@@ -287,7 +287,7 @@ function dge_i18n_field_collection_clone($entity_type, $old_entity, &$entity, $f
 
   foreach ($old_fc_items as $old_fc_item) {
     $new_fc_item = entity_create('field_collection_item', array('field_name' => $fc_field));
-    $new_fc_item->updateHostEntity($entity, $entity_type, TRUE); 
+    $new_fc_item->updateHostEntity($entity, $entity_type, TRUE);
 
     foreach ($field_names as $field_name) {
       if (!empty($old_fc_item->{$field_name})){
@@ -370,10 +370,10 @@ function dge_i18n_create_nodes_autrotranslation($node, $type = 'update') {
             $tpath['alias'] = NULL;
           }
           $tnode->path = $tpath;
-          
+
           dge_i18n_node_taxonomy_autotranslation($node, $tnode);
           dge_i18n_node_field_collection_autotranslation($node, $tnode, 'insert');
-          
+
           node_save($tnode);
           if(!dge_i18n_db_select('node', $tnode->nid)) {
             dge_i18n_db_insert('node', $tnode->nid, $tnode->language_original);
@@ -429,8 +429,8 @@ function dge_i18n_update_nodes_autrotranslation($node, $type = 'update') {
           && $translation_node->language_original != $translation_node->language
         ) {
         	//Avoid simplenews issue for nodes without simplenews information
-        	if ($translation_node->type == 'bulletin' && 
-        	       isset($node->field_simplenews_term) && 
+        	if ($translation_node->type == 'bulletin' &&
+        	       isset($node->field_simplenews_term) &&
         	       isset($node->simplenews->tid)) {
         		$translation_node->field_simplenews_term = $node->field_simplenews_term;
         		$translation_node->simplenews->tid = $node->simplenews->tid;

@@ -1,7 +1,6 @@
 name = DGE Migrate
 description = Migrate utilities
 core = 7.x
-version = 7.x-1.0
 package = DGE
 
 dependencies[] = migrate

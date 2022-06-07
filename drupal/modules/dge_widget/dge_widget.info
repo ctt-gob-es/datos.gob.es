@@ -4,7 +4,6 @@ description = ""
 package = DGE
 dependencies[] = dge_ckan
 core = 7.x
-version = 7.x-1.0
 files[] = dge_widget.install
 files[] = dge_widget.module
 files[] = theme/dge_widget_rss.tpl.php

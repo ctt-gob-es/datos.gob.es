@@ -1,25 +1,27 @@
 <?php
 
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dge_comment (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+ 	* Copyright (C) 2022 Entidad PÃºblica Empresarial Red.es
+ 	*
+ 	* This file is part of "dge_comment (datos.gob.es)".
+ 	*
+ 	* This program is free software: you can redistribute it and/or modify
+ 	* it under the terms of the GNU General Public License as published by
+ 	* the Free Software Foundation, either version 2 of the License, or
+ 	* (at your option) any later version.
+ 	*
+ 	* This program is distributed in the hope that it will be useful,
+ 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ 	* GNU General Public License for more details.
+ 	*
+ 	* You should have received a copy of the GNU General Public License
+ 	* along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+*/
 
 define('DGE_USERNAME_ADMIN_DEFAULT','datos.gob.es');
+define('DELETED_DATASET_PREFIX','[ELIMINADO]');
 
 /**
  * Implements hook_permission().
@@ -38,6 +40,10 @@ function dge_comment_permission() {
       'title' => t('Edit Organization Comment'),
       'description' => t('Allow users to edit organization comment'),
     ),
+    'access deleted comments' => array(
+        'title' => t('Access deleted comments'),
+        'description' => t('Allow users to access comments from deleted datasets'),
+      ),
   );
 }
 
@@ -90,7 +96,7 @@ function dge_comment_menu() {
     'weight' => -10,
   );
   $items['admin/dashboard/comment/approval'] = array(
-    'title' => t('Unapproved comments'),
+    'title' => 'Unapproved comments',
     'title callback' => 'dge_comment_count_unpublished',
     'page arguments' => array('approval'),
     'access arguments' => array('approve organization comment'),
@@ -103,8 +109,17 @@ function dge_comment_menu() {
     'access arguments' => array('administer comments'),
     'file' => 'dge_comment.admin.inc',
   );
+  $items['admin/dashboard/comment/deleted'] = array(
+    'title' => t('Comments on deleted datasets'),
+    'title callback' => 'dge_comment_deleted',
+    'page arguments' => array('deleted'),
+    'access arguments' => array('access deleted comments'),
+    'type' => MENU_LOCAL_TASK,
+  );
+
   return $items;
 }
+
 
 /**
  * Implements hook_menu_alter().
@@ -112,10 +127,13 @@ function dge_comment_menu() {
  * Alter comment_reply menu
  */
 function dge_comment_menu_alter(&$items) {
+
   if (isset($items['comment/reply/%node'])) {
     $items['comment/reply/%node']['page callback'] = 'dge_comment_reply';
     $items['comment/reply/%node']['file'] = 'dge_comment.pages.inc';
     $items['comment/reply/%node']['module'] = 'dge_comment';
+    $items['comment/reply/%node']['access callback'] = TRUE;
+    $items['comment/reply/%node']['type'] = MENU_CALLBACK;
   }
   if (isset($items['comment/%comment/edit'])) {
     $items['comment/%comment/edit']['access callback'] = 'dge_comment_access';
@@ -124,6 +142,7 @@ function dge_comment_menu_alter(&$items) {
     $items['comment/%/approve']['access callback'] = 'dge_comment_access';
     $items['comment/%/approve']['access arguments'] = array('approve', 1);
   }
+  return $items;
 }
 
 /**
@@ -180,9 +199,19 @@ function dge_comment_get_user_access($comment) {
  * Implements hook_form_alter().
  */
 function dge_comment_form_comment_form_alter(&$form, $form_state) {
+  //GDPR (164-165)
+  $form['comment_body']['und'][0]['#description'] = t('Datos.gob.es wants to favour user participation with comments that contribute to enriching the content published on the website.
+  Comments received will be reviewed and approved by the portal management team to ensure quality.
+  Datos.gob.es reserves the right to delete comments considered inappropriate. Therefore, comments that include insults, disrespectful language or considerations not related to the content in question shall not be published.');
+  $form['field_terms']['und']['#title'] = t("I consent to Red.es, with Tax ID Q-2891006-E, as the data controller, processing the data provided directly by me, as well as data obtained indirectly from my activity, in accordance with the Privacy Policy and with the General Director's Instruction on Exercising Rights to Personal Data Protection, available at the following link:  <a href='!url'>Personal data protection*.</a>", array('!url' => 'http://www.red.es/redes/es/quienes-somos/protecci%C3%B3n-de-datos-de-car%C3%A1cter-personal'));
+  $form['field_terms']['und']['#attributes']['required'] = 'required';
   $defaults = array('value' => '', 'format' => 'full_html');
   $comment_description = variable_get('dge_comment_introducing_text', $defaults);
   $comment_description = check_markup($comment_description['value'], $comment_description['format']);
+
+  //SDA-825
+  $form['author']['mail']['#description'] = "<p>" . t('Insert a valid email. Example: example@test.com') . "</p><span>" . t("The content of this field is kept private and will not be shown publicly.") . "</span>";
+
 
   if (!empty($comment_description)) {
     $form['comment_info'] = array(
@@ -209,6 +238,7 @@ function dge_comment_form_comment_form_alter(&$form, $form_state) {
  * Redirect to CKAN dataset after reply comment
  */
 function dge_comment_form_comment_submit($form, &$form_state) {
+
   $msgs = drupal_get_messages('status', TRUE);
 
   $searched_message = t('Your comment has been queued for review by site administrators and will be published after approval.');
@@ -232,6 +262,8 @@ function dge_comment_form_comment_submit($form, &$form_state) {
   if($package_name) {
     $form_state['redirect'] = 'package/redirect/'.$package_name.'/comment';
   }
+
+  $users = array('email1@example.com', 'email2@exam');
 }
 
 /**
@@ -277,11 +309,13 @@ function dge_comment_build_package_url($package_name) {
   global $language;
 
   $path = variable_get('ckan_url', '');
+
   if(valid_url($path, TRUE)) {
     $path .= '/'.$language->language.'/'.variable_get('ckan_pagina_dataset', 'dataset').'/'.$package_name;
   } else {
     $path = url($path.'/'.variable_get('ckan_pagina_dataset', 'dataset').'/'.$package_name, array('absolute'=>TRUE));
   }
+
   return $path;
 }
 
@@ -377,7 +411,7 @@ function dge_comment_user_view($account, $build_mode) {
       $account->content['dge_comment']['links'] = array(
         '#type' => 'user_profile_item',
         '#title' => '',
-        '#markup' => l('Administer','admin/dashboard/comment'),
+        '#markup' => l(t('Administer'),'admin/dashboard/comment'),
       );
     }
   }
@@ -387,14 +421,77 @@ function dge_comment_user_view($account, $build_mode) {
  * Implements hook_node_view().
  */
 function dge_comment_node_view($node, $view_mode, $langcode) {
-  if ($node->type == 'dataset' && $view_mode == 'full' && arg(0) == 'node') {
-    $url = 'node/' . $node->nid;
-    if($node->type == 'dataset') {
-      $url = dge_comment_build_package_url(dge_comment_dataset_get_package_name($node));
+
+  if ($node->type == 'dataset') {
+    // Se obtiene el name actualizado
+    $title = dge_comment_get_updated_name($node);
+
+    // Redirigir a CKAN siempre que el dataset no este marcado como ELIMINADO REMOVED_DATASET_TEXT
+    if ($node->type == 'dataset' && $view_mode == 'full' && arg(0) == 'node' &&
+            strpos($title, DELETED_DATASET_PREFIX) !== 0) {
+        $url = 'node/' . $node->nid;
+        if($node->type == 'dataset') {
+          $url = dge_comment_build_package_url(dge_comment_dataset_get_package_name($node));
+          $uris= explode('/',request_uri());
+          if(in_array("comment",$uris)){
+              $cid=array_pop($uris);
+              $url.="#comment-$cid";
+          }
+        }
+        drupal_goto($url);
     }
-    drupal_goto($url);
+    else {
+      // Set default text
+      $defaults = array('value' => '', 'format' => 'full_html');
+      $dge_comment_deleted_explanation = variable_get('dge_comment_deleted_explanation', $defaults);
+      $dge_comment_deleted_explanation['value'] = t("Below there is a list of comments that belonged to a dataset that has been deleted. You can reply to comments that were approved before the dataset was deleted. You can also request the removal or reassignment of comments to the equivalent active dataset by contacting the platform support team. If the list of comments is empty, it is because they have considered SPAM and consequently removed by the support team.");
+      $comment_description = check_markup($dge_comment_deleted_explanation['value'], $dge_comment_deleted_explanation['format']);
+      $title = t('[DELETED] ').substr($title, 12);
+
+      if (!empty($comment_description)) {
+        $node->dge_comment_deleted_explanation = t($comment_description);
+      }
+
+      if ($title !== $node->title) {
+        drupal_set_title($title);
+      }
+
+      if (dge_comment_get_user_access($node)) {
+        // Load unapproved comments
+        $result = db_select('comment')
+            ->fields('comment', array('cid'))
+            ->condition('nid', $node->nid, '=')
+            ->condition('status', 0, '=')
+            ->execute();
+
+        $cids = $result->fetchCol();
+        $comments=comment_load_multiple($cids);
+        $node->dge_comment_deleted_comments = $comments;
+      }
+    }
   }
 }
+
+/*
+ * Get the last node title (not the revision one)
+ */
+function dge_comment_get_updated_name($node) {
+    $title = $node->title;
+
+    $query = db_select('node', 'n');
+    $query->condition('n.nid', $node->nid, '=');
+    $query->addField('n', 'title', 'node_title');
+    $query->execute();
+
+    $result = $query->execute();
+
+    if ($record = $result->fetchAssoc()) {
+        $title = $record['node_title'];
+    }
+
+    return $title;
+}
+
 /*
  * Implements hook_comment_view_alter().
  */
@@ -433,6 +530,14 @@ function dge_comment_comment_view_alter(&$build) {
  *  A node object.
  */
 function dge_comment_node_page_additions($node) {
+  if(isset($_GET['comment']) && $_GET['comment']){
+    $cid=$_GET['comment'];
+    if (($comment = comment_load($cid)) && ($node = node_load($comment->nid))) {
+      $page=dge_comment_get_display_page($cid, $node->type);
+      $_GET['page']=$page;
+    }
+  }
+
   global $base_path;
   $additions = array();
 
@@ -444,6 +549,7 @@ function dge_comment_node_page_additions($node) {
     $comments_per_page = variable_get('comment_default_per_page_' . $node->type, 50);
     if ($cids = dge_comment_get_thread($node, $mode, $comments_per_page)) {
       $comments = comment_load_multiple($cids);
+
       comment_prepare_thread($comments);
       $build = comment_view_multiple($comments, $node);
       $build['pager']['#theme'] = 'pager';
@@ -463,8 +569,7 @@ function dge_comment_node_page_additions($node) {
 
   //Add specific comment messages
   $additions['comment_messages'] = array('#theme' => 'comment_messages');
-
-  // Append comment form if needed.
+  $additions['rate_widget'] = rate_generate_widget(1, 'node', $node->nid);
   if (user_access('post comments') && $node->comment == COMMENT_NODE_OPEN && (variable_get('comment_form_location_' . $node->type, COMMENT_FORM_BELOW) == COMMENT_FORM_BELOW)) {
     $build = drupal_get_form("comment_node_{$node->type}_form", (object) array('nid' => $node->nid));
     $additions['comment_form'] = $build;
@@ -497,18 +602,20 @@ function dge_comment_node_page_additions($node) {
  * Load comments from thread. Multilanguage support
  */
 function dge_comment_get_thread($node, $mode, $comments_per_page) {
+
   $query = db_select('comment', 'c')->extend('PagerDefault');
+
   $query->addField('c', 'cid');
   $query
     //->addTag('node_access')
     ->addTag('comment_filter')
     ->addMetaData('node', $node)
     ->limit($comments_per_page);
+
   if($node->tnid)
     $query->join('node', 'n', 'n.nid = c.nid AND n.tnid = :tnid', array(':tnid' => $node->tnid));
   else
     $query->condition('c.nid', $node->nid);
-
   $count_query = db_select('comment', 'c');
   $count_query->addExpression('COUNT(*)');
   $count_query
@@ -568,9 +675,10 @@ function dge_comment_dataset_create($package) {
 
   $node = node_submit($node);
   node_save($node);
-  return $node;
 
+  return $node;
 }
+
 /*
  * Update dataset on response from CKAN
  */
@@ -601,6 +709,7 @@ function dge_comment_block_info() {
  * Implements hook_block_view().
  */
 function dge_comment_block_view($delta) {
+
   global $language;
   if ($delta == 'dge_comment_block') {
     //Load JS files
@@ -610,12 +719,16 @@ function dge_comment_block_view($delta) {
       $nid = $node->nid;
       //Get the comment page
       $params = drupal_get_query_parameters();
+
       $data_page = 0;
       if (array_key_exists('page', $params) && is_numeric($params['page'])) {
         $data_page = $params['page'];
       }
+      $tnid = $node->tnid;
+      $tnode = translation_node_get_translations($tnid);
+      $new_nid = $tnode['es']->nid;
       $settings = array (
-        'comment_url' => url('content/comment/view/'.$nid, array('absolute' => TRUE)),
+        'comment_url' => url('content/comment/view/'.$new_nid, array('absolute' => TRUE)),
         'current_url' => url('node/'.$nid, array('absolute' => TRUE)),
         'data_page' => $data_page
       );
@@ -624,6 +737,14 @@ function dge_comment_block_view($delta) {
       //Add JS
       drupal_add_js(drupal_get_path('module', 'dge_comment') .'/js/dge_comment.js');
       //Set content
+      $dest = drupal_get_destination();
+      drupal_add_js(array(
+            'rate' => array(
+            'basePath' => url('rate/vote/js'),
+            'destination' => $dest['destination'],
+            )
+        ), array('type' => 'setting'));
+      drupal_add_js(drupal_get_path('module', 'rate') . '/rate.js');
       $content = '<div id="dge-content-comment" class="dge-comment" data-page="'.$data_page.'"></div>';
     }
 
@@ -668,7 +789,6 @@ function dge_comment_preprocess_comment(&$variables) {
     // TODO not verified must be disallowed on theme settings
     $variables['author'] = str_replace(' (' . t('not verified') . ')','',$variables['author']);
   }
-
 }
 
 /**
@@ -679,7 +799,6 @@ function dge_comment_ctools_plugin_directory($module, $plugin) {
     return "plugins/$plugin";
   }
 }
-
 
 /**
  * Function theme_comment_messages(). Generate a div with comment messages.
@@ -704,7 +823,6 @@ function theme_comment_messages($variables) {
        } else {
           $comment_messages .= $msg_comments;
        }
-
      }
      $comment_messages .= "</div>\n";
    }
@@ -723,8 +841,8 @@ function dge_comment_set_message($message = NULL) {
     }
 
     // Mark this page as being uncacheable.
-    drupal_page_is_cacheable(FALSE);
   }
+  drupal_page_is_cacheable(FALSE);
 
   // Messages not set when DB connection fails.
   return isset($_SESSION['comment_messages']) ? $_SESSION['comment_messages'] : NULL;
@@ -736,4 +854,55 @@ function dge_comment_get_message() {
     return $messages;
   }
   return array();
+}
+
+function dge_comment_get_display_ordinal($cid)
+{
+    // Count how many comments (c1) are before $cid (c2) in display order. This is
+    // the 0-based display ordinal.
+    $query = db_select('comment', 'c1');
+    $query
+    ->innerJoin('comment', 'c2', 'c2.nid = c1.nid');
+
+    $query
+    ->addExpression('COUNT(*)', 'count');
+    $query
+    ->condition('c2.cid', $cid);
+    if (! user_access('administer comments')) {
+        $query
+      ->condition('c1.status', COMMENT_PUBLISHED);
+    }
+
+    $query
+      ->where('c1.thread > c2.thread');
+
+
+    return $query
+    ->execute()
+    ->fetchField();
+}
+
+function dge_comment_get_display_page($cid, $node_type) {
+  $ordinal = dge_comment_get_display_ordinal($cid, $node_type);
+
+  $comments_per_page = variable_get('comment_default_per_page_' . $node_type, 50);
+
+  return floor($ordinal / $comments_per_page);
+}
+
+function dge_comment_permalink($cid) {
+  if (($comment = comment_load($cid)) && ($node = node_load($comment->nid))) {
+
+    // Find the current display page for this comment.
+    $page = dge_comment_get_display_page($comment->cid, $node->type);
+
+    // Set $_GET['q'] and $_GET['page'] ourselves so that the node callback
+    // behaves as it would when visiting the page directly.
+    $_GET['q'] = 'node/' . $node->nid;
+    $_GET['page'] = $page;
+
+    // Return the node view, this will show the correct comment in context.
+    return menu_execute_active_handler('node/' . $node->nid, FALSE);
+  }
+  return MENU_NOT_FOUND;
 }

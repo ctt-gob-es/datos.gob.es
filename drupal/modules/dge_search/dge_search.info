@@ -1,7 +1,6 @@
 name = DGE Search
 description = Search, FacetAPI and Current Search Utilities
 core = 7.x
-version = 7.x-1.0
 package = DGE
 
 dependencies[] = facetapi

@@ -1,0 +1,76 @@
+{% extends "page.html" %}
+
+{% block title %}{{ report.title }} - {{ super() }}{% endblock %}
+
+{% set broken_linkOrgName = h.dge_url_for_user_organization() %}
+
+{% block breadcrumb_content %}
+  {% if broken_linkOrgName is not none %}
+    <li><a href=""><span>{{_('My Account')}}</span></a></li>
+    {% if c.userobj.sysadmin %}
+      <li><a href="/report/broken-links">{{ _('Broken links') }}</a></li>
+    {% elif (broken_linkOrgName[1:3] =='es' or broken_linkOrgName[1:3] == 'ca' or broken_linkOrgName[1:3] == 'en' or broken_linkOrgName[1:3] == 'eu' or broken_linkOrgName[1:3] == 'gl') %}
+      <li class="leaf"><a href="/report/broken-links{{broken_linkOrgName[16:]}}">{{ _('Broken links') }}</a></li>
+    {% else %}
+      <li><a href="/report/broken-links{{ broken_linkOrgName[13:] }}">{{ _('Broken links') }}</a></li>
+    {% endif %}
+    <!--{{ h.build_nav('report-org' if '/organization' in request.environ.get('PATH_INFO', '') else 'report', report.title, report_name=report_name) }}-->
+  {% endif %}
+{% endblock%}
+
+{% block page_title_content %}
+  {% if broken_linkOrgName is not none %}
+    {{ report.title }}
+  {% endif %}
+{% endblock %}
+
+{% block primary %}
+  {% if broken_linkOrgName is not none %}
+    <div class="dge-archiver-intro">
+      <p>{{ report.description }}</p>
+      <p>{{ _('Date last report') }}: {{ h.report__render_datetime(report_date, '%d/%m/%Y %H:%M') }}</p>
+    </div>
+  {% endif %}
+
+  <div class="dge-archiver">
+    {% if c.userobj is not none %}
+      {% if are_some_results %}
+        <div class="pull-right">
+            <a class="btn button btn-primary btn-sm pull-right" href="{{ h.report__relative_url_for(format='csv') }}"><i class="icon-download"></i>{{ _("Download as CSV") }}</a>
+            {% if c.userobj.sysadmin %}
+              <a class="btn button btn-primary btn-sm pull-right" href="{{ h.report__relative_url_for(format='json') }}"><i class="icon-download"></i>{{ _("Download as JSON") }}</a>
+            {% endif %}
+        </div>
+      {% endif %}
+
+      {% if broken_linkOrgName is not none %}
+        <h3>{{ _('Results') }}</h3>
+      {% endif %}
+
+      {% if not are_some_results %}
+        <p>{{ _('No results found.') }}</p>
+      {% else %}
+        <div>
+          {% snippet report_template, table=data['table'], data=data, report_name=report_name, options=options %}
+        </div>
+      {% endif %}
+    {% else %}
+
+      <div id="broken_link_title_no_access"><p>{{ _('Acceso denegado') }}</p><div>
+      <br>
+      <div id="broken_link_message_no_access"><p>{{ _('No está autorizado para acceder al recurso solicitado') }}</p><div>
+    {% endif %}
+  </div>
+{% endblock %}
+
+
+{% block styles %}
+  {{ super() }}
+  {% resource 'dge_archiver/dge-archiver-report.css' %}
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  {% resource 'dge_archiver/jquery.tablesorter.js' %}
+  {% resource 'dge_archiver/dge-archiver.js' %}
+{% endblock %}

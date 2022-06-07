@@ -1,7 +1,6 @@
 name = DGE Leaflet
 description = Leaflet utilities: drush download, block select layer and own map info definition
 core = 7.x
-version = 7.x-1.0
 package = DGE
 
 dependencies[] = leaflet

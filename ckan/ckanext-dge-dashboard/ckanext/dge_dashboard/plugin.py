@@ -1,19 +1,19 @@
-# Copyright (C) 2017 Entidad P�blica Empresarial Red.es
-# 
-# This file is part of "ckanext-dge-dashboard (datos.gob.es)".
-# 
+# Copyright (C) 2022 Entidad Pública Empresarial Red.es
+#
+# This file is part of "dge_dashboard (datos.gob.es)".
+#
 # This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-# 
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-# 
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # encoding: utf-8
 import ckan.plugins as plugins
@@ -85,9 +85,14 @@ class DgeDashboardPlugin(plugins.SingletonPlugin, DefaultTranslation):
             'dge_dashboard_administrator_published_drupal_contents': helpers.dge_dashboard_administrator_published_drupal_contents,
             'dge_dashboard_administrator_data_num_comments_by_month_year': helpers.dge_dashboard_administrator_data_num_comments_by_month_year,
             'dge_dashboard_administrator_data_num_visits_by_section': helpers.dge_dashboard_administrator_data_num_visits_by_section,
+            'dge_dashboard_administrator_datasets_by_org': helpers.dge_dashboard_administrator_datasets_by_org,
             'dge_dashboard_administrator_data_num_publishers_by_administration_level': helpers.dge_dashboard_administrator_data_num_publishers_by_administration_level,
+            'dge_dashboard_administrator_organizations_by_level': helpers.dge_dashboard_administrator_organizations_by_level,
+			'dge_dashboard_administrator_drupal_contents_by_likes': helpers.dge_dashboard_administrator_drupal_contents_by_likes,
+            'dge_dashboard_administrator_drupal_top10_voted_datasets': helpers.dge_dashboard_administrator_drupal_top10_voted_datasets,
             
             'dge_dashboard_get_month': helpers.dge_dashboard_get_month,
+            'dge_dashboard_special_org': helpers.dge_dashboard_special_org,
             }
 
     # ############### IRoutes ################################################ #
@@ -108,6 +113,10 @@ class DgeDashboardPlugin(plugins.SingletonPlugin, DefaultTranslation):
                 m.connect('adm_users_by_org_csv', '/csv-download/adm-users-org', action='adm_users_by_org_csv')
                 m.connect('adm_datasets_by_res_csv', '/csv-download/adm-datasets-res', action='adm_datasets_by_res_csv')
                 m.connect('most_visited_datasets_csv', '/csv-download/most-visited-datasets', action='most_visited_datasets_csv')
+                m.connect('adm_datasets_by_org_csv', '/csv-download/adm-org-datasets', action='adm_datasets_by_org_csv')
+                m.connect('adm_organizations_by_level', '/csv-download/adm-organizations-by-level', action='adm_organizations_by_level')
+                m.connect('adm_drupal_contents_by_likes_csv', '/csv-download/adm_drupal_contents_by_likes', action='adm_drupal_contents_by_likes_csv')
+                m.connect('adm_drupal_contents_top10_voted_datasets_csv', '/csv-download/adm_drupal_contents_top10_voted_datasets', action='adm_drupal_contents_top10_voted_datasets_csv')
 
         except Exception as e:
             log.warn("MAP Before_map exception %r: %r:", type(e), e.message)

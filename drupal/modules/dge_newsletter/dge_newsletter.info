@@ -1,7 +1,7 @@
 name = DGE Newsletter
 description = Search, FacetAPI and Current Search Utilities
 core = 7.x
-version = 7.x-1.0
 package = DGE
 
+stylesheets[all][] = css/sendinblue-block.css
 dependencies[] = simplenews

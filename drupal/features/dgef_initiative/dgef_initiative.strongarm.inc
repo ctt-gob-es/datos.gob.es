@@ -1,23 +1,22 @@
 <?php
-
 /**
- * Copyright (C) 2017 Entidad Pública Empresarial Red.es
- * 
- * This file is part of "dgef_initiative (datos.gob.es)".
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2022 Entidad Pública Empresarial Red.es
+* 
+* This file is part of "dgef_initiative (datos.gob.es)".
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 /**
  * @file
@@ -34,7 +33,7 @@ function dgef_initiative_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_initiative';
-  $strongarm->value = 'edit-i18n';
+  $strongarm->value = 'edit-workflow';
   $export['additional_settings__active_tab_initiative'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -119,32 +118,87 @@ function dgef_initiative_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__initiative';
   $strongarm->value = array(
-    'view_modes' => array(),
+    'view_modes' => array(
+      'teaser' => array(
+        'custom_settings' => TRUE,
+      ),
+      'carousel_item' => array(
+        'custom_settings' => TRUE,
+      ),
+      'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'rss' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_index' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_result' => array(
+        'custom_settings' => FALSE,
+      ),
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'email_plain' => array(
+        'custom_settings' => FALSE,
+      ),
+      'email_html' => array(
+        'custom_settings' => FALSE,
+      ),
+      'email_textalt' => array(
+        'custom_settings' => FALSE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
+    ),
     'extra_fields' => array(
       'form' => array(
         'title' => array(
           'weight' => '0',
         ),
         'language' => array(
-          'weight' => '3',
+          'weight' => '5',
+        ),
+        'metatags' => array(
+          'weight' => '22',
+        ),
+        'path' => array(
+          'weight' => '21',
+        ),
+        'xmlsitemap' => array(
+          'weight' => '23',
         ),
       ),
       'display' => array(
         'created' => array(
           'teaser' => array(
-            'weight' => '8',
+            'weight' => '15',
+            'visible' => FALSE,
+          ),
+          'default' => array(
+            'weight' => '21',
             'visible' => FALSE,
           ),
         ),
         'author' => array(
           'teaser' => array(
-            'weight' => '10',
+            'weight' => '17',
+            'visible' => FALSE,
+          ),
+          'default' => array(
+            'weight' => '23',
             'visible' => FALSE,
           ),
         ),
         'title' => array(
           'teaser' => array(
-            'weight' => '9',
+            'weight' => '16',
+            'visible' => FALSE,
+          ),
+          'default' => array(
+            'weight' => '22',
             'visible' => FALSE,
           ),
         ),
@@ -153,10 +207,18 @@ function dgef_initiative_strongarm() {
             'weight' => '7',
             'visible' => FALSE,
           ),
+          'default' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
         ),
         'language_markup_enabled' => array(
           'teaser' => array(
-            'weight' => '21',
+            'weight' => '22',
+            'visible' => FALSE,
+          ),
+          'default' => array(
+            'weight' => '24',
             'visible' => FALSE,
           ),
         ),
@@ -186,7 +248,7 @@ function dgef_initiative_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'language_content_type_initiative';
-  $strongarm->value = '2';
+  $strongarm->value = '0';
   $export['language_content_type_initiative'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -209,7 +271,9 @@ function dgef_initiative_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_options_initiative';
-  $strongarm->value = array();
+  $strongarm->value = array(
+    0 => 'status',
+  );
   $export['node_options_initiative'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -265,7 +329,7 @@ function dgef_initiative_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_node_initiative_pattern';
-  $strongarm->value = 'encuentros-aporta/[node:title]';
+  $strongarm->value = 'iniciativas/[node:title]';
   $export['pathauto_node_initiative_pattern'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -309,6 +373,16 @@ function dgef_initiative_strongarm() {
   $strongarm->name = 'save_continue_initiative';
   $strongarm->value = 'Guardar y añadir campos';
   $export['save_continue_initiative'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'xmlsitemap_settings_node_initiative';
+  $strongarm->value = array(
+    'status' => '0',
+    'priority' => '0.5',
+  );
+  $export['xmlsitemap_settings_node_initiative'] = $strongarm;
 
   return $export;
 }
