@@ -1,8 +1,0 @@
-name = DGE Ckan
-description = Connexion CKAN
-core = 7.x
-package = DGE
-
-dependencies[] = libraries
-dependencies[] = transliteration
-dependencies[] = dge_user

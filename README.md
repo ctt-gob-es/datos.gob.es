@@ -1,52 +1,61 @@
-# [datos.gob.es](https://datos.gob.es/)
+<p align="center">
+  <a href="https://digital.gob.es/ministerio/organigrama_organos/SEDIA.html" target="_blank" rel="noreferrer noopener"><img alt="Secretar√≠a de Estado de Digitalizaci√≥n e Inteligencia Artificial" src="https://raw.githubusercontent.com/datosgobes/DCAT-AP-ES/a3830db83a1ed5de0b347eeaf9d05eede75f620f/docs/img/sedia-red-es.jpg" height="44" /></a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://datos.gob.es/" target="_blank" rel="noreferrer noopener"><img alt="datos.gob.es" src="https://raw.githubusercontent.com/datosgobes/DCAT-AP-ES/a3830db83a1ed5de0b347eeaf9d05eede75f620f/docs/img/dge_logo_2025.svg" height="44" /></a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://datos.gob.es/acerca-de-la-iniciativa-aporta" target="_blank" rel="noreferrer noopener"><img alt="Iniciativa Aporta" src="https://raw.githubusercontent.com/datosgobes/DCAT-AP-ES/a3830db83a1ed5de0b347eeaf9d05eede75f620f/docs/img/iniciativa_aporta.svg" height="44" /></a>
+</p>
 
-Este repositorio contiene el cÛdigo fuente del proyecto datos.gob.es. Se proporcionan los componentes desarrollados para Drupal y para CKAN. Se puede consultar la arquitectura de alto nivel del proyecto [aquÌ](https://datos.gob.es/es/tecnologia).
+# Cat√°logo Nacional - [datos.gob.es](https://datos.gob.es/)
 
-## CKAN
+Este repositorio es el **punto de entrada al c√≥digo fuente personalizado de la nueva versi√≥n de la plataforma [datos.gob.es](https://datos.gob.es/)** en un modelo descentralizado: aqu√≠ se mantiene la documentaci√≥n, la gobernanza y los enlaces a los repositorios donde vive el c√≥digo ([extensiones CKAN](https://docs.ckan.org/en/latest/extensions/) y [m√≥dulos/temas Drupal](https://www.drupal.org/docs/extending-drupal)).
 
-Se han desarrollado las siguientes extensiones de CKAN:
+## Objetivo del repositorio
 
-* ckanext-dge: contiene las adaptaciones especÌficas, tanto funcionales como de estilos.
-* ckanext-dge-drupal-users: permite delegar la autenticaciÛn de CKAN en Drupal.
-* ckanext-dge-scheming: amplÌa el esquema de metadatos de CKAN a los requisitos de la [Norma TÈcnica de Interoperabilidad de ReutilizaciÛn de recursos de la informaciÛn (NTI-RISP)](https://www.boe.es/diario_boe/txt.php?id=BOE-A-2013-2380).
-* ckanext-dge-harvest: implementa el proceso de federaciÛn de los cat·logos de datos de los organismos publicadores integrados en el sistema.
-* ckanext-dge-ga: integraciÛn con Google Analytics.
-* ckanext-dge-ga-report: generaciÛn de informaciÛn de reportes de Google Analytics.
-* ckanext-dge-dashboard: implementa el cuadro de mando del portal.
-* ckanext-dge-archiver: personaliza la comprobaciÛn de enlaces rotos y permite la selecciÛn de las organizaciones.
+- Facilitar una **gobernanza clara** y un modelo de contribuci√≥n abierto.
+- Separar el c√≥digo por componentes (extensiones CKAN / m√≥dulos y temas Drupal), con su propio ciclo de vida.
 
-### Dependencias
+## Repositorios
 
-Requiere CKAN versiÛn 2.5.2 o superior y las siguientes extensiones:
+Este repositorio **no contiene el c√≥digo fuente operativo de [CKAN](https://github.com/ckan/ckan)/[Drupal](https://github.com/drupal/drupal)**. El c√≥digo se publica y evoluciona en los repositorios de extensiones/m√≥dulos/temas enlazados desde aqu√≠.
 
-* [ckanext-dcat](https://github.com/ckan/ckanext-dcat)
-* [ckanext-harvest](https://github.com/ckan/ckanext-harvest)
-* [ckanext-scheming](https://github.com/ckan/ckanext-scheming)
-* [ckanext-fluent](https://github.com/ckan/ckanext-fluent)
-* [ckanext-archiver](https://github.com/ckan/ckanext-archiver)
-* [ckanext-googleanalytics](https://github.com/ckan/ckanext-googleanalytics)
-* [ckanext-report](https://github.com/ckan/ckanext-report)
+### Extensiones CKAN
 
-###  InstalaciÛn
+> [!TIP]
+> Documentaci√≥n extensiones CKAN: [**Descargar PDF**](docs/202512_datosgobes-ckan-doc_es.pdf)
 
-El proceso de instalaciÛn de las extensiones sigue el mecanismo est·ndar de CKAN descrito en su [documentaciÛn oficial](http://docs.ckan.org/). Para cualquier consulta, puede utilizar el [punto de contacto](https://datos.gob.es/es/contacto) de datos.gob.es.
+Cada extensi√≥n CKAN se mantiene en un repositorio independiente.
 
-### Licencia
+| Extensi√≥n | Descripci√≥n | Tipo | Distribuci√≥n | Actualizado |
+|---|---|---|---|---|
+| [`ckanext-comments`](https://github.com/datosgobes/ckanext-comments) | Hilos de comentarios en entidades CKAN | `comentarios` `ui` | [![Release](https://img.shields.io/github/v/release/datosgobes/ckanext-comments?label=)](https://github.com/datosgobes/ckanext-comments/releases) | [![Last commit](https://img.shields.io/github/last-commit/datosgobes/ckanext-comments?label=)](https://github.com/datosgobes/ckanext-comments) |
+| [`ckanext-dge`](https://github.com/datosgobes/ckanext-dge) | Tema/plantillas y utilidades espec√≠ficas | `tema` `ui` | [![Release](https://img.shields.io/github/v/release/datosgobes/ckanext-dge?label=)](https://github.com/datosgobes/ckanext-dge/releases) | [![Last commit](https://img.shields.io/github/last-commit/datosgobes/ckanext-dge?label=)](https://github.com/datosgobes/ckanext-dge) |
+| [`ckanext-dge-brokenlinks`](https://github.com/datosgobes/ckanext-dge-brokenlinks) | Auditor√≠a/gesti√≥n de enlaces rotos | `auditor√≠a` | [![Release](https://img.shields.io/github/v/release/datosgobes/ckanext-dge-brokenlinks?label=)](https://github.com/datosgobes/ckanext-dge-brokenlinks/releases) | [![Last commit](https://img.shields.io/github/last-commit/datosgobes/ckanext-dge-brokenlinks?label=)](https://github.com/datosgobes/ckanext-dge-brokenlinks) |
+| [`ckanext-dge-dashboard`](https://github.com/datosgobes/ckanext-dge-dashboard) | Dashboard/estad√≠sticas | `drupal` `analytics` | [![Release](https://img.shields.io/github/v/release/datosgobes/ckanext-dge-dashboard?label=)](https://github.com/datosgobes/ckanext-dge-dashboard/releases) | [![Last commit](https://img.shields.io/github/last-commit/datosgobes/ckanext-dge-dashboard?label=)](https://github.com/datosgobes/ckanext-dge-dashboard) |
+| [`ckanext-dge-dataservice`](https://github.com/datosgobes/ckanext-dge-dataservice) | Data services | `metadatos` `api` | [![Release](https://img.shields.io/github/v/release/datosgobes/ckanext-dge-dataservice?label=)](https://github.com/datosgobes/ckanext-dge-dataservice/releases) | [![Last commit](https://img.shields.io/github/last-commit/datosgobes/ckanext-dge-dataservice?label=)](https://github.com/datosgobes/ckanext-dge-dataservice) |
+| [`ckanext-dge-drupal-users`](https://github.com/datosgobes/ckanext-dge-drupal-users) | Integraci√≥n usuarios Drupal ‚Üî CKAN | `drupal` `integraci√≥n` `usuarios` | [![Release](https://img.shields.io/github/v/release/datosgobes/ckanext-dge-drupal-users?label=)](https://github.com/datosgobes/ckanext-dge-drupal-users/releases) | [![Last commit](https://img.shields.io/github/last-commit/datosgobes/ckanext-dge-drupal-users?label=)](https://github.com/datosgobes/ckanext-dge-drupal-users) |
+| [`ckanext-dge-ga`](https://github.com/datosgobes/ckanext-dge-ga) | Integraci√≥n Google Analytics | `analytics` `integraci√≥n` | [![Release](https://img.shields.io/github/v/release/datosgobes/ckanext-dge-ga?label=)](https://github.com/datosgobes/ckanext-dge-ga/releases) | [![Last commit](https://img.shields.io/github/last-commit/datosgobes/ckanext-dge-ga?label=)](https://github.com/datosgobes/ckanext-dge-ga) |
+| [`ckanext-dge-ga-report`](https://github.com/datosgobes/ckanext-dge-ga-report) | Extracci√≥n/reporting GA | `analytics` `dashboard` | [![Release](https://img.shields.io/github/v/release/datosgobes/ckanext-dge-ga-report?label=)](https://github.com/datosgobes/ckanext-dge-ga-report/releases) | [![Last commit](https://img.shields.io/github/last-commit/datosgobes/ckanext-dge-ga-report?label=)](https://github.com/datosgobes/ckanext-dge-ga-report) |
+| [`ckanext-dge-harvest`](https://github.com/datosgobes/ckanext-dge-harvest) | Cosechado/validaci√≥n DCAT-AP-ES | `cosechador` `federador` | [![Release](https://img.shields.io/github/v/release/datosgobes/ckanext-dge-harvest?label=)](https://github.com/datosgobes/ckanext-dge-harvest/releases) | [![Last commit](https://img.shields.io/github/last-commit/datosgobes/ckanext-dge-harvest?label=)](https://github.com/datosgobes/ckanext-dge-harvest) |
+| [`ckanext-dge-scheming`](https://github.com/datosgobes/ckanext-dge-scheming) | Scheming (datasets/dataservices) | `esquema` `metadatos` `dcat-ap-es` `nti-risp` | [![Release](https://img.shields.io/github/v/release/datosgobes/ckanext-dge-scheming?label=)](https://github.com/datosgobes/ckanext-dge-scheming/releases) | [![Last commit](https://img.shields.io/github/last-commit/datosgobes/ckanext-dge-scheming?label=)](https://github.com/datosgobes/ckanext-dge-scheming) |
 
-El cÛdigo fuente es propiedad de Entidad P˙blica Empresarial Red.es y est· licenciado bajo [GNU Affero General Public License, versiÛn 3 o posterior](http://www.gnu.org/licenses/).
+### M√≥dulos y temas de Drupal
 
-## Drupal
+Para simplificar el mantenimiento, los desarrollos Drupal se agrupan en dos repositorios, cada uno con su ciclo de vida, releases e issues.
 
-Se incluyen en esta secciÛn los mÛdulos contrib desarrollados para el proyecto, las features que deben ser activadas y el theme a integrar. A destacar el mÛdulo dge_i18n que provee la funcionalidad de multiidioma al portal, permitiendo una navegaciÛn simÈtrica en cada idioma.
+| Extensi√≥n | Descripci√≥n | Tipo | Distribuci√≥n | Actualizado |
+|---|---|---|---|---|
+| [`drupal-modules-datosgob`](https://github.com/datosgobes/drupal-modules-datosgob) | M√≥dulos Drupal: `dge_ckan`, `dge_blocks`, `dge_comments`, ... | `drupal` `modules` `datos.gob.es` | [![Release](https://img.shields.io/github/v/release/datosgobes/drupal-modules-datosgob?label=)](https://github.com/datosgobes/drupal-modules-datosgob/releases) | [![Last commit](https://img.shields.io/github/last-commit/datosgobes/drupal-modules-datosgob?label=)](https://github.com/datosgobes/drupal-modules-datosgob) |
+| [`drupal-themes-datosgob`](https://github.com/datosgobes/drupal-themes-datosgob) | Temas Drupal: `dge_admin_theme`, `dge_theme`, ... | `drupal` `themes` `datos.gob.es`  | [![Release](https://img.shields.io/github/v/release/datosgobes/drupal-themes-datosgob?label=)](https://github.com/datosgobes/drupal-themes-datosgob/releases) | [![Last commit](https://img.shields.io/github/last-commit/datosgobes/drupal-themes-datosgob?label=)](https://github.com/datosgobes/drupal-themes-datosgob) 
 
-### Dependencias
+## Historial de cambios
 
-Requiere Drupal versiÛn 7.x.
+Para ver el hist√≥rico de cambios y versiones de este repositorio, consulta el [CHANGELOG.md](CHANGELOG.md)
 
-### InstalaciÛn
+## Contribuci√≥n
 
-El proceso de instalaciÛn debe seguir el modelo de despliegue de Drupal para modules contrib, activaciÛn de features e integraciÛn de themes, aplicando las recomendaciones de su [documentaciÛn oficial](https://www.drupal.org/docs/7). Para cualquier consulta, puede utilizar el [punto de contacto](https://datos.gob.es/es/contacto) de datos.gob.es.
+¬°Las contribuciones son bienvenidas! Por favor, consulta nuestra [Gu√≠a de Contribuci√≥n](CONTRIBUTING.md) para obtener detalles sobre c√≥mo reportar bugs, sugerir mejoras y enviar pull requests.
 
-### Licencia
+### Reportar vulnerabilidades de seguridad
 
-El cÛdigo fuente es propiedad de Entidad P˙blica Empresarial Red.es y est· licenciado bajo [GNU General Public License, versiÛn 2 o posterior](http://www.gnu.org/licenses/).
+**Si descubres una vulnerabilidad de seguridad, no la reportes p√∫blicamente a trav√©s de issues.** En su lugar, consulta nuestra [Pol√≠tica de Seguridad](SECURITY.md) para obtener instrucciones sobre c√≥mo reportarla de forma responsable.

@@ -1,6 +1,0 @@
-name = DGE User
-description = User functions
-core = 7.x
-package = DGE
-
-dependencies[] = profile2
