@@ -1,9 +1,0 @@
-{% ckan_extends %}
-
-{% block page_title_content %}{{ _('Create Harvest Source') }}{% endblock %}
-
-{% block breadcrumb_content %}
-  <li>{{ h.nav_link(_('My Account'), named_route='{0}_search'.format(c.dataset_type)) }}</li>
-  <li>{{ h.nav_link(_('Harvester'), named_route='{0}_search'.format(c.dataset_type)) }}</li>
-  <li class="active">{{ h.nav_link(_('Create Harvest Source'), named_route='{0}_new'.format(c.dataset_type)) }}</li>
-{% endblock %}

@@ -1,9 +1,0 @@
-name = DGE Date Calendar Filter
-description = Provides a pickup date range filter
-dependencies[] = facetapi
-package = Search Toolkit
-core = 7.x
-
-version = "7.x-1.0"
-core = "7.x"
-project = "dge_date_calendar_filter"

@@ -1,6 +1,0 @@
-name = DGE i18n
-description = DGE i18n adapters
-core = 7.x
-package = DGE
-
-dependencies[] = i18n

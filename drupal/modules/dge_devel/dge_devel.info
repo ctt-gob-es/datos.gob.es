@@ -1,4 +1,0 @@
-name = DGE Devel
-description = Devel and debug functions
-core = 7.x
-package = DGE

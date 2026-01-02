@@ -1,8 +1,0 @@
-name = DGE Comment
-description = Comment Utilities
-core = 7.x
-package = DGE
-
-dependencies[] = comment
-dependencies[] = dge_ckan
-dependencies[] = dge_access

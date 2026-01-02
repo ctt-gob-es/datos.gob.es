@@ -1,4 +1,0 @@
-name = DGE Taxonomy delete
-description = Delete all references of taxonomy term deleted
-core = 7.x
-package = DGE

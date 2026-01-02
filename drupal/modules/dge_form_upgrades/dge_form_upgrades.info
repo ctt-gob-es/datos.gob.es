@@ -1,7 +1,0 @@
-name = DGE Form Upgrades
-description = Custom Form Upgrades
-core = 7.x
-package = DGE
-
-dependencies[] = dge_send_content
-configure = admin/config/dge/form-descriptions
