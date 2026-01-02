@@ -1,6 +1,0 @@
-name = DGE Basic
-description = Utils and basic functions for DGE
-core = 7.x
-package = DGE
-
-files[] = theme/dge_basic.theme.inc

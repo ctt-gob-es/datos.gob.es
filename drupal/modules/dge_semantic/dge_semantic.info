@@ -1,4 +1,0 @@
-name = DGE Semantics
-description = Add semantic information to webpages
-core = 7.x
-package = DGE

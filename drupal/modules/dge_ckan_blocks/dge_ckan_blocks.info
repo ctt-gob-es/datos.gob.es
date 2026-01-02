@@ -1,6 +1,0 @@
-name = DGE Ckan Blocks
-description = CKAN Blocks And Content
-core = 7.x
-package = DGE
-
-dependencies[] = dge_ckan

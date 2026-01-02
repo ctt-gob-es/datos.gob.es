@@ -1,9 +1,0 @@
-name = DGE formatters
-description = Provides DGE formatters
-core = 7.x
-package = DGE
-files[] = dge_formatters.module
-
-version = 7.x-0.01
-core = 7.x
-project = dge_formatters

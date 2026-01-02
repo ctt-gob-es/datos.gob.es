@@ -1,8 +1,0 @@
-name = DGE Access
-description = Control access functions
-core = 7.x
-package = DGE
-
-dependencies[] = dge_user
-
-files[] = includes/dge_access_handler_filter_node_access.inc

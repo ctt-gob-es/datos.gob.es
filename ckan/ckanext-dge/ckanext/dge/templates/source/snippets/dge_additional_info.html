@@ -1,9 +1,0 @@
-{% extends "package/snippets/additional_info.html" %}
-
-{% block package_additional_info %}
-  <tr>
-    <th scope="row" class="dataset-label">{{ _('Datasets') }}</th>
-    <td class="dataset-details" property="dc:creator">{{ c.harvest_source.status.total_datasets }}</td>
-  </tr>
-  {{ super() }}
-{% endblock %}

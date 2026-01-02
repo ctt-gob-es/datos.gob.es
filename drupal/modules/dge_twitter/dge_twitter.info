@@ -1,6 +1,0 @@
-name = DGE Twitter
-description = Basic Functions And Libraries For DGE Twitter
-core = 7.x
-package = DGE
-
-dependencies[] = libraries
